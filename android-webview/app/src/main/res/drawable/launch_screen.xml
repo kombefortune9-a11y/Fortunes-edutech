@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Solid Background Canvas Color -->
+    <item android:drawable="@color/brand_green" />
+
+    <!-- Centered Brand Logo -->
+    <item
+        android:drawable="@drawable/ic_launcher"
+        android:gravity="center"
+        android:width="128dp"
+        android:height="128dp" />
+</layer-list>

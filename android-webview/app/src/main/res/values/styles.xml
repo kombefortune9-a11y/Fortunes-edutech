@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme (Post-splash runtime theme) -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme colors here -->
+        <item name="colorPrimary">@color/brand_green</item>
+        <item name="colorPrimaryDark">@color/brand_green</item>
+        <item name="colorAccent">@color/brand_green</item>
+    </style>
+
+    <!-- Splash Screen / Instant Launch theme -->
+    <style name="LaunchTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:statusBarColor">@color/brand_green</item>
+    </style>
+</resources>

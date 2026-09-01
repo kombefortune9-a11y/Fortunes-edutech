@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    <!-- Emerald Green Circular Background -->
+    <path
+        android:fillColor="#00A86B"
+        android:pathData="M 256, 0 a 256,256 0 1,1 0,512 a 256,256 0 1,1 0,-512 Z" />
+    
+    <!-- White Cap Cover/Mortarboard top -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M256,130 L420,210 L256,290 L92,210 Z" />
+    
+    <!-- Cap Neck / Tassel Loop underneath -->
+    <path
+        android:strokeWidth="24"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M165,253 V340 C165,380 347,380 347,340 V253" />
+    
+    <!-- Right side tassel hanging down -->
+    <path
+        android:strokeWidth="12"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round"
+        android:pathData="M372,225 V280" />
+    
+    <!-- Tassel Circle Ends -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M372,290m-16,0a16,16 0,1,1 32,0a16,16 0,1,1 -32,0" />
+</vector>

@@ -1,0 +1,223 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Reviews Collection - moved to top for priority
+    match /reviews/{reviewId} {
+      allow read, list, get: if true; 
+      allow create: if isSignedIn() && isValidReview(request.resource.data) && (request.resource.data.email.lower() == request.auth.token.email.lower() || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+
+    // Helper functions
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+    function isGuestUID(userId) { return userId.startsWith('guest_'); }
+    function isAdmin() { 
+      return isSignedIn() && 
+             request.auth.token.email != null && 
+             request.auth.token.email.lower() == 'kombefortune9@gmail.com';
+    }
+    function isDeveloperUser(userId) {
+      return exists(/databases/$(database)/documents/users/$(userId)) && 
+             get(/databases/$(database)/documents/users/$(userId)).data.get('email', '').lower() == 'kombefortune9@gmail.com';
+    }
+    function isValidUser(data) {
+      return (data.get('uid', null) == null || (data.uid is string && data.uid.size() <= 256)) &&
+             (data.get('email', null) == null || (data.email is string && data.email.size() <= 256)) &&
+             (data.get('lastLogin', null) == null || data.lastLogin is timestamp) &&
+             (data.get('lastHeartbeat', null) == null || data.lastHeartbeat is timestamp) &&
+             (data.get('displayName', null) == null || (data.displayName is string && data.displayName.size() <= 256)) &&
+             (data.get('photoURL', null) == null || (data.photoURL is string && data.photoURL.size() <= 2048)) &&
+             (data.get('isGuest', null) == null || data.isGuest is bool) &&
+             (data.get('auth_provider', null) == null || data.auth_provider is string) &&
+             (data.get('is_whitelisted', null) == null || data.is_whitelisted is bool) &&
+             (data.get('isWhitelisted', null) == null || data.isWhitelisted is bool) &&
+             (data.get('teaching_grade', null) == null || data.teaching_grade is string) &&
+             (data.get('user_type', null) == null || data.user_type is string) &&
+             (data.get('subscriptionType', null) == null || data.subscriptionType is string) &&
+             (data.get('subscriptionStart', null) == null || data.subscriptionStart is timestamp) &&
+             (data.get('subscriptionIndex', null) == null || (data.subscriptionIndex is string || data.subscriptionIndex is number)) &&
+             (data.get('amountPaid', null) == null || data.amountPaid is number) &&
+             (data.get('paymentMethod', null) == null || data.paymentMethod is string) &&
+             (data.get('addedAt', null) == null || data.addedAt is timestamp) &&
+             (data.get('addedBy', null) == null || data.addedBy is string) &&
+             (data.get('firstAccess', null) == null || data.firstAccess is timestamp) &&
+             (data.get('lastAccess', null) == null || data.lastAccess is timestamp) &&
+             (data.get('sessionCount', null) == null || data.sessionCount is number) &&
+             (data.get('status', null) == null || data.status is string);
+    }
+
+    function isValidReview(data) {
+      return data.keys().hasAll(['name', 'email', 'text', 'rating', 'timestamp']) &&
+             data.keys().size() <= 7 &&
+             data.name is string && data.name.size() <= 256 &&
+             data.email is string && data.email.size() <= 256 &&
+             data.text is string && data.text.size() <= 5000 &&
+             data.rating is number && data.rating >= 1 && data.rating <= 5 &&
+             data.timestamp is timestamp &&
+             (data.get('photoURL', null) == null || (data.photoURL is string && data.photoURL.size() <= 2048)) &&
+             (data.get('isTrial', null) == null || data.isTrial is bool);
+    }
+
+    function isValidDownloadTracking(data) {
+       return data.keys().hasAll(['user_email', 'doc_type', 'grade', 'timestamp']) &&
+              data.keys().size() == 4 &&
+              data.user_email is string &&
+              data.doc_type is string &&
+              data.grade is string &&
+              data.timestamp is timestamp;
+    }
+
+    function isValidSyncSource(data) {
+      return data.keys().hasAll(['content', 'metadata', 'timestamp', 'isActive', 'subject', 'grade', 'type']) &&
+             data.keys().size() == 7 &&
+             data.content is string &&
+             data.metadata is map &&
+             data.timestamp is timestamp &&
+             data.isActive is bool &&
+             data.subject is string &&
+             data.grade is string &&
+             data.type is string;
+    }
+
+    function isValidLessonVideo(data) {
+      return data.keys().hasAll(['userId', 'topic', 'subject', 'timestamp']) &&
+             data.userId is string &&
+             data.topic is string &&
+             data.subject is string &&
+             data.timestamp is timestamp &&
+             (data.get('subtopic', null) == null || data.subtopic is string) &&
+             (data.get('grade', null) == null || data.grade is string) &&
+             (data.get('teacherName', null) == null || data.teacherName is string) &&
+             (data.get('videoUrl', null) == null || data.videoUrl is string) &&
+             (data.get('curriculum', null) == null || data.curriculum is string) &&
+             (data.get('duration', null) == null || data.duration is number) &&
+             (data.get('exportType', null) == null || data.exportType is string) &&
+             (data.get('userEmail', null) == null || data.userEmail is string) &&
+             (data.get('status', null) == null || data.status is string);
+    }
+
+    function isValidSystemActivity(data) {
+       return data.keys().hasAll(['user_email', 'user_uid', 'activity_type', 'timestamp']) &&
+              data.user_email is string &&
+              data.user_uid is string &&
+              data.activity_type is string &&
+              data.timestamp is timestamp;
+    }
+
+    function isValidTelemetry(data) {
+      return data.keys().hasAll(['id', 'userId', 'userEmail', 'feature', 'action', 'details', 'count', 'timestamp', 'offline']) &&
+             data.keys().size() == 9 &&
+             data.id is string && data.id.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 128 &&
+             data.userEmail is string && data.userEmail.size() <= 256 &&
+             data.feature is string && data.feature.size() <= 128 &&
+             data.action is string && data.action.size() <= 128 &&
+             data.details is string && data.details.size() <= 1024 &&
+             data.count is number && data.count >= 0 &&
+             data.timestamp is timestamp &&
+             data.offline is bool;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow read, write: if true;
+
+      // Downloads subcollection (Record of Work history)
+      match /downloads/{downloadId} {
+        allow read, write: if true;
+      }
+
+      // Autosave subcollection (Drafts & state recovery)
+      match /autosave/{autosaveId} {
+        allow read, write: if true;
+      }
+
+      // Modules subcollection (Teaching resources/KB)
+      match /modules/{moduleId} {
+        allow read, write: if true;
+      }
+
+      // Sync Sources subcollection (Saved schemes for syncing)
+      match /sync_sources/{syncId} {
+        allow read, write: if true;
+      }
+
+      // Lesson Videos subcollection (Traceable Lesson History)
+      match /lesson_videos/{videoId} {
+        allow read, write: if true;
+      }
+
+      // Receipts subcollection (Payment invoice and receipt history)
+      match /receipts/{receiptId} {
+        allow read, write: if true;
+      }
+
+      // Assessment Records subcollection (Assessment Tracker data)
+      match /assessment_records/{recordId} {
+        allow read, write: if true;
+      }
+
+      // Telemetry subcollection (Offline-tracked user interactions)
+      match /telemetry/{telemetryId} {
+        allow read, write: if true;
+      }
+    }
+
+    // Authorized Guests Whitelist
+    match /authorized_guests/{email} {
+      allow read, write: if true;
+    }
+
+    // Global Settings
+    match /global_settings/{settingId} {
+      allow read, write: if true;
+    }
+
+    // Guest Experiments Tracking Collection
+    match /guest_experiments/{email} {
+      allow get, write: if true; // Allow guests to track their own access
+      allow list: if isAdmin();
+    }
+
+    // System Activity Tracking Collection
+    match /system_activity/{activityId} {
+      allow create: if isValidSystemActivity(request.resource.data);
+      allow read, list: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    // Central Download Tracking Collection
+    match /download_tracking/{trackingId} {
+      allow create: if isSignedIn() && isValidDownloadTracking(request.resource.data); 
+      allow read, list: if isSignedIn() && (resource == null || resource.data.user_email.lower() == request.auth.token.email.lower() || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+
+    // Global Receipts Collection
+    match /receipts/{receiptId} {
+      allow create: if isSignedIn();
+      allow read, list: if isSignedIn() && (resource == null || (request.auth.token.email != null && resource.data.payerEmail.lower() == request.auth.token.email.lower()) || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+
+    // Document Feedback Collection
+    match /document_feedback/{feedbackId} {
+      allow create: if isSignedIn();
+      allow read, list: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    // Subscription Requests Collection
+    match /subscription_requests/{requestId} {
+      allow create: if isSignedIn();
+      allow read, list: if isSignedIn() && (resource == null || resource.data.uid == request.auth.uid || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+
+    // Default deny catch-all at the end
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FORTUNES EDUTECH</title>
+    <link rel="manifest" href="/manifest.json" />
+    <!-- iOS / Safari PWA support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FORTUNES EDUTECH" />
+    <link rel="apple-touch-icon" href="/logo512.png" />
+    <script>
+      // Gracefully capture and suppress non-critical or third-party/extension-injected "Script error."
+      window.addEventListener('error', function (event) {
+        if (!event || !event.message) return;
+        if (event.message === 'Script error.' || event.message.includes('extension') || event.message.includes('cross-origin')) {
+          console.warn('Gracefully ignored generic cross-origin or extension environment error:', event.message);
+          event.preventDefault();
+          event.stopPropagation();
+          return true;
+        }
+      }, true);
+
+      window.addEventListener('unhandledrejection', function (event) {
+        if (event && event.reason && event.reason.message) {
+          const msg = event.reason.message;
+          if (msg === 'Script error.' || msg.includes('extension') || msg.includes('cross-origin')) {
+            console.warn('Gracefully ignored unhandled cross-origin rejection:', msg);
+            event.preventDefault();
+            event.stopPropagation();
+          }
+        }
+      }, true);
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

@@ -1,0 +1,8 @@
+{
+  "name": "FORTUNES EDUTECH",
+  "description": "Comprehensive AI teacher portal for the Zambian curriculum, covering Early Childhood Education (ECE), Primary Grades 1-7, and Secondary Forms 1-4. Features automated curriculum integrity auditing, CBC & OBC lesson planning, and assessment tools.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

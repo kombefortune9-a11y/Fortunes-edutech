@@ -1,0 +1,249 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile information and activity tracking",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique identifier for the user" },
+        "displayName": { "type": "string", "description": "Display name from Gmail" },
+        "email": { "type": "string", "description": "Email address" },
+        "photoURL": { "type": "string", "description": "Profile picture URL" },
+        "lastLogin": { "type": "string", "format": "date-time", "description": "Server timestamp of last login" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Download": {
+      "title": "Download Record",
+      "description": "Tracked history of generated and downloaded documents",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string" },
+        "subject": { "type": "string" },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "metadata": { "type": "object" }
+      },
+      "required": ["userId", "title", "timestamp"]
+    },
+    "TeachingModule": {
+      "title": "Teaching Module",
+      "description": "Reference material uploaded by the teacher to guide AI generation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "content": { "type": "string", "description": "Extracted text or raw content of the module" },
+        "subject": { "type": "string" },
+        "grade": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "content"]
+    },
+    "AuthorizedGuest": {
+      "title": "Authorized Guest",
+      "description": "Pre-authorized guest email address allowed to access the app in offline/guest mode",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "description": "Email address of the authorized guest" },
+        "grade": { "type": "string", "description": "Registered/assigned grade for the teacher (e.g. 'Grade 4', 'all')" },
+        "addedAt": { "type": "string", "format": "date-time", "description": "When this email was added to the whitelist" },
+        "addedBy": { "type": "string", "description": "Who authorized this guest" }
+      },
+      "required": ["email", "addedAt"]
+    },
+    "GlobalSetting": {
+      "title": "Global Setting",
+      "description": "Global settings such as informant broadcast text or developer overrides",
+      "type": "object",
+      "properties": {
+        "text": { "type": "string", "description": "Informant announcement text" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last updated timestamp" },
+        "enforceGradeLock": { "type": "boolean", "description": "Whether grade lock is programmatically enforced" }
+      }
+    },
+    "GuestExperiment": {
+      "title": "Guest Experimenter Tracking",
+      "description": "Tracks details of guest/experiment users who logged in with Gmail but are not in whitelist",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "auth_provider": { "type": "string" },
+        "is_whitelisted": { "type": "boolean" },
+        "teaching_grade": { "type": "string" },
+        "user_type": { "type": "string" },
+        "firstAccess": { "type": "string", "format": "date-time" },
+        "lastLogin": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "user_type"]
+    },
+    "DownloadTracking": {
+      "title": "Central Download Tracking",
+      "description": "Enforcement download record tracking counters for guests and limits",
+      "type": "object",
+      "properties": {
+        "user_email": { "type": "string" },
+        "doc_type": { "type": "string" },
+        "grade": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user_email", "doc_type", "grade", "timestamp"]
+    },
+    "Review": {
+      "title": "App Recommendation/Review",
+      "description": "User reviews and recommendations for the app",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "text": { "type": "string" },
+        "rating": { "type": "number" },
+        "isTrial": { "type": "boolean" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "text", "rating", "timestamp"]
+    },
+    "SyncSource": {
+      "title": "Synchronization Source",
+      "description": "Schemes of work saved to be used as data sources for weekly forecasts and lesson plans",
+      "type": "object",
+      "properties": {
+        "content": { "type": "string" },
+        "metadata": { "type": "object" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "isActive": { "type": "boolean" },
+        "subject": { "type": "string" },
+        "grade": { "type": "string" },
+        "type": { "type": "string" }
+      },
+      "required": ["content", "timestamp", "isActive", "subject", "grade", "type"]
+    },
+    "LessonVideo": {
+      "title": "Lesson Video Record",
+      "description": "Traceable record of a generated lesson video",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "topic": { "type": "string" },
+        "subtopic": { "type": "string" },
+        "subject": { "type": "string" },
+        "grade": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "videoUrl": { "type": "string", "description": "Cloud URL or reference to the video file" }
+      },
+      "required": ["userId", "topic", "subject", "timestamp"]
+    },
+    "InteractionTelemetry": {
+      "title": "Interaction Telemetry Log",
+      "description": "Offline-tracked user interaction and feature usage patterns",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique offline event ID" },
+        "userId": { "type": "string", "description": "Unique identifier for the user" },
+        "userEmail": { "type": "string", "description": "User email address" },
+        "feature": { "type": "string", "description": "Name of the feature used" },
+        "action": { "type": "string", "description": "Action performed inside the feature" },
+        "details": { "type": "string", "description": "Optional action specific details" },
+        "count": { "type": "number", "description": "Count of interactions in this bucket" },
+        "timestamp": { "type": "string", "format": "date-time", "description": "When the interaction occurred" },
+        "offline": { "type": "boolean", "description": "Whether the event was logged offline" }
+      },
+      "required": ["userId", "feature", "action", "count", "timestamp"]
+    },
+    "Autosave": {
+      "title": "Autosave Progress",
+      "description": "Periodically saved form inputs and generated content to recover state on refresh",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner of this progress" },
+        "formData": { "type": "object", "description": "The current form inputs of DocGenerator" },
+        "generatedDoc": { "type": "object", "description": "The AI-generated document content and parameters if any" },
+        "activeSection": { "type": "string", "description": "The active screen/section the user was in" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last saved time" }
+      },
+      "required": ["userId", "formData", "updatedAt"]
+    },
+    "SubscriptionRequest": {
+      "title": "Subscription Activation Request",
+      "description": "Requests made by teachers submitting Mobile Money transaction proofs for portal activation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "subscriptionType": { "type": "string" },
+        "amount": { "type": "number" },
+        "grade": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "status": { "type": "string" },
+        "approvedAt": { "type": "string", "format": "date-time" },
+        "rejectedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "uid", "email", "subscriptionType", "amount", "status", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/subscription_requests/{requestId}": {
+      "schema": "SubscriptionRequest",
+      "description": "Incoming subscription activation requests waiting for developer approval"
+    },
+    "/users/{userId}/autosave/{autosaveId}": {
+      "schema": "Autosave",
+      "description": "Progress of a specific document type generation session or global active session"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles"
+    },
+    "/users/{userId}/downloads/{downloadId}": {
+      "schema": "Download",
+      "description": "History of documents downloaded by the user"
+    },
+    "/users/{userId}/modules/{moduleId}": {
+      "schema": "TeachingModule",
+      "description": "Custom teaching modules uploaded by the user"
+    },
+    "/users/{userId}/sync_sources/{syncId}": {
+      "schema": "SyncSource",
+      "description": "Schemes of work saved for synchronization"
+    },
+    "/users/{userId}/lesson_videos/{videoId}": {
+      "schema": "LessonVideo",
+      "description": "History of generated lesson videos"
+    },
+    "/users/{userId}/telemetry/{telemetryId}": {
+      "schema": "InteractionTelemetry",
+      "description": "Offline-tracked interaction telemetry logs synced to the cloud"
+    },
+    "/authorized_guests/{email}": {
+      "schema": "AuthorizedGuest",
+      "description": "Whitelist of guest email addresses allowed to access the system"
+    },
+    "/global_settings/{settingId}": {
+      "schema": "GlobalSetting",
+      "description": "Global settings like informant broadcasts or config switches"
+    },
+    "/guest_experiments/{email}": {
+      "schema": "GuestExperiment",
+      "description": "Table for tracking guest experiments"
+    },
+    "/download_tracking/{trackingId}": {
+      "schema": "DownloadTracking",
+      "description": "Central table for tracking all downloads and verifying limits"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Collection of user reviews and recommendations"
+    }
+  }
+}
