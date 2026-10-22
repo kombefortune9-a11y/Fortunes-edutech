@@ -6,6 +6,7 @@ export interface Subtopic {
   knowledge?: string;
   skills?: string;
   values?: string;
+  component?: string;
 }
 
 export const COMMON_LEARNING_ACTIVITIES = [
@@ -31,11 +32,13 @@ export const COMMON_LEARNING_ACTIVITIES = [
 
 export interface Topic {
   title: string;
+  component?: string;
   generalCompetency?: string;
   subtopics: Subtopic[];
 }
 
-import { integratedScienceGrade1, integratedScienceGrade2, integratedScienceGrade3, integratedScienceGrade3CBC, integratedScienceGrade4, integratedScienceGrade5, integratedScienceGrade6, integratedScienceGrade7 } from './integratedScienceData';
+import { englishGrade1Syllabus, englishGrade2Syllabus } from './zambianPrimaryEnglishSyllabus';
+import { integratedScienceGrade1, integratedScienceGrade2, integratedScienceGrade3, integratedScienceGrade3CBC, integratedScienceGrade3OBC, integratedScienceGrade4, integratedScienceGrade5, integratedScienceGrade6, integratedScienceGrade7 } from './integratedScienceData';
 import { 
   engZambianPlaceholder, 
   englishGrade1CBC,
@@ -46,16 +49,9 @@ import {
   englishGrade3OBC,
   zambianLangGrade3Unpacked,
   englishGrade4CBC,
-  zambianLangGrade4Unpacked,
   englishGrade5CBC,
-  englishGrade5OBC,
-  zambianLangGrade5Unpacked,
   englishGrade6CBC,
-  englishGrade6OBC,
-  zambianLangGrade6Unpacked,
   englishGrade7CBC,
-  englishGrade7OBC,
-  zambianLangGrade7Unpacked,
   englishGrade1Oral,
   englishGrade1Literacy,
   englishGrade2Oral,
@@ -65,6 +61,9 @@ import {
   eceZambianLanguageSectionA,
   eceZambianLanguageSectionB
 } from './obeEnglishZambianData';
+import { englishGrade5OBC } from './englishGrade5OBCData';
+import { englishGrade6OBC } from './englishGrade6OBCData';
+import { englishGrade7OBC } from './englishGrade7OBCData';
 import { biologyForm1, biologyForm2, biologyForm3, biologyForm4 } from './biologySecondaryData';
 import { chemistryForm1, chemistryForm2, chemistryForm3, chemistryForm4 } from './chemistrySecondaryData';
 import { civicEducationForm1, civicEducationForm2, civicEducationForm3, civicEducationForm4 } from './civicEducationSecondaryData';
@@ -95,7 +94,11 @@ import {
   zambianLangGrade4OBC,
   zambianLangGrade5OBC,
   zambianLangGrade6OBC,
-  zambianLangGrade7OBC
+  zambianLangGrade7OBC,
+  zambianLangGrade4Unpacked,
+  zambianLangGrade5Unpacked,
+  zambianLangGrade6Unpacked,
+  zambianLangGrade7Unpacked
 } from './zambianLanguagesOBCData';
 import { artDesignForm1, artDesignForm2, artDesignForm3, artDesignForm4 } from './artDesignSecondaryData';
 import { designTechnologyForm1, designTechnologyForm2, designTechnologyForm3, designTechnologyForm4 } from './designTechnologySecondaryData';
@@ -118,7 +121,7 @@ import { homeEconomicsGrade4, homeEconomicsHospitalityGrade4 as oldHEHGrade4, ho
 import { homeEconomicsHospitalityGrade4, homeEconomicsHospitalityGrade5, homeEconomicsHospitalityGrade6 } from './obeHomeEconomicsHospitalityData';
 import { cbcHomeEconomicsHospitalityGrade7 } from './cbcHomeEconomicsData';
 import { expressiveArtsGrade4, expressiveArtsGrade5, expressiveArtsGrade6, expressiveArtsGrade7 } from './obeExpressiveArtsData';
-import { mathOBCGrade1, mathOBCGrade4, mathOBCGrade5, mathOBCGrade6, mathOBCGrade7 } from './mathematicsData';
+import { mathOBCGrade1, mathOBCGrade3, mathOBCGrade4, mathOBCGrade5, mathOBCGrade6, mathOBCGrade7 } from './mathematicsData';
 import { englishGrade4OBC, scienceGrade4OBC, socialStudiesGrade4OBC } from './grade4OBCData';
 import { ecePreMathematicsSectionA, ecePreMathematicsSectionB, eceSocialEmotionalSectionA, eceSocialEmotionalSectionB } from './eceData';
 import { obcHomeEconomicsGrade10, obcHomeEconomicsGrade11, obcHomeEconomicsGrade12 } from './obcHomeEconomicsData';
@@ -172,316 +175,106 @@ export const SYLLABI: Record<string, Record<string, Topic[]>> = {
     "Social, Emotional and Spiritual Development": eceSocialEmotionalSectionB
   },
   "Grade 1 (CBC)": {
+    "Mathematics and Science": integratedScienceGrade1,
     "Mathematics and science": integratedScienceGrade1,
     "Creative and technology studies": obeCreativeTechGrade1,
     "Zambian language": zambianLangGrade1Unpacked,
-    "English": englishGrade1CBC,
+    "English": englishGrade1Syllabus,
+    "Literacy in English": englishGrade1Literacy,
     "literacy in English": englishGrade1Literacy,
-    "Oral English": englishGrade1Oral
+    "Oral English": englishGrade1Oral,
+    "oral English": englishGrade1Oral
   },
   "Grade 2 (CBC)": {
+    "Mathematics and Science": integratedScienceGrade2,
     "Mathematics and science": integratedScienceGrade2,
     "Creative and technology studies": obeCreativeTechGrade2,
     "Zambian language": zambianLangGrade2Unpacked,
-    "English": englishGrade2CBC,
+    "English": englishGrade2Syllabus,
+    "Literacy in English": englishGrade2Literacy,
     "literacy in English": englishGrade2Literacy,
-    "Oral English": englishGrade2Oral
+    "Oral English": englishGrade2Oral,
+    "oral English": englishGrade2Oral
   },
   "Grade 3 (CBC)": {
+    "Mathematics and Science": integratedScienceGrade3CBC,
     "Mathematics and science": integratedScienceGrade3CBC,
-    "Creative and technology studies": obeCreativeTechGrade3,
+    "Creative and Technology Studies": obcTechnologyGrade3,
+    "Creative and technology studies": obcTechnologyGrade3,
+    "Creative & Technology Studies": obcTechnologyGrade3,
+    "Technology Studies": obcTechnologyGrade3,
+    "Technology studies": obcTechnologyGrade3,
+    "CTS": obcTechnologyGrade3,
     "Zambian language": zambianLangGrade3Unpacked,
     "English": englishGrade3CBC
   },
   "Grade 4 (CBC)": {
-    "English": englishGrade4CBC,
+    "English": englishGrade4OBC,
     "Zambian language": zambianLangGrade4Unpacked,
+    "Zambian Language": zambianLangGrade4Unpacked,
     "Integrated science": integratedScienceGrade4,
+    "Integrated Science": integratedScienceGrade4,
+    "Science": integratedScienceGrade4,
     "Social studies": socialStudiesGrade4,
+    "Social Studies": socialStudiesGrade4,
     "Creative and technology studies": obeCreativeTechGrade4,
+    "Technology Studies": obeCreativeTechGrade4,
+    "Technology studies": obeCreativeTechGrade4,
     "Home Economics and Hospitality": homeEconomicsHospitalityGrade4,
+    "Home Economics & Hospitality": homeEconomicsHospitalityGrade4,
     "Expressive Arts": expressiveArtsGrade4,
     "Mathematics": mathOBCGrade4
   },
   "Grade 5 (CBC)": {
     "English": englishGrade5CBC,
     "Zambian language": zambianLangGrade5Unpacked,
+    "Zambian Language": zambianLangGrade5Unpacked,
     "Integrated science": integratedScienceGrade5,
+    "Integrated Science": integratedScienceGrade5,
+    "Science": integratedScienceGrade5,
     "Social studies": socialStudiesGrade5,
+    "Social Studies": socialStudiesGrade5,
     "Creative and technology studies": obeCreativeTechGrade5,
+    "Technology Studies": obeCreativeTechGrade5,
+    "Technology studies": obeCreativeTechGrade5,
     "Home Economics and Hospitality": homeEconomicsHospitalityGrade5,
+    "Home Economics & Hospitality": homeEconomicsHospitalityGrade5,
     "Expressive Arts": expressiveArtsGrade5,
     "Mathematics": mathOBCGrade5
   },
   "Grade 6 (CBC)": {
     "English": englishGrade6CBC,
     "Zambian language": zambianLangGrade6Unpacked,
+    "Zambian Language": zambianLangGrade6Unpacked,
     "Integrated science": integratedScienceGrade6,
+    "Integrated Science": integratedScienceGrade6,
+    "Science": integratedScienceGrade6,
     "Social studies": socialStudiesGrade6,
+    "Social Studies": socialStudiesGrade6,
     "Creative and technology studies": obeCreativeTechGrade6,
+    "Technology Studies": obeCreativeTechGrade6,
+    "Technology studies": obeCreativeTechGrade6,
     "Home Economics and Hospitality": homeEconomicsHospitalityGrade6,
+    "Home Economics & Hospitality": homeEconomicsHospitalityGrade6,
     "Expressive Arts": expressiveArtsGrade6,
     "Mathematics": mathOBCGrade6
   },
   "Grade 7 (CBC)": {
     "English": englishGrade7CBC,
     "Zambian language": zambianLangGrade7Unpacked,
+    "Zambian Language": zambianLangGrade7Unpacked,
     "Integrated science": integratedScienceGrade7,
+    "Science": integratedScienceGrade7,
     "Social studies": socialStudiesGrade7,
-    "Creative and technology studies": obeCreativeTechGrade7
-  },
-  "Grade 1 (OBC)": {
-    "Integrated science": integratedScienceGrade1,
-    "Creative and Technology Studies": obcTechnologyGrade1,
-    "English": englishGrade1CBC,
-    "Zambian language": zambianLangGrade1OBC,
-    "Mathematics": mathOBCGrade1,
-    "literacy in English": englishGrade1Literacy,
-    "Oral English": englishGrade1Oral
-  },
-  "Grade 2 (OBC)": {
-    "Integrated science": integratedScienceGrade2,
-    "Creative and Technology Studies": obcTechnologyGrade2,
-    "English": englishGrade2CBC,
-    "Zambian language": zambianLangGrade2OBC,
-    "Mathematics": mathOBCGrade1,
-    "literacy in English": englishGrade2Literacy,
-    "Oral English": englishGrade2Oral
-  },
-  "Grade 3 (OBC)": { 
-    "Integrated science": integratedScienceGrade3,
-    "Creative and Technology Studies": obcTechnologyGrade3,
-    "English": englishGrade3OBC,
-    "Zambian language": zambianLangGrade3OBC,
-    "Mathematics": [
-      {
-        "title": "3.1 SETS",
-        "subtopics": [
-          {
-            "title": "3.1.1 Describe a set by listing its members",
-            "competencies": [
-              "Specific Competency: 3.1.1 Describe a set by listing its members | Expected Standard: Sets and notation, Listing members of a set | [Skills]: Communication of set notation through symbolization | Values: Awareness of set notation or symbolization",
-              "Specific Competency: 3.1.2 Recognise and use the symbols “=” equal to, “≠” not equal to | Expected Standard: Set symbols “=” equal to, “≠” not equal to. Also recognise on “∈” member of, “∉” not a member of, “⊂” subsets, Applying sets in real life situations | [Skills]: Application of the concept of sets to real life | Values: Teamwork through cooperative learning"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "3.2 NUMBERS AND NOTATION",
-        "subtopics": [
-          {
-            "title": "3.2.1 Read and write numbers up to 100 000",
-            "competencies": [
-              "Specific Competency: 3.2.1 Read and write numbers up to 100 000 | Expected Standard: Reading and writing numbers up to 100 000, by regrouping, Learners to the number structures 1, 10, 100, 1 000, 10 000, 100 000 | [Skills]: Communication of place value | Values: Accuracy in reading and writing",
-              "Specific Competency: 3.2.2 Express a number in expanded notation | Expected Standard: Expressing numbers in expanded notation | [Skills]: Presentation of numbers in expanded notation | Values: Application of notation to real life"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "3.3 ADDITION",
-        "subtopics": [
-          {
-             "title": "3.3.1 Add whole numbers with sums up to 100 000",
-             "competencies": [
-                "Specific Competency: 3.3.1 Add whole numbers with sums up to 100 000 | Expected Standard: Addition of whole numbers with sums up to 100 000 without regrouping (Expanded notation), Addition of whole numbers by using number lines, number wheels and magic squares | [Skills]: Addition of up to five-digit numbers using the concept of 10, 100, 1000 and 10000 as a unit | Values: Awareness of the role of place values in addition, Accuracy in computations",
-                "Specific Competency: 3.3.2 Carry out addition of numbers in real life situations | Expected Standard: Applying addition of numbers in real life situations (e.g. money, number of items, Length) | [Skills]: Application of addition to real life"
-             ]
-          }
-        ]
-      },
-      {
-        "title": "3.4 SUBTRACTION",
-        "subtopics": [
-          {
-             "title": "3.4.1 Subtract whole numbers up to 100 000",
-             "competencies": [
-                "Specific Competency: 3.4.1 Subtract whole numbers up to 100 000 | Expected Standard: Subtraction of whole numbers up to 100 000 by regrouping (Vertical subtraction, expanded notation, lateral subtraction), Subtraction of whole numbers using number lines, number wheels and magic squares | [Skills]: Subtraction of up to five-digit numbers using the concept of 10, 100, 1000 and 10000 as a unit, Relating subtraction to addition | Values: Accuracy in computations",
-                "Specific Competency: 3.4.2 Carry out subtraction and apply it to real life situations | Expected Standard: Applying subtraction and addition in real life situations (e.g. money, number of items, Length) | [Skills]: Application of subtraction and addition to money | Values: Teamwork through cooperative learning"
-             ]
-          }
-        ]
-      },
-      {
-        "title": "3.5 MULTIPLICATION",
-        "subtopics": [
-          {
-             "title": "3.5.1 Multiply two and three digit numbers by a single digit number vertically",
-             "competencies": [
-                "Specific Competency: 3.5.1 Multiply two and three digit numbers by a single digit number vertically | Expected Standard: Multiplying two and three digit numbers by a single digit number using vertical multiplication, Relating multiplication to problems involving money | [Skills]: Multiplication of two and three digit by single digit numbers, Application of place values | Values: Appreciation of the use of multiplication in real life, Accuracy through cooperative learning",
-                "Specific Competency: 3.5.2 Apply multiplication in real life situations | Expected Standard: Relating multiplication to problems involving money | [Skills]: Application of place values | Values: Appreciation of the use of multiplication in real life"
-             ]
-          }
-        ]
-      },
-      {
-        "title": "3.6 DIVISION",
-        "subtopics": [
-          {
-             "title": "3.6.1 Divide two and three digit numbers by single digit numbers",
-             "competencies": [
-                "Specific Competency: 3.6.1 Divide two and three digit numbers by single digit numbers using Long division (with remainders) | Expected Standard: Dividing two and three digit numbers by single digit numbers WITHOUT REMAINDERS, Dividing two and three digit numbers by single digit numbers WITH REMAINDERS using Long division | [Skills]: Division of two and three digit by single digit numbers, Accuracy in computations, Identification of the role of the long division symbol | Values: Awareness of the concept of division",
-                "Specific Competency: 3.6.2 Apply division skills in real life situations | Expected Standard: Applying multiplication and division in real life situations involving money | [Skills]: Application of division to real life | Values: Teamwork through cooperative learning"
-             ]
-          }
-        ]
-      },
-      {
-        "title": "3.7 NUMBER PATTERNS",
-        "subtopics": [
-          {
-             "title": "3.7.1 Order numbers using mathematical symbols",
-             "competencies": [
-                "Specific Competency: 3.7.1 Order numbers using mathematical symbols “>”, “<” and “=” | Expected Standard: Using mathematical symbols “>” greater than, “<” less than, and “=” to order numbers | [Skills]: Analysis of numbers to arrange numbers | Values: Appreciation of number arrangement"
-             ]
-          }
-        ]
-      },
-      {
-        "title": "3.8 FRACTIONS",
-        "subtopics": [
-          {
-             "title": "3.8.1 Identify and represent proper fractions",
-             "competencies": [
-                "Specific Competency: 3.8.1 Identify and represent proper fractions as equal parts of a whole | Expected Standard: Identifying proper fractions in equal parts of a whole (e.g. objects as much as possible), Names of parts (denominator, numerator, division line), Common fractions | [Skills]: Identification of proper fractions | Values: Appreciation of proper fractions",
-                "Specific Competency: 3.8.2 Draw and shade proper fractions | Expected Standard: Drawing and shading proper fractions | [Skills]: Representation of proper fractions",
-                "Specific Competency: 3.8.3 Add and subtract proper fractions with common denominators | Expected Standard: Adding and subtracting proper fractions having a common denominator | [Skills]: Addition and subtraction of proper fractions | Values: Accuracy in adding and subtracting proper fractions",
-                "Specific Competency: 3.8.4 Apply proper fractions in real life situations | Expected Standard: Fractions in real life situations (e.g. liquids, paper folding) | [Skills]: Application of equal parts of a whole in real life"
-             ]
-          }
-        ]
-      },
-      {
-        "title": "3.9 MEASURES",
-        "subtopics": [
-          {
-             "title": "3.9.1 Time, Calendar, Length, Mass, Capacity",
-             "competencies": [
-                "Specific Competency: 3.9.1 Tell time to a specified interval | Expected Standard: Telling time to half, quarter of an hour using the analogue clock, Intervals during the 24 hour clock | [Skills]: Telling time at specified intervals | Values: Accuracy in telling time",
-                "Specific Competency: 3.9.2 Read and use the calendar | Expected Standard: Calendar | [Skills]: Reading and use of the calendar",
-                "Specific Competency: 3.9.3 Describe the unit for measuring long distances | Expected Standard: Standard unit for measuring long distances (Km) | [Skills]: Describing the standard unit for measuring distance | Values: Appreciation of the use of units in measures",
-                "Specific Competency: 3.9.4 Describe mass and the standard units for its measure | Expected Standard: Standard units for mass (grammes, Kilograms) | [Skills]: Describing the standard unit for measuring mass",
-                "Specific Competency: 3.9.5 Describe capacity and the standard units for its measure | Expected Standard: Standard units for measuring capacity (millilitres, litres) | [Skills]: Describing the standard unit for measuring capacity"
-             ]
-          }
-        ]
-      },
-      {
-        "title": "3.10 STATISTICS",
-        "subtopics": [
-          {
-             "title": "3.10.1 Collect and present ungrouped data",
-             "competencies": [
-                "Specific Competency: 3.10.1 Collect and present ungrouped data on a frequency table | Expected Standard: Data collection methods, Data presentation (frequency table) involving one of tally marks | [Skills]: Presentation of ungrouped data on a frequency table, Interpretation of frequency tables | Values: Interest in collecting data, Accuracy in presenting data on a frequency table"
-             ]
-          }
-        ]
-      },
-      {
-        "title": "3.11 RELATIONS & MAPPINGS",
-        "subtopics": [
-          {
-             "title": "3.11.1 Draw Arrow diagrams to illustrate one-to-one mappings",
-             "competencies": [
-                "Specific Competency: 3.11.1 Draw Arrow diagrams to illustrate one-to-one mappings | Expected Standard: Relations and mappings involving “Times 2 plus 1 etc.” on single digit whole numbers not exceed 100 000, Use of Arrow diagrams and mapping in real life situations | [Skills]: Drawing of one-to-one mapping using arrow diagrams, Interpretation of one-to-one mapping | Values: Creativity of drawing arrow diagrams, Awareness of mapping"
-             ]
-          }
-        ]
-      },
-      {
-        "title": "3.12 PLANE SHAPES",
-        "subtopics": [
-          {
-             "title": "3.12 Plane Shapes",
-             "competencies": [
-                "Specific Competency: 3.12.1 Identify right angled triangle by folding rectangular and squared paper | Expected Standard: Identifying right angled triangle by folding rectangular and squared paper | [Skills]: Identifying right angled triangle | Values: Curiosity in making right angled triangles using squared paper",
-                "Specific Competency: 3.12.2 Draw right angled triangle on squared paper | Expected Standard: Drawing right angled triangle on squared paper | [Skills]: Drawing right angled triangle using squared paper"
-             ]
-          }
-        ]
-      }
-    ],
-    "Social studies": obcSocialStudiesGrade3
-  },
-  "Grade 4 (OBC)": {
-    "English": englishGrade4OBC,
-    "Integrated science": scienceGrade4OBC,
-    "Social studies": obcSocialStudiesGrade4,
-    "Zambian language": zambianLangGrade4OBC,
-    "Mathematics": mathOBCGrade4,
-    "Technology Studies": obcTechnologyGrade4,
-    "Home Economics and Hospitality": homeEconomicsHospitalityGrade4,
-    "Expressive Arts": expressiveArtsGrade4
+    "Social Studies": socialStudiesGrade7,
+    "Creative and technology studies": obeCreativeTechGrade7,
+    "Technology Studies": obeCreativeTechGrade7,
+    "Technology studies": obeCreativeTechGrade7
   },
 
-  "Grade 5 (OBC)": { 
-    "Integrated science": integratedScienceGrade5, 
-    "Technology Studies": obcTechnologyGrade5, 
-    "English": englishGrade5OBC, 
-    "Zambian language": zambianLangGrade5OBC,
-    "Home Economics": homeEconomicsGrade5,
-    "Home Economics and Hospitality": homeEconomicsHospitalityGrade5,
-    "Expressive Arts": expressiveArtsGrade5,
-    "Mathematics": mathOBCGrade5,
-    "Social studies": obcSocialStudiesGrade5
-  },
-  "Grade 6 (OBC)": { 
-    "Integrated science": integratedScienceGrade6, 
-    "Technology Studies": obcTechnologyGrade6, 
-    "English": englishGrade6OBC, 
-    "Zambian language": zambianLangGrade6OBC,
-    "Home Economics": homeEconomicsGrade6,
-    "Home Economics and Hospitality": homeEconomicsHospitalityGrade6,
-    "Expressive Arts": expressiveArtsGrade6,
-    "Mathematics": mathOBCGrade6,
-    "Social studies": obcSocialStudiesGrade6
-  },
-  "Grade 7 (OBC)": { 
-    "Integrated science": integratedScienceGrade7, 
-    "Technology Studies": obcTechnologyGrade7, 
-    "English": englishGrade7OBC, 
-    "Zambian language": zambianLangGrade7OBC,
-    "Home Economics": homeEconomicsGrade7,
-    "Expressive Arts": expressiveArtsGrade7,
-    "Mathematics": mathOBCGrade7,
-    "Social studies": obcSocialStudiesGrade7
-  },
-  "Grade 10 (OBC)": {
-    "Home Economics": obcHomeEconomicsGrade10,
-    "Civic Education": obcCivicEducationGrade10,
-    "Computer Studies": obcComputerStudiesGrade10,
-    "Additional Mathematics": obcAdditionalMathGrade10,
-    "Biology": obcBiologyGrade10,
-    "Religious Education 2044": obcRE2044Grade10,
-    "English": obcEnglishGrade10,
-    "Zambian language": obcZambianLanguagesGrade10,
-    "Chemistry": obcChemistryGrade10,
-    "Physics": obcPhysicsGrade10
-  },
-  "Grade 11 (OBC)": {
-    "Home Economics": obcHomeEconomicsGrade11,
-    "Civic Education": obcCivicEducationGrade11,
-    "Computer Studies": obcComputerStudiesGrade11,
-    "Additional Mathematics": obcAdditionalMathGrade11,
-    "Biology": obcBiologyGrade11,
-    "Religious Education 2044": obcRE2044Grade11,
-    "English": obcEnglishGrade11,
-    "Zambian language": obcZambianLanguagesGrade11,
-    "Chemistry": obcChemistryGrade11,
-    "Physics": obcPhysicsGrade11
-  },
-  "Grade 12 (OBC)": {
-    "Home Economics": obcHomeEconomicsGrade12,
-    "Civic Education": obcCivicEducationGrade12,
-    "Computer Studies": obcComputerStudiesGrade12,
-    "Additional Mathematics": obcAdditionalMathGrade12,
-    "Biology": obcBiologyGrade12,
-    "Religious Education 2044": obcRE2044Grade12,
-    "English": obcEnglishGrade12,
-    "Zambian language": obcZambianLanguagesGrade12,
-    "Chemistry": obcChemistryGrade12,
-    "Physics": obcPhysicsGrade12
-  },
+
+
+
   "Form 5-6 A Level": {
     "Agricultural Science adva": [...advancedAgriculturalScienceForm5, ...advancedAgriculturalScienceForm6],
     "Art and Design adva": [...advancedArtDesignForm5, ...advancedArtDesignForm6],
@@ -561,123 +354,11 @@ export const SYLLABI: Record<string, Record<string, Topic[]>> = {
     "Travel and Tourism adva": advancedTravelTourismForm6
   },
   "Grade 1 (Primary)": {
-    "English": [
-      {
-        title: "1.1 CONVERSATION",
-        subtopics: [
-          { title: "1.1.1 Greetings", competencies: ["1.1.1.1 Use appropriate greetings at different times of the day"] },
-          { title: "1.1.2 Family", competencies: ["1.1.2.1 Use appropriate language to talk about members of a nuclear family"] },
-          { title: "1.1.3 Simple Commands", competencies: ["1.1.3.1 Give and follow simple commands"] },
-          { title: "1.1.4 Classroom Rules", competencies: ["1.1.4.1 Use appropriate language to talk about classroom rules"] },
-          { title: "1.1.5 Home Chores and Responsibilities", competencies: ["1.1.5.1 Use appropriate language to discuss chores and responsibilities of family members"] },
-          { title: "1.1.6 Time", competencies: ["1.1.6.1 Use appropriate language to tell time of the day, days of the week and months of the year"] },
-          { title: "1.1.7 Food and Meals", competencies: ["1.1.7.1 Use appropriate language to talk about different foods and meals of the day"] },
-          { title: "1.1.8 Occupations", competencies: ["1.1.8.1 Use appropriate language to talk about occupations in the community"] },
-          { title: "1.1.9 Things Found at Home", competencies: ["1.1.9.1 Use appropriate language to talk about things found at home"] },
-          { title: "1.1.10 Things Found at School", competencies: ["1.1.10.1 Use appropriate language to talk about things found at school"] },
-          { title: "1.1.11 Domestic Animals", competencies: ["1.1.11.1 Use appropriate language to describe domestic animals"] },
-          { title: "1.1.12 At the Market", competencies: ["1.1.12.1 Use appropriate language for buying and selling"] },
-          { title: "1.1.13 Community Practices", competencies: ["1.1.13.1 Use appropriate language to talk about community practices"] },
-          { title: "1.1.14 Statements", competencies: ["1.1.14.1 Use appropriate language to deny, confirm, correct and express statements and propositions"] },
-          { title: "1.1.15 Plurals", competencies: ["1.1.15.1 Use the plural forms of regular nouns"] },
-        ]
-      },
-      {
-        title: "1.2 ETIQUETTE",
-        subtopics: [
-          { title: "1.2.1 Manners", competencies: ["1.2.1.1 Use appropriate language to talk about good manners and behaviour"] }
-        ]
-      },
-      {
-        title: "1.3 STORIES",
-        subtopics: [
-          { title: "1.3.1 Simple Stories", competencies: ["1.3.1.1 Analyse simple stories orally"] }
-        ]
-      },
-      {
-        title: "1.4 SONGS",
-        subtopics: [
-          { title: "1.4.1 Simple Songs", competencies: ["1.4.1.1 Use appropriate language in simple songs"] }
-        ]
-      },
-      {
-        title: "1.5 DRAMA",
-        subtopics: [
-          { title: "1.5.1 Role Playing", competencies: ["1.5.1.1 Use appropriate language to depict real-life situations"] }
-        ]
-      },
-      {
-        title: "1.6 POETRY",
-        subtopics: [
-          { title: "1.6.1 Simple Poems", competencies: ["1.6.1.1 Recite simple poems"] },
-          { title: "1.6.2 Tongue Twisters", competencies: ["1.6.2.1 Recite tongue twisters"] }
-        ]
-      },
-      {
-        title: "1.7 DESCRIPTIONS",
-        subtopics: [
-          { title: "1.7.1 Describing People and Objects", competencies: ["1.7.1.1 Use appropriate language in describing people and objects"] }
-        ]
-      },
-      {
-        title: "1.8 GAMES",
-        subtopics: [
-          { title: "1.8.1 Language Games", competencies: ["1.8.1.1 Use appropriate language to play games"] }
-        ]
-      },
-      {
-        title: "1.9 SOUNDS",
-        subtopics: [
-          { title: "1.9.1 Short Vowels", competencies: ["1.9.1.1 Sound out short vowels"] },
-          { title: "1.9.2 Consonants", competencies: ["1.9.2.1 Sound out consonants in English", "1.9.2.2 Blend and read words with consonants"] },
-          { title: "1.9.3 Long Vowels", competencies: ["1.9.3.1 Sound out long vowels", "1.9.3.2 Blend and read words with long vowels"] },
-          { title: "1.9.4 Digraphs", competencies: ["1.9.4.1 Sound out digraphs", "1.9.4.2 Blend and read words with digraphs"] },
-          { title: "1.9.5 Diphthongs", competencies: ["1.9.5.1 Sound out diphthongs", "1.9.5.2 Blend and read words with diphthongs"] },
-          { title: "1.9.6 Consonant Blends", competencies: ["1.9.6.1 Read words with consonant blends and clusters"] }
-        ]
-      },
-      {
-        title: "1.10 SENTENCES",
-        subtopics: [
-          { title: "1.10.1 Sight Words", competencies: ["1.10.1.1 Read sight words with fluency"] }
-        ]
-      },
-      {
-        title: "1.11 HANDWRITING (Manuscript/Print)",
-        subtopics: [
-          { title: "1.11.1 Sitting Posture", competencies: ["1.11.1.1 Demonstrate correct sitting posture"] },
-          { title: "1.11.2 Fine Motor Skills", competencies: ["1.11.2.1 Use appropriate grip to hold pencils"] },
-          { title: "1.11.3 Concept of Print", competencies: ["1.11.3.1 Demonstrate knowledge of basic concepts of print"] },
-          { title: "1.11.4 Copying Patterns", competencies: ["1.11.4.1 Draw a variety of patterns"] },
-          { title: "1.11.5 Letters of the Alphabet", competencies: ["1.11.5.1 Form upper-case and lower-case letters in print"] },
-          { title: "1.11.6 Own Name", competencies: ["1.11.6.1 Write own name"] }
-        ]
-      },
-      {
-        title: "1.12 PUNCTUATION",
-        subtopics: [
-          { title: "1.12.1 Punctuate Sentences", competencies: ["1.12.1.1 Use correct punctuation marks in sentences"] }
-        ]
-      },
-      {
-        title: "1.13 WORD BUILDING",
-        subtopics: [
-          { title: "1.13.1 Decodable Words", competencies: ["1.13.1.1 Use knowledge of sounds to build words"] }
-        ]
-      },
-      {
-        title: "1.14 DICTATION",
-        subtopics: [
-          { title: "1.14.1 Decodable Texts", competencies: ["1.14.1.1 Write dictated words, phrases and sentences"] }
-        ]
-      },
-      {
-        title: "1.15 SEQUENCING",
-        subtopics: [
-          { title: "1.15.1 Word Sequencing", competencies: ["1.15.1.1 Re-arrange words within a phrase in logical order", "1.15.1.2 Re-arrange words within a sentence in logical order"] }
-        ]
-      }
-    ],
+    "Literacy in English": englishGrade1Literacy,
+    "literacy in English": englishGrade1Literacy,
+    "Oral English": englishGrade1Oral,
+    "oral English": englishGrade1Oral,
+    "English": englishGrade1Syllabus,
     "Zambian Languages": [
       {
         title: "1.1 STORIES",
@@ -939,137 +620,11 @@ export const SYLLABI: Record<string, Record<string, Topic[]>> = {
     ]
   },
   "Grade 2 (Primary)": {
-    "English": [
-      {
-        title: "2.1 CONVERSATION",
-        subtopics: [
-          { title: "2.1.1 Family", competencies: ["2.1.1.1 Use appropriate language to talk about an extended family"] },
-          { title: "2.1.2 Time", competencies: ["2.1.2.1 Use appropriate language to describe seasons of the year"] },
-          { title: "2.1.3 Places in the Community", competencies: ["2.1.3.1 Use appropriate language to name different places in the community"] },
-          { title: "2.1.4 Community Practices", competencies: ["2.1.4.1 Use appropriate language to talk about good practices in the community"] },
-          { title: "2.1.5 Instructions", competencies: ["2.1.5.1 Give and follow a series of instructions"] },
-          { title: "2.1.6 Occupations", competencies: ["2.1.6.1 Use appropriate language to discuss different occupations in the community"] },
-          { title: "2.1.7 Expressing Feelings", competencies: ["2.1.7.1 Use appropriate language to express feelings"] },
-          { title: "2.1.8 Expressing Opinions", competencies: ["2.1.8.1 Use appropriate language to express personal opinions"] },
-          { title: "2.1.9 Wild Animals", competencies: ["2.1.9.1 Use appropriate language to describe wild animals"] },
-          { title: "2.1.10 Etiquette", competencies: ["2.1.10.1 Use appropriate language to demonstrate manners and good behaviour"] }
-        ]
-      },
-      {
-        title: "2.2 STORIES",
-        subtopics: [
-          { title: "2.2.1 Simple Stories", competencies: ["2.2.1.1 Analyse simple stories"] }
-        ]
-      },
-      {
-        title: "2.3 DRAMA",
-        subtopics: [
-          { title: "2.3.1 Simple Plays", competencies: ["2.3.1.1 Use language to engage in simple plays"] }
-        ]
-      },
-      {
-        title: "2.4 POETRY",
-        subtopics: [
-          { title: "2.4.1 Simple Poems", competencies: ["2.4.1.1 Recite simple poems"] }
-        ]
-      },
-      {
-        title: "2.5 RIDDLES",
-        subtopics: [
-          { title: "2.5.1 Simple Riddles", competencies: ["2.5.1.1 Interpret simple riddles"] }
-        ]
-      },
-      {
-        title: "2.6 SONGS",
-        subtopics: [
-          { title: "2.6.1 Simple Songs", competencies: ["2.6.1.1 Use appropriate language in singing songs"] }
-        ]
-      },
-      {
-        title: "2.7 DESCRIPTIONS",
-        subtopics: [
-          { title: "2.7.1 Describing People", competencies: ["2.7.1.1 Use appropriate language to describe people"] }
-        ]
-      },
-      {
-        title: "2.8 GAMES",
-        subtopics: [
-          { title: "2.8.1 Language Games", competencies: ["2.8.1.1 Use appropriate language in playing games"] }
-        ]
-      },
-      {
-        title: "2.9 SOUNDS",
-        subtopics: [
-          { title: "2.9.1 Consonant Alternative Spelling Choices", competencies: ["2.9.1.1 Identify sounds and graphemes used as alternative spelling choices of consonants", "2.9.1.2 Blend and read words with alternative spelling choices of consonants"] },
-          { title: "2.9.2 Vowel Alternative Spelling Choices", competencies: ["2.9.2.1 Identify sounds and graphemes used as alternative spelling choices of vowels", "2.9.2.2 Blend and read words with alternative spelling choices of vowels"] },
-          { title: "2.9.3 Digraph Alternative Spelling Choices", competencies: ["2.9.3.1 Identify alternative spelling choices of digraphs", "2.9.3.2 Use alternative spelling choices of digraphs to blend and read words"] },
-          { title: "2.9.4 Trigraphs", competencies: ["2.9.4.1 Sound out trigraphs in words", "2.9.4.2 Blend and read words using trigraphs"] },
-          { title: "2.9.5 Consonant Blends", competencies: ["2.9.5.1 Sound initial and final consonant blends"] }
-        ]
-      },
-      {
-        title: "2.10 SENTENCES",
-        subtopics: [
-          { title: "2.10.1 Sight Words", competencies: ["2.10.1.1 Read sight words with fluency"] }
-        ]
-      },
-      {
-        title: "2.11 COMPREHENSION",
-        subtopics: [
-          { title: "2.11.1 Intensive Reading", competencies: ["2.11.1.1 Read texts with understanding"] },
-          { title: "2.11.2 Extensive Reading", competencies: ["2.11.2.1 Read a variety of texts for pleasure"] }
-        ]
-      },
-      {
-        title: "2.12 HANDWRITING (Tailed Writing)",
-        subtopics: [
-          { title: "2.12.1 Copying", competencies: ["2.12.1.1 Write lower and upper-case letters using tailed handwriting", "2.12.1.2 Write decodable and sight words", "2.12.1.3 Write phrases", "2.12.1.4 Write sentences", "2.12.1.5 Write paragraphs"] }
-        ]
-      },
-      {
-        title: "2.13 SENTENCE CONSTRUCTION",
-        subtopics: [
-          { title: "2.13.1 Words, Phrases and Sentences", competencies: ["2.13.1.1 Write words, phrases and simple sentences independently"] }
-        ]
-      },
-      {
-        title: "2.14 ALPHABETICAL ORDER AND SEQUENCING",
-        subtopics: [
-          { title: "2.14.1 Alphabetical Order", competencies: ["2.14.1.1 Sequence words according to alphabetical order"] },
-          { title: "2.14.2 Logical Order", competencies: ["2.14.2.1 Sequence words and sentences logically"] }
-        ]
-      },
-      {
-        title: "2.15 SPELLING",
-        subtopics: [
-          { title: "2.15.1 Word Spelling", competencies: ["2.15.1.1 Spell words correctly"] },
-          { title: "2.15.2 Dictation", competencies: ["2.15.2.1 Write dictated words, phrases and sentences"] }
-        ]
-      },
-      {
-        title: "2.16 WORD RELATIONSHIPS",
-        subtopics: [
-          { title: "2.16.1 Synonyms", competencies: ["2.16.1.1 Demonstrate knowledge of synonyms"] },
-          { title: "2.16.2 Antonyms", competencies: ["2.16.2.1 Demonstrate knowledge of antonyms"] }
-        ]
-      },
-      {
-        title: "2.17 PARTS OF SPEECH",
-        subtopics: [
-          { title: "2.17.1 Nouns", competencies: ["2.17.1.1 Demonstrate knowledge of nouns"] },
-          { title: "2.17.2 Verbs", competencies: ["2.17.2.1 Demonstrate knowledge of verbs"] },
-          { title: "2.17.3 Prepositions", competencies: ["2.17.3.1 Demonstrate knowledge of prepositions"] },
-          { title: "2.17.4 Conjunctions", competencies: ["2.17.4.1 Demonstrate knowledge of conjunctions"] },
-          { title: "2.17.5 Possessive Words", competencies: ["2.17.5.1 Demonstrate knowledge of possessive words"] }
-        ]
-      },
-      {
-        title: "2.18 PUNCTUATION",
-        subtopics: [
-          { title: "2.18.1 Punctuate Sentences", competencies: ["2.18.1.1 Use commas and question marks in sentences"] }
-        ]
-      }
-    ],
+    "Literacy in English": englishGrade2Literacy,
+    "literacy in English": englishGrade2Literacy,
+    "Oral English": englishGrade2Oral,
+    "oral English": englishGrade2Oral,
+    "English": englishGrade2Syllabus,
     "Zambian Languages": [
       {
         title: "2.1 STORIES",
@@ -1749,7 +1304,9 @@ export const SYLLABI: Record<string, Record<string, Topic[]>> = {
   "Grade 4 (Upper Primary)": {
     "English": englishGrade4CBC,
     "Mathematics": mathOBCGrade4,
-    "Science": scienceGrade4OBC,
+    "Science": integratedScienceGrade4,
+    "Integrated science": integratedScienceGrade4,
+    "Integrated Science": integratedScienceGrade4,
     "Social studies": obcSocialStudiesGrade4,
     "Home Economics & Hospitality": homeEconomicsHospitalityGrade4,
     "Zambian Languages": zambianLangGrade4Unpacked,
@@ -2689,7 +2246,9 @@ export const SYLLABI: Record<string, Record<string, Topic[]>> = {
   "Grade 4": {
     "English": englishGrade4CBC,
     "Mathematics": mathOBCGrade4,
-    "Science": scienceGrade4OBC,
+    "Science": integratedScienceGrade4,
+    "Integrated science": integratedScienceGrade4,
+    "Integrated Science": integratedScienceGrade4,
     "Social studies": socialStudiesGrade4,
     "Home Economics & Hospitality": homeEconomicsHospitalityGrade4,
     "Technology studies": obeCreativeTechGrade4,
@@ -2727,3 +2286,5 @@ export const SYLLABI: Record<string, Record<string, Topic[]>> = {
     "Mathematics": mathOBCGrade7
   }
 };
+
+export { englishGrade5OBC, englishGrade6OBC, englishGrade7OBC };

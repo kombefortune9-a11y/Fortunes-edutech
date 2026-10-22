@@ -33,6 +33,7 @@ import { toast } from 'react-hot-toast';
 import { loadHtml2Pdf } from '../lib/pdfLoader';
 import { shareOrSavePdfBlob } from '../lib/pdfShareHelper';
 import AIPlanningVoiceGuide from './AIPlanningVoiceGuide';
+import InformationCenter from './InformationCenter';
 
 
 interface DownloadRecord {
@@ -51,6 +52,8 @@ interface DownloadRecord {
     school?: string;
     district?: string;
     zone?: string;
+    term?: string;
+    year?: string;
   };
 }
 
@@ -74,9 +77,10 @@ function safeToDate(timestamp: any): Date | null {
 
 interface RecordOfWorkProps {
   onBack: () => void;
+  onPreviewDoc?: (content: string, params: any) => void;
 }
 
-export function RecordOfWork({ onBack }: RecordOfWorkProps) {
+export function RecordOfWork({ onBack, onPreviewDoc }: RecordOfWorkProps) {
   const { user, isWhitelisted, subscriptionDetails, downloadRecords } = useAuth();
   const [downloads, setDownloads] = useState<DownloadRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -418,9 +422,10 @@ export function RecordOfWork({ onBack }: RecordOfWorkProps) {
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
 
       const isLandscapeRecord = record.type === 'schemes_of_work' || record.type === 'weekly_forecast';
+      const isWeeklyForecastRecord = record.type === 'weekly_forecast';
 
       const opt = {
-        margin: [10, 4, 10, 4] as [number, number, number, number],
+        margin: (isWeeklyForecastRecord ? [2, 3, 2, 3] : (isLandscapeRecord ? [4, 4, 4, 4] : [10, 4, 10, 4])) as [number, number, number, number],
         filename: fileName,
         image: { type: 'jpeg' as const, quality: 0.95 },
         html2canvas: { 
@@ -447,7 +452,7 @@ export function RecordOfWork({ onBack }: RecordOfWorkProps) {
           orientation: isLandscapeRecord ? 'landscape' : 'portrait',
           compress: true 
         },
-        pagebreak: { mode: ['css', 'legacy'], avoid: ['tr', '.page-break-avoid'] }
+        pagebreak: isWeeklyForecastRecord ? { mode: 'avoid-all' } : { mode: ['css', 'legacy'], avoid: ['tr', '.page-break-avoid'] }
       };
 
       // Use a pre-rendered hidden div instead for markdown accuracy
@@ -533,8 +538,8 @@ export function RecordOfWork({ onBack }: RecordOfWorkProps) {
   });
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4 animate-in fade-in duration-700 relative">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+    <div className="w-full max-w-7xl mx-auto py-4 sm:py-8 px-2 sm:px-4 md:px-6 animate-in fade-in duration-700 relative">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 mb-6 sm:mb-12">
         <div className="flex items-center gap-6">
           <button
             onClick={onBack}
@@ -581,11 +586,11 @@ export function RecordOfWork({ onBack }: RecordOfWorkProps) {
         )}
       </div>
 
-      {/* AI Voice Playback & Planning Guide */}
-      <AIPlanningVoiceGuide 
+      {/* Information Center Fixed on top of General Information Block */}
+      <InformationCenter 
         toolType="records_of_work" 
         toolTitle="Record of Work & Recent Documents"
-        className="mb-8 animate-in fade-in duration-300"
+        className="mb-8"
       />
 
       {/* Tabs */}
@@ -662,20 +667,41 @@ export function RecordOfWork({ onBack }: RecordOfWorkProps) {
                       transition={{ delay: (groupIndex * 0.1) + (index * 0.05) }}
                       className="group bg-white border-2 border-slate-900 rounded-[2rem] p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6 hover:shadow-xl hover:-translate-y-1 transition-all"
                     >
-                      <div className="flex items-center gap-5">
-                        <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center shrink-0">
+                      <div 
+                        onClick={() => {
+                          if (onPreviewDoc && record.content) {
+                            onPreviewDoc(record.content, {
+                              docId: record.id,
+                              type: record.type,
+                              subject: record.subject,
+                              grade: record.grade,
+                              topic: record.topic || record.title || '',
+                              subtopic: record.subtopic || '',
+                              school: record.metadata?.school || '',
+                              teacherName: record.metadata?.teacherName || '',
+                              district: record.metadata?.district || '',
+                              zone: record.metadata?.zone || '',
+                              term: record.metadata?.term || '',
+                              year: record.metadata?.year || '',
+                            });
+                          }
+                        }}
+                        className="flex items-center gap-5 cursor-pointer hover:opacity-80 transition-all flex-1 min-w-0"
+                        title="Click to view visual preview & full rich-text editor"
+                      >
+                        <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                           <BookOpen size={28} />
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-black uppercase tracking-widest bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">
+                            <span className="text-xs font-black uppercase tracking-widest bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full">
                               {record.type.replace('_', ' ')}
                             </span>
                             <span className="text-xs font-black uppercase tracking-widest text-slate-400">
                               {record.grade}
                             </span>
                           </div>
-                          <h4 className="text-lg font-black text-slate-900 truncate leading-tight uppercase">
+                          <h4 className="text-base sm:text-lg font-black text-slate-900 truncate leading-tight uppercase group-hover:text-blue-600 transition-colors">
                             {record.title}
                           </h4>
                           <p className="text-sm font-bold text-slate-500 mt-0.5 italic">
@@ -703,9 +729,28 @@ export function RecordOfWork({ onBack }: RecordOfWorkProps) {
 
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => handleOpenEdit(record)}
-                            className="p-4 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all active:scale-95"
-                            title="Edit details"
+                            onClick={() => {
+                              if (onPreviewDoc && record.content) {
+                                onPreviewDoc(record.content, {
+                                  docId: record.id,
+                                  type: record.type,
+                                  subject: record.subject,
+                                  grade: record.grade,
+                                  topic: record.topic || record.title || '',
+                                  subtopic: record.subtopic || '',
+                                  school: record.metadata?.school || '',
+                                  teacherName: record.metadata?.teacherName || '',
+                                  district: record.metadata?.district || '',
+                                  zone: record.metadata?.zone || '',
+                                  term: record.metadata?.term || '',
+                                  year: record.metadata?.year || '',
+                                });
+                              } else {
+                                handleOpenEdit(record);
+                              }
+                            }}
+                            className="p-4 text-blue-600 hover:bg-blue-50 rounded-2xl transition-all active:scale-95"
+                            title="Open Visual Preview & Full Editor"
                           >
                             <Edit2 size={20} />
                           </button>
@@ -862,14 +907,17 @@ export function RecordOfWork({ onBack }: RecordOfWorkProps) {
 }
 
 function HiddenPDFPreview({ record }: { record: DownloadRecord }) {
+  const isLandscape = record.type === 'schemes_of_work' || record.type === 'weekly_forecast';
+  const isWeeklyForecast = record.type === 'weekly_forecast';
   return (
     <div 
       id={`preview-${record.id}`} 
       className={cn(
-        "fixed -left-[9999px] top-0 bg-white p-12",
+        "absolute opacity-0 pointer-events-none -z-50 bg-white overflow-hidden",
+        isWeeklyForecast ? "p-3" : "p-12",
         `doc-type-${record.type}`
       )}
-      style={{ width: '297mm', color: '#000', backgroundColor: '#fff' }} 
+      style={{ width: isLandscape ? '297mm' : '210mm', color: '#000', backgroundColor: '#fff', top: 0, left: 0 }} 
     >
       <div className="markdown-content-archive text-left">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{record.content}</ReactMarkdown>

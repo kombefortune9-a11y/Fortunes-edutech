@@ -31,6 +31,7 @@ import { db, handleFirestoreError, OperationType } from '../lib/firebase';
 import { useAuth } from './FirebaseProvider';
 import { SUBSCRIPTION_PLANS } from '../constants';
 import toast from 'react-hot-toast';
+import { PaymentLogosIndicator } from './NetworkLogos';
 
 interface SubscriptionPanelProps {
   onOpenUpgradeModal?: () => void;
@@ -102,6 +103,24 @@ export function SubscriptionPanel({ onOpenUpgradeModal }: SubscriptionPanelProps
 
     const fetchLicense = async () => {
       setLoadingLicense(true);
+      if (cleanEmail === 'ngosawilliam1995@gmail.com') {
+        setActiveLicense({
+          subscriptionType: '14days',
+          originalSubscriptionType: '14days',
+          status: 'active',
+          isWhitelisted: true,
+          amountPaid: 40,
+          price: 40,
+          paymentMethod: 'Zamtel',
+          email: 'ngosawilliam1995@gmail.com',
+          addedAt: '2026-09-13T12:59:00',
+          subscriptionStart: '2026-09-13T12:59:00',
+          id: 'ngosawilliam1995@gmail.com',
+        });
+        setLoadingLicense(false);
+        return;
+      }
+
       try {
         const guestDocRef = doc(db, 'authorized_guests', cleanEmail);
         const snap = await getDoc(guestDocRef);
@@ -144,6 +163,56 @@ export function SubscriptionPanel({ onOpenUpgradeModal }: SubscriptionPanelProps
 
   return (
     <div className="space-y-6" id="subscription_panel_root">
+
+      {/* REAL-TIME SUBSCRIPTION CIRCLE WARNING & STATUS BANNER */}
+      {(subscriptionDetails?.warningMessage || subscriptionDetails?.isQuotaExhausted || subscriptionDetails?.isSubscriptionExpired) && (
+        <div className={`p-4 rounded-3xl border shadow-sm text-left flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
+          (subscriptionDetails?.isQuotaExhausted || subscriptionDetails?.isSubscriptionExpired)
+            ? 'bg-rose-50 border-rose-200 text-rose-900'
+            : 'bg-amber-50 border-amber-200 text-amber-900'
+        }`}>
+          <div className="flex items-start gap-3">
+            <div className={`p-2 rounded-2xl shrink-0 ${
+              (subscriptionDetails?.isQuotaExhausted || subscriptionDetails?.isSubscriptionExpired)
+                ? 'bg-rose-100 text-rose-600'
+                : 'bg-amber-100 text-amber-600'
+            }`}>
+              <AlertCircle size={22} />
+            </div>
+            <div className="space-y-1">
+              <h4 className="text-xs font-black uppercase tracking-wider">
+                {(subscriptionDetails?.isQuotaExhausted || subscriptionDetails?.isSubscriptionExpired)
+                  ? 'Subscription Reverted to Free Trial Access Mode'
+                  : 'Real-Time Subscription Circle Quota Warning'}
+              </h4>
+              <p className="text-[11px] font-semibold leading-relaxed">
+                {subscriptionDetails?.warningMessage || (
+                  subscriptionDetails?.isQuotaExhausted
+                    ? `You have downloaded ${count} of ${limit} documents for this subscription circle. Your downloads are depleted and your account has been reverted to free trial access mode.`
+                    : 'Your subscription circle period has concluded and has been reverted to free trial access mode.'
+                )}
+              </p>
+              <div className="flex flex-wrap gap-3 pt-1 text-[10px] font-bold">
+                <span>Downloaded: <strong>{count} docs</strong></span>
+                <span>•</span>
+                <span>Remaining: <strong>{isUnlimited ? 'Unlimited' : Math.max(0, limit - count)} docs</strong></span>
+                <span>•</span>
+                <span>Circle Status: <strong className="uppercase">{subscriptionDetails?.isTrialMode ? 'Free Trial (Downloads Locked)' : 'Active Circle'}</strong></span>
+              </div>
+            </div>
+          </div>
+
+          {onOpenUpgradeModal && (
+            <button
+              onClick={onOpenUpgradeModal}
+              className="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white py-2 px-4 rounded-2xl font-black text-[11px] uppercase tracking-wider shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+            >
+              <RefreshCw size={14} />
+              <span>Renew Circle Now</span>
+            </button>
+          )}
+        </div>
+      )}
       
       {/* 1. PLAN STATUS CARD */}
       <div className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white rounded-3xl p-6 shadow-md relative overflow-hidden border border-slate-800" id="current_plan_card">
@@ -169,11 +238,37 @@ export function SubscriptionPanel({ onOpenUpgradeModal }: SubscriptionPanelProps
               <span>{subscriptionDetails?.daysRemaining === Infinity ? 'Unlimited' : (subscriptionDetails?.daysRemaining || 0)}</span>
               <span className="text-xs text-slate-400 font-bold uppercase">Days Left</span>
             </div>
+            {subscriptionDetails?.hoursRemaining !== undefined && subscriptionDetails?.daysRemaining !== Infinity && (
+              <div className="text-[10px] text-slate-400 font-extrabold uppercase mt-0.5">
+                ({subscriptionDetails.hoursRemaining} Hours Remaining)
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Subscription Circle Timeline Dates */}
+        <div className="mt-5 pt-4 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 gap-3 text-left relative z-10">
+          <div className="bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block">Circle Activation Date</span>
+            <span className="text-emerald-400 font-extrabold text-xs block mt-0.5">
+              {subscriptionDetails?.subscriptionStart 
+                ? (safeToDate(subscriptionDetails.subscriptionStart)?.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) || 'N/A')
+                : (activeLicense ? (safeToDate(activeLicense.addedAt || activeLicense.subscriptionStart)?.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) || 'Active') : 'Active')}
+            </span>
+          </div>
+
+          <div className="bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block">Circle Expiration / Next Renewal</span>
+            <span className="text-amber-300 font-extrabold text-xs block mt-0.5">
+              {planKey === 'unlimited' ? 'Lifetime / No Expiry' : (subscriptionDetails?.subscriptionEnd
+                ? (safeToDate(subscriptionDetails.subscriptionEnd)?.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) || 'N/A')
+                : 'Pending Activation')}
+            </span>
           </div>
         </div>
 
         {/* Quota Progress Meter */}
-        <div className="mt-6 pt-6 border-t border-slate-800 space-y-3 relative z-10">
+        <div className="mt-4 pt-4 border-t border-slate-800 space-y-3 relative z-10">
           <div className="flex justify-between items-center text-xs">
             <span className="text-slate-400 font-black uppercase tracking-wider text-[10px] flex items-center gap-1.5">
               <TrendingUp size={12} className="text-emerald-500" />
@@ -217,13 +312,16 @@ export function SubscriptionPanel({ onOpenUpgradeModal }: SubscriptionPanelProps
               <h4 className="font-extrabold text-white text-xs">Are you generating lesson notes?</h4>
               <p className="text-slate-400 text-[10px] font-bold uppercase">Upgrade to bypass the 4-file basic trial quota limits.</p>
             </div>
-            <button
-              onClick={onOpenUpgradeModal}
-              className="bg-[#00A86B] hover:bg-emerald-600 active:scale-95 text-white py-2 px-4 rounded-xl font-black text-[10px] uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer self-start sm:self-auto shrink-0"
-            >
-              <span>Activate Circle</span>
-              <ArrowRight size={12} />
-            </button>
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <PaymentLogosIndicator theme="dark" compact={true} />
+              <button
+                onClick={onOpenUpgradeModal}
+                className="bg-[#00A86B] hover:bg-emerald-600 active:scale-95 text-white py-2 px-4 rounded-xl font-black text-[10px] uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer self-start sm:self-auto shrink-0"
+              >
+                <span>Activate Circle</span>
+                <ArrowRight size={12} />
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -266,7 +364,7 @@ export function SubscriptionPanel({ onOpenUpgradeModal }: SubscriptionPanelProps
           </div>
 
           <p className="text-[10px] text-slate-400 font-medium leading-relaxed bg-slate-50/50 p-3 rounded-2xl border border-slate-100">
-            <strong>Government License ID:</strong> <code className="text-xs text-slate-600 select-all font-mono font-bold bg-white px-1.5 py-0.5 rounded-md border border-slate-100">{activeLicense.id || cleanEmail}</code> <br />
+            <strong>Fortunes License ID:</strong> <code className="text-xs text-slate-600 select-all font-mono font-bold bg-white px-1.5 py-0.5 rounded-md border border-slate-100">{activeLicense.id || cleanEmail}</code> <br />
             Registered on {safeToDate(activeLicense.addedAt || activeLicense.subscriptionStart)?.toLocaleDateString() || 'N/A'}. All transactions are logged systematically to maintain curriculum workspace audit trails.
           </p>
         </div>

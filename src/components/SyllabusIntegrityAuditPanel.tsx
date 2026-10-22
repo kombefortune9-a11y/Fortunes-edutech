@@ -415,11 +415,11 @@ ${getActivitiesForSubtopic(item.topicTitle, item.subtopicTitle, undefined, item.
             className={cn(
               "flex items-center gap-2 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer select-none",
               mainModuleTab === 'library'
-                ? "bg-slate-900 text-white shadow-sm"
-                : "text-slate-600 hover:text-slate-900 hover:bg-white"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 border border-blue-500"
+                : "text-slate-600 hover:text-blue-900 hover:bg-blue-50"
             )}
           >
-            <BookOpen size={16} className={mainModuleTab === 'library' ? 'text-emerald-400' : 'text-slate-500'} />
+            <BookOpen size={16} className={mainModuleTab === 'library' ? 'text-white' : 'text-blue-600'} />
             <span>Syllabus Library</span>
           </button>
         </div>
@@ -430,25 +430,26 @@ ${getActivitiesForSubtopic(item.topicTitle, item.subtopicTitle, undefined, item.
       ) : (
         <>
           {/* Audit Action Bar */}
-          <div className="flex items-center justify-end gap-2 shrink-0 flex-wrap">
-            <button
-              onClick={handleUniversalSync}
-              className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl font-black text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-600/20 active:scale-95 cursor-pointer border border-emerald-400/30"
-              title="Purge generic placeholders across all subjects and grades globally"
-            >
-              <Zap size={16} className="text-yellow-300 animate-pulse" />
-              <span>Universal Sync & Purge Errors</span>
-            </button>
-
-            {isUniversallySynced && (
+          <div className="flex items-center justify-between gap-2 shrink-0 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap">
+              {isUniversallySynced && (
+                <button
+                  onClick={() => setShowUniversalReportModal(true)}
+                  className="flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 rounded-2xl font-black text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer border border-emerald-500/30"
+                >
+                  <ShieldCheck size={16} />
+                  <span>Universal Report</span>
+                </button>
+              )}
               <button
-                onClick={() => setShowUniversalReportModal(true)}
-                className="flex items-center gap-2 px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 rounded-2xl font-bold text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer border border-emerald-500/30"
+                onClick={handleUniversalSync}
+                className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white rounded-2xl font-black text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-600/20 active:scale-95 cursor-pointer border border-emerald-400/30"
+                title="Purge generic placeholders across all subjects and grades globally"
               >
-                <ShieldCheck size={16} />
-                <span>Universal Report</span>
+                <Zap size={16} className="text-yellow-300 animate-pulse" />
+                <span>Universal Sync & Purge Errors</span>
               </button>
-            )}
+            </div>
 
             <button
               onClick={handleCopyReport}

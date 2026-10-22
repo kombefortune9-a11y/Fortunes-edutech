@@ -75,21 +75,27 @@ function UserDownloadRow({ user }: { user: UserProfile }) {
   const isDev = isDeveloperEmail(cleanUserEmail);
   const amtPaid = (user as any).amountPaid !== undefined ? Number((user as any).amountPaid) : 0;
   let rawSub = user.subscriptionType;
-  if (amtPaid >= 1500) rawSub = 'unlimited';
-  else if (amtPaid >= 250) rawSub = 'termly';
-  else if (!rawSub || rawSub === 'guest_trial') {
-    if (amtPaid >= 90) rawSub = 'monthly';
+  if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PLANS)) {
+    if (amtPaid >= 800) rawSub = 'termly';
+    else if (amtPaid >= 200) rawSub = 'termly_individual';
+    else if (amtPaid >= 90) rawSub = 'monthly';
     else if (amtPaid >= 40) rawSub = '14days';
     else if (amtPaid >= 20) rawSub = 'weekly';
+    else {
+      rawSub = 'monthly';
+    }
   }
   const subType = isDev ? 'unlimited' : ((rawSub && rawSub !== 'guest_trial' && rawSub in SUBSCRIPTION_PLANS) ? rawSub : (user.isWhitelisted ? 'monthly' : 'guest_trial'));
   const subStart = useMemo(() => {
     if (isDev) return new Date(2025, 0, 1);
-    return safeToDate(user.subscriptionStart) || safeToDate(user.addedAt) || new Date();
+    const parsed = safeToDate(user.subscriptionStart) || safeToDate(user.addedAt);
+    return parsed || new Date(0);
   }, [user.subscriptionStart, user.addedAt, isDev]);
 
   const subDetails = useMemo(() => {
-    const plan = SUBSCRIPTION_PLANS[subType] || SUBSCRIPTION_PLANS.monthly;
+    const plan = (isDev || subType === 'unlimited')
+      ? { limit: 999999, durationDays: 3650, label: 'Developer Master Key (Unlimited)', colorClass: 'text-indigo-700 bg-indigo-50 border-indigo-100' }
+      : (SUBSCRIPTION_PLANS[subType] || SUBSCRIPTION_PLANS.monthly);
 
     const subEnd = plan.durationDays === Infinity 
       ? null 
@@ -119,11 +125,13 @@ function UserDownloadRow({ user }: { user: UserProfile }) {
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const list: any[] = [];
+      const countedTypes = ['lesson_plan', 'schemes_of_work', 'weekly_forecast', 'lesson_notes', 'catch_up', 'individual_work_plan', 'assessments'];
       snapshot.forEach((doc) => {
         const data = doc.data();
         const timestamp = safeToDate(data.timestamp);
-        // Only count downloads within the current subscription circle
-        if (timestamp && timestamp.getTime() >= subStart.getTime()) {
+        const type = data.type || '';
+        // Only count downloads within the current subscription circle and of matching document types
+        if (timestamp && timestamp.getTime() >= subStart.getTime() && countedTypes.includes(type)) {
           list.push({ id: doc.id, ...data });
         }
       });
@@ -154,8 +162,9 @@ function UserDownloadRow({ user }: { user: UserProfile }) {
           const mainCached = safeLocalStorage.getItem(`eduplan_downloads_cache_${user.uid}`);
           if (mainCached) {
             const parsed = JSON.parse(mainCached);
+            const countedTypes = ['lesson_plan', 'schemes_of_work', 'weekly_forecast', 'lesson_notes', 'catch_up', 'individual_work_plan', 'assessments'];
             const list = parsed.map((d: any) => ({ ...d, timestamp: safeToDate(d.timestamp) }))
-                               .filter((d: any) => d.timestamp && d.timestamp.getTime() >= subStart.getTime());
+                               .filter((d: any) => d.timestamp && d.timestamp.getTime() >= subStart.getTime() && countedTypes.includes(d.type || ''));
             setDownloads(list);
           }
         }
@@ -203,11 +212,11 @@ function UserDownloadRow({ user }: { user: UserProfile }) {
     const diff = subDetails.subEnd.getTime() - Date.now();
     if (diff <= 0) return 'Expired';
 
-    const days = Math.floor(diff / (24 * 60 * 60 * 1000));
+    const days = Math.ceil(diff / (24 * 60 * 60 * 1000));
     const hours = Math.floor((diff % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
     
-    if (days > 0) return `${days}d ${hours}h left`;
-    return `${hours}h left`;
+    if (days > 0) return `${days} Days Left`;
+    return `${hours} Hours Left`;
   }, [subDetails.subEnd, isDev]);
 
   return (

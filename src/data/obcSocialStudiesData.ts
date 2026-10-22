@@ -3,154 +3,210 @@ import { Topic } from './syllabi';
 export const obcSocialStudiesGrade3: Topic[] = [
   {
     title: "3.1 DIRECTION AND LOCATION",
+    generalCompetency: "GENERAL OUTCOMES: Develop an Understanding of Political, Social, Economic, Cultural, Environmental and Civic Issues; Develop an Understanding of Spiritual, Cultural and Moral Values. KEY COMPETENCES: Demonstrate ability to locate places on a map; Demonstrate tolerance.",
     subtopics: [
       {
         title: "3.1.1 Location on a Map",
         competencies: [
-          "Specific Outcome: 3.1.1.1 Identify the location of school, home and nearby places on the map | Expected Standard: Correctly identify and point out school, home, and main nearby landmarks on a map | [Knowledge]: Location of places: school, home, clinic, market, church, shops | [Skills]: Ability to locate places on a map, spatial identification | [Values]: Security consciousness, spatial awareness"
+          "Specific Outcome: 3.1.1.1 Identify the location of home, school and nearby places on a map | Knowledge: Location of places | Skills: Identification of places on a map | Values: Appreciation of places in the local environment; Awareness of map directions"
         ],
+        knowledge: "Location of places.",
+        skills: "Identification of places on a map.",
+        values: "Appreciation of places in the local environment; Awareness of map directions.",
         learningActivities: [
-          "Locating and pointing out school, home and nearby places on a simple layout map or drawing",
-          "Drawing sketch layouts of school and neighboring landmarks with simple identifiers"
-        ]
+          "Identifying and pointing out the location of home, school, clinic, market, and nearby places on a simple map",
+          "Drawing a simple sketch map of the route from home to school"
+        ],
+        expectedStandard: "Location of home, school and nearby places identified on a map."
       }
     ]
   },
   {
     title: "3.2 GOVERNANCE",
+    generalCompetency: "GENERAL OUTCOMES: Develop an Understanding of Political, Social, Economic, Cultural, Environmental and Civic Issues; Develop an Understanding of Spiritual, Cultural and Moral Values. KEY COMPETENCES: Demonstrate ability to locate places on a map; Demonstrate tolerance.",
     subtopics: [
       {
         title: "3.2.1 The National Anthem",
         competencies: [
-          "Specific Outcome: 3.2.1.1 Sing the Zambian National Anthem | Expected Standard: Sing the Zambian National Anthem in English clearly and respectfully with proper posture | [Knowledge]: Zambian National Anthem lyrics in English, appropriate standing posture | [Skills]: Vocal pacing, correct standing posture execution | [Values]: National pride, patriotism, respect for national symbols"
+          "Specific Outcome: 3.2.1.1 Sing the Zambian National Anthem in English | Knowledge: Zambian National Anthem in English | Skills: Singing the Zambian National Anthem in English; Vocal expression and correct standing posture | Values: Sense of Patriotism"
         ],
+        knowledge: "Zambian National Anthem in English.",
+        skills: "Singing the Zambian National Anthem in English; Vocal expression and correct standing posture.",
+        values: "Sense of Patriotism.",
         learningActivities: [
-          "Singing the Zambian National Anthem in English together during class assemblies",
-          "Discussing the significado and civic importance of national symbols like the anthem"
-        ]
+          "Singing the Zambian National Anthem in English with proper posture and respect",
+          "Reciting and discussing the patriotic words of the Zambian National Anthem"
+        ],
+        expectedStandard: "Zambian National Anthem sung in English with a strong sense of patriotism."
       }
     ]
   },
   {
     title: "3.3 LEARNING ABOUT MONEY",
+    generalCompetency: "GENERAL OUTCOMES: Develop an Understanding of Political, Social, Economic, Cultural, Environmental and Civic Issues; Develop an Understanding of Spiritual, Cultural and Moral Values. KEY COMPETENCES: Demonstrate ability to locate places on a map; Demonstrate tolerance.",
     subtopics: [
       {
-        title: "3.3.1 Sources of money",
+        title: "3.3.1 Keeping track of money",
         competencies: [
-          "Specific Outcome: 3.3.1.1 Describe a simple budget | Expected Standard: Detail the basic columns of a small budget including incoming earnings and outgoing costs | [Knowledge]: Simple budget structure, income and expenditure basics | [Skills]: Draw up a simple budget | [Values]: Appreciate why budgets are used, economic prudence",
-          "Specific Outcome: 3.3.1.2 Identify lots of priorities for different people | Expected Standard: Classify items on purchase lists according to physiological and secondary needs | [Knowledge]: Prioritizing typical purchases, what people 'want' (toys, games, sweets) vs what they 'need' (food, clothes, shelter) | [Skills]: Show how you prioritised your spending | [Values]: Appreciate that different people have different priorities, empathy",
-          "Specific Outcome: 3.3.1.3 Explain the importance of money for children and adults | Expected Standard: State key reasons why keeping regular savings yields future security | [Knowledge]: Purpose of savings, storing money for future necessities | [Skills]: Mention the importance for saving for the future | [Values]: Appreciate why saving makes sense, self-discipline",
-          "Specific Outcome: 3.3.1.4 Describe how money can be used in different circumstances | Expected Standard: Explain typical human emotional states related to financial circumstances | [Knowledge]: Feelings linked to having, wanting, earning, or losing money, values of integrity over greed | [Skills]: Explain the importance about money | [Values]: Recognise that different people have different feelings about money"
+          "Specific Outcome: 3.3.1.1 Describe a simple budget | Knowledge: Income and Expenditure | Skills: Draw up a simple budget using pocket money | Values: Appreciate why people plan to use their money",
+          "Specific Outcome: 3.3.1.2 Identify lists of priorities for different people | Knowledge: Items people 'need' - food, water and shelter and 'want' - toys, games and sweets in life | Skills: Create prioritised lists for different people | Values: Appreciate that different people have different priorities",
+          "Specific Outcome: 3.3.1.3 Explain the importance of saving money for children and adults | Knowledge: Saving up for things you need or want in the future | Skills: Make priorities for spending and saving | Values: Appreciate why saving makes sense",
+          "Specific Outcome: 3.3.1.4 Describe how money can make one feel in different circumstances | Knowledge: Having money, losing money, stolen, wanting things you cannot afford | Skills: Explain the way you feel about money | Values: Recognise that different people have different feelings about money"
         ],
+        knowledge: "Income and Expenditure; Items people 'need' - food, water and shelter and 'want' - toys, games and sweets in life; Saving up for things you need or want in the future; Having money, losing money, stolen, wanting things you cannot afford.",
+        skills: "Draw up a simple budget using pocket money; Create prioritised lists for different people; Make priorities for spending and saving; Explain the way you feel about money.",
+        values: "Appreciate why people plan to use their money; Appreciate that different people have different priorities; Appreciate why saving makes sense; Recognise that different people have different feelings about money.",
         learningActivities: [
-          "Drawing up mock budget tables with chore income and school buying limits",
-          "Arranging pictures of food, toys, shoes, and sweets under 'Needs' or 'Wants' baskets",
-          "Discussing how storing small sums weekly in piggy banks helps buy high-value books later"
-        ]
+          "Drawing up a simple budget using pocket money",
+          "Creating prioritised lists for different people distinguishing needs from wants",
+          "Discussing why saving up for things in the future makes sense for children and adults",
+          "Explaining and role-playing feelings about money in different circumstances (having money, losing money, stolen, wanting things you cannot afford)"
+        ],
+        expectedStandard: "Simple budget described, priorities classified, importance of saving explained, and feelings about money recognized."
       }
     ]
   },
   {
     title: "3.4 RELIGION",
+    generalCompetency: "GENERAL OUTCOMES: Develop an Understanding of Political, Social, Economic, Cultural, Environmental and Civic Issues; Develop an Understanding of Spiritual, Cultural and Moral Values. KEY COMPETENCES: Demonstrate ability to locate places on a map; Demonstrate tolerance.",
     subtopics: [
       {
         title: "3.4.1 Different Religions and Places of Worship",
         competencies: [
-          "Specific Outcome: 3.4.1.1 Name different religious celebrations in the locality | Expected Standard: Enumerate sacred celebrations of major faiths inside the local area | [Knowledge]: Religion in Zambia: Traditional Religion, Christianity, Islam, Hinduism, and local festivals | [Skills]: Identification of religions in the locality | [Values]: Awareness of religions in the locality, religious tolerance",
-          "Specific Outcome: 3.4.1.2 Mention places where religion is worshipped | Expected Standard: Name and identify specific places of worship correctly | [Knowledge]: Places of worship: churches, mosques, temples, shrines | [Skills]: Relate different religions and places of worship | [Values]: Appreciation of other people's religion, mutual respect"
+          "Specific Outcome: 3.4.1.1 Name different religions in Zambia | Knowledge: Religions in Zambia: Traditional religion, Christianity, Islam, Hinduism | Skills: Identification of different religions and places of worship | Values: Awareness of different religions in Zambia; Appreciation of other people's religion",
+          "Specific Outcome: 3.4.1.2 Mention places where members of different religions worship | Knowledge: Places of worship: shrines, churches, mosques, temples | Skills: Identification of different religions and places of worship | Values: Awareness of different religions in Zambia; Appreciation of other people's religion"
         ],
+        knowledge: "Religions in Zambia: Traditional religion, Christianity, Islam, Hinduism; Places of worship: shrines, churches, mosques, temples.",
+        skills: "Identification of different religions and places of worship.",
+        values: "Awareness of different religions in Zambia; Appreciation of other people's religion.",
         learningActivities: [
-          "Listing places of worship within the immediate community",
-          "Drawing or coloring different structures of worship like a church, temple, or mosque"
-        ]
+          "Naming different religions in Zambia (Traditional religion, Christianity, Islam, Hinduism)",
+          "Mentioning and identifying places where members of different religions worship (shrines, churches, mosques, temples)",
+          "Practicing tolerance, appreciation, and respect for other people's beliefs and worship"
+        ],
+        expectedStandard: "Different religions in Zambia and places of worship identified and appreciated with mutual respect."
       }
     ]
   },
   {
     title: "3.5 CHRISTIAN LIVING",
+    generalCompetency: "GENERAL OUTCOMES: Develop an Understanding of Political, Social, Economic, Cultural, Environmental and Civic Issues; Develop an Understanding of Spiritual, Cultural and Moral Values. KEY COMPETENCES: Demonstrate ability to locate places on a map; Demonstrate tolerance.",
     subtopics: [
       {
-        title: "3.5.1 Offences and Forgiveness",
+        title: "3.5.1 Division and Forgiveness",
         competencies: [
-          "Specific Outcome: 3.5.1.1 Identify common offences among people | Expected Standard: Define actions that cause personal division or hurt relationships | [Knowledge]: Causes of division: stealing, theft, greed, malice, insults, using abusive language, backbiting, hatred | [Skills]: Identification of causes of offences | [Values]: Responsibility of offenders, compassion, respect",
-          "Specific Outcome: 3.5.1.2 Name different ways of showing remorse | Expected Standard: Demonstrate proper ways of apologizing and expressing regret | [Knowledge]: Apology gestures, saying sorry, kneeling, remorse expressions, not crying | [Skills]: Identification of ways of showing remorse | [Values]: Humility, active remorsefulness, reconciliation",
-          "Specific Outcome: 3.5.1.3 State different ways of showing forgiveness | Expected Standard: Enact restorative steps that bring peace and reconciliation | [Knowledge]: Forgiveness actions, fostering peace, love, happiness, joy in restoring relationships | [Skills]: Practising conflict resolution | [Values]: Appreciation of importance of forgiveness, harmony, healing"
+          "Specific Outcome: 3.5.1.1 Identify causes of division among people | Knowledge: Nepotism, favouritism, theft, greedy, unfairness, jealousy | Skills: Identification of causes of division | Values: Appreciation of values of Patience, Responsibility, Tolerance, Reconciliation, Cooperation, Respect, Remorsefulness",
+          "Specific Outcome: 3.5.1.2 Mention effects of division | Knowledge: Conflict, underdevelopment, hatred | Skills: Identification of causes of division and ways of showing remorse | Values: Appreciation of values of Patience, Responsibility, Tolerance, Reconciliation, Cooperation, Respect, Remorsefulness",
+          "Specific Outcome: 3.5.1.3 State different ways of showing remorse | Knowledge: Saying sorry, looking sad, crying | Skills: Identification of ways of showing remorse | Values: Remorsefulness, Reconciliation, Respect",
+          "Specific Outcome: 3.5.1.4 Describe the importance of forgiveness | Knowledge: Unity, peace, love, happiness, good health | Skills: Identification of ways of showing remorse; Communicating values of reconciliation | Values: Appreciation of values of Patience, Responsibility, Tolerance, Reconciliation, Cooperation, Respect, Remorsefulness"
         ],
+        knowledge: "Nepotism, favouritism, theft, greedy, unfairness, jealousy; Conflict, underdevelopment, hatred; Saying sorry, looking sad, crying; Unity, peace, love, happiness, good health.",
+        skills: "Identification of causes of division and ways of showing remorse.",
+        values: "Appreciation of values of: Patience, Responsibility, Tolerance, Reconciliation, Cooperation, Respect, Remorsefulness.",
         learningActivities: [
-          "Role-playing interpersonal offences, apologizing, and welcoming reconciliation",
-          "Discussing the negative consequences of backbiting and benefits of forgiving school peers"
-        ]
+          "Identifying causes of division among people (nepotism, favoritism, theft, greed, unfairness, jealousy)",
+          "Mentioning the harmful effects of division such as conflict, underdevelopment, and hatred",
+          "Demonstrating different ways of showing remorse including saying sorry, looking sad, and expressing regret",
+          "Describing the vital importance of forgiveness for unity, peace, love, happiness, and good health"
+        ],
+        expectedStandard: "Causes and effects of division identified, remorse shown, and importance of forgiveness appreciated."
       }
     ]
   },
   {
     title: "3.6 FESTIVALS",
+    generalCompetency: "GENERAL OUTCOMES: Develop an Understanding of Political, Social, Economic, Cultural, Environmental and Civic Issues; Develop an Understanding of Spiritual, Cultural and Moral Values. KEY COMPETENCES: Demonstrate ability to locate places on a map; Demonstrate tolerance.",
     subtopics: [
       {
         title: "3.6.1 Cultural Celebrations and Festivals",
         competencies: [
-          "Specific Outcome: 3.6.1.1 Mention occasions celebrated as local festivals | Expected Standard: Name regular life-cycle events widely celebrated in communities | [Knowledge]: Local occasions: birth of a child, initiation ceremonies, marriages | [Skills]: Identification and classification of festivals, cultural categorization | [Values]: Awareness of local festivals, preservation of positive heritages",
-          "Specific Outcome: 3.6.1.2 Explain the importance of religious festivals | Expected Standard: State safety and community benefits derived from festivals | [Knowledge]: Purpose of festivals: identity, unity, happiness, sharing of resources | [Skills]: Explanatory description | [Values]: Social appreciation, cultural cohesion"
+          "Specific Outcome: 3.6.1.1 Mention occasions celebrated by local communities | Knowledge: Birth of a child, initiation ceremonies, installation of leaders, marriage | Skills: Identification of cultural celebrations | Values: Awareness of cultural celebrations/festivals",
+          "Specific Outcome: 3.6.1.2 Explain the importance of celebrations/festivals | Knowledge: Identity, unity, happiness | Skills: Identification of cultural celebrations | Values: Awareness of cultural celebrations/festivals"
         ],
+        knowledge: "Birth of a child, initiation ceremonies, installation of leaders, marriage; Identity, unity, happiness.",
+        skills: "Identification of cultural celebrations.",
+        values: "Awareness of cultural celebrations/festivals.",
         learningActivities: [
-          "Describing how naming or marriage transitions are celebrated locally",
-          "Discussing how local celebrations build community ties and preserve histories"
-        ]
+          "Mentioning occasions celebrated by local communities (birth of a child, initiation ceremonies, installation of leaders, marriage)",
+          "Explaining the importance of celebrations and festivals in promoting identity, unity, and happiness"
+        ],
+        expectedStandard: "Occasions celebrated by local communities mentioned and importance of celebrations explained."
       },
       {
         title: "3.6.2 Religious Celebrations and Festivals",
         competencies: [
-          "Specific Outcome: 3.6.2.1 Identify religious festivals | Expected Standard: Enumerate sacred global and local religious holidays | [Knowledge]: Sacred holidays: Christmas, Good Friday, Easter, Ramadan | [Skills]: Categorization of celebrations | [Values]: Deep appreciation of religious festivals and celebrations",
-          "Specific Outcome: 3.6.2.2 Mention the significance of religious festivals | Expected Standard: Detail the theological and moral messages of major celebrations | [Knowledge]: Meaning: identification with God, community brotherhood, charitable reflections | [Skills]: Analysis of sacred lineages | [Values]: Spiritual respect, tolerance"
+          "Specific Outcome: 3.6.2.1 Identify religious festivals in the locality | Knowledge: Christmas, Good Friday, Easter, Ramadan | Skills: Identification of religious festivals in the locality | Values: Appreciation; Awareness of religious festivals and celebrations",
+          "Specific Outcome: 3.6.2.2 Mention the significance of religious festivals | Knowledge: Identification with God, thanksgiving | Skills: Identification of religious festivals and their significance | Values: Appreciation; Awareness of religious festivals and celebrations"
         ],
+        knowledge: "Christmas, Good Friday, Easter, Ramadan; Identification with God, thanksgiving.",
+        skills: "Identification of religious festivals and their significance.",
+        values: "Appreciation; Awareness of religious festivals and celebrations.",
         learningActivities: [
-          "Drawing custom cards depicting congratulations for Christmas or Eid",
-          "Writing short sentences outlining why historical religious events are commemorated globally"
-        ]
+          "Identifying major religious festivals celebrated in the locality such as Christmas, Good Friday, Easter, and Ramadan",
+          "Mentioning the significance of religious festivals in identifying with God and offering thanksgiving"
+        ],
+        expectedStandard: "Religious festivals in the locality identified and their spiritual significance appreciated."
       }
     ]
   },
   {
     title: "3.7 CEREMONIES",
+    generalCompetency: "GENERAL OUTCOMES: Develop an Understanding of Political, Social, Economic, Cultural, Environmental and Civic Issues; Develop an Understanding of Spiritual, Cultural and Moral Values. KEY COMPETENCES: Demonstrate ability to locate places on a map; Demonstrate tolerance.",
     subtopics: [
       {
         title: "3.7.1 Traditional Ceremonies",
         competencies: [
-          "Specific Outcome: 3.7.1.1 Identify traditional ceremonies | Expected Standard: Name regional traditional gatherings celebrated in Zambia | [Knowledge]: Grand traditional ceremonies (e.g. Kuomboka, Mutomboko) | [Skills]: Classification of ceremonies | [Values]: Appreciation of cultural heritage, patriotism",
-          "Specific Outcome: 3.7.1.2 State the significance of ceremonies | Expected Standard: Outline the socio-historical purposes of traditional ceremonies | [Knowledge]: Significance: cultural identity, tribal unity, collective happiness, ritual purification | [Skills]: Information mapping | [Values]: Deep appreciation of importance of ceremonies"
+          "Specific Outcome: 3.7.1.1 Describe traditional ceremonies | Knowledge: Local traditional ceremonies | Skills: Classification of traditional ceremonies | Values: Appreciation of traditional ceremonies; Awareness",
+          "Specific Outcome: 3.7.1.2 State the significance of traditional ceremonies | Knowledge: Identity, unity, happiness | Skills: Classification of traditional ceremonies | Values: Appreciation of traditional ceremonies; Awareness"
         ],
+        knowledge: "Local traditional ceremonies; Identity, unity, happiness.",
+        skills: "Classification of traditional ceremonies.",
+        values: "Appreciation of traditional ceremonies; Awareness.",
         learningActivities: [
-          "Matching pictures of traditional dancers to their respective annual festivals",
-          "Discussing how royal ceremonies connect modern Zambians with ancestral pioneers"
-        ]
+          "Describing local traditional ceremonies celebrated in Zambia and the community",
+          "Stating the significance of traditional ceremonies in strengthening cultural identity, unity, and happiness"
+        ],
+        expectedStandard: "Traditional ceremonies described and their significance for identity and unity appreciated."
       },
       {
         title: "3.7.2 Initiation Ceremonies",
         competencies: [
-          "Specific Outcome: 3.7.2.1 Identify local initiation ceremonies | Expected Standard: List custom initiation rites practiced in regional communities | [Knowledge]: Local transition practices, teaching methods, moral rules | [Skills]: Identification of initiation ceremonies | [Values]: Respect for moral and social counsel",
-          "Specific Outcome: 3.7.2.2 State initiation ceremonies in the locality | Expected Standard: Describe lessons of transition taught to youth inside local contexts | [Knowledge]: Cultural growth, identity, unity, happiness, purification of life (e.g. Luke 2:41) | [Skills]: Historical tracing | [Values]: Appreciation of transitional teachings",
-          "Specific Outcome: 3.7.2.3 Describe the relevance of traditional teachings and practices today | Expected Standard: Explain how traditional values can improve modern child morals and hygiene | [Knowledge]: Respect of parents and elders, clean habits, household responsibilities, boundary safety | [Skills]: Comparative evaluation of teachings | [Values]: Appreciation of moral values, maturity"
+          "Specific Outcome: 3.7.2.1 Describe local initiation ceremonies | Knowledge: Local initiation ceremonies | Skills: Identification of initiation ceremonies | Values: Appreciation of initiation ceremonies",
+          "Specific Outcome: 3.7.2.2 State the significance of local initiation ceremonies | Knowledge: Identity, unity, happiness | Skills: Identification of initiation ceremonies | Values: Appreciation of initiation ceremonies",
+          "Specific Outcome: 3.7.2.3 Describe the initiation of Jesus | Knowledge: Initiation of Jesus (Luke 2:41) | Skills: Identification of initiation ceremonies; Biblical referencing | Values: Appreciation of initiation ceremonies",
+          "Specific Outcome: 3.7.2.4 Describe the relevance of traditional teachings and practices today | Knowledge: Identity, unity, happiness | Skills: Identification of initiation ceremonies; Relating traditional values to modern life | Values: Appreciation of initiation ceremonies"
         ],
+        knowledge: "Local initiation ceremonies; Identity, unity, happiness; Initiation of Jesus (Luke 2:41); Identity, unity, happiness.",
+        skills: "Identification of initiation ceremonies.",
+        values: "Appreciation of initiation ceremonies.",
         learningActivities: [
-          "Reciting elder counsels or traditional stories about manners and respect",
-          "Disputing bad personal traits and highlighting positive character lessons from initiations"
-        ]
+          "Describing local initiation ceremonies and their significance for identity, unity, and happiness",
+          "Describing the initiation of Jesus at the temple (Luke 2:41-52)",
+          "Discussing the relevance and positive aspects of traditional teachings and moral practices today"
+        ],
+        expectedStandard: "Local initiation ceremonies and the initiation of Jesus described, and traditional teachings evaluated."
       }
     ]
   },
   {
     title: "3.8 TRANSPORT AND COMMUNICATION",
+    generalCompetency: "GENERAL OUTCOMES: Develop an Understanding of Political, Social, Economic, Cultural, Environmental and Civic Issues; Develop an Understanding of Spiritual, Cultural and Moral Values. KEY COMPETENCES: Demonstrate ability to locate places on a map; Demonstrate tolerance.",
     subtopics: [
       {
         title: "3.8.1 Safety Precautions",
         competencies: [
-          "Specific Outcome: 3.8.1.1 Identify safety precautions applied on vehicles | Expected Standard: Detail vital safety steps when riding or approaching transit systems | [Knowledge]: Safety precautions: using seat belts, no lean outside moving vehicles, no jumping on and off moving vehicles, using cycle helmets | [Skills]: Identification of safety precautions applied on vehicles | [Values]: Personal road safety, compliance with protective rules",
-          "Specific Outcome: 3.8.1.2 Explain risky behaviour on the road | Expected Standard: Describe hazardous walk and play actions that lead to road accidents | [Knowledge]: Risky actions: throwing objects on the road, running back to fetch lost objects, playing near tarmac/railway lines | [Skills]: Danger risk analysis | [Values]: Care on the road, road vigilance"
+          "Specific Outcome: 3.8.1.1 Identify safety precautions applied on vehicles | Knowledge: Safety precautions: using seat belts, no hanging on moving vehicles, no jumping on and off moving vehicles, using roadworthy modes of transport | Skills: Identification of safety precautions applied on vehicles | Values: Care on the road",
+          "Specific Outcome: 3.8.1.2 Explain risky behaviour on the road | Knowledge: Risky behaviour: playing on the road, running back onto the road to pick an object | Skills: Identification of safety precautions applied on vehicles; Road risk evaluation | Values: Care on the road"
         ],
+        knowledge: "Safety precautions: using seat belts, no hanging on moving vehicles, no jumping on and off moving vehicles, using roadworthy modes of transport; Risky behaviour: playing on the road, running back onto the road to pick an object.",
+        skills: "Identification of safety precautions applied on vehicles.",
+        values: "Care on the road.",
         learningActivities: [
-          "Dramatizing correct pedestrian wait behaviors before crossing roads",
-          "Designing small warning grids with labels like 'Never Play Near Railway Lines'"
-        ]
+          "Identifying safety precautions applied on vehicles: using seat belts, no hanging on moving vehicles, no jumping on and off moving vehicles, using roadworthy transport",
+          "Explaining risky behaviour on the road (playing on the road, running back onto the road to pick an object)",
+          "Practicing safe road behavior and demonstrating constant care on the road"
+        ],
+        expectedStandard: "Safety precautions applied on vehicles identified, risky road behaviour explained, and road care demonstrated."
       }
     ]
   }

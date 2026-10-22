@@ -1,8 +1,13 @@
-const CACHE_NAME = 'fortunes-edutech-v3';
+const CACHE_NAME = 'fortunes-edutech-v6';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
-  '/sw.js'
+  '/manifest.json',
+  '/favicon.ico',
+  '/logo192.png',
+  '/logo512.png',
+  '/logo-maskable.png',
+  '/apple-touch-icon.png'
 ];
 
 // Precache the core shell assets on install

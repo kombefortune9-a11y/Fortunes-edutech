@@ -171,7 +171,7 @@
       },
       "required": ["userId", "formData", "updatedAt"]
     },
-    "SubscriptionRequest": {
+    "Task": { "title": "Teacher Task", "description": "A task for the logged-in teacher", "type": "object", "properties": { "id": { "type": "string" }, "userId": { "type": "string" }, "title": { "type": "string" }, "dueDate": { "type": "string", "format": "date-time" }, "completed": { "type": "boolean" }, "type": { "type": "string", "enum": ["task", "curriculum_deadline"] }, "createdAt": { "type": "string", "format": "date-time" } }, "required": ["id", "userId", "title", "dueDate", "completed", "type", "createdAt"] }, "SubscriptionRequest": {
       "title": "Subscription Activation Request",
       "description": "Requests made by teachers submitting Mobile Money transaction proofs for portal activation",
       "type": "object",
@@ -190,10 +190,60 @@
         "rejectedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["id", "uid", "email", "subscriptionType", "amount", "status", "timestamp"]
+    },
+    "SharedMusic": {
+      "title": "Developer Shared Background Music",
+      "description": "Shared audio tracks uploaded by the developer for all platform users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "artist": { "type": "string" },
+        "addedBy": { "type": "string" },
+        "addedAt": { "type": "number" },
+        "totalChunks": { "type": "number" },
+        "audioUrl": { "type": "string" }
+      },
+      "required": ["id", "title"]
+    },
+    "SchoolCircle": {
+      "title": "Whole School Termly Circle",
+      "description": "Registered whole school subscription circle with shared unlimited termly access across authorized teachers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "schoolName": { "type": "string" },
+        "representativeName": { "type": "string" },
+        "representativeEmail": { "type": "string" },
+        "representativePhone": { "type": "string" },
+        "maxTeachers": { "type": "number" },
+        "teachers": { "type": "array" },
+        "amountPaid": { "type": "number" },
+        "paymentReference": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "subscriptionStartDate": { "type": "string", "format": "date-time" },
+        "subscriptionEndDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "schoolName", "representativeEmail", "subscriptionStartDate", "subscriptionEndDate", "status"]
     }
   },
   "firestore": {
-    "/subscription_requests/{requestId}": {
+    "/schools/{schoolId}": {
+      "schema": "SchoolCircle",
+      "description": "Collection of registered whole school circles"
+    },
+    "/schools/{schoolId}/assessment_records/{recordId}": {
+      "schema": "SyncSource",
+      "description": "Shared school assessment record entry sheets visible to all teachers in the school"
+    },
+    "/shared_music/{trackId}": {
+      "schema": "SharedMusic",
+      "description": "Shared background music collection added by developer for all app users"
+    },
+    "/users/{userId}/tasks/{taskId}": { "schema": "Task", "description": "Tasks and curriculum deadlines for the teacher" }, "/subscription_requests/{requestId}": {
       "schema": "SubscriptionRequest",
       "description": "Incoming subscription activation requests waiting for developer approval"
     },

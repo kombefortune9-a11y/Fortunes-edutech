@@ -1,16 +1,18 @@
 import { ActivityFeed } from './ActivityFeed';
 import { safeLocalStorage } from "../lib/storage";
 import { useEffect, useState, useMemo } from 'react';
-import { collection, query, orderBy, getDocs, Timestamp, deleteDoc, doc, writeBatch, limit, setDoc, serverTimestamp, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, orderBy, getDocs, getDoc, Timestamp, deleteDoc, doc, writeBatch, limit, setDoc, serverTimestamp, where, onSnapshot } from 'firebase/firestore';
 import { db, auth, handleFirestoreError, OperationType, recordActivity } from '../lib/firebase';
 import { checkIsQuotaError, useAuth } from './FirebaseProvider';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Users, History, Mail, RefreshCcw, Trash2, Clock, ShieldAlert, AlertTriangle, AlertCircle, ChevronDown, ChevronUp, Download, BarChart2, Calendar, FileText, Plus, UserCheck, Shield, Search, Lock, Unlock, Edit2, Activity, ThumbsUp, ThumbsDown, Sparkles, ArrowLeft, Check, CheckCircle2 } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { X, Users, History, Mail, RefreshCcw, Trash2, Clock, ShieldAlert, AlertTriangle, AlertCircle, ChevronDown, ChevronUp, Download, BarChart2, Calendar, FileText, Plus, UserCheck, Shield, Search, Lock, Unlock, Edit2, Activity, ThumbsUp, ThumbsDown, Sparkles, ArrowLeft, Check, CheckCircle2, School } from 'lucide-react';
+import { cn, extractUserFirstName } from '../lib/utils';
 import { toast } from 'react-hot-toast';
 import { GRADES, OBC_LEVELS, SUBSCRIPTION_PLANS, isDeveloperEmail } from '../constants';
 import CircleDownloadTracker from './CircleDownloadTracker';
 import { SubscriptionAnalytics } from './SubscriptionAnalytics';
+import { fetchAllSchools } from '../lib/schoolService';
+import { SchoolCircle } from '../lib/schoolTypes';
 
 // Centralized OperationType and handleFirestoreError are imported from ../lib/firebase
 
@@ -154,10 +156,6 @@ function GradeMultiSelector({
     onChange(primary.join(", "));
   };
 
-  const selectOBC = () => {
-    const obc = allAvailableGrades.filter((g) => g.toLowerCase().includes("(obc)"));
-    onChange(obc.join(", "));
-  };
 
   const selectCBC = () => {
     const cbc = allAvailableGrades.filter((g) => g.toLowerCase().includes("(cbc)"));
@@ -257,13 +255,7 @@ function GradeMultiSelector({
                 >
                   Primary
                 </button>
-                <button
-                  type="button"
-                  onClick={selectOBC}
-                  className={cn("text-[9px] font-extrabold uppercase tracking-wider px-2 py-1 rounded-lg bg-white border border-slate-200 transition-all", accentText)}
-                >
-                  OBC
-                </button>
+
                 <button
                   type="button"
                   onClick={selectCBC}
@@ -311,14 +303,19 @@ function GradeMultiSelector({
 }
 
 
-const isDeveloperOverride = (email?: string) => email?.toLowerCase().trim() === 'kombefortune9@gmail.com';
+const isDeveloperOverride = (email?: string) => {
+  if (!email) return false;
+  const clean = email.toLowerCase().trim().replace(/\s+/g, '');
+  return clean === 'kombefortune9@gmail.com' || clean === 'admin@fortunesedutech.com';
+};
 const SUBSCRIPTION_PACKAGES = SUBSCRIPTION_PLANS;
 const PRIMARY_GRADES = GRADES.slice(0, 7);
 const SECONDARY_GRADES = GRADES.slice(7);
 
 export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { user: currentUser } = useAuth();
-  const isAdmin = currentUser?.email === 'kombefortune9@gmail.com' || isDeveloperOverride(currentUser?.email);
+  const { user: currentUser, userType } = useAuth();
+  const cleanCurrentEmail = currentUser?.email?.toLowerCase().trim().replace(/\s+/g, '') || '';
+  const isAdmin = userType === 'developer' || isDeveloperEmail(cleanCurrentEmail) || isDeveloperOverride(cleanCurrentEmail);
   const isDev = isAdmin;
 
   const [rawUsers, setRawUsers] = useState<UserProfile[]>(() => {
@@ -370,8 +367,54 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   const [userHistory, setUserHistory] = useState<Record<string, any>>({});
   const [loadingHistory, setLoadingHistory] = useState<Record<string, boolean>>({});
 
-  const [activeTab, setActiveTab] = useState<'traffic' | 'trial' | 'requests' | 'tracker' | 'activity' | 'feedback' | 'analytics'>('traffic');
+  const [activeTab, setActiveTab] = useState<'traffic' | 'trial' | 'schools' | 'requests' | 'tracker' | 'activity' | 'feedback' | 'analytics' | 'lipila'>('traffic');
   const [activationRequests, setActivationRequests] = useState<any[]>([]);
+  const [lipilaTransactions, setLipilaTransactions] = useState<any[]>([]);
+  const [lipilaSummary, setLipilaSummary] = useState<any>(null);
+  const [lipilaLoading, setLipilaLoading] = useState(false);
+
+  const fetchLipilaHistory = async () => {
+    setLipilaLoading(true);
+    try {
+      const res = await fetch('/api/payments/lipila/history');
+      const data = await res.json();
+      if (data.success) {
+        setLipilaTransactions(data.transactions || []);
+        setLipilaSummary(data.summary || null);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch Lipila history:", err);
+    } finally {
+      setLipilaLoading(false);
+    }
+  };
+
+  const handleDownloadStatement = () => {
+    window.open('/api/payments/lipila/statement.csv', '_blank');
+    toast.success("📥 Compiled customer transaction statement downloaded successfully!");
+  };
+
+  const [schoolsList, setSchoolsList] = useState<SchoolCircle[]>(() => {
+    try {
+      const cached = safeLocalStorage.getItem('eduplan_all_schools_cache');
+      return cached ? JSON.parse(cached) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [schoolsLoading, setSchoolsLoading] = useState(false);
+
+  const fetchSchools = async () => {
+    setSchoolsLoading(true);
+    try {
+      const list = await fetchAllSchools();
+      setSchoolsList(list);
+    } catch (e) {
+      console.warn("Error fetching schools in UserMonitor:", e);
+    } finally {
+      setSchoolsLoading(false);
+    }
+  };
 
   const [feedbackList, setFeedbackList] = useState<any[]>(() => {
     try {
@@ -515,22 +558,101 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     }
   };
 
+  const [isNormalizingSubs, setIsNormalizingSubs] = useState(false);
+
+  const handleNormalizeAllSubscriptions = async () => {
+    setIsNormalizingSubs(true);
+    let normalizedCount = 0;
+    try {
+      const guestSnap = await getDocs(collection(db, 'authorized_guests'));
+      const batch = writeBatch(db);
+
+      guestSnap.forEach(gDoc => {
+        const data = gDoc.data();
+        const cleanEmail = (data.email || gDoc.id).toLowerCase().trim().replace(/\s+/g, '');
+        if (!cleanEmail || data.status === 'blocked') return;
+
+        let amt = Number(data.amountPaid || data.amount || 0);
+        let rawSub = data.subscriptionType || data.plan || data.circle || data.subType;
+
+        let normalizedSub = rawSub;
+        if (!normalizedSub || normalizedSub === 'guest_trial' || !(normalizedSub in SUBSCRIPTION_PLANS)) {
+          if (amt >= 1500) normalizedSub = 'unlimited';
+          else if (amt >= 800) normalizedSub = 'termly';
+          else if (amt >= 90) normalizedSub = 'monthly';
+          else if (amt >= 40) normalizedSub = '14days';
+          else if (amt >= 20) normalizedSub = 'weekly';
+          else {
+            normalizedSub = 'monthly';
+          }
+        }
+
+        const subType = (normalizedSub in SUBSCRIPTION_PLANS && normalizedSub !== 'guest_trial') ? normalizedSub : 'monthly';
+        const plan = SUBSCRIPTION_PLANS[subType] || SUBSCRIPTION_PLANS.monthly;
+        const correctAmount = amt > 0 ? amt : plan.price;
+        const subStart = data.subscriptionStart || data.addedAt || data.createdAt || new Date().toISOString();
+
+        batch.set(gDoc.ref, {
+          email: cleanEmail,
+          subscriptionType: subType,
+          amountPaid: correctAmount,
+          circleDownloadsLimit: plan.limit,
+          subscriptionStart: subStart,
+          addedAt: data.addedAt || subStart,
+          status: 'active',
+          isWhitelisted: true,
+          is_whitelisted: true
+        }, { merge: true });
+
+        // Sync to matching user profile in users collection
+        const targetUid = 'guest_' + cleanEmail.replace(/[^a-zA-Z0-9]/g, '_');
+        batch.set(doc(db, 'users', targetUid), {
+          uid: targetUid,
+          email: cleanEmail,
+          subscriptionType: subType,
+          amountPaid: correctAmount,
+          circleDownloadsLimit: plan.limit,
+          subscriptionStart: subStart,
+          addedAt: data.addedAt || subStart,
+          status: 'active',
+          isWhitelisted: true,
+          is_whitelisted: true,
+          userType: 'registered',
+          user_type: 'registered'
+        }, { merge: true });
+
+        normalizedCount++;
+      });
+
+      await batch.commit();
+      toast.success(`Successfully audited & normalized ${normalizedCount} subscription records!`);
+      await fetchWhitelist();
+      await fetchUsers();
+    } catch (e: any) {
+      toast.error("Normalization notice: " + e.message);
+    } finally {
+      setIsNormalizingSubs(false);
+    }
+  };
+
 
   useEffect(() => {
     let price = 90;
-    if (newGuestSub === '14days') price = 40;
+    if (newGuestSub === 'weekly') price = 20;
+    else if (newGuestSub === '14days') price = 40;
     else if (newGuestSub === 'monthly') price = 90;
-    else if (newGuestSub === 'termly') price = 250;
-    else if (newGuestSub === 'unlimited') price = 1500;
+    else if (newGuestSub === 'termly_individual') price = 220;
+    else if (newGuestSub === 'termly') price = 800;
     setNewGuestAmount(price.toString());
   }, [newGuestSub]);
 
   useEffect(() => {
     let price = 90;
-    if (activationSub === '14days') price = 40;
+    if (activationSub === 'weekly') price = 20;
+    else if (activationSub === '14days') price = 40;
     else if (activationSub === 'monthly') price = 90;
-    else if (activationSub === 'termly') price = 250;
-    else if (activationSub === 'unlimited') price = 1500;
+    else if (activationSub === 'termly_individual') price = 220;
+    else if (activationSub === 'termly') price = 800;
     setActivationAmount(price.toString());
   }, [activationSub]);
 
@@ -548,21 +670,21 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     if (!isDevUser && !isUserWhitelisted && (user.subscriptionType === 'guest_trial' || !user.subscriptionType)) {
       return {
         subType: 'guest_trial',
-        circleLabel: 'Free Trial Access (4 Documents)',
+        circleLabel: 'Free Trial Access (View-Only)',
         cost: 'Free Trial (K0)',
         subBadgeClass: 'text-amber-800 bg-amber-50 border-amber-200',
         startDate: null,
         endDate: null,
         isExpired: false,
-        remainingText: 'Trial Access (1 Scheme / 1 Forecast / 2 Lessons)'
+        remainingText: 'Unlimited Previews (No Downloads)'
       };
     }
 
     let rawSub = user.subscriptionType || user.plan || user.circle || user.subType;
     const amt = user.amountPaid !== undefined && user.amountPaid !== null ? Number(user.amountPaid) : 0;
     if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PACKAGES)) {
-      if (amt >= 1500) rawSub = 'unlimited';
-      else if (amt >= 250) rawSub = 'termly';
+      if (amt >= 800) rawSub = 'termly';
+      else if (amt >= 200) rawSub = 'termly_individual';
       else if (amt >= 90) rawSub = 'monthly';
       else if (amt >= 40) rawSub = '14days';
       else if (amt >= 20) rawSub = 'weekly';
@@ -578,7 +700,8 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     if (subType === 'weekly') { durationMs = 7 * 24 * 60 * 60 * 1000; circleLabel = 'Weekly Circle (7 Days)'; cost = 'K20'; subBadgeClass = 'text-amber-700 bg-amber-50 border-amber-200'; }
     else if (subType === '14days') { durationMs = 14 * 24 * 60 * 60 * 1000; circleLabel = '14 Days Circle (14 Days)'; cost = 'K40'; subBadgeClass = 'text-cyan-700 bg-cyan-50 border-cyan-200'; }
     else if (subType === 'monthly') { durationMs = 30 * 24 * 60 * 60 * 1000; circleLabel = 'Monthly Circle (30 Days)'; cost = 'K90'; subBadgeClass = 'text-purple-700 bg-purple-50 border-purple-200'; }
-    else if (subType === 'termly') { durationMs = 90 * 24 * 60 * 60 * 1000; circleLabel = 'Termly Circle (90 Days)'; cost = 'K250'; subBadgeClass = 'text-indigo-700 bg-indigo-50 border-indigo-200'; }
+    else if (subType === 'termly_individual') { durationMs = 90 * 24 * 60 * 60 * 1000; circleLabel = 'Individual Termly Circle (90 Days - 300 Downloads)'; cost = 'K220'; subBadgeClass = 'text-teal-700 bg-teal-50 border-teal-200'; }
+    else if (subType === 'termly') { durationMs = 90 * 24 * 60 * 60 * 1000; circleLabel = 'School Termly Circle (90 Days - Unlimited)'; cost = 'K800'; subBadgeClass = 'text-indigo-700 bg-indigo-50 border-indigo-200'; }
     else if (subType === 'unlimited') { durationMs = 10 * 365 * 24 * 60 * 60 * 1000; circleLabel = 'Unlimited Access (Lifetime)'; cost = 'Lifetime'; subBadgeClass = 'text-emerald-700 bg-emerald-50 border-emerald-200'; }
 
     const startDate = startMs > 0 ? new Date(startMs) : null;
@@ -591,9 +714,9 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       const diff = endDate.getTime() - now;
       if (diff <= 0) remainingText = 'Expired';
       else {
-        const days = Math.floor(diff / 86400000);
+        const days = Math.ceil(diff / 86400000);
         const hours = Math.floor((diff % 86400000) / 3600000);
-        remainingText = days > 0 ? (days + 'd ' + hours + 'h left') : (hours + 'h left');
+        remainingText = days > 0 ? (days + ' Days Left') : (hours + ' Hours Left');
       }
     }
 
@@ -607,8 +730,7 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       let rawSub = w.subscriptionType || w.plan || w.circle || w.subType || liveUser?.subscriptionType;
       const amt = w.amountPaid !== undefined && w.amountPaid !== null ? Number(w.amountPaid) : ((liveUser as any)?.amountPaid !== undefined ? Number((liveUser as any).amountPaid) : 0);
       if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PLANS)) {
-        if (amt >= 1500) rawSub = 'unlimited';
-        else if (amt >= 250) rawSub = 'termly';
+        if (amt >= 800) rawSub = 'termly';
         else if (amt >= 90) rawSub = 'monthly';
         else if (amt >= 40) rawSub = '14days';
         else if (amt >= 20) rawSub = 'weekly';
@@ -806,6 +928,7 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     fetchUsers();
     fetchWhitelist();
     fetchFeedback();
+    fetchSchools();
 
     const unsubWhitelist = onSnapshot(collection(db, 'authorized_guests'), (snap) => {
       const list: any[] = [];
@@ -867,11 +990,24 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   const openActivationModal = (user: any) => {
     setActivatingUser(user);
     setActivationGrade(user.teaching_grade || user.grade || 'all');
-    setActivationSub('monthly');
-    setActivationAmount('90');
-    setActivationPaymentMethod('MTN Mobile Money');
-    setActivationDate(new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16));
-    setActivationSubIndex('1');
+    const existingSub = user.subscriptionType && user.subscriptionType in SUBSCRIPTION_PACKAGES ? user.subscriptionType : 'monthly';
+    setActivationSub(existingSub);
+    setActivationAmount(user.amountPaid ? String(user.amountPaid) : String(SUBSCRIPTION_PACKAGES[existingSub]?.price || 90));
+    setActivationPaymentMethod(user.paymentMethod || 'MTN Mobile Money');
+    
+    // Preserve existing subscriptionStart if already set so it doesn't shift
+    const existingDate = user.subscriptionStart || user.addedAt;
+    if (existingDate) {
+      const d = safeToDate(existingDate);
+      if (d && !isNaN(d.getTime())) {
+        setActivationDate(new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16));
+      } else {
+        setActivationDate(new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16));
+      }
+    } else {
+      setActivationDate(new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16));
+    }
+    setActivationSubIndex(user.subscriptionIndex ? String(user.subscriptionIndex) : '1');
   };
 
   const handleActivateUser = async (user: any) => {
@@ -987,6 +1123,38 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         }
         return u;
       }));
+
+      // Trigger Background Activation Email with personalized first name
+      try {
+        const recipientFirstName = extractUserFirstName(user.displayName, cleanEmail);
+        getDoc(doc(db, 'global_settings', 'email_template')).then((tplSnap) => {
+          const tplData = tplSnap.exists() ? tplSnap.data() : {};
+          const rawSubject = tplData.activeSubject || "Your Fortunes Edutech Subscription is Active!";
+          const rawBody = tplData.activeBody || "Hello {{NAME}},\n\nGreat news! Your Fortunes Edutech account has been officially activated.\n\nYou have been enrolled into the **{{CIRCLE}}** circle.\n\nLog in now to access your new premium features and start generating documents.\n\nBest regards,\nThe Fortunes Edutech Team";
+          
+          const formattedBody = rawBody
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/\n/g, '<br/>')
+            .replace(/{{CIRCLE}}/gi, activationSub.toUpperCase())
+            .replace(/{{NAME}}/gi, recipientFirstName)
+            .replace(/{{FIRST_NAME}}/gi, recipientFirstName)
+            .replace(/Hello Educator\b/gi, `Hello ${recipientFirstName}`);
+
+          fetch('/api/system/email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              to: cleanEmail,
+              recipientName: recipientFirstName,
+              subject: rawSubject.replace(/{{CIRCLE}}/gi, activationSub.toUpperCase()).replace(/{{NAME}}/gi, recipientFirstName),
+              html: `<p>${formattedBody}</p>`,
+              logoUrl: tplData.logo || undefined
+            })
+          }).catch(err => console.warn("Background activation email failed", err));
+        }).catch(() => {});
+      } catch (emailErr) {
+        console.warn("Activation email trigger error:", emailErr);
+      }
 
       toast.success('Activated ' + cleanEmail + ' for ' + activationSub + ' (' + activationGrade + ')');
       setActivatingUser(null);
@@ -1114,6 +1282,38 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         }
         return u;
       }));
+
+      // Trigger Background Activation Email with personalized first name
+      try {
+        const recipientFirstName = extractUserFirstName(request.displayName, cleanEmail);
+        getDoc(doc(db, 'global_settings', 'email_template')).then((tplSnap) => {
+          const tplData = tplSnap.exists() ? tplSnap.data() : {};
+          const rawSubject = tplData.activeSubject || "Your Fortunes Edutech Subscription is Active!";
+          const rawBody = tplData.activeBody || "Hello {{NAME}},\n\nGreat news! Your Fortunes Edutech account has been officially activated.\n\nYou have been enrolled into the **{{CIRCLE}}** circle.\n\nLog in now to access your new premium features and start generating documents.\n\nBest regards,\nThe Fortunes Edutech Team";
+          
+          const formattedBody = rawBody
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/\n/g, '<br/>')
+            .replace(/{{CIRCLE}}/gi, reqSub.toUpperCase())
+            .replace(/{{NAME}}/gi, recipientFirstName)
+            .replace(/{{FIRST_NAME}}/gi, recipientFirstName)
+            .replace(/Hello Educator\b/gi, `Hello ${recipientFirstName}`);
+
+          fetch('/api/system/email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              to: cleanEmail,
+              recipientName: recipientFirstName,
+              subject: rawSubject.replace(/{{CIRCLE}}/gi, reqSub.toUpperCase()).replace(/{{NAME}}/gi, recipientFirstName),
+              html: `<p>${formattedBody}</p>`,
+              logoUrl: tplData.logo || undefined
+            })
+          }).catch(err => console.warn("Background activation email failed", err));
+        }).catch(() => {});
+      } catch (emailErr) {
+        console.warn("Activation email trigger error:", emailErr);
+      }
 
       toast.success(`Activated ${cleanEmail} for ${reqSub}!`, { id: toastId });
       recordActivity({ type: 'sync', details: `Approved Activation Request for ${cleanEmail} (${reqSub})` });
@@ -1497,6 +1697,21 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 Whitelisted / Approved ({approvedUsers.length})
               </button>
               <button
+                onClick={() => {
+                  setActiveTab('schools');
+                  fetchSchools();
+                }}
+                className={cn(
+                  "px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.08em] rounded-2xl transition-all text-center flex items-center justify-center gap-1.5 flex-shrink-0 cursor-pointer",
+                  activeTab === 'schools'
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/10 transform scale-[1.02]"
+                    : "bg-white text-slate-500 border border-slate-200/80 hover:bg-slate-50 hover:text-slate-700"
+                )}
+              >
+                <School size={13} />
+                <span>School Circles ({schoolsList.length})</span>
+              </button>
+              <button
                 onClick={() => setActiveTab('trial')}
                 className={cn(
                   "px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.08em] rounded-2xl transition-all text-center flex-shrink-0 cursor-pointer",
@@ -1557,20 +1772,24 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 Activity Feed
               </button>
               <button
-                onClick={() => setActiveTab('feedback')}
+                onClick={() => {
+                  setActiveTab('lipila');
+                  fetchLipilaHistory();
+                }}
                 className={cn(
-                  "px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.08em] rounded-2xl transition-all text-center flex-shrink-0 cursor-pointer",
-                  activeTab === 'feedback'
-                    ? "bg-fuchsia-600 text-white shadow-md shadow-fuchsia-600/10 transform scale-[1.02]"
+                  "px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.08em] rounded-2xl transition-all text-center flex items-center justify-center gap-1.5 flex-shrink-0 cursor-pointer",
+                  activeTab === 'lipila'
+                    ? "bg-teal-600 text-white shadow-md shadow-teal-600/10 transform scale-[1.02]"
                     : "bg-white text-slate-500 border border-slate-200/80 hover:bg-slate-50 hover:text-slate-700"
                 )}
               >
-                Document Quality ({feedbackList.length})
+                <Download size={13} />
+                <span>Lipila Payments</span>
               </button>
             </div>
 
             {/* Search Bar */}
-            {activeTab !== 'tracker' && activeTab !== 'feedback' && activeTab !== 'requests' && activeTab !== 'analytics' && (
+            {activeTab !== 'tracker' && activeTab !== 'feedback' && activeTab !== 'requests' && activeTab !== 'analytics' && activeTab !== 'lipila' && (
               <div className="p-4 bg-white border-b border-slate-100">
                 <div className="relative">
                   <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -1588,7 +1807,130 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             {/* Whitelist Add Guest Form Form removed from outside and integrated into scrollable body */}
 
             {/* Tab Contents */}
-            {activeTab === 'activity' ? (
+            {activeTab === 'lipila' ? (
+              <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-slate-50">
+                <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div>
+                    <h4 className="text-base font-black uppercase text-slate-900 tracking-tight">Lipila Mobile Money Transactions & Customer Statement</h4>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Compiled transaction history for all customers paying through Lipila. Download the official customer statement for business returns and developer reference.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleDownloadStatement}
+                    className="px-6 py-3 bg-[#00A86B] hover:bg-[#008f5d] text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-emerald-500/20 flex items-center gap-2 cursor-pointer shrink-0"
+                  >
+                    <Download size={16} />
+                    <span>Download Compiled Statement (CSV)</span>
+                  </button>
+                </div>
+
+                {/* Summary Metric Cards */}
+                {lipilaSummary && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-1">
+                      <p className="text-[10px] font-black uppercase text-slate-400">Total Lipila Revenue</p>
+                      <p className="text-2xl font-black text-emerald-700">ZMW {lipilaSummary.totalRevenue?.toLocaleString() || 0}</p>
+                      <p className="text-[10px] text-slate-500 font-semibold">{lipilaSummary.completedCount} completed payments</p>
+                    </div>
+                    <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-1">
+                      <p className="text-[10px] font-black uppercase text-slate-400">Total Transactions</p>
+                      <p className="text-2xl font-black text-slate-800">{lipilaSummary.totalTransactions || 0}</p>
+                      <p className="text-[10px] text-slate-500 font-semibold">{lipilaSummary.pendingCount} pending, {lipilaSummary.failedCount} failed</p>
+                    </div>
+                    <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-1">
+                      <p className="text-[10px] font-black uppercase text-slate-400">Mobile Networks</p>
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-700 pt-1">
+                        <span className="px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-lg">MTN: {lipilaSummary.networkBreakdown?.mtn || 0}</span>
+                        <span className="px-2 py-0.5 bg-red-100 text-red-800 rounded-lg">Airtel: {lipilaSummary.networkBreakdown?.airtel || 0}</span>
+                        <span className="px-2 py-0.5 bg-green-100 text-green-800 rounded-lg">Zamtel: {lipilaSummary.networkBreakdown?.zamtel || 0}</span>
+                      </div>
+                    </div>
+                    <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-1">
+                      <p className="text-[10px] font-black uppercase text-slate-400">Statement Reference</p>
+                      <p className="text-xs font-bold text-slate-700 mt-1">Official Business Return Ready</p>
+                      <p className="text-[10px] text-emerald-600 font-bold">Auto-compiled with customer details</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Transactions Table */}
+                <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+                  <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+                    <h5 className="text-xs font-black uppercase text-slate-800 tracking-wider">Transaction Records ({lipilaTransactions.length})</h5>
+                    <button
+                      onClick={fetchLipilaHistory}
+                      disabled={lipilaLoading}
+                      className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+                    >
+                      <RefreshCcw size={12} className={lipilaLoading ? "animate-spin" : ""} />
+                      <span>Refresh</span>
+                    </button>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs border-collapse">
+                      <thead>
+                        <tr className="bg-slate-100 text-slate-700 font-black uppercase text-[10px] border-b border-slate-200">
+                          <th className="p-3">Reference / ID</th>
+                          <th className="p-3">Customer Name & Email</th>
+                          <th className="p-3">Phone / Account</th>
+                          <th className="p-3">Plan / Package</th>
+                          <th className="p-3 text-right">Amount (ZMW)</th>
+                          <th className="p-3 text-center">Status</th>
+                          <th className="p-3">Date & Time</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {lipilaTransactions.length === 0 ? (
+                          <tr>
+                            <td colSpan={7} className="p-8 text-center text-slate-400 text-xs font-semibold">
+                              {lipilaLoading ? "Loading Lipila transactions..." : "No Lipila payment transactions recorded yet."}
+                            </td>
+                          </tr>
+                        ) : (
+                          lipilaTransactions.map((tx: any) => (
+                            <tr key={tx.referenceId} className="hover:bg-slate-50/70 transition-colors">
+                              <td className="p-3 font-mono text-[11px] font-bold text-slate-800">
+                                {tx.referenceId}
+                                {tx.identifier && <span className="block text-[9px] text-slate-400 font-normal">Ext: {tx.identifier}</span>}
+                              </td>
+                              <td className="p-3 align-top">
+                                <p className="font-bold text-slate-800">{tx.displayName || 'Customer'}</p>
+                                <p className="text-[11px] text-slate-500">{tx.email || 'N/A'}</p>
+                              </td>
+                              <td className="p-3 font-mono text-xs font-bold text-slate-700">
+                                {tx.accountNumber || 'N/A'}
+                              </td>
+                              <td className="p-3 font-bold text-slate-700">
+                                {tx.planTitle || tx.planId || 'Subscription'}
+                              </td>
+                              <td className="p-3 text-right font-black text-emerald-700">
+                                ZMW {Number(tx.amount || 0).toLocaleString()}
+                              </td>
+                              <td className="p-3 text-center">
+                                <span className={cn(
+                                  "px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider inline-block",
+                                  tx.status === 'completed' ? "bg-emerald-100 text-emerald-800" :
+                                  tx.status === 'failed' ? "bg-rose-100 text-rose-800" :
+                                  "bg-amber-100 text-amber-800"
+                                )}>
+                                  {tx.status || 'pending'}
+                                </span>
+                              </td>
+                              <td className="p-3 text-[11px] text-slate-500 whitespace-nowrap">
+                                {tx.createdAt ? new Date(tx.createdAt).toLocaleString() : 'N/A'}
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            ) : activeTab === 'activity' ? (
               <div className="flex-1 min-h-0 flex flex-col overflow-hidden p-4">
                 <ActivityFeed />
               </div>
@@ -1817,6 +2159,150 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                   ))
                 )}
               </div>
+            ) : activeTab === 'schools' ? (
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-slate-50">
+                <div className="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-700 font-black">
+                      <School size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black uppercase text-slate-800 tracking-wider">
+                        Registered Whole School Circles ({schoolsList.length})
+                      </h4>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase mt-0.5">
+                        Termly Unlimited Access accounts &amp; connected teachers roster
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={fetchSchools}
+                    disabled={schoolsLoading}
+                    className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+                  >
+                    <RefreshCcw size={12} className={cn(schoolsLoading && "animate-spin")} />
+                    <span>Refresh Schools</span>
+                  </button>
+                </div>
+
+                {schoolsList.length === 0 ? (
+                  <div className="py-12 text-center text-slate-400 text-xs font-black uppercase tracking-widest bg-white border border-slate-100 rounded-2xl">
+                    No School Circles registered yet. Once a school pays via Lipila, their registration form activates automatically here.
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {schoolsList.map((school) => {
+                      const isExpired = new Date() > new Date(school.subscriptionEndDate);
+                      return (
+                        <div
+                          key={school.id}
+                          className="bg-white border-2 border-indigo-100 hover:border-indigo-200 rounded-2xl p-4 sm:p-5 shadow-xs space-y-4 transition-all"
+                        >
+                          {/* School Header */}
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2.5 bg-indigo-600 text-white rounded-xl shadow-xs">
+                                <School size={18} />
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <h3 className="text-sm font-black text-slate-900 uppercase tracking-tight">
+                                    {school.schoolName}
+                                  </h3>
+                                  <span className={cn(
+                                    "px-2 py-0.5 rounded-full text-[9px] font-black uppercase border",
+                                    isExpired
+                                      ? "bg-rose-50 text-rose-700 border-rose-200"
+                                      : "bg-emerald-50 text-emerald-700 border-emerald-200"
+                                  )}>
+                                    {isExpired ? "Term Ended (Trial)" : "Active (Unlimited)"}
+                                  </span>
+                                </div>
+                                <p className="text-[10px] text-slate-500 font-medium">
+                                  Representative: <strong className="text-slate-800">{school.representativeName}</strong> ({school.representativeEmail}) • Phone: {school.representativePhone || 'N/A'}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 self-start sm:self-auto text-right">
+                              <div className="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
+                                <span className="text-[8.5px] font-black uppercase text-slate-400 block">Amount Paid</span>
+                                <span className="text-xs font-black text-indigo-700">ZMK {school.amountPaid}</span>
+                              </div>
+                              <div className="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
+                                <span className="text-[8.5px] font-black uppercase text-slate-400 block">Term Ending</span>
+                                <span className="text-xs font-bold text-amber-600">
+                                  {new Date(school.subscriptionEndDate).toLocaleDateString('en-GB')}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Teachers Roster with Download Count and Online Status */}
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <p className="text-[10.5px] font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                                <Users size={13} className="text-indigo-600" />
+                                <span>Connected Teachers ({school.teachers?.length || 0} / {school.maxTeachers || 15} max)</span>
+                              </p>
+                              <span className="text-[9px] text-slate-400 font-bold uppercase">
+                                Live Usage &amp; Online Status
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                              {school.teachers?.map((teacher, idx) => {
+                                const diffMs = teacher.lastActive ? Date.now() - new Date(teacher.lastActive).getTime() : 9999999;
+                                const isOnline = diffMs < 180000; // active in last 3 mins
+
+                                return (
+                                  <div
+                                    key={teacher.email || idx}
+                                    className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center justify-between text-xs"
+                                  >
+                                    <div className="min-w-0 pr-2">
+                                      <div className="flex items-center gap-1.5">
+                                        <span className="font-extrabold text-slate-800 text-[11px] truncate">
+                                          {idx + 1}. {teacher.name}
+                                        </span>
+                                        {teacher.role === 'representative' && (
+                                          <span className="text-[7.5px] font-black uppercase bg-indigo-100 text-indigo-700 px-1 rounded-sm">
+                                            Rep
+                                          </span>
+                                        )}
+                                      </div>
+                                      {/* Format: Mr jones-----34 downloads */}
+                                      <p className="text-[9.5px] font-mono text-slate-600 mt-0.5">
+                                        {teacher.name}-----<strong className="text-indigo-900 font-black">{teacher.downloadsCount || 0} downloads</strong>
+                                      </p>
+                                    </div>
+
+                                    <div className="shrink-0">
+                                      {isOnline ? (
+                                        <span className="inline-flex items-center gap-1 text-[8.5px] font-black uppercase text-emerald-700 bg-emerald-100 border border-emerald-300 px-1.5 py-0.5 rounded-full">
+                                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                          <span>Online</span>
+                                        </span>
+                                      ) : (
+                                        <span className="inline-flex items-center gap-1 text-[8.5px] font-bold uppercase text-slate-400 bg-slate-200/70 px-1.5 py-0.5 rounded-full">
+                                          <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                                          <span>Offline</span>
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             ) : (
               <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
                 {/* Trial Access Header & Reset Tool */}
@@ -1913,19 +2399,32 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                         </div>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => setIsAddTeacherOpen(!isAddTeacherOpen)}
-                        className={cn(
-                          "px-3.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shadow-xs",
-                          isAddTeacherOpen 
-                            ? "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200" 
-                            : "bg-emerald-600 hover:bg-emerald-700 text-white"
-                        )}
-                      >
-                        <Plus size={13} className={cn("transition-transform", isAddTeacherOpen && "rotate-45")} />
-                        {isAddTeacherOpen ? "Close Form" : "Add Teacher"}
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={handleNormalizeAllSubscriptions}
+                          disabled={isNormalizingSubs}
+                          className="px-3.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 active:scale-95 disabled:opacity-50"
+                          title="Audit and normalize all active subscription records across Firestore"
+                        >
+                          <CheckCircle2 size={13} className={cn(isNormalizingSubs && "animate-spin")} />
+                          {isNormalizingSubs ? "Auditing..." : "Normalize Subscriptions"}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setIsAddTeacherOpen(!isAddTeacherOpen)}
+                          className={cn(
+                            "px-3.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shadow-xs",
+                            isAddTeacherOpen 
+                              ? "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200" 
+                              : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                          )}
+                        >
+                          <Plus size={13} className={cn("transition-transform", isAddTeacherOpen && "rotate-45")} />
+                          {isAddTeacherOpen ? "Close Form" : "Add Teacher"}
+                        </button>
+                      </div>
                     </div>
 
                     <AnimatePresence>
@@ -1969,11 +2468,11 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                                 disabled={isAddingGuest}
                                 className="w-full bg-white border border-slate-200 focus:border-emerald-500 rounded-2xl px-4 py-3 text-sm font-bold text-slate-800 outline-none transition-all shadow-inner appearance-none cursor-pointer mt-1"
                               >
-                                <option value="weekly">Weekly Circle (7d)</option>
-                                <option value="14days">14 Days Circle (14d)</option>
-                                <option value="monthly">Monthly Circle (30d)</option>
-                                <option value="termly">Termly Circle (90d)</option>
-                                <option value="unlimited">Unlimited (Lifetime)</option>
+                                <option value="weekly">Weekly Circle (7d - K20)</option>
+                                <option value="14days">14 Days Circle (14d - K40)</option>
+                                <option value="monthly">Monthly Circle (30d - K90)</option>
+                                <option value="termly_individual">Individual Termly Circle (90d - K220)</option>
+                                <option value="termly">Whole School Termly Circle (90d - K800)</option>
                               </select>
                             </div>
                           </div>
@@ -2456,7 +2955,7 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                                             <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
                                               <p className="text-[9px] font-extrabold uppercase text-slate-400 tracking-wider">Allocated Circle</p>
                                               <p className="text-xs font-black text-slate-800 mt-1">
-                                                {user.isWhitelisted || isDev ? subInfo.circleLabel : 'Free Trial Access (4 Documents)'}
+                                                {user.isWhitelisted || isDev ? subInfo.circleLabel : 'Free Trial Access (View-Only)'}
                                               </p>
                                             </div>
 
@@ -2710,11 +3209,11 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                           onChange={(newVal) => setEditingGuest(prev => {
                             if (!prev) return null;
                             let base = 20;
-                            const sub = prev.subscriptionType || 'unlimited';
+                            const sub = prev.subscriptionType || 'termly';
                             if (sub === '14days') base = 40;
                             else if (sub === 'monthly') base = 90;
-                            else if (sub === 'termly') base = 250;
-                            else if (sub === 'unlimited') base = 1500;
+                            else if (sub === 'termly_individual') base = 220;
+                            else if (sub === 'termly') base = 800;
                             return { ...prev, grade: newVal, amountPaid: base };
                           })}
                           allAvailableGrades={allAvailableGrades}
@@ -2732,17 +3231,17 @@ export function UserMonitor({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                             const newSub = e.target.value;
                             if (newSub === '14days') base = 40;
                             else if (newSub === 'monthly') base = 90;
-                            else if (newSub === 'termly') base = 250;
-                            else if (newSub === 'unlimited') base = 1500;
+                            else if (newSub === 'termly_individual') base = 220;
+                            else if (newSub === 'termly') base = 800;
                             return { ...prev, subscriptionType: newSub, amountPaid: base };
                           })}
                           className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-2xl px-4 py-3 text-sm font-bold text-slate-800 outline-none transition-all shadow-inner cursor-pointer appearance-none"
                         >
-                          <option value="weekly">Weekly Circle (7 Days)</option>
-                          <option value="14days">14 Days Circle (14 Days)</option>
-                          <option value="monthly">Monthly Circle (30 Days)</option>
-                          <option value="termly">Termly Circle (90 Days)</option>
-                          <option value="unlimited">Unlimited Access (Lifetime)</option>
+                          <option value="weekly">Weekly Circle (7 Days - K20)</option>
+                          <option value="14days">14 Days Circle (14 Days - K40)</option>
+                          <option value="monthly">Monthly Circle (30 Days - K90)</option>
+                          <option value="termly_individual">Individual Termly Circle (90 Days - K220)</option>
+                          <option value="termly">Whole School Termly Circle (90 Days - K800)</option>
                         </select>
                       </div>
 

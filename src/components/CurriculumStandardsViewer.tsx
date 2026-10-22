@@ -111,10 +111,7 @@ export function CurriculumStandardsViewer() {
       { id: 'Grade 5 (CBC)', label: 'Grade 5 (CBC)', framework: 'CBC', level: 'Upper Primary' },
       { id: 'Grade 6 (CBC)', label: 'Grade 6 (CBC)', framework: 'CBC', level: 'Upper Primary' },
       { id: 'Grade 7 (CBC)', label: 'Grade 7 (CBC)', framework: 'CBC', level: 'Upper Primary' },
-      { id: 'Grade 1 (OBC)', label: 'Grade 1 (OBC)', framework: 'OBC', level: 'Lower Primary' },
-      { id: 'Grade 2 (OBC)', label: 'Grade 2 (OBC)', framework: 'OBC', level: 'Lower Primary' },
       { id: 'Grade 3 (OBC)', label: 'Grade 3 (OBC)', framework: 'OBC', level: 'Lower Primary' },
-      { id: 'Grade 4 (OBC)', label: 'Grade 4 (OBC)', framework: 'OBC', level: 'Upper Primary' },
       { id: 'Grade 5 (OBC)', label: 'Grade 5 (OBC)', framework: 'OBC', level: 'Upper Primary' },
       { id: 'Grade 6 (OBC)', label: 'Grade 6 (OBC)', framework: 'OBC', level: 'Upper Primary' },
       { id: 'Grade 7 (OBC)', label: 'Grade 7 (OBC)', framework: 'OBC', level: 'Upper Primary' },
@@ -424,7 +421,7 @@ export function CurriculumStandardsViewer() {
             className={cn(
               "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer",
               activeMode === 'STANDARDS'
-                ? "bg-slate-900 text-white shadow-md shadow-slate-200"
+                ? "bg-slate-950 text-white shadow-md shadow-slate-900/30 border border-slate-900"
                 : "text-slate-600 hover:bg-slate-100"
             )}
           >
@@ -436,7 +433,7 @@ export function CurriculumStandardsViewer() {
             className={cn(
               "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer",
               activeMode === 'AUDIT'
-                ? "bg-slate-800 text-white shadow-md shadow-slate-300"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 border border-blue-500"
                 : "text-slate-600 hover:bg-slate-100"
             )}
           >

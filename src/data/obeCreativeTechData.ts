@@ -1,11 +1,18 @@
+import { obcTechnologyGrade3 } from './obcTechnologyData';
+
 export const eceCreativeTechSectionA = [
   {
     title: "0.1.1 SAFETY",
     subtopics: [
       { 
         title: "0.1.1.1 Safety in the Environment", 
-        competencies: ["Practise safety in the environment"],
-        learningActivities: ["Identifying harmful objects in the environment", "Tidying up environment", "Wearing protective attire"]
+        competencies: ["Specific Competency: 0.1.1.1.1 Practise safety in the environment | Expected Standard: Safety in the environment practised correctly"],
+        learningActivities: [
+          "Identifying harmful objects in the environment",
+          "Tidying up their environment (classroom, kitchen, bedrooms, playground...)",
+          "Wearing personal protective attire during working/playing"
+        ],
+        expectedStandard: "Safety in the environment practised correctly"
       }
     ]
   },
@@ -14,18 +21,35 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.2.1 Food Hygiene", 
-        competencies: ["Practise food hygiene"],
-        learningActivities: ["Washing hands before/after food", "Washing fruit before eating", "Washing utensils after eating"]
+        competencies: ["Specific Competency: 0.1.2.1.1 Practise food hygiene | Expected Standard: Food Hygiene practised accordingly"],
+        learningActivities: [
+          "Washing of hands before and after touching food",
+          "Washing of food (fruits, vegetables...) before eating",
+          "Warming leftover food before eating",
+          "Washing of utensils after eating",
+          "Practicing covering of food"
+        ],
+        expectedStandard: "Food Hygiene practised accordingly"
       },
       { 
         title: "0.1.2.2 Personal Hygiene", 
-        competencies: ["Practise personal hygiene"],
-        learningActivities: ["Washing hands with soap/ash", "Practising using toilet facilities", "Practising using toiletries (tissues, soap)"]
+        competencies: ["Specific Competency: 0.1.2.2.1 Practise personal hygiene | Expected Standard: Personal hygiene practised accordingly"],
+        learningActivities: [
+          "Washing of hands (soap, ash...)",
+          "Practising using toilet facilities; (Flashing and covering the toilet after use, opening and covering the drop hole)",
+          "Practising using toiletries (tissues, soap...)"
+        ],
+        expectedStandard: "Personal hygiene practised accordingly"
       },
       { 
         title: "0.1.2.3 Environmental Hygiene", 
-        competencies: ["Care for the environment"],
-        learningActivities: ["Participating in picking used bottles/bags", "Throwing waste in right places", "Making things from waste"]
+        competencies: ["Specific Competency: 0.1.2.3.1 Care for the environment | Expected Standard: The environment cared for accordingly"],
+        learningActivities: [
+          "Participating in picking used bottles, used plastic bags, litter ...",
+          "Throw waste in the right places",
+          "Make things using (plastic bottles, plastic bags, bottle tops......)"
+        ],
+        expectedStandard: "The environment cared for accordingly"
       }
     ]
   },
@@ -34,8 +58,13 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.3.1 Hand Tools", 
-        competencies: ["Use tools found in the immediate environment"],
-        learningActivities: ["Identifying knives, spoons, forks", "Classifying tools", "Using pencils, books, crayons"]
+        competencies: ["Specific Competency: 0.1.3.1.1 Use tools found in the immediate environment | Expected Standard: Tools found in the immediate environment used accordingly"],
+        learningActivities: [
+          "Identifying tools found in the immediate environment (knives, spoon, fork, plates....)",
+          "Classify tools in immediate environment",
+          "Use tools found in the immediate environment (pencils, books, crayons....)"
+        ],
+        expectedStandard: "Tools found in the immediate environment used accordingly"
       }
     ]
   },
@@ -44,8 +73,11 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.4.1 Role Play", 
-        competencies: ["Perform various roles"],
-        learningActivities: ["Playing roles of cooking, washing, sweeping", "Playing teacher's roles"]
+        competencies: ["Specific Competency: 0.1.4.1.1 Perform various roles | Expected Standard: Various roles performed accordingly"],
+        learningActivities: [
+          "Playing roles of (Cooking, washing, sweeping, and drawing water, teacher's roles...)"
+        ],
+        expectedStandard: "Various roles performed accordingly"
       }
     ]
   },
@@ -54,8 +86,13 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.5.1 Sources of Light", 
-        competencies: ["Utilise sources of light to solve problems"],
-        learningActivities: ["Identifying sun, moon, bulb, torch, candle", "Discussing uses of light", "Demonstrating use of light for illumination"]
+        competencies: ["Specific Competency: 0.1.5.1.1 Utilise sources of light to solve problems | Expected Standard: Sources of light utilized appropriately"],
+        learningActivities: [
+          "Identifying sources of light ((Sun, moon, bulb, torch, candle, stars, lamp, fire...)",
+          "Discussing the uses of light",
+          "Demonstrating the use of light to solve problems (illumination)"
+        ],
+        expectedStandard: "Sources of light utilized appropriately"
       }
     ]
   },
@@ -64,8 +101,13 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.6.1 ICT Devices", 
-        competencies: ["Operate ICT devices in the locality"],
-        learningActivities: ["Identifying TV, Remote, Phone, Tablet", "Switching devices on and off", "Operating ICT devices"]
+        competencies: ["Specific Competency: 0.1.6.1.1 Operate ICT devices in the locality | Expected Standard: ICT devices manipulated accordingly"],
+        learningActivities: [
+          "Identifying ICT devices from immediate environment (Television (TV), Remote Control, Computers, Phone, Tablet, Radio.... )",
+          "Switching on and off ICT devices (television, phone, computer and radio...)",
+          "Operating ICT devices"
+        ],
+        expectedStandard: "ICT devices manipulated accordingly"
       }
     ]
   },
@@ -74,8 +116,12 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.7.1 Types of Food", 
-        competencies: ["Sort different types of food according to the characteristics"],
-        learningActivities: ["Identifying rice, nshima, beans, milk, fruit", "Grouping foods by characteristics"]
+        competencies: ["Specific Competency: 0.1.7.1.1 Sort different types of food according to the characteristics | Expected Standard: Different types of food grouped accordingly"],
+        learningActivities: [
+          "Identifying different types of food (rice, nshima, beans, milk, cassava, maize, groundnuts, and fruits...)",
+          "Grouping foods according to their characteristics"
+        ],
+        expectedStandard: "Different types of food grouped accordingly"
       }
     ]
   },
@@ -84,8 +130,15 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.8.1 Gross Motor (Loco-motor)", 
-        competencies: ["Develop loco-motor skills"],
-        learningActivities: ["Jumping, crawling, walking", "Playing football and hand ball", "Following simple rules in games"]
+        competencies: ["Specific Competency: 0.1.8.1.1 Develop loco motor skills | Expected Standard: Simple body movements performed accordingly; Loco motor skills developed accordingly"],
+        learningActivities: [
+          "Performing simple body movements (Jumping, Crawling and walking...)",
+          "Playing different games that involve (crawling, throwing, catching, kicking, hopping, jumping, games such as: hopscotch, build a tunnel, football and hand ball...)",
+          "Performing structural body movements (standing, sitting and jumping)",
+          "Participating in playing games using simple rules (throw, run, kick, catch...)",
+          "Following simple rules when playing games"
+        ],
+        expectedStandard: "Simple body movements performed accordingly; Loco motor skills developed accordingly"
       }
     ]
   },
@@ -94,8 +147,14 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.9.1 Music and Dance", 
-        competencies: ["Explore different types of music and dance"],
-        learningActivities: ["Imitating musical sounds", "Singing familiar songs", "Performing different dancing styles"]
+        competencies: ["Specific Competency: 0.1.9.1.1 Explore different types of music and dance | Expected Standard: Different types of music and dance explored accordingly"],
+        learningActivities: [
+          "Imitating different musical sounds",
+          "Singing familiar songs",
+          "Singing and responding to rhythm, melody and sound",
+          "Performing different dancing styles"
+        ],
+        expectedStandard: "Different types of music and dance explored accordingly"
       }
     ]
   },
@@ -104,8 +163,14 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.10.1 Paper Crafts", 
-        competencies: ["Make paper craft"],
-        learningActivities: ["Folding paper into shapes", "Tearing paper into shapes", "Making paper puppets/houses"]
+        competencies: ["Specific Competency: 0.1.10.1.1 Make paper craft | Expected Standard: Different paper crafts made accordingly"],
+        learningActivities: [
+          "Folding paper to make different shapes (rectangle, square, triangle)",
+          "Tearing paper into different shapes and sizes",
+          "Pasting paper to make patterns",
+          "Making different familiar items using paper (puppets, house, box...)"
+        ],
+        expectedStandard: "Different paper crafts made accordingly"
       }
     ]
   },
@@ -114,23 +179,53 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.11.1 Locomotor Skills", 
-        competencies: ["Develop various locomotor skills"],
-        learningActivities: ["Walking backwards/sideways", "Alternating balancing on left/right foot", "Jumping from height of 20cm", "Imitating animal movements"]
+        competencies: ["Specific Competency: 0.1.11.1.1 Develop various locomotor skills | Expected Standard: Various locomotor skills developed accordingly"],
+        learningActivities: [
+          "Performing walking activities (backward, side wards and on tip toes)",
+          "Balancing feet: alternate balancing (on left and right foot)",
+          "Playing jumping and climbing activities: (Jump from a height of 20cm, step over the rope 10cm high, hopping; Climb up and walk down stairs)",
+          "Performing running activities (run changing directions)",
+          "Participating in rolling activities (Roll their bodies forward and backwards, ball rolling)",
+          "Performing tiding up activities (packing, lifting...)",
+          "Imitating movements of familiar animals: (cat, dog, cow, goat, lion, snake...)"
+        ],
+        expectedStandard: "Various locomotor skills developed accordingly"
       },
       { 
         title: "0.1.11.2 Non-Locomotor", 
-        competencies: ["Develop various non-locomotor skills"],
-        learningActivities: ["Bending and stretching", "Pushing and pulling", "Posture balancing (sitting, standing, squatting)"]
+        competencies: ["Specific Competency: 0.1.11.2.1 Develop various non locomotor skills | Expected Standard: Various non locomotor skills developed accordingly"],
+        learningActivities: [
+          "Performing bending and stretching activities",
+          "Performing static body movements (pushing, standing, pulling, kneeling...)",
+          "Performing Posture balancing activities (Sitting, standing, squatting...)",
+          "Performing Jumping up and down on one spot activities"
+        ],
+        expectedStandard: "Various non locomotor skills developed accordingly"
       },
       { 
         title: "0.1.11.3 Eye-hand and Eye-foot coordination", 
-        competencies: ["Develop Eye-hand and Eye-foot coordination skills"],
-        learningActivities: ["Clipping, pegging, tonging", "Catching and throwing", "Kicking a stationary ball"]
+        competencies: ["Specific Competency: 0.1.11.3.1 Develop Eye-hand and eye-foot coordination skills | Expected Standard: Eye-hand and eye-foot coordination skills develop successfully"],
+        learningActivities: [
+          "Participating in clipping activities (pegging, tonging and tweezing...)",
+          "Performing in Play catching and throwing",
+          "Practising kicking a stationary ball, roll a ball kicking a stationary ball, roll a ball"
+        ],
+        expectedStandard: "Eye-hand and eye-foot coordination skills develop successfully"
       },
       { 
         title: "0.1.11.4 Fine motor skills development", 
-        competencies: ["Develop Fine motor skills"],
-        learningActivities: ["Building towers with blocks", "Scooping, filling, emptying sand/water", "Zipping, buttoning, lacing"]
+        competencies: ["Specific Competency: 0.1.11.4.1 Develop Fine motor skills | Expected Standard: Fine motor skills developed accordingly"],
+        learningActivities: [
+          "Exploring different objects to build a tower (plastic lids, wooden blocks, stones, sticks...)",
+          "Manipulating objects in the immediate environment",
+          "Arranging objects: (dominos up to 5, numbers, fixing puzzles, templates...)",
+          "Arranging objects according to their classification",
+          "Participating in Scooping, filling and emptying (sand, water)",
+          "Opening and closing: (opening bottles, taps.....)",
+          "Practising grasping and releasing activities (swinging, sorting, hanging)",
+          "Performing self-help skills (toileting, zipping, dressing, buttoning and lacing...)"
+        ],
+        expectedStandard: "Fine motor skills developed accordingly"
       }
     ]
   },
@@ -139,8 +234,14 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.12.1 Rhythm and Movement", 
-        competencies: ["Perform Rhythm and Movement"],
-        learningActivities: ["Controlling and balancing body to rhythm", "Playing familiar musical instruments (drum, piano, guitar)"]
+        competencies: ["Specific Competency: 0.1.12.1.1 Perform Rhythm and Movement | Expected Standard: Rhythm and Movement performed accordingly"],
+        learningActivities: [
+          "Demonstrating Controlling and Balancing of their body (rhythm, clapping, simple dance, jumping...)",
+          "Practising control and balance of the body",
+          "Performing specific guided rhythmic activities (clapping, stumping...)",
+          "Playing familiar musical instruments (drum, swift piano, guitar...)"
+        ],
+        expectedStandard: "Rhythm and Movement performed accordingly"
       }
     ]
   },
@@ -149,8 +250,17 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.13.1 Drawing and Tracing", 
-        competencies: ["Draw different lines", "Trace objects using templates"],
-        learningActivities: ["Identifying different lines", "Tracing cups, plates", "Drawing people, animals, houses"]
+        competencies: [
+          "Specific Competency: 0.1.13.1.1 Draw different lines | Expected Standard: Different lines drawn accordingly",
+          "Specific Competency: 0.1.13.1.2 Trace objects using templates | Expected Standard: Different objects traced accordingly"
+        ],
+        learningActivities: [
+          "Identifying different lines",
+          "Drawing different lines",
+          "Tracing familiar objects (cups, plates...)",
+          "Drawing using templates and free hand (birds, people, animals, flowers, houses, traditional dresses, family members...)"
+        ],
+        expectedStandard: "Different lines drawn accordingly; Different objects traced accordingly"
       }
     ]
   },
@@ -159,28 +269,48 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.14.1 Colours", 
-        competencies: ["Colour objects"],
-        learningActivities: ["Identifying coloring materials (crayons, water colors)", "Coloring ball, pot, flag of Zambia"]
+        competencies: ["Specific Competency: 0.1.14.1.1 Colour objects | Expected Standard: Different objects coloured"],
+        learningActivities: [
+          "Identifying different colouring materials (crayons, water colours....)",
+          "Sorting colouring materials",
+          "Use colouring materials to colour familiar objects (ball, pot, cups, flag of Zambia, traditional dress, fruits, food...)"
+        ],
+        expectedStandard: "Different objects coloured"
       },
       { 
         title: "0.1.14.2 Patterns", 
-        competencies: ["Make simple patterns"],
-        learningActivities: ["Printing patterns using potato cut, banana fibre", "Making collage and mosaic pictures"]
+        competencies: ["Specific Competency: 0.1.14.2.1 Make simple patterns | Expected Standard: Simple patterns made accordingly"],
+        learningActivities: [
+          "Identifying materials used to print patterns (water colours, crayons, paint brushes, Potato cut, cassava, banana fibre, sponge, hands and feet...)",
+          "Sorting materials used for printing patterns",
+          "Printing simple patterns using different media (Water colours, crayons, paintbrushes, potato cut, banana fibre, leaf, sponge, feet and hand...)",
+          "Making simple pictures/patterns using collage and mosaic (locally available materials)"
+        ],
+        expectedStandard: "Simple patterns made accordingly"
       },
       { 
         title: "0.1.14.3 Threading", 
-        competencies: ["Thread different items"],
-        learningActivities: ["Threading straws, fruit reels, bottle tops", "Using shoe laces and big beads"]
+        competencies: ["Specific Competency: 0.1.14.3.1 Thread different items | Expected Standard: Different items threaded"],
+        learningActivities: [
+          "Threading different items using (straws, fruit reels, bottle tops, threading shoe laces, big beads, big cotton reels...)"
+        ],
+        expectedStandard: "Different items threaded."
       },
       { 
         title: "0.1.14.4 Weaving", 
-        competencies: ["Weave different items"],
-        learningActivities: ["Weaving threads and paper strips", "Making paper mats"]
+        competencies: ["Specific Competency: 0.1.14.4.1 Weave different items | Expected Standard: Different items wove accordingly"],
+        learningActivities: [
+          "Weaving threads and paper strips (dolls hair; making paper mats...)"
+        ],
+        expectedStandard: "Different items wove accordingly."
       },
       { 
         title: "0.1.14.5 Modelling and Moulding", 
-        competencies: ["Make different artifacts"],
-        learningActivities: ["Modelling people, cars, pots, dolls using clay"]
+        competencies: ["Specific Competency: 0.1.14.5.1 Make different artifacts | Expected Standard: Different artifacts made accordingly"],
+        learningActivities: [
+          "Modelling and moulding different artifacts (people, cars, pots, dolls, cups, animals....)"
+        ],
+        expectedStandard: "Different artifacts made accordingly"
       }
     ]
   },
@@ -189,8 +319,15 @@ export const eceCreativeTechSectionA = [
     subtopics: [
       { 
         title: "0.1.15.1 Traditional and Conventional Games", 
-        competencies: ["Play traditional games", "Play conventional games"],
-        learningActivities: ["Playing nsolo, chiyato, waida", "Playing football, netball"]
+        competencies: [
+          "Specific Competency: 0.1.15.1.1 Play traditional games | Expected Standard: Traditional games played accordingly",
+          "Specific Competency: 0.1.15.1.2 Play conventional games | Expected Standard: Conventional games played correctly"
+        ],
+        learningActivities: [
+          "Playing different traditional games (nsolo, chiyato, waida, chidunu...)",
+          "Playing different conventional games; (football, netball...)"
+        ],
+        expectedStandard: "Traditional games played accordingly; Conventional games played correctly"
       }
     ]
   }
@@ -202,23 +339,38 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.1.1 Safety in School", 
-        competencies: ["Practice safety in the school environment"],
-        learningActivities: ["Observing safety rules in labs/playground", "Picking up sharp objects"]
+        competencies: ["Specific Competency: 0.2.1.1.1 Practice safety in the school environment | Expected Standard: Safety in the school environment practised correctly"],
+        learningActivities: [
+          "Observing safety rules in specialised rooms (no eating in the lab, no running...)",
+          "Practising safety in the playground/space (picking up sharp objects...)"
+        ],
+        expectedStandard: "Safety in the school environment practised correctly."
       },
       { 
         title: "0.2.1.2 Road Safety", 
-        competencies: ["Practice road safety"],
-        learningActivities: ["Interpreting road signs (crossing, traffic light)", "Practising crossing road safely"]
+        competencies: ["Specific Competency: 0.2.1.2.1 Practice road safety | Expected Standard: Road safety practised correctly"],
+        learningActivities: [
+          "Interpreting road signs (pedestrian crossing, traffic light...)",
+          "Practising road safety"
+        ],
+        expectedStandard: "Road safety practised correctly"
       },
       { 
         title: "0.2.1.3 Storage of Tools", 
-        competencies: ["Store tools in designated places"],
-        learningActivities: ["Packing tools in right places e.g. tool boxes"]
+        competencies: ["Specific Competency: 0.2.1.3.1 Store tools in designated places | Expected Standard: Tools stored in designated places accordingly"],
+        learningActivities: [
+          "Packing tools in right places"
+        ],
+        expectedStandard: "Tools stored in designated places accordingly"
       },
       { 
         title: "0.2.1.4 Personal Safety", 
-        competencies: ["Recognise dangers of interacting with strangers"],
-        learningActivities: ["Role playing situations with strangers", "Not following or getting presents from strangers"]
+        competencies: ["Specific Competency: 0.2.1.4.1 Recognise dangers of interacting with strangers | Expected Standard: Dangers of interacting with strangers recognised accordingly"],
+        learningActivities: [
+          "Mentioning the dangers of interacting with strangers' (following strangers, getting presents...)",
+          "Role playing the dangers of interacting with strangers' (following strangers, getting presents...)"
+        ],
+        expectedStandard: "Dangers of interacting with strangers recognised accordingly."
       }
     ]
   },
@@ -227,18 +379,31 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.2.1 Food Hygiene", 
-        competencies: ["Preserve food"],
-        learningActivities: ["Discussing canning, drying, refrigeration", "Preserving vegetables and fruits"]
+        competencies: ["Specific Competency: 0.2.2.1.1 Preserve food | Expected Standard: Food preserved accordingly"],
+        learningActivities: [
+          "Talking about ways of preserving food (Canning of food, drying, refrigeration, smoking...)",
+          "Preserving foods (vegetables, fruits...)"
+        ],
+        expectedStandard: "Food preserved accordingly"
       },
       { 
         title: "0.2.2.2 Personal Hygiene", 
-        competencies: ["Practice personal hygiene"],
-        learningActivities: ["Grooming: trimming nails, brushing teeth", "Correct use of toiletries"]
+        competencies: ["Specific Competency: 0.2.2.2.1 Practise personal hygiene | Expected Standard: Personal hygiene practiced accordingly"],
+        learningActivities: [
+          "Demonstrating good grooming activities (Trimming nails, washing their face, brushing teeth, washing hands, clean clothing, and correct use of toiletries...)"
+        ],
+        expectedStandard: "Personal hygiene practiced accordingly."
       },
       { 
         title: "0.2.2.3 Environmental Hygiene", 
-        competencies: ["Care for the environment"],
-        learningActivities: ["Collecting bottles for recycling", "Reducing waste e.g. using less water"]
+        competencies: ["Specific Competency: 0.2.2.3.1 Care for the environment | Expected Standard: Environment cared for appropriately"],
+        learningActivities: [
+          "Picking waste (help collect bottles for recycling....)",
+          "Throwing litter in right places",
+          "Showing ways of caring for the environment",
+          "Making toys from (bottles-toys, skipping ropes...), reducing waste (use less water)"
+        ],
+        expectedStandard: "Environment cared for appropriately."
       }
     ]
   },
@@ -247,8 +412,14 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.3.1 Sources of Heat", 
-        competencies: ["Explore the various sources of heat"],
-        learningActivities: ["Identifying sun, fire, stove, iron, heater", "Discussing dangers of heat and staying safe"]
+        competencies: ["Specific Competency: 0.2.3.1.1 Explore the various sources of heat | Expected Standard: Various sources of heat explored accordingly"],
+        learningActivities: [
+          "Identifying sources of heat: (Sun, fire, stove, pressing iron, Heater...)",
+          "Discussing the dangers of heat",
+          "Role playing how to stay safe from various dangers of heat",
+          "Exploring the uses of different sources of heat"
+        ],
+        expectedStandard: "Various sources of heat explored accordingly."
       }
     ]
   },
@@ -257,8 +428,15 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.4.1 ICT Devices", 
-        competencies: ["Use ICT devices"],
-        learningActivities: ["Watching educational cartoons", "Playing simple computer games", "Using camera to capture pictures", "Sending/receiving calls"]
+        competencies: ["Specific Competency: 0.2.4.1.1 Use ICT devices | Expected Standard: ICT devices used accordingly"],
+        learningActivities: [
+          "Watching morally right educational cartoon movies and music",
+          "Playing simple computer games",
+          "Using a camera to capture pictures",
+          "Using note pads to draw simple graphical design",
+          "Sending and receiving phone calls"
+        ],
+        expectedStandard: "ICT devices used accordingly."
       }
     ]
   },
@@ -267,13 +445,22 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.5.1 Good Manners", 
-        competencies: ["Practice good manners"],
-        learningActivities: ["Using polite words and phrases", "Respecting other people's things", "Telling the truth"]
+        competencies: ["Specific Competency: 0.2.5.1.1 Practice good manners | Expected Standard: Good manners practiced accordingly"],
+        learningActivities: [
+          "Discussing ways of showing good manners to people",
+          "Applying good manners (Using polite words and Phrases when talking to people, respect other people's things, telling the truth, in all your actions and dealings...)"
+        ],
+        expectedStandard: "Good manners practiced accordingly"
       },
       { 
         title: "0.2.5.2 Eating Habits", 
-        competencies: ["Practice good eating habits"],
-        learningActivities: ["Taking what is enough", "Chewing with mouth closed", "Sharing foods"]
+        competencies: ["Specific Competency: 0.2.5.2.1 Practice good eating habits | Expected Standard: Good eating habits practiced accordingly"],
+        learningActivities: [
+          "Demonstrating good eating habits",
+          "Discussing good eating habits (Taking what is enough for oneself, chewing with the mouth closed, considering others when sharing foods...)",
+          "Practicing good eating habits"
+        ],
+        expectedStandard: "Good eating habits practiced accordingly"
       }
     ]
   },
@@ -282,18 +469,34 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.6.1 Gross Motor (Locomotor)", 
-        competencies: ["Develop various Locomotor skills"],
-        learningActivities: ["Walking on straight line", "Frog jumping, hopping on one leg", "Climbing stairs alternating feet"]
+        competencies: ["Specific Competency: 0.2.6.1.1 Develop various Locomotor skills | Expected Standard: Various locomotor skills developed"],
+        learningActivities: [
+          "Performing various body movement and control (Walking on straight line...)",
+          "Performing jumping and balancing activities (Frog jumping, hop on one leg and alternating feet, jump from a height of 30-40cm, step over rope 20-30cm high)",
+          "Climbing up-stairs using alternating feet"
+        ],
+        expectedStandard: "Various locomotor skills developed."
       },
       { 
         title: "0.2.6.2 Non-Locomotor Skills", 
-        competencies: ["Develop various non-Locomotor skills"],
-        learningActivities: ["Pulling, pushing, twisting, stretching", "Throwing ball overhead", "Rolling and turning"]
+        competencies: ["Specific Competency: 0.2.6.2.1 Develop various non-Locomotor skills | Expected Standard: Various non-Locomotor skills developed accordingly"],
+        learningActivities: [
+          "Performing Static body movements (pulling, pushing, twisting, stretching...)",
+          "Demonstrating throwing ball overhead",
+          "Performing various body movements (rolling and turning)",
+          "Performing Posture and balancing activities (sitting, standing)",
+          "Demonstrating Jumping in one place 5-10 time"
+        ],
+        expectedStandard: "Various non-Locomotor skills developed accordingly"
       },
       { 
         title: "0.2.6.3 Fine Motor Skills", 
-        competencies: ["Manipulate different materials in the immediate environment"],
-        learningActivities: ["Arranging dominoes up to 10 pieces", "Stringing using 1cm beads"]
+        competencies: ["Specific Competency: 0.2.6.3.1 Manipulate different materials in the immediate environment | Expected Standard: Different materials in the immediate environment manipulated accordingly"],
+        learningActivities: [
+          "Arranging dominos up to 10 pieces",
+          "Stringing using 1cm bead"
+        ],
+        expectedStandard: "Different materials in the immediate environment manipulated accordingly."
       }
     ]
   },
@@ -302,13 +505,24 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.7.1 Eye-hand and Eye-foot coordination", 
-        competencies: ["Develop Eye-hand and Eye-foot coordination"],
-        learningActivities: ["Throwing and catching objects with both hands", "Kicking a stationary ball to a target", "Rolling ball at a target"]
+        competencies: ["Specific Competency: 0.2.7.1.1 Develop Eye - hand and eye - foot coordination | Expected Standard: Eye- hand and eye - foot coordination skills developed accordingly"],
+        learningActivities: [
+          "Performing eye- hand and eye -foot coordination activities. (Throwing, kicking, catching and lacing...)",
+          "Performing throwing and catching activities (Timing, throw object to target, catch object with both hands, and throw a ball under and over one arm)",
+          "Demonstrating kicking and rolling activities. (Targeting, timing, kicking a stationary ball to a target, rolling a ball at a target)"
+        ],
+        expectedStandard: "Eye- hand and eye - foot coordination skills developed accordingly."
       },
       { 
         title: "0.2.7.2 Fine Motor Skills", 
-        competencies: ["Develop Various Fine motor skills"],
-        learningActivities: ["Building tower up to 10 pieces", "Dressing self, zipping, tying laces", "Clipping and using tongs/tweezers"]
+        competencies: ["Specific Competency: 0.2.7.2.1 Develop Various Fine motor skills | Expected Standard: Various fine motor skills developed accordingly"],
+        learningActivities: [
+          "Manipulating different objects to build a tower up to 10 pieces (Building blocks, plastic lids...)",
+          "Performing dressing up activities. (Dressing oneself, zipping, buttoning, and tying shoe laces...)",
+          "Practising scooping activities (measurement and size estimation...)",
+          "Performing clipping activities. (Holding, clipping, opening and closing, use of tongs and tweezers...)"
+        ],
+        expectedStandard: "Various fine motor skills developed accordingly"
       }
     ]
   },
@@ -317,28 +531,48 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.8.1 Music and Movement", 
-        competencies: ["Practice music and movement"],
-        learningActivities: ["Breath control, diction, voice projection", "Performing free dance"]
+        competencies: ["Specific Competency: 0.2.8.1.1 Practise music and movement | Expected Standard: Music and movement practised accordingly"],
+        learningActivities: [
+          "Practising music and movement by singing familiar songs; (Controlling breath control, Diction, voice projection)",
+          "Performing Coordination of voice activities",
+          "Responding to different music (rhythm and melody)",
+          "Performing free dance"
+        ],
+        expectedStandard: "Music and movement practised accordingly"
       },
       { 
         title: "0.2.8.2 Rhythm and Movement", 
-        competencies: ["Practice full control to balance body", "Perform guided rhythm"],
-        learningActivities: ["Clapping, stumping to rhythm", "Performing specific guided rhythmic activities"]
+        competencies: [
+          "Specific Competency: 0.2.8.2.1 Practise full control to balance body | Expected Standard: Full control to body balance practised accordingly",
+          "Specific Competency: 0.2.8.2.2 Perform guided rhythm | Expected Standard: Guided rhythmic activities performed correctly"
+        ],
+        learningActivities: [
+          "Practising full control to balance body",
+          "Performing Guided rhythmic activities (rhythm and melody)"
+        ],
+        expectedStandard: "Full control to body balance practised accordingly; Guided rhythmic activities performed correctly."
       },
       { 
         title: "0.2.8.3 Musical Instruments", 
-        competencies: ["Play different musical instruments"],
-        learningActivities: ["Playing wood blocks, shakers, drums", "Using rhythm sticks, piano, flute"]
+        competencies: ["Specific Competency: 0.2.8.3.1 Play different musical instruments | Expected Standard: Different musical instruments played appropriately"],
+        learningActivities: [
+          "Playing different Instruments to explore music (Playing with wood blocks, shakers, drums, rhythm sticks, piano, flute, mouth organ, swift piano...)"
+        ],
+        expectedStandard: "Different musical instruments played appropriately."
       }
     ]
   },
   {
-    title: "0.2.9 MUSIC AND DANCES",
+    title: "0.2.9 DRAMA",
     subtopics: [
       { 
         title: "0.2.9.1 Drama", 
-        competencies: ["Dramatise different scenarios"],
-        learningActivities: ["Dramatising family roles", "Dramatising traditional ceremonies", "Role playing adult life"]
+        competencies: ["Specific Competency: 0.2.9.1.1 Dramatise different scenarios | Expected Standard: Different scenarios dramatised accordingly"],
+        learningActivities: [
+          "Dramatising different scenarios (Family roles, traditional ceremonies, buying and selling)",
+          "Role playing adult life"
+        ],
+        expectedStandard: "Different scenarios dramatised accordingly."
       }
     ]
   },
@@ -347,8 +581,12 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.10.1 Traditional and Conventional Games", 
-        competencies: ["Perform Traditional and conventional games"],
-        learningActivities: ["Performing nsolo, chiyato, waida", "Playing football, netball"]
+        competencies: ["Specific Competency: 0.2.10.1.1 Perform Traditional and conventional games | Expected Standard: Traditional and Conventional games performed appropriately"],
+        learningActivities: [
+          "Performing Traditional games (nsolo, chiyato, waida, chidunu)",
+          "Performing Conventional games; (football, netball...)"
+        ],
+        expectedStandard: "Traditional and Conventional games performed appropriately."
       }
     ]
   },
@@ -357,8 +595,13 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.11.1 Types of Materials", 
-        competencies: ["Utilise different materials"],
-        learningActivities: ["Identifying soil, mud, grass, glass, metal", "Sorting objects by material", "Making toys from different materials"]
+        competencies: ["Specific Competency: 0.2.11.1.1 Utilise different materials | Expected Standard: Different types of materials utilised accordingly"],
+        learningActivities: [
+          "Identify different types of materials in their locality",
+          "Sorting different objects according to their specific materials (soil, mud, grass, glass, bricks/blocks, trees, plastic and metal)",
+          "Utilising different types of materials to make items (toys)"
+        ],
+        expectedStandard: "Different types of materials utilised accordingly"
       }
     ]
   },
@@ -367,8 +610,16 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.12.1 Drawing and Colouring", 
-        competencies: ["Drawing and colouring"],
-        learningActivities: ["Drawing straight and zig-zag lines", "Coloring cup, ball, flag of Zambia", "Constructing structures using building blocks"]
+        competencies: ["Specific Competency: 0.2.12.1.1 Drawing and colouring | Expected Standard: Various items drawn and coloured accordingly"],
+        learningActivities: [
+          "Drawing different lines (straight and zig-zag lines)",
+          "Practising colouring activities (shapes and patterns)",
+          "Drawing familiar objects (Cup, ball and pot, flag of Zambia)",
+          "Using geometrical boards to make shapes and patterns",
+          "Constructing structures (shape building using a variety of building blocks, making of saving box)",
+          "Practising tracing of objects"
+        ],
+        expectedStandard: "Various items drawn and coloured accordingly."
       }
     ]
   },
@@ -377,18 +628,27 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.13.1 Patterns", 
-        competencies: ["Pattern making"],
-        learningActivities: ["Making patterns using okra motif, banana stem", "Practising tracing of objects"]
+        competencies: ["Specific Competency: 0.2.13.1.1 Pattern making | Expected Standard: Patterns made using local materials accordingly"],
+        learningActivities: [
+          "Making patterns using local materials (okra motif, banana stem...)"
+        ],
+        expectedStandard: "Patterns made using local materials accordingly."
       },
       { 
         title: "0.2.13.2 Weaving", 
-        competencies: ["Making different weaved items"],
-        learningActivities: ["Making hats, mats, paper chains"]
+        competencies: ["Specific Competency: 0.2.13.2.1 Making different weaved items | Expected Standard: Different wove items made accordingly"],
+        learningActivities: [
+          "Making different wove items (Hats, mats, paper chains...)"
+        ],
+        expectedStandard: "Different wove items made accordingly."
       },
       { 
         title: "0.2.13.3 Modelling and Moulding", 
-        competencies: ["Make familiar artifacts"],
-        learningActivities: ["Holing, pressing and pinning clay", "Making pots, cars, dolls, dogs"]
+        competencies: ["Specific Competency: 0.2.13.3.1 Make familiar artifacts | Expected Standard: Familiar artifacts made accordingly"],
+        learningActivities: [
+          "Holing; pressing and pinning familiar things in their locality (Pots, cars, dolls, cup, dog, houses, people...)"
+        ],
+        expectedStandard: "Familiar artifacts made accordingly."
       }
     ]
   },
@@ -397,8 +657,15 @@ export const eceCreativeTechSectionB = [
     subtopics: [
       { 
         title: "0.2.14.1 Mosaic and Collage", 
-        competencies: ["Recognise materials for making collage/mosaic picture", "Make various pictures"],
-        learningActivities: ["Identifying glue, beads, seeds, paper, fabric", "Making various pictures using collage and mosaic"]
+        competencies: [
+          "Specific Competency: 0.2.14.1.1 Recognise materials for making collage/mosaic picture | Expected Standard: Materials for making collage/mosaic pictures recognised correctly",
+          "Specific Competency: 0.2.14.1.2 Make various pictures | Expected Standard: Pictures made using collage/mosaic techniques"
+        ],
+        learningActivities: [
+          "Recognising materials for making collage/mosaic picture (Glue, beads, seeds, paper and fabric, bottle top...)",
+          "Making various pictures using collage and Mosaic techniques"
+        ],
+        expectedStandard: "Materials for making collage/mosaic pictures recognised correctly; Pictures made using collage/mosaic techniques"
       }
     ]
   }
@@ -1446,414 +1713,7 @@ export const obeCreativeTechGrade4 = [
   }
 ];
 
-export const obeCreativeTechGrade3 = [
-  {
-    title: "3.1 SAFETY",
-    subtopics: [
-      {
-        title: "3.1.1 Safety in Handling Hand Tools",
-        competencies: ["Practise safety in handling hand tools"],
-        learningActivities: [
-          "Demonstrating safety rules in handling hand tools (holding, carrying and passing hand tools: knife, shears, needles, scissors...)",
-          "Storing hand tools safely"
-        ],
-        expectedStandard: ["Safety in handling hand tools practised accordingly"]
-      },
-      {
-        title: "3.1.2 First Aid",
-        competencies: ["Apply First Aid in different situations"],
-        learningActivities: [
-          "Sharing information on First Aid",
-          "Applying First Aid for simple injuries (bruises, cuts, nose bleeding, foreign bodies in the eye/ear/nose...)"
-        ],
-        expectedStandard: ["First Aid applied correctly in different situations"]
-      },
-      {
-        title: "3.1.3 Body Posture",
-        competencies: ["Demonstrate postural activities"],
-        learningActivities: [
-          "Demonstrating correct postural habits (sitting, standing, walking, lifting objects, bending...)"
-        ],
-        expectedStandard: ["Postural activities demonstrated accordingly"]
-      }
-    ]
-  },
-  {
-    title: "3.2 COOKERY",
-    subtopics: [
-      {
-        title: "3.2.1 Snacks",
-        competencies: ["Make healthy snacks"],
-        learningActivities: [
-          "Identifying healthy snacks (boiled maize, roasted groundnuts, sweet potatoes, fruit salads...)",
-          "Preparing healthy snacks using simple cooking methods",
-          "Practising hygiene during food preparation"
-        ],
-        expectedStandard: ["Healthy snacks made appropriately"]
-      }
-    ]
-  },
-  {
-    title: "3.3 DRAWING AND COLOURING",
-    subtopics: [
-      {
-        title: "3.3.1 Drawing",
-        competencies: ["Draw pictures"],
-        learningActivities: [
-          "Drawing pictures of various objects from memory and imagination (animals, scenery, vehicles, people...)"
-        ],
-        expectedStandard: ["Pictures drawn accordingly"]
-      },
-      {
-        title: "3.3.2 Colouring",
-        competencies: ["Colour pictures"],
-        learningActivities: [
-          "Applying primary and secondary colours to drawings using crayons, coloured pencils, and paints"
-        ],
-        expectedStandard: ["Pictures coloured creatively and appropriately"]
-      }
-    ]
-  },
-  {
-    title: "3.4 MATERIALS",
-    subtopics: [
-      {
-        title: "3.4.1 Making Items",
-        competencies: ["Make items using locally available materials"],
-        learningActivities: [
-          "Identifying locally available materials (clay, grass, reeds, seeds, bottle tops, paper...)",
-          "Making functional and decorative items using local materials"
-        ],
-        expectedStandard: ["Items made using locally available materials accordingly"]
-      }
-    ]
-  },
-  {
-    title: "3.5 PATTERNS",
-    subtopics: [
-      {
-        title: "3.5.1 Patterns",
-        competencies: ["Print patterns"],
-        learningActivities: [
-          "Making print patterns using natural and man-made objects (leaves, potato stamps, bottle tops...)"
-        ],
-        expectedStandard: ["Patterns printed creatively"]
-      }
-    ]
-  },
-  {
-    title: "3.6 COMPUTER",
-    subtopics: [
-      {
-        title: "3.6.1 Computer Hardware",
-        competencies: ["Use Computer Hardware components"],
-        learningActivities: [
-          "Identifying hardware components (keyboard, mouse, monitor, system unit, storage devices...)",
-          "Connecting and operating basic computer hardware components"
-        ],
-        expectedStandard: ["Computer Hardware components used appropriately"]
-      },
-      {
-        title: "3.6.2 Computer Software",
-        competencies: ["Design digital arts using creative and art software"],
-        learningActivities: [
-          "Opening painting/drawing software (MS Paint or equivalent)",
-          "Using drawing tools (brush, bucket, shapes, eraser) to create digital art"
-        ],
-        expectedStandard: ["Digital arts designed using software correctly"]
-      }
-    ]
-  },
-  {
-    title: "3.7 HOSPITALITY",
-    subtopics: [
-      {
-        title: "3.7.1 Etiquette",
-        competencies: ["Demonstrate good table manners"],
-        learningActivities: [
-          "Practising table manners (sitting upright, chewing quietly, using utensils properly, clearing the table...)"
-        ],
-        expectedStandard: ["Good table manners demonstrated accordingly"]
-      },
-      {
-        title: "3.7.2 Laundry",
-        competencies: ["Launder articles"],
-        learningActivities: [
-          "Identifying laundry equipment and materials (soap, water, basin, pegs...)",
-          "Washing, rinsing, drying, and folding simple articles (handkerchiefs, socks, small towels)"
-        ],
-        expectedStandard: ["Articles laundered properly"]
-      }
-    ]
-  },
-  {
-    title: "3.8 SOUNDS",
-    subtopics: [
-      {
-        title: "3.8.1 Elements of Sound",
-        competencies: ["Apply basic skills in singing and instrument playing"],
-        learningActivities: [
-          "Exploring pitch, rhythm, tempo, and dynamics in music",
-          "Singing songs with pitch accuracy and rhythmic control",
-          "Playing simple percussion instruments (drums, shakers, triangles...)"
-        ],
-        expectedStandard: ["Basic skills in singing and instrument playing applied accordingly"]
-      }
-    ]
-  },
-  {
-    title: "3.9 RECREATION",
-    subtopics: [
-      {
-        title: "3.9.1 Dance",
-        competencies: ["Perform local dances and simple rhythmic activities"],
-        learningActivities: [
-          "Performing traditional Zambian dances",
-          "Moving in rhythm to various musical beats and tempos"
-        ],
-        expectedStandard: ["Local dances and rhythmic activities performed skillfully"]
-      },
-      {
-        title: "3.9.2 Songs",
-        competencies: ["Compose songs on cross cutting issues"],
-        learningActivities: [
-          "Composing and singing songs on themes such as health, hygiene, road safety, and environmental care"
-        ],
-        expectedStandard: ["Songs on cross cutting issues composed and performed creatively"]
-      }
-    ]
-  },
-  {
-    title: "3.10 TRAVEL",
-    subtopics: [
-      {
-        title: "3.10.1 Travel Etiquette",
-        competencies: ["Demonstrate travel etiquette"],
-        learningActivities: [
-          "Discussing safety and courtesy when travelling by bus, car, walking, or bicycle",
-          "Demonstrating respectful behaviour towards fellow travellers and drivers"
-        ],
-        expectedStandard: ["Travel etiquette demonstrated accordingly"]
-      }
-    ]
-  },
-  {
-    title: "3.11 ENERGY",
-    subtopics: [
-      {
-        title: "3.11.1 Circuit",
-        competencies: ["Make a circuit to produce light"],
-        learningActivities: [
-          "Identifying components of a simple circuit (dry cell, wires, bulb, switch)",
-          "Connecting a simple circuit to light a bulb"
-        ],
-        expectedStandard: ["A circuit to produce light made correctly"]
-      }
-    ]
-  },
-  {
-    title: "3.12 HEALTH AND FITNESS MANAGEMENT",
-    subtopics: [
-      {
-        title: "3.12.1 Fitness",
-        competencies: ["Perform simple isometric activities"],
-        learningActivities: [
-          "Performing simple isometric exercises (wall push, plank hold, static leg hold...)"
-        ],
-        expectedStandard: ["Simple isometric activities performed accordingly"]
-      },
-      {
-        title: "3.12.2 Health",
-        competencies: ["Perform developmental activities"],
-        learningActivities: [
-          "Engaging in endurance, flexibility, and agility activities to promote physical wellness"
-        ],
-        expectedStandard: ["Developmental activities performed correctly"]
-      },
-      {
-        title: "3.12.3 Educational Gymnastics (Tumbling and Stunts)",
-        competencies: [
-          "Perform simple tumbling activities",
-          "Demonstrate simple stunts activities"
-        ],
-        learningActivities: [
-          "Performing rolls, balancing routines, and controlled jumps",
-          "Practising partner stunts with safety supervision"
-        ],
-        expectedStandard: ["Simple tumbling and stunts activities performed appropriately"]
-      }
-    ]
-  },
-  {
-    title: "3.13 NEEDLEWORK",
-    subtopics: [
-      {
-        title: "3.13.1 Stitches",
-        competencies: ["Work out samples of temporary stitches"],
-        learningActivities: [
-          "Practising tacking/basting stitches on fabric",
-          "Practising even and uneven running stitches",
-          "Fastening off threads securely"
-        ],
-        expectedStandard: ["Samples of temporary stitches worked out skillfully"]
-      }
-    ]
-  },
-  {
-    title: "3.14 SPORTS SKILLS DEVELOPMENT",
-    subtopics: [
-      {
-        title: "3.14.1 Modified Conventional Games",
-        competencies: ["Perform modified conventional games"],
-        learningActivities: [
-          "Playing mini-football, mini-netball, and modified volleyball with simple rules"
-        ],
-        expectedStandard: ["Modified conventional games performed appropriately"]
-      },
-      {
-        title: "3.14.2 Field and Track Events",
-        competencies: ["Perform field and track events"],
-        learningActivities: [
-          "Practising sprinting (50m, 60m), shuttle relays, standing broad jump, and soft ball throw"
-        ],
-        expectedStandard: ["Field and track events performed correctly"]
-      },
-      {
-        title: "3.14.3 Traditional Games",
-        competencies: ["Perform traditional games"],
-        learningActivities: [
-          "Playing indigenous Zambian games (Pada, Chiyato, Waida, Hide and Seek...)",
-          "Following rules and demonstrating sportsmanship"
-        ],
-        expectedStandard: ["Traditional games performed enthusiastically and correctly"]
-      }
-    ]
-  },
-  {
-    title: "3.15 CRAFTS",
-    subtopics: [
-      {
-        title: "3.15.1 Plaiting",
-        competencies: ["Plait using different styles"],
-        learningActivities: [
-          "Plaiting with 3 or more strands using straw, wool, grass, or fabric strips"
-        ],
-        expectedStandard: ["Plaiting using different styles done skillfully"]
-      },
-      {
-        title: "3.15.2 Weaving",
-        competencies: ["Make familiar objects using weaving techniques"],
-        learningActivities: [
-          "Weaving simple mats, bookmarks, coasters, or baskets using paper strips, reed, or yarn"
-        ],
-        expectedStandard: ["Familiar objects made using weaving techniques appropriately"]
-      },
-      {
-        title: "3.15.3 Knotting",
-        competencies: ["Knot familiar objects"],
-        learningActivities: [
-          "Practising basic knots (reef knot, overhand knot, clove hitch) to make decorative cords or macramé"
-        ],
-        expectedStandard: ["Familiar objects knotted correctly"]
-      },
-      {
-        title: "3.15.4 Modeling",
-        competencies: [
-          "Model familiar objects",
-          "Decorate finished items"
-        ],
-        learningActivities: [
-          "Modeling pottery, animals, utensils with clay or papier-mâché",
-          "Applying decorations (incising, painting, varnishing)"
-        ],
-        expectedStandard: ["Familiar objects modeled and decorated creatively"]
-      },
-      {
-        title: "3.15.5 Construction",
-        competencies: ["Construct familiar items using locally available materials"],
-        learningActivities: [
-          "Constructing model wire cars, cardboard houses, bamboo furniture, or toy planes"
-        ],
-        expectedStandard: ["Familiar items constructed using locally available materials accordingly"]
-      },
-      {
-        title: "3.15.6 Types of Structures",
-        competencies: ["Differentiate natural and artificial structures"],
-        learningActivities: [
-          "Identifying natural structures (bird nests, spider webs, ant hills, tree trunks...)",
-          "Identifying artificial structures (bridges, towers, houses, shelters...)",
-          "Comparing their strengths and functions"
-        ],
-        expectedStandard: ["Natural and artificial structures differentiated correctly"]
-      }
-    ]
-  },
-  {
-    title: "3.16 DESIGNING",
-    subtopics: [
-      {
-        title: "3.16.1 Item Designing and Making",
-        competencies: ["Design and make Items"],
-        learningActivities: [
-          "Identifying a need in the school/home environment",
-          "Sketching proposed solutions and designing simple functional artifacts",
-          "Fabricating the item using accessible materials"
-        ],
-        expectedStandard: ["Items designed and made appropriately"]
-      }
-    ]
-  },
-  {
-    title: "3.17 LETTERING",
-    subtopics: [
-      {
-        title: "3.17.1 Letters",
-        competencies: ["Design capital and small letters"],
-        learningActivities: [
-          "Drawing and constructing block uppercase and lowercase letters with uniform proportions"
-        ],
-        expectedStandard: ["Capital and small letters designed accurately"]
-      },
-      {
-        title: "3.17.2 Poster Making",
-        competencies: ["Design posters based on different concepts"],
-        learningActivities: [
-          "Combining lettering, illustrations, and border design to create informational posters (e.g. Save Water, Keep Zambia Clean, Road Safety)"
-        ],
-        expectedStandard: ["Posters based on different concepts designed creatively"]
-      }
-    ]
-  },
-  {
-    title: "3.18 SWIMMING",
-    subtopics: [
-      {
-        title: "3.18.1 Water Orientation",
-        competencies: ["Demonstrate basic swimming strokes"],
-        learningActivities: [
-          "Practising front crawl flutter kick, arm action, rhythmic breathing, and gliding",
-          "Demonstrating water safety rules"
-        ],
-        expectedStandard: ["Basic swimming strokes demonstrated correctly"]
-      }
-    ]
-  },
-  {
-    title: "3.19 ENTREPRENEURSHIP",
-    subtopics: [
-      {
-        title: "3.19.1 Entrepreneurial Activities",
-        competencies: ["Practise making and selling items"],
-        learningActivities: [
-          "Setting up a mini-market day in class to display and sell pupil-made crafts, snacks, and drawings",
-          "Calculating cost of materials and pricing items for profit",
-          "Handling simple financial transactions"
-        ],
-        expectedStandard: ["Making and selling items practised effectively"]
-      }
-    ]
-  }
-];
+export const obeCreativeTechGrade3 = obcTechnologyGrade3;
 
 export const obeCreativeTechGrade5 = [
   {

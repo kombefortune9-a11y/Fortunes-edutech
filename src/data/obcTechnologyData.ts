@@ -619,326 +619,579 @@ export const obcTechnologyGrade2: Topic[] = [
 export const obcTechnologyGrade3: Topic[] = [
   {
     title: "3.1 TOOLS",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
         title: "3.1.1 Cutting Tools",
         competencies: [
-          "Specific Outcome: 3.1.1.1 Identify and safe-handle cutting tools | Expected Standard: Point out saws and hacksaws and explain basic handle grips safely | [Knowledge]: Cutting elements: handsaws, hacksaws, timber blade profiles, safety guards | [Skills]: Saws identification, correct handling, blade tracking | [Values]: Workshop rule respect, safety caution"
+          "Specific Outcome: 3.1.1.1 Identify tools to cut materials | Knowledge: Cutting tools: saws, hacksaws | Skills: Identification of cutting tools | Values: Awareness of the cutting tools"
         ],
+        knowledge: "Cutting tools: saws, hacksaws.",
+        skills: "Identification of cutting tools.",
+        values: "Awareness of the cutting tools.",
         learningActivities: [
-          "Identifying physical saws in classroom tool lockers and outlining rules of sharp blade paths",
-          "Drawing handsaws in class workbooks and labeling handle and blade teeth parts"
-        ]
+          "Identifying tools to cut materials such as saws and hacksaws",
+          "Discussing safety precautions and showing awareness when handling cutting tools"
+        ],
+        expectedStandard: "Tools to cut materials (saws, hacksaws) identified with awareness of cutting tools."
       }
     ]
   },
   {
     title: "3.2 MATERIALS",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.2.1 Sourcing and Using Local Materials",
+        title: "3.2.1 Uses of Materials",
         competencies: [
-          "Specific Outcome: 3.2.1.1 Design and make simple items from local materials | Expected Standard: Model simple structures using regionally sourced clay, reeds, or dry grasses | [Knowledge]: Materials characteristics: clay (mud shelter prep, pots), grass (roof thumping, mats weave) | [Skills]: Mud clay blending, strands knotting, grass reeds laying | [Values]: Local product appreciation, resource design creativity"
+          "Specific Outcome: 3.2.1.1 Design and make items out from local materials | Knowledge: Make items from local materials such as clay (shelter, pottery) grass (shelter, mats) | Skills: Communicating information on the use of clay and grass | Values: Appreciating the importance of clay and grass in construction"
         ],
+        knowledge: "Make items from local materials such as clay (shelter, pottery) grass (shelter, mats).",
+        skills: "Communicating information on the use of clay and grass.",
+        values: "Appreciating the importance of clay and grass in construction.",
         learningActivities: [
-          "Squeezing and molding soft mud clay soil into animal shapes or mini structural walls",
-          "Interweaving dry grass strands to create miniature toy shelter roofs"
-        ]
+          "Designing and making items from local materials such as clay (shelter, pottery) and grass (shelter, mats)",
+          "Communicating information on the importance and practical uses of clay and grass in construction"
+        ],
+        expectedStandard: "Items designed and made from local materials (clay and grass) and their construction value appreciated."
       }
     ]
   },
   {
     title: "3.3 POSTURE",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.3.1 Stance and Movement",
+        title: "3.3.1 Stance",
         competencies: [
-          "Specific Outcome: 3.3.1.1 Practice correct postural and adaptive exercises | Expected Standard: Maintain erect spine structures while sitting, bending, and carrying school loads | [Knowledge]: Ergonomics (sitting up flat, rolls, stretches, bending muscles), lifting mechanics | [Skills]: Body posture check, balanced movement control | [Values]: Health-consciousness, physical posture self-respect"
+          "Specific Outcome: 3.3.1.1 Explore correct postural habits for good posture | Knowledge: Postural activities (sit ups on flat surfaces, stretches, bends, rolls) | Skills: Effective communication in performing postural activities | Values: Appreciation of posture",
+          "Specific Outcome: 3.3.1.2 Demonstrate correct postural habits in practical and adaptive activities | Knowledge: Postural activities (sit ups on flat surfaces, stretches, bends, rolls) | Skills: Effective communication in performing postural activities | Values: Appreciation of posture"
         ],
+        knowledge: "Postural activities (sit ups on flat surfaces, stretches, bends, rolls).",
+        skills: "Effective communication in performing postural activities.",
+        values: "Appreciation of posture.",
         learningActivities: [
-          "Simulating correct posture at school desks while working on computer keyboards or drafting tables",
-          "Performing dynamic spine stretches guided by physical trainers"
-        ]
+          "Exploring correct postural habits for good posture when sitting, standing, and lifting",
+          "Performing postural activities including sit ups on flat surfaces, stretches, bends, and rolls",
+          "Demonstrating correct postural habits during practical and adaptive physical activities",
+          "Communicating effectively on the importance of maintaining good posture"
+        ],
+        expectedStandard: "Correct postural habits explored and demonstrated in practical and adaptive activities."
       }
     ]
   },
   {
     title: "3.4 DRAWING AND COLOURING",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.4.1 Drawing and Colouring Scenes",
+        title: "3.4.1 Drawing",
         competencies: [
-          "Specific Outcome: 3.4.1.1 Draw and color scenes based on local life experience | Expected Standard: Create paper drawings of home scenes, markets, or villages using proper boundaries | [Knowledge]: Graphic layout, depicting life situations (villages, bus stops, local marketplaces) | [Skills]: Scene composition, outline drafting, hue selections | [Values]: Self-expression, visual arts pride"
+          "Specific Outcome: 3.4.1.1 Draw pictures based on life experiences and events | Knowledge: Pictures (Stories, Life experiences, events); Scenes (My Village, My town, Bus stop, Market place) | Skills: Composition of pictures | Values: Appreciation of imaginary pictures",
+          "Specific Outcome: 3.4.1.2 Colour scenes based on own experiences | Knowledge: Scenes (My Village, My town, Bus stop, Market place) | Skills: Composition of pictures | Values: Appreciation of imaginary pictures"
         ],
+        knowledge: "Pictures (Stories, Life experiences, events); Scenes (My Village, My town, Bus stop, Market place).",
+        skills: "Composition of pictures.",
+        values: "Appreciation of imaginary pictures.",
         learningActivities: [
-          "Penciling clean outline drawings of a local village or busy campus path",
-          "Coloring hand-drawn drawings to show buildings and trees in local environments"
-        ]
+          "Drawing pictures based on life experiences, personal stories, and community events",
+          "Colouring scenes based on own experiences (My Village, My town, Bus stop, Market place)",
+          "Composing pictures creatively and demonstrating appreciation for imaginary artwork"
+        ],
+        expectedStandard: "Pictures drawn based on life experiences and events, and local scenes coloured creatively."
       }
     ]
   },
   {
     title: "3.5 SAFETY AND HEALTH",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.5.1 Environment and Safety",
+        title: "3.5.1 Safety",
         competencies: [
-          "Specific Outcome: 3.5.1.1 Compose songs on safety and practice classroom tidying | Expected Standard: Keep project tables tidy and sing simple rules-based safety tracks | [Knowledge]: Workroom hazards, tidying routines, tool rack systems, shoes and clothes rules | [Skills]: Workspace cleanup, safety rules song singing | [Values]: Responsibility, teamwork, hygienic safety settings"
+          "Specific Outcome: 3.5.1.1 Compose songs on safety | Knowledge: Sing (songs on safety) | Skills: Singing; Application of general safety | Values: Responsibility through cooperation"
         ],
+        knowledge: "Sing (songs on safety).",
+        skills: "Singing; Application of general safety.",
+        values: "Responsibility through cooperation.",
         learningActivities: [
-          "Tidying classroom desks, cleaning wood shavings, and placing pencils inside secure folders",
-          "Composing and singing short rhythmic songs about sharp saws safety and tidy computer tables"
-        ]
+          "Composing and singing songs on safety at home, school, and workshop",
+          "Singing songs highlighting safety rules and accident prevention"
+        ],
+        expectedStandard: "Songs on safety composed and sung with responsibility and cooperation."
+      },
+      {
+        title: "3.5.2 Environmental Protection",
+        competencies: [
+          "Specific Outcome: 3.5.2.1 Demonstrate class room safety practices | Knowledge: Apply safety and cleanliness through tiding (shoes, attire, storage) | Skills: Application of general safety; Tiding | Values: Responsibility through cooperation"
+        ],
+        knowledge: "Apply safety and cleanliness through tiding (shoes, attire, storage).",
+        skills: "Application of general safety; Tiding.",
+        values: "Responsibility through cooperation.",
+        learningActivities: [
+          "Demonstrating classroom safety practices and clean working habits",
+          "Applying safety and cleanliness through tidying shoes, personal attire, and material storage",
+          "Cooperating with peers in class tidying and accident prevention routines"
+        ],
+        expectedStandard: "Classroom safety and tidying practices demonstrated responsibly through cooperation."
       }
     ]
   },
   {
     title: "3.6 PATTERNS",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.6.1 Printing Patterns with Natural Objects",
+        title: "3.6.1 Types of Patterns",
         competencies: [
-          "Specific Outcome: 3.6.1.1 Print different patterns using natural objects | Expected Standard: Stamp ink shapes with leaves, tubers, or cords to produce repeating sequences | [Knowledge]: Print patterns: leaf prints, potato starch prints, string pull tracks, natural layouts | [Skills]: Object carving, dye transfer, border alignments | [Values]: Environmental creativity, artistic decoration"
+          "Specific Outcome: 3.6.1.1 Identify natural objects | Knowledge: Patterns: Leaf print, Potato print, String-pull | Skills: Identification of natural objects | Values: Appreciation of patterns from natural objects",
+          "Specific Outcome: 3.6.1.2 Print different types of patterns | Knowledge: Patterns: Leaf print, Potato print, String-pull | Skills: Printing of different patterns | Values: Appreciation of patterns from natural objects"
         ],
+        knowledge: "Patterns: Leaf print, Potato print, String-pull.",
+        skills: "Identification of natural objects; Printing of different patterns.",
+        values: "Appreciation of patterns from natural objects.",
         learningActivities: [
-          "Dipping carved potato shapes or ribbed leaves in watercolor paints and stamping them onto posters",
-          "Conducting string-pull paint tracks to create abstract, symmetrical visual patterns"
-        ]
+          "Identifying natural objects suitable for pattern making",
+          "Printing different types of patterns using leaf print, potato print, and string-pull techniques",
+          "Displaying and appreciating creative patterns made from natural objects"
+        ],
+        expectedStandard: "Natural objects identified and different patterns (leaf, potato, string-pull) printed."
       }
     ]
   },
   {
     title: "3.7 MOVEMENT",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.7.1 Locomotion Skills",
+        title: "3.7.1 Movement",
         competencies: [
-          "Specific Outcome: 3.7.1.1 Demonstrate fundamental locomotive and adaptive spaces | Expected Standard: Coordinate skipping, lateral pacing, speeds shift, and space control safely | [Knowledge]: Locomotion (hopping, speed, space tracking, muscle manipulation) | [Skills]: Motor coordination, agility | [Values]: Team spirit, physical cooperative balance"
+          "Specific Outcome: 3.7.1.1 Demonstrate fundamental movements using correct techniques | Knowledge: Locomotion/movement (hop, skip, speed, space, control, manipulation) | Skills: Application of locomotion skills | Values: Team spirit in locomotion activities",
+          "Specific Outcome: 3.7.1.2 Perform simple adaptive movements | Knowledge: Locomotion/movement (hop, skip, speed, space, control, manipulation) | Skills: Application of locomotion skills | Values: Team spirit in locomotion activities"
         ],
+        knowledge: "Locomotion/movement (hop, skip, speed, space, control, manipulation).",
+        skills: "Application of locomotion skills.",
+        values: "Team spirit in locomotion activities.",
         learningActivities: [
-          "Navigating a zigzag path of cones using controlled skips and lateral running paces",
-          "Performing speed shift running drills in matching group loops"
-        ]
+          "Demonstrating fundamental locomotive movements: hopping, skipping, moving at varying speeds",
+          "Navigating space with body control and manipulative coordination",
+          "Performing simple adaptive movements and showing team spirit in movement activities"
+        ],
+        expectedStandard: "Fundamental and adaptive movements demonstrated using correct techniques and team spirit."
       }
     ]
   },
   {
     title: "3.8 HARDWARE",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.8.1 Mouse Manipulation",
+        title: "3.8.1 The Mouse",
         competencies: [
-          "Specific Outcome: 3.8.1.1 Drag and drop icons and document items using mice | Expected Standard: Hold, click, and slide a mouse pointer to move desktop folders or text selections precisely | [Knowledge]: Cursor behaviors, select states, click-and-drag mechanics | [Skills]: Mouse coordination, target positioning on desktop files | [Values]: Information sorting accuracy, digital control"
+          "Specific Outcome: 3.8.1.1 Drag items in Microsoft word and icons on the desktop | Knowledge: Microsoft word and icons on the desktop | Skills: Identification of mouse dragging actions; Manipulation of mouse in dragging; Observation of icon changes before dragging | Values: Appreciation of dragging icons; Application of icon dragging; Awareness of icon dragging"
         ],
+        knowledge: "Microsoft word and icons on the desktop.",
+        skills: "Identification of mouse dragging actions; Manipulation of mouse in dragging; Observation of icon changes before dragging.",
+        values: "Appreciation of dragging icons; Application of icon dragging; Awareness of icon dragging.",
         learningActivities: [
-          "Practicing dragging file shortcuts on home desktop screens into specific practice folders",
-          "Using online coloring grids that require mouse-drag paint bucket movements"
-        ]
+          "Identifying mouse dragging actions and holding the computer mouse correctly",
+          "Observing icon visual changes before and during dragging on the desktop",
+          "Manipulating the mouse to drag desktop icons and items in Microsoft Word documents",
+          "Practicing safe handling and appreciation of computer hardware"
+        ],
+        expectedStandard: "Items in Microsoft Word and icons on the desktop dragged and manipulated accurately."
       }
     ]
   },
   {
     title: "3.9 TYPING",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.9.1 Keyboard Skills",
+        title: "3.9.1 Keyboard Keys",
         competencies: [
-          "Specific Outcome: 3.9.1.1 Demonstrate basic typing of words, letters, and simple lines | Expected Standard: Identify the alphanumeric keys and enter short sentences cleanly using spacebars | [Knowledge]: Alphanumeric keys, spacebars, numeric pads, shifting keys, enter trigger keys | [Skills]: Digital typing, keystroke accuracy | [Values]: Computer curiosity, focus on software menu controls"
+          "Specific Outcome: 3.9.1.1 Demonstrate basic typing skills | Knowledge: Numbers, words, sentences and short paragraphs | Skills: Typing of letters and words; Observation of numbers and words; Identification of numeric key pad and main pad | Values: Application of basic typing skills; Curiosity in using the keyboard"
         ],
+        knowledge: "Numbers, words, sentences and short paragraphs.",
+        skills: "Typing of letters and words; Observation of numbers and words; Identification of numeric key pad and main pad.",
+        values: "Application of basic typing skills; Curiosity in using the keyboard.",
         learningActivities: [
-          "Typing simple personal facts (e.g., 'Grade 3 pupil') inside empty text documents",
-          "Locating numeric key blocks on keyboards to enter standard numbers up to 100"
-        ]
+          "Identifying the numeric keypad, main pad, and special function keys on the keyboard",
+          "Observing and typing letters, numbers, and short words correctly",
+          "Demonstrating basic typing skills by typing sentences and short paragraphs in a word processor",
+          "Displaying curiosity and confidence when using the computer keyboard"
+        ],
+        expectedStandard: "Basic typing skills demonstrated with numbers, words, sentences and short paragraphs."
       }
     ]
   },
   {
-    title: "3.10 FOOD AND COOKERY",
+    title: "3.10 FOOD",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
         title: "3.10.1 Meals of the Day",
         competencies: [
-          "Specific Outcome: 3.10.1.1 Identify different meals eaten in a day | Expected Standard: Detail parameters of breakfast, lunch, dinner, and wholesome snack selections | [Knowledge]: Nutrition: breakfast, lunch, dinner/supper, morning and evening snacks, essential food components | [Skills]: Category listing, healthy meals choosing | [Values]: Wise eating selections, food resource appreciation"
+          "Specific Outcome: 3.10.1.1 Identify different meals eaten in a day | Knowledge: Different meals in a day: breakfast, lunch, supper/dinner, and snacks | Skills: Identification of meals of the day | Values: Appreciating breakfast, lunch, dinner and snacks"
         ],
+        knowledge: "Different meals in a day: breakfast, lunch, supper/dinner, and snacks.",
+        skills: "Identification of meals of the day.",
+        values: "Appreciating breakfast, lunch, dinner and snacks.",
         learningActivities: [
-          "Charting a three-meal daily menu displaying local nutritious vegetables, starches, and protein crops",
-          "Discussing the roles of daily morning breakfasts before departing for lessons"
-        ]
+          "Identifying and discussing different meals eaten in a day: breakfast, lunch, supper/dinner, and snacks",
+          "Categorizing nutritious local foods eaten for breakfast, lunch, dinner, and healthy snacks",
+          "Appreciating the value of balanced and timely meals for health"
+        ],
+        expectedStandard: "Different meals eaten in a day (breakfast, lunch, dinner/supper, snacks) identified and appreciated."
       },
       {
         title: "3.10.2 Food Preservation",
         competencies: [
-          "Specific Outcome: 3.10.2.1 Preserve raw vegetables using traditional drying patterns | Expected Standard: Clean, slice, and lay green garden leaves to sun-dry safely | [Knowledge]: Food preservation rules, sun-drying techniques, crop storage safety (cabbage, pumpkin leaves, rape) | [Skills]: Vegetable slicing, sun drying grids, dry storage packing | [Values]: Resource preservation, self-survival skill"
+          "Specific Outcome: 3.10.2.1 Identify foods which can be preserved | Knowledge: Foods that can be preserved: meat, fish, vegetables, fruits | Skills: Identification of foods to be preserved | Values: Appreciating preserved foods",
+          "Specific Outcome: 3.10.2.2 Dry raw vegetables | Knowledge: Raw vegetables: rape, cabbage, pumpkin leaves | Skills: Identification of foods to be preserved | Values: Appreciating preserved foods"
         ],
+        knowledge: "Foods that can be preserved: meat, fish, vegetables, fruits; Raw vegetables: rape, cabbage, pumpkin leaves.",
+        skills: "Identification of foods to be preserved.",
+        values: "Appreciating preserved foods.",
         learningActivities: [
-          "Washing and cutting sweet pumpkin leaves (efyungwa) or rape for solar drying projects",
-          "Storing sun-dried leafy greens in clean bags and explaining how preservation prevents decay"
-        ]
+          "Identifying foods which can be preserved (meat, fish, vegetables, fruits)",
+          "Washing, slicing, and sun-drying raw vegetables: rape, cabbage, and pumpkin leaves",
+          "Storing preserved dried vegetables safely and appreciating their nutritional value"
+        ],
+        expectedStandard: "Foods which can be preserved identified and raw vegetables (rape, cabbage, pumpkin leaves) dried."
       }
     ]
   },
   {
-    title: "3.11 SOUND AND SINGING",
+    title: "3.11 SOUND (3.12)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.11.1 Elements of Sound",
+        title: "3.11.1 Elements of Sounds (3.12.1)",
         competencies: [
-          "Specific Outcome: 3.12.1.1 Identify pitch, pitch rhythm, tone volume, and play local instruments | Expected Standard: Map melody notes and play traditional hand instruments respectfully | [Knowledge]: Pitch (high/low notes), tone volume, local instruments (drums, banjos, silimba xylophones) | [Skills]: Acoustic matching, playing rhythms, melodic listening | [Values]: Indigenous cultural appreciation, acoustic focus"
+          "Specific Outcome: 3.11.1.1 Identify different elements of sound | Knowledge: Elements of sound (tone, pitch, rhythm, volume) | Skills: Creativity through listening, identifying, imitating, judging | Values: Application of sounds"
         ],
+        knowledge: "Elements of sound (tone, pitch, rhythm, volume).",
+        skills: "Creativity through listening, identifying, imitating, judging.",
+        values: "Application of sounds.",
         learningActivities: [
-          "Varying vocal pitch from high to low registers using basic class song scales",
-          "Playing structured rhythms on a traditional silimba (xylophone) or hand drums"
-        ]
+          "Listening to environmental sounds and identifying tone, pitch, rhythm, and volume",
+          "Imitating and reproducing different sound elements vocally and with body percussion",
+          "Judging and applying variations of sound elements creatively"
+        ],
+        expectedStandard: "Different elements of sound (tone, pitch, rhythm, volume) identified and creatively imitated."
+      },
+      {
+        title: "3.11.2 Singing (3.12.2)",
+        competencies: [
+          "Specific Outcome: 3.11.2.1 Sing a variety of songs using local instruments | Knowledge: Local instruments (drums, banjos, silimba) | Skills: Application of skills in singing; Instrument playing | Values: Appreciation of local instruments"
+        ],
+        knowledge: "Local instruments (drums, banjos, silimba).",
+        skills: "Application of skills in singing; Instrument playing.",
+        values: "Appreciation of local instruments.",
+        learningActivities: [
+          "Singing a variety of traditional, cultural, and modern songs with rhythm and expression",
+          "Playing local instruments (drums, banjos, silimba) to accompany class songs",
+          "Appreciating indigenous musical instruments and cultural rhythms"
+        ],
+        expectedStandard: "A variety of songs sung and accompanied using local instruments (drums, banjos, silimba)."
       }
     ]
   },
   {
-    title: "3.12 EDUCATIONAL GYMNASTICS",
+    title: "3.12 EDUCATIONAL GYMNASTICS (3.13)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.13.1 Tumbling and Pyramids",
+        title: "3.12.1 Tumbling (3.13.1)",
         competencies: [
-          "Specific Outcome: 3.13.1.1 Perform safe landings and simple pyramid formations | Expected Standard: Execute stable feet-first mat landings and compose structured low pyramids of three pupils safely | [Knowledge]: Agility gymnastics, vertical land safety, low pyramid base balances | [Skills]: Physical landing control, body frame linking | [Values]: High group trust, collective safety discipline"
+          "Specific Outcome: 3.12.1.1 Perform simple landing activities | Knowledge: Gymnastic skills (land, balance, formation) | Skills: Application of simple gymnastic skills | Values: Cooperative learning through team work"
         ],
+        knowledge: "Gymnastic skills (land, simple pyramid, balance, formation).",
+        skills: "Application of simple gymnastic skills.",
+        values: "Cooperative learning through team work.",
         learningActivities: [
-          "Practicing light jumps off low benches with stable, knees-bent floor landings",
-          "Forming a basic three-student pyramid showcasing balanced coordination under teacher supervision"
-        ]
+          "Practicing safe landing activities on mats with knees bent and balanced control",
+          "Performing controlled body landings and dynamic gymnastics balances"
+        ],
+        expectedStandard: "Simple landing activities performed safely with control."
+      },
+      {
+        title: "3.12.2 Stunts (3.13.2)",
+        competencies: [
+          "Specific Outcome: 3.12.2.1 Demonstrate simple pyramid formations | Knowledge: Gymnastic skills (simple pyramid, balance, formation) | Skills: Application of simple gymnastic skills | Values: Cooperative learning through team work"
+        ],
+        knowledge: "Gymnastic skills (simple pyramid, balance, formation).",
+        skills: "Application of simple gymnastic skills.",
+        values: "Cooperative learning through team work.",
+        learningActivities: [
+          "Working in small cooperative groups to form simple low human pyramids",
+          "Demonstrating balance, stability, and group coordination",
+          "Practicing cooperative learning through team work and safe dismounting"
+        ],
+        expectedStandard: "Simple pyramid formations demonstrated safely through teamwork and balance."
       }
     ]
   },
   {
-    title: "3.13 HEALTH AND FITNESS MANAGEMENT",
+    title: "3.13 HEALTH AND FITNESS MANAGEMENT (3.14)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.14.1 Isometric and Agility Exercises",
+        title: "3.13.1 Fitness (3.14.1)",
         competencies: [
-          "Specific Outcome: 3.14.1.1 Perform simple isometric and dynamic physical activities | Expected Standard: Exhibit wall-pushes, bar hangs, and muscle tension holds with balanced breathing | [Knowledge]: Static exercises (wall-push, plank hold, lifting), rope climbs, rungs hangs, vertical climbs | [Skills]: Muscle tension control, dynamic respiration during strain | [Values]: Physical active endurance, appreciation of body strength"
+          "Specific Outcome: 3.13.1.1 Perform simple isometric activities | Knowledge: Simple isometric (strength training exercises) | Skills: Application of developmental and simple isometric activities | Values: Appreciation of developmental activities"
         ],
+        knowledge: "Simple isometric (strength training exercises).",
+        skills: "Application of developmental and simple isometric activities.",
+        values: "Appreciation of developmental activities.",
         learningActivities: [
-          "Performing a simple 10-second static wall-push exercise with correct posture",
-          "Hanging from outdoor parallel bars to display basic shoulder and arm hold strength"
-        ]
+          "Performing simple isometric strength exercises: wall pushes, static plank holds, and muscle tension holds",
+          "Practicing steady breathing during isometric contractions"
+        ],
+        expectedStandard: "Simple isometric strength training activities performed with correct form."
+      },
+      {
+        title: "3.13.2 Health (3.14.2)",
+        competencies: [
+          "Specific Outcome: 3.13.2.1 Perform simple developmental activities | Knowledge: Developmental activities: jogging, hanging, lifting, pulling, pushing | Skills: Application of developmental and simple isometric activities | Values: Appreciation of developmental activities"
+        ],
+        knowledge: "Developmental activities (jogging, hanging, lifting, pulling, pushing).",
+        skills: "Application of developmental and simple isometric activities.",
+        values: "Appreciation of developmental activities.",
+        learningActivities: [
+          "Performing developmental activities: jogging, hanging on bars, lifting light objects, pulling, and pushing",
+          "Discussing the physical and cardiovascular benefits of active movement",
+          "Appreciating developmental physical activities for healthy bodily growth"
+        ],
+        expectedStandard: "Simple developmental activities (jogging, hanging, lifting, pulling, pushing) performed safely."
       }
     ]
   },
   {
-    title: "3.14 ENERGY",
+    title: "3.14 ENERGY (3.15)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.15.1 The Electric Torch",
+        title: "3.14.1 The Torch (3.15.1)",
         competencies: [
-          "Specific Outcome: 3.15.1.1 Use dry cells and light a bulb by identifying terminals | Expected Standard: Align dry cell contacts to feed low voltages directly into mini sockets | [Knowledge]: Dry cells segments (positive nub, negative flat metal face), wire links, terminal loops, socket bulb | [Skills]: Connecting positive/negative lines, stripping copper endings safely, lighting bulb loops | [Values]: Systematic path checking, safe low-voltage exploration"
+          "Specific Outcome: 3.14.1.1 Identify external parts of a dry cell | Knowledge: Positive and negative terminals | Skills: Connecting the positive and negative terminals to produce light | Values: Applying dry cells to produce light",
+          "Specific Outcome: 3.14.1.2 Use dry cells to light a bulb | Knowledge: Lighting a bulb | Skills: Connecting the positive and negative terminals to produce light | Values: Applying dry cells to produce light"
         ],
+        knowledge: "Positive and negative terminals; Lighting a bulb.",
+        skills: "Connecting the positive and negative terminals to produce light.",
+        values: "Applying dry cells to produce light.",
         learningActivities: [
-          "Inspecting a standard dry battery cell for flat (-) and nub (+) terminal markers",
-          "Connecting dual copper lines to a battery terminal and a mini test light bulb on a circuit card"
-        ]
+          "Identifying the external parts and terminals (positive and negative) of a dry cell battery",
+          "Connecting wires to dry cell terminals and a torch bulb to complete a simple circuit and produce light",
+          "Applying dry cells safely in torches and lighting experiments"
+        ],
+        expectedStandard: "External parts of a dry cell identified and dry cells used to light a bulb."
       }
     ]
   },
   {
-    title: "3.15 CELL PHONES",
+    title: "3.15 CELL PHONES (3.16)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.16.1 Use of Cell Phones",
+        title: "3.15.1 Use of Cell Phones (3.16.1)",
         competencies: [
-          "Specific Outcome: 3.16.1.1 Demonstrate dial skills and describe proper cell phone rules | Expected Standard: Locate contact grids, type numbers, and state rules against mobile distraction | [Knowledge]: Mobile parts, keyboards, contact dials, calling/answering, etiquette, text sends | [Skills]: Number key entry, vocal communication | [Values]: Responsible phone habits, avoiding device addiction or phone play during school"
+          "Specific Outcome: 3.15.1.1 Demonstrate the ability to use cell phone | Knowledge: Cell phone, parts of a cell phone; Dialing, sending and receiving a call | Skills: Identification of cell phone; Communication using cell phone; Demonstration usage of cell phone; Application of cellphone | Values: Appreciation of the use of cell phone; Curiosity in using the cell phone; Awareness of the abuse of cell phone"
         ],
+        knowledge: "Cell phone, parts of a cell phone; Dialing, sending and receiving a call.",
+        skills: "Identification of cell phone; Communication using cell phone; Demonstration usage of cell phone; Application of cellphone.",
+        values: "Appreciation of the use of cell phone; Curiosity in using the cell phone; Awareness of the abuse of cell phone.",
         learningActivities: [
-          "Roleplaying calling emergency numbers or school gates on a training mobile device",
-          "Discussing safety rules regarding not sharing private family passwords or patterns over mobile links"
-        ]
+          "Identifying the main external parts and features of a cell phone",
+          "Demonstrating dialing, making, and answering calls politely",
+          "Role-playing phone communication and emergency call procedures",
+          "Discussing proper phone etiquette and awareness of cell phone abuse, distraction, and cyber safety"
+        ],
+        expectedStandard: "Ability to use a cell phone demonstrated responsibly (dialing, sending and receiving calls)."
       }
     ]
   },
   {
-    title: "3.16 NEEDLEWORK",
+    title: "3.16 NEEDLE WORK (3.17)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.17.1 Stitches",
+        title: "3.16.1 Stitches (3.17.1)",
         competencies: [
-          "Specific Outcome: 3.17.1.1 Work out temporal tacking and running stitches safely | Expected Standard: Thread thick yarn needles and sew basic in-out tacking lines on canvas fabrics safely | [Knowledge]: Needlework tools, sewing rule paths, temporal stitches (even tacking, long and short tacking) | [Skills]: Yarn needle threading, even stitch spacing, index finger safety | [Values]: Patience, careful layout planning, manual craft self-reliance"
+          "Specific Outcome: 3.16.1.1 Explain rules of working out stitches | Knowledge: Rules for working stitches: (One stitch at a time, choose correct thread) | Skills: Sewing of temporal stitches | Values: Awareness of rules when working out stitches; Cooperating in group activities",
+          "Specific Outcome: 3.16.1.2 Workout temporal stitches | Knowledge: Temporal stitches: even tacking, long and short tacking, tailor's tacking | Skills: Sewing of temporal stitches | Values: Awareness of rules when working out stitches; Cooperating in group activities"
         ],
+        knowledge: "Rules for working stitches: (One stitch at a time, choose correct thread); Temporal stitches: even tacking, long and short tacking, tailor's tacking.",
+        skills: "Sewing of temporal stitches.",
+        values: "Awareness of rules when working out stitches; Cooperating in group activities.",
         learningActivities: [
-          "Threading short yarn strands into wide crewel needles and practicing simple in-and-out running lines on hessian cloths",
-          "Working even temporal tacking tracks to join two test fabric edges together neatly"
-        ]
+          "Explaining essential rules of stitching: working one stitch at a time, selecting suitable thread and needle size",
+          "Threading needles safely and practicing temporal stitches: even tacking, long and short tacking, and tailor's tacking on fabric",
+          "Working cooperatively in groups to share sewing supplies safely"
+        ],
+        expectedStandard: "Rules of working stitches explained and temporal stitches worked out accurately."
       }
     ]
   },
   {
-    title: "3.17 RECREATION",
+    title: "3.17 RECREATION (3.18)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.18.1 Rhythmic Dances and Welfare Games",
+        title: "3.17.1 Dance (3.18.1)",
         competencies: [
-          "Specific Outcome: 3.18.1.1 Perform local dances and participate in child protective games | Expected Standard: Follow drum syncs and understand class play rules explaining child rights | [Knowledge]: Local traditional dances, steps syncs, child abuse protection concepts inside stories | [Skills]: Melodic dance moves, listening to safety alerts | [Values]: Social safety consciousness, peer child protection support, teamwork"
+          "Specific Outcome: 3.17.1.1 Perform local dances with simple rhythm | Knowledge: Local dances (structured and unstructured movements); Simple rhythm (clapping, steps) | Skills: Creativity in recreation activities | Values: Cooperation through team spirit"
         ],
+        knowledge: "Local dances (structured and unstructured movements); Simple rhythm (clapping, steps).",
+        skills: "Creativity in recreation activities.",
+        values: "Cooperation through team spirit.",
         learningActivities: [
-          "Executing paced traditional hand claps and matching stepping lines",
-          "Participating in classroom drama games about child protection rules and speaking up"
-        ]
+          "Performing local dances using structured and unstructured movements",
+          "Following and maintaining simple rhythm using hand clapping and paced foot steps",
+          "Demonstrating team spirit and cooperation through recreational dance"
+        ],
+        expectedStandard: "Local dances performed with simple rhythm and cooperative team spirit."
+      },
+      {
+        title: "3.17.2 Health (3.18.2)",
+        competencies: [
+          "Specific Outcome: 3.17.2.1 Perform games with messages of child abuse | Knowledge: Games and child abuse messages | Skills: Creativity in recreation activities | Values: Cooperation through team spirit"
+        ],
+        knowledge: "Games and child abuse messages.",
+        skills: "Creativity in recreation activities.",
+        values: "Cooperation through team spirit.",
+        learningActivities: [
+          "Participating in recreational and educational games conveying messages on preventing child abuse",
+          "Discussing child protection rights and safety rules through creative drama and song",
+          "Demonstrating cooperation and team spirit during recreation"
+        ],
+        expectedStandard: "Recreational games conveying child abuse prevention messages performed cooperatively."
       }
     ]
   },
   {
-    title: "3.18 SPORTS SKILLS DEVELOPMENT",
+    title: "3.18 SPORTS SKILLS DEVELOPMENT (3.19)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.19.1 Track Relays and Traditional Games",
+        title: "3.18.1 Games (Modified Conventional Games) (3.19.1)",
         competencies: [
-          "Specific Outcome: 3.19.1.1 Demonstrate athletic sprint drills and local traditional play | Expected Standard: Sprint 40 meters, pass lane batons safely, and perform traditional games (e.g., chiyenga) | [Knowledge]: Relays (40 meters), bucket races, traditional coordination games like chiyenga | [Skills]: Relay exchanges, spatial focus, coordination | [Values]: Dynamic sportsmanship, cooperative team gaming"
+          "Specific Outcome: 3.18.1.1 Perform a variety of games, track and field events | Knowledge: Games and track events (relays 40 meters, bucket race, formations, throw, catch, traditional games: chiyenga) | Skills: Application of various skills | Values: Team spirit through cooperation"
         ],
+        knowledge: "Games and track events (relays 40 meters, bucket race, formations, throw, catch, traditional games: chiyenga).",
+        skills: "Application of various skills.",
+        values: "Team spirit through cooperation.",
         learningActivities: [
-          "Running 40-meter loop relays focusing on clean backward baton transitions under lanes rules",
-          "Playing local traditional speed-coordination hand games (chiyenga) on grass spaces"
-        ]
+          "Participating in modified conventional games, bucket races, throwing, and catching in team formations",
+          "Applying athletic skills with cooperative team spirit"
+        ],
+        expectedStandard: "Modified conventional games performed with sportsmanship and cooperation."
+      },
+      {
+        title: "3.18.2 Track and Field Events (3.19.2)",
+        competencies: [
+          "Specific Outcome: 3.18.2.1 Perform track and field events | Knowledge: Track events: relays 40 meters, formations, throw, catch | Skills: Application of track and field skills | Values: Team spirit through cooperation"
+        ],
+        knowledge: "Track events (relays 40 meters, formations, throw, catch).",
+        skills: "Application of various track and field skills.",
+        values: "Team spirit through cooperation.",
+        learningActivities: [
+          "Running 40-meter relays with baton handover in lane formations",
+          "Practicing throwing and catching drills safely on the sports field"
+        ],
+        expectedStandard: "Track and field events (40m relays, throw, catch) performed with coordination."
+      },
+      {
+        title: "3.18.3 Traditional Games (3.19.3)",
+        competencies: [
+          "Specific Outcome: 3.18.3.1 Play traditional games | Knowledge: Traditional games: chiyenga | Skills: Application of traditional games skills | Values: Team spirit through cooperation"
+        ],
+        knowledge: "Traditional games: chiyenga.",
+        skills: "Application of traditional games skills.",
+        values: "Team spirit through cooperation.",
+        learningActivities: [
+          "Playing indigenous traditional games such as chiyenga with agility and hand-eye coordination",
+          "Demonstrating team spirit and cultural appreciation through traditional games"
+        ],
+        expectedStandard: "Traditional games (chiyenga) played with agility, coordination, and team spirit."
       }
     ]
   },
   {
-    title: "3.19 CONSTRUCTIONAL CRAFTS",
+    title: "3.19 CONSTRUCTIONAL CRAFTS (3.20)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.20.1 Knotting",
+        title: "3.19.1 Knotting (3.20.1)",
         competencies: [
-          "Specific Outcome: 3.20.1.1 Knot various ropes to produce simple items | Expected Standard: Tie reef and overhand locks to construct bag handles or skipping ropes | [Knowledge]: Knot lines: overhand patterns, reef knots, yarn cords, string ropes | [Skills]: Thread loop feeds, strand tension locking, handles braiding | [Values]: Manual precision, product design creativity"
+          "Specific Outcome: 3.19.1.1 Knot various items | Knowledge: Knotting (ropes, bags) | Skills: Knotting of functional items | Values: Creativity in knotting"
         ],
+        knowledge: "Knotting (ropes, bags).",
+        skills: "Knotting of functional items.",
+        values: "Creativity in knotting.",
         learningActivities: [
-          "Tying stable reef knots with thick climbing ropes and testing their load hold strengths",
-          "Assembling hand skipping ropes by looping and knotting thin fiber strands together cleanly"
-        ]
+          "Exploring various knotting techniques using cords, strings, and local fibers",
+          "Knotting ropes and crafting functional bag handles or net bags",
+          "Demonstrating creativity and neatness in knotting craft projects"
+        ],
+        expectedStandard: "Various functional items (ropes, bags) knotted skillfully and creatively."
       }
     ]
   },
   {
-    title: "3.20 SWIMMING",
+    title: "3.20 SWIMMING (3.21)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.21.1 Water Strokes and Hygiene",
+        title: "3.20.1 Pool Hygiene (3.21.1)",
         competencies: [
-          "Specific Outcome: 3.21.1.1 Execute basic side-strokes and preserve pool cleanliness | Expected Standard: Apply arm sweeps and leg kicks while maintaining hygiene rules | [Knowledge]: Pool hygiene (no spitting, ear-protect, shower wash), glide lines, side strokes | [Skills]: Paddle sweeps, buoyancy balance, breathing schedules | [Values]: Personal hygiene care, aquatic survival courage"
+          "Specific Outcome: 3.20.1.1 Demonstrate pool hygiene activities | Knowledge: Pool cleanliness | Skills: Application of simple swimming skills | Values: Self-esteem through team work"
         ],
+        knowledge: "Pool cleanliness.",
+        skills: "Application of simple swimming skills.",
+        values: "Self-esteem through team work.",
         learningActivities: [
-          "Performing leg paddle movements on pool edges while holding foam kicking boards",
-          "Showering cleanly under teacher guidelines before entering water channels"
-        ]
+          "Demonstrating pool hygiene activities and water cleanliness rules (showering, proper attire, no spitting)",
+          "Practicing water safety and cleanliness habits around the pool environment"
+        ],
+        expectedStandard: "Pool hygiene and water cleanliness activities demonstrated diligently."
+      },
+      {
+        title: "3.20.2 Water Orientation (3.21.2)",
+        competencies: [
+          "Specific Outcome: 3.20.2.1 Demonstrate a variety of basic strokes | Knowledge: Skills (side stroke, unskilled strokes: push, inhale, float) | Skills: Application of simple swimming skills | Values: Self-esteem through team work"
+        ],
+        knowledge: "Skills (side stroke, unskilled strokes: push, inhale, float).",
+        skills: "Application of simple swimming skills.",
+        values: "Self-esteem through team work.",
+        learningActivities: [
+          "Practicing water orientation skills: pushing off the wall, inhaling, and floating",
+          "Demonstrating a variety of basic swimming strokes including side stroke",
+          "Developing aquatic confidence and self-esteem through group swimming drills"
+        ],
+        expectedStandard: "A variety of basic swimming strokes and water orientation skills (push, inhale, float, side stroke) demonstrated."
       }
     ]
   },
   {
-    title: "3.21 ENTREPRENEURSHIP",
+    title: "3.21 ENTREPRENEURSHIP (3.22)",
+    generalCompetency: "GENERAL OUTCOMES: Acquire skills in the use of computers both at home and school; Acquire and observe safety rules to operate effectively within the working environment; Develop the power of imagination, observation and visual communication using different media; Develop skills in crafts using materials from the local environment; Demonstrate the ability to apply principles of nutrition. KEY COMPETENCES: Demonstrate ability to write words, sentences and short paragraphs using the keyboard; Demonstrate knowledge and skill to work with local materials; Demonstrate skills in drawing and colouring; Demonstrate ability and skills to make simple items; Demonstrate basic skills of working out stitches.",
     subtopics: [
       {
-        title: "3.22.1 Business Ventures",
+        title: "3.21.1 Business Ventures (3.22.1)",
         competencies: [
-          "Specific Outcome: 3.22.1.1 Identify types of businesses inside the local community | Expected Standard: List local farms, craft markets, and stores and recount basic trading steps | [Knowledge]: Famous regional trades: vegetable markets, clay pottery sales, fiber mat weaving, bakeries | [Skills]: Observation, data grouping, basic money transaction math | [Values]: Enterprising spirit, self-reliance appreciation"
+          "Specific Outcome: 3.21.1.1 Identify types of businesses in the community | Knowledge: Crop and animal related business, crafts, baking and business centers | Skills: Surveying and collecting data on famous businesses within their community | Values: Appreciating the value of assorted types of business within an area"
         ],
+        knowledge: "Crop and animal related business, crafts, baking and business centers.",
+        skills: "Surveying and collecting data on famous businesses within their community.",
+        values: "Appreciating the value of assorted types of business within an area.",
         learningActivities: [
-          "Listing three successful home-craft or crop sales businesses in the local neighborhood",
-          "Roleplaying running a mini market stall selling hand-modeled clay utensils for mock coins"
-        ]
+          "Identifying types of businesses in the community: crop and animal related business, crafts, baking, and business centers",
+          "Surveying and collecting data on famous businesses within the local community",
+          "Appreciating the economic value and service of assorted types of business in the area"
+        ],
+        expectedStandard: "Types of businesses in the community (crop/animal, crafts, baking, business centers) identified and surveyed."
       }
     ]
   }

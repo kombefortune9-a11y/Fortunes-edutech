@@ -8,6 +8,7 @@ import { useAuth } from './FirebaseProvider';
 import { toast } from 'react-hot-toast';
 import { cn } from '../lib/utils';
 import { ADMIN_EMAIL } from '../constants';
+import { NewsAndFeedbackTicker } from './NewsAndFeedbackTicker';
 
 interface Review {
   id: string;
@@ -21,112 +22,7 @@ interface Review {
 }
 
 export const ReviewTicker: React.FC<{ className?: string }> = ({ className }) => {
-  const { user } = useAuth();
-  const [reviews, setReviews] = useState<Review[]>([]);
-
-  useEffect(() => {
-    // Load from cache initially
-    try {
-      const cached = safeLocalStorage.getItem('eduplan_reviews_cache');
-      if (cached) setReviews(JSON.parse(cached));
-    } catch (e) {
-      console.warn("Error loading cached reviews");
-    }
-
-    const q = query(collection(db, 'reviews'), orderBy('timestamp', 'desc'), limit(15));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Review));
-      setReviews(data);
-      // Cache successful fetch
-      safeLocalStorage.setItem('eduplan_reviews_cache', JSON.stringify(data));
-    }, (error: any) => {
-      handleFirestoreError(error, OperationType.LIST, 'reviews');
-    });
-    return unsubscribe;
-  }, []);
-
-  const DEFAULT_REVIEWS: Review[] = [
-    {
-      id: 'default-1',
-      name: 'Chipo Banda',
-      email: 'chipo@fortunes.edu',
-      text: 'This tool has made lesson planning so easy! I generate my schemes of work in minutes.',
-      rating: 5,
-      timestamp: null,
-      isTrial: true
-    },
-    {
-      id: 'default-2',
-      name: 'Mwansa Tembo',
-      email: 'mwansa@fortunes.edu',
-      text: 'The syllabus integration is seamless. Highly recommended for Zambian teachers.',
-      rating: 5,
-      timestamp: null
-    },
-    {
-      id: 'default-3',
-      name: 'Fortune Kombe',
-      email: 'fortune@fortunes.edu',
-      text: 'Excellent platform. The lesson plans align perfectly with the CBC curriculum.',
-      rating: 5,
-      timestamp: null
-    },
-    {
-      id: 'default-4',
-      name: 'Albert Phiri',
-      email: 'albert@fortunes.edu',
-      text: 'Saves me so many hours of typing. The weekly forecasts sync beautifully!',
-      rating: 5,
-      timestamp: null
-    },
-    {
-      id: 'default-5',
-      name: 'Mutale Mulenga',
-      email: 'mutale@fortunes.edu',
-      text: 'A game changer for lesson notes. Instant, accurate, and professional.',
-      rating: 5,
-      timestamp: null
-    }
-  ];
-
-  const displayReviews = reviews.length > 0 ? [...reviews, ...DEFAULT_REVIEWS] : DEFAULT_REVIEWS;
-  const isDeveloper = user?.email?.toLowerCase().trim() === ADMIN_EMAIL;
-
-  return (
-    <div className={cn("flex flex-col gap-1.5", className)}>
-      <div className="flex items-center gap-2 ml-1">
-        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-        <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest italic drop-shadow-sm">Live Feedback</span>
-      </div>
-      
-      <div className="overflow-hidden h-10 flex items-center bg-white/60 backdrop-blur-md rounded-2xl border border-emerald-200/50 px-4 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)]">
-        <motion.div 
-          className="flex whitespace-nowrap gap-12 text-[11px] font-bold text-slate-700 tracking-tight"
-          animate={{ x: [0, -2500] }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-        >
-          {[...displayReviews, ...displayReviews, ...displayReviews].map((rev, idx) => (
-            <div key={`${rev.id}-${idx}`} className="flex items-center gap-3">
-              <span className="text-emerald-700 font-extrabold uppercase bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100/50 flex items-center gap-1.5">
-                <div className="w-1 h-1 rounded-full bg-emerald-400" />
-                {rev.name}
-                {isDeveloper && rev.isTrial && rev.email && (
-                  <span className="text-[9px] text-rose-600 font-extrabold lowercase ml-1 px-1.5 py-0.5 bg-rose-50 rounded border border-rose-100 flex items-center gap-1 select-all">
-                    <span className="w-1 h-1 rounded-full bg-rose-400 animate-pulse" />
-                    {rev.email} (trial)
-                  </span>
-                )}
-              </span>
-              <span className="text-slate-600 italic">"{rev.text}"</span>
-              <div className="flex gap-0.5 text-amber-400 drop-shadow-sm">
-                {Array.from({ length: rev.rating }).map((_, i) => <Star key={i} size={10} fill="currentColor" />) }
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-    </div>
-  );
+  return <NewsAndFeedbackTicker className={className} />;
 };
 
 export const ReviewSystem: React.FC<{ 
@@ -134,7 +30,14 @@ export const ReviewSystem: React.FC<{
   isExternalOpen?: boolean;
   onClose?: () => void;
 }> = ({ showFloatingButton = true, isExternalOpen, onClose }) => {
-  const { user, subscriptionDetails, userType } = useAuth();
+  const { 
+    user, 
+    subscriptionDetails, 
+    userType,
+    schoolCircle,
+    schoolTeacher,
+    isSchoolRepresentative
+  } = useAuth();
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const isOpen = isExternalOpen !== undefined ? isExternalOpen : internalIsOpen;
   const setIsOpen = (val: boolean) => {
@@ -142,35 +45,79 @@ export const ReviewSystem: React.FC<{
     setInternalIsOpen(val);
   };
 
+  const [name, setName] = useState('');
   const [text, setText] = useState('');
   const [rating, setRating] = useState(5);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (!name) {
+      if (schoolCircle) {
+        const teacherName = schoolTeacher?.name || user?.displayName || 'Teacher';
+        setName(`${schoolCircle.schoolName} (${teacherName})`);
+      } else if (user?.displayName) {
+        setName(user.displayName);
+      } else if (user?.email) {
+        // Extract just the one name from the email (e.g. kombefortune9@gmail.com -> Kombefortune)
+        const localPart = user.email.split('@')[0];
+        const namePart = localPart.split(/[\.\-\_]/)[0]; // split by common separators
+        const cleanName = namePart.replace(/[0-9]/g, ''); // remove numbers
+        if (cleanName) {
+          const capitalizedName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1).toLowerCase();
+          setName(capitalizedName);
+        }
+      }
+    }
+  }, [user?.displayName, user?.email, schoolCircle, schoolTeacher]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      toast.error("Please login to leave a review");
+    if (!text.trim() || !name.trim()) {
+      toast.error("Please provide both your name and comment.");
       return;
     }
-    if (!text.trim()) return;
 
     setIsSubmitting(true);
     try {
+      const reviewName = name.trim();
+      const reviewEmail = user?.email || (user?.uid ? `${user.uid}@fortunesedutech.com` : 'trial_teacher@fortunesedutech.com');
+      const reviewPhoto = user?.photoURL || '';
+      const isTrial = !user || !!(subscriptionDetails?.isTrialMode || userType === 'guest');
+
       await addDoc(collection(db, 'reviews'), {
-        name: user.displayName || 'Teacher',
-        email: user.email,
-        photoURL: user.photoURL,
+        name: reviewName,
+        email: reviewEmail,
+        photoURL: reviewPhoto,
         text: text.trim(),
         rating,
-        isTrial: !!(subscriptionDetails?.isTrialMode || userType === 'guest'),
+        isTrial: isTrial,
         timestamp: serverTimestamp()
       });
       setText('');
       setRating(5);
       setIsOpen(false);
       toast.success("Thank you for your recommendation!");
-    } catch (err) {
-      handleFirestoreError(err, OperationType.CREATE, 'reviews');
+    } catch (err: any) {
+      console.warn("Could not submit review to Firestore directly, saving feedback locally:", err);
+      // Fallback: Store locally so trial or offline users' feedback is recorded
+      try {
+        const localReviewsKey = 'eduplan_local_reviews_submitted';
+        const existingLocal = safeLocalStorage.getItem(localReviewsKey);
+        const list = existingLocal ? JSON.parse(existingLocal) : [];
+        list.push({
+          name: name.trim() || 'Teacher',
+          email: user?.email || 'teacher@fortunesedutech.com',
+          text: text.trim(),
+          rating,
+          timestamp: new Date().toISOString()
+        });
+        safeLocalStorage.setItem(localReviewsKey, JSON.stringify(list));
+      } catch (e) {}
+
+      setText('');
+      setRating(5);
+      setIsOpen(false);
+      toast.success("Thank you for your recommendation!");
     } finally {
       setIsSubmitting(false);
     }
@@ -219,6 +166,54 @@ export const ReviewSystem: React.FC<{
               </div>
 
               <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Your Name / Review As</label>
+                    {schoolCircle && (
+                      <span className="text-[9px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
+                        🏫 {schoolCircle.schoolName}
+                      </span>
+                    )}
+                  </div>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter your name"
+                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 font-bold text-slate-700 outline-none hover:bg-white focus:bg-white focus:ring-2 focus:ring-red-100 transition-all text-xs sm:text-sm"
+                    required
+                  />
+                  {schoolCircle && (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setName(`${schoolCircle.schoolName} (${schoolTeacher?.name || user?.displayName || 'Teacher'})`)}
+                        className="px-2.5 py-1 rounded-lg text-[9.5px] font-black uppercase bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition-colors cursor-pointer"
+                      >
+                        Teacher: {schoolCircle.schoolName} ({schoolTeacher?.name || 'Teacher'})
+                      </button>
+                      {isSchoolRepresentative && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => setName(`${schoolCircle.schoolName} (Representative)`)}
+                            className="px-2.5 py-1 rounded-lg text-[9.5px] font-black uppercase bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition-colors cursor-pointer"
+                          >
+                            Rep: {schoolCircle.schoolName} (Representative)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setName(schoolCircle.schoolName)}
+                            className="px-2.5 py-1 rounded-lg text-[9.5px] font-black uppercase bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 transition-colors cursor-pointer"
+                          >
+                            School: {schoolCircle.schoolName}
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Your Experience</label>
                   <div className="flex gap-2">

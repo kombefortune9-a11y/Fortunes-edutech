@@ -1022,272 +1022,788 @@ export const zambianLangGrade1Unpacked = [
 ];
 
 export const englishGrade3OBC = [
+  // ==========================================
+  // COMPONENT 1: LISTENING AND SPEAKING
+  // ==========================================
   {
     title: "3.1.1 Conversation",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.1.1 Talking about Responsibilities",
-        competencies: ["Talk about chores and responsibilities of family members", "Take part in simple dialogues"],
-        knowledge: "Roles e.g. cooking, sweeping; Responsibilities e.g. caring, obedience",
-        skills: "Application of vocabulary on talking about chores",
-        values: "Knowledge and awareness of vocabulary about chores"
+        title: "3.1.1.1 Chores and Responsibilities of Family Members",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.1.1 Talk about chores and responsibilities of family members",
+          "Take part in simple dialogues"
+        ],
+        knowledge: "Roles e.g. cooking, sweeping, gardening; Responsibilities e.g. caring, obedience",
+        skills: "Application of vocabulary on talking about chores and responsibilities in homes",
+        values: "Knowledge and awareness of vocabulary on talking about chores and responsibilities in homes",
+        learningActivities: [
+          "Role-playing family members carrying out various household chores (cooking, sweeping, gardening)",
+          "Discussing family responsibilities such as caring for others and obedience in the home",
+          "Participating in pairs in simple dialogues asking and answering questions about home duties"
+        ],
+        expectedStandard: "Learners talk about chores and family responsibilities using correct vocabulary and participate effectively in simple dialogues."
       }
     ]
   },
   {
     title: "3.1.2 Time",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.2.1 Telling Time",
-        competencies: ["Tell time of the day", "Recall days of the week and months of the year"],
-        knowledge: "Times of a day (hours); Days of the week; Months of a year",
+        title: "3.1.2.1 Telling Time, Days of the Week and Months of the Year",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.2.1 Tell time of the day",
+          "3.1.2.2 Recall days of the week and months of the year"
+        ],
+        knowledge: "• Times of a day (hours)\n• Days of the week\n• Months of a year",
         skills: "Application of vocabulary on time",
-        values: "Knowledge and awareness of vocabulary on time"
+        values: "Knowledge and awareness of vocabulary on time",
+        learningActivities: [
+          "Telling time of the day (hours) using clock faces (e.g. 1 o\x27clock, 2 o\x27clock)",
+          "Reciting and ordering the days of the week (Monday through Sunday) in relation to daily activities",
+          "Naming, reciting, and ordering the twelve months of the year (January to December)"
+        ],
+        expectedStandard: "Learners accurately tell time by the hour and recall all days of the week and months of the year."
       }
     ]
   },
   {
     title: "3.1.3 Telling Stories",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.3.1 Story Retelling",
-        competencies: ["Retell traditional and modern stories"],
+        title: "3.1.3.1 Retell Traditional and Modern Stories",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.3.1 Retell traditional and modern stories"
+        ],
         knowledge: "Retelling stories; Sequencing of events",
-        skills: "Application of knowledge on retelling and sequencing events",
-        values: "Knowledge and awareness of retelling events in stories"
+        skills: "Application of knowledge on retelling and sequencing events in stories",
+        values: "Knowledge and awareness retelling and sequencing events in stories",
+        learningActivities: [
+          "Listening attentively to traditional and modern stories told by the teacher or peers",
+          "Sequencing story events using picture cards (beginning, middle, and end)",
+          "Retelling stories in correct chronological order with expressive vocabulary"
+        ],
+        expectedStandard: "Learners retell traditional and modern stories with logical sequencing of events."
       }
     ]
   },
   {
     title: "3.1.4 Puzzles",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.4.1 Solving Puzzles",
-        competencies: ["Recognise and solve puzzles"],
-        knowledge: "Puzzles e.g. word puzzles",
+        title: "3.1.4.1 Recognise and Solve Puzzles",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.4.1 Recognise and solve puzzles"
+        ],
+        knowledge: "Puzzles eg: word puzzles",
         skills: "Application of knowledge on solving puzzles",
-        values: "Knowledge and awareness on solving puzzles"
+        values: "Knowledge and awareness on solving puzzles",
+        learningActivities: [
+          "Identifying and solving grade-appropriate word puzzles, word searches, and anagrams",
+          "Collaborating in small groups to solve verbal riddle-puzzles and crosswords"
+        ],
+        expectedStandard: "Learners recognise and solve word puzzles accurately."
       }
     ]
   },
   {
     title: "3.1.5 Proverbs/Sayings",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.5.1 Interpreting Proverbs",
-        competencies: ["Recognise and interpret proverbs"],
+        title: "3.1.5.1 Recognise and Interpret Proverbs",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.5.1 Recognise and interpret proverbs"
+        ],
         knowledge: "Interpreting simple Proverbs e.g Birds of the same feather, flock together",
         skills: "Application of knowledge on interpreting proverbs",
-        values: "Knowledge and awareness on interpreting proverbs"
+        values: "Knowledge and awareness on interpreting proverbs",
+        learningActivities: [
+          "Listening to common proverbs such as \x27Birds of the same feather, flock together\x27",
+          "Discussing the figurative and practical moral meanings behind simple proverbs",
+          "Applying proverbs in appropriate conversational scenarios to advise or explain situations"
+        ],
+        expectedStandard: "Learners recognise and interpret simple proverbs correctly in everyday situations."
       }
     ]
   },
   {
     title: "3.1.6 Drama",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.6.1 Dramatisation",
-        competencies: ["Dramatise familiar stories"],
+        title: "3.1.6.1 Dramatise Familiar Stories",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.6.1 Dramatise familiar stories"
+        ],
         knowledge: "Dramatising, Voice projection, Confidence, Role play",
         skills: "Application of knowledge on taking part in drama",
-        values: "Knowledge and awareness on taking part in drama"
+        values: "Knowledge and awareness on taking part in drama",
+        learningActivities: [
+          "Assigning character roles from familiar stories and folk tales",
+          "Practising voice projection, body posture, gestures, and audibility on the classroom stage",
+          "Performing dramatised role plays confidently before an audience of peers"
+        ],
+        expectedStandard: "Learners dramatise familiar stories with clear voice projection, role play, and confidence."
       }
     ]
   },
   {
     title: "3.1.7 Poetry",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.7.1 Recitation",
-        competencies: ["Recite simple Poems and Tongue-twisters"],
+        title: "3.1.7.1 Recite Simple Poems and Tongue-twisters",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.7.1 Recite simple Poems and Tongue-twisters"
+        ],
         knowledge: "Reciting; Poems and Tongue-twisters; Rhymes; Patterns",
         skills: "Application of knowledge on reciting poems",
-        values: "Knowledge and awareness on reciting poems"
+        values: "Knowledge and awareness on reciting poems",
+        learningActivities: [
+          "Reciting simple rhyming poems individually and chorally with rhythm and gestures",
+          "Practising pronunciation and fluency using fun English tongue-twisters",
+          "Identifying rhyming sound patterns and rhythm in short poems"
+        ],
+        expectedStandard: "Learners recite poems and tongue-twisters with clear articulation, rhythm, and expression."
       }
     ]
   },
   {
     title: "3.1.8 Occupations",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.8.1 Local Occupations",
-        competencies: ["Identify occupations in the locality and the tools used"],
-        knowledge: "Occupations and tools/equipment e.g. fishing/boat/net, Farming/hoe/axe/plough/tractor",
-        skills: "Application of knowledge on different occupations in the community and tools used",
-        values: "Knowledge and awareness of vocabulary on different occupations"
+        title: "3.1.8.1 Occupations and Tools in the Locality",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.8.1 Identify occupations in the locality and the tools used"
+        ],
+        knowledge: "Occupations and tools/ equipment used e.g. fishing/boat/net; Farming/hoe/axe/plough/tractor",
+        skills: "Application of vocabulary on different occupations in the community and tools used",
+        values: "Knowledge and awareness of vocabulary on different occupations in the community and tools used",
+        learningActivities: [
+          "Identifying local community occupations (fisher, farmer, carpenter, teacher, nurse, mechanic)",
+          "Matching occupations with their specific tools (fishing: boat, net; farming: hoe, axe, plough, tractor)",
+          "Discussing the importance of each occupation and tool in community livelihood"
+        ],
+        expectedStandard: "Learners identify occupations in the locality and correctly match them with their respective tools and equipment."
       }
     ]
   },
   {
     title: "3.1.9 Objects found in school",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.9.1 School Objects",
-        competencies: ["Talk about objects found in school"],
+        title: "3.1.9.1 Talk About Objects Found in School",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.9.1 Talk about objects found in school"
+        ],
         knowledge: "e.g. tables, desks, chairs, board etc",
         skills: "Application of vocabulary on objects found in school",
-        values: "Knowledge and awareness of vocabulary on objects found in school"
+        values: "Knowledge and awareness of vocabulary on objects found in school",
+        learningActivities: [
+          "Naming and pointing to various objects found in the classroom and school yard (tables, desks, chairs, chalkboard/whiteboard, duster, books, clock)",
+          "Describing functions and proper care of school objects using complete sentences"
+        ],
+        expectedStandard: "Learners talk about objects found in school using appropriate English vocabulary."
       }
     ]
   },
   {
     title: "3.1.10 Colours",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.10.1 Discriminating Colours",
-        competencies: ["Discriminate colours in different objects"],
+        title: "3.1.10.1 Discriminate Colours in Different Objects",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.10.1 Discriminate colours in different objects"
+        ],
         knowledge: "Different colours in objects",
         skills: "Application of vocabulary on different colours",
-        values: "Knowledge and awareness of different colours"
+        values: "Knowledge and awareness of different colours",
+        learningActivities: [
+          "Identifying and naming colours in classroom items, uniforms, flowers, and pictures (red, blue, yellow, green, orange, purple, brown, black, white)",
+          "Sorting and grouping objects based on color discrimination",
+          "Constructing descriptive sentences using color adjectives (e.g. \x27The red book is on the blue desk\x27)"
+        ],
+        expectedStandard: "Learners accurately discriminate and name different colours in various objects."
       }
     ]
   },
   {
     title: "3.1.11 Antonyms and synonyms",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.11.1 Word Relationships",
-        competencies: ["Identify antonyms and synonyms"],
-        knowledge: "Synonyms - words which have similar meaning e.g. Fast/quick; Antonyms- words which are opposites in meaning e.g Bad/good",
-        skills: "Knowledge of antonyms and synonyms",
-        values: "Knowledge and awareness of antonyms and synonyms"
+        title: "3.1.11.1 Identify Antonyms and Synonyms",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.11.1 Identify antonyms and synonyms"
+        ],
+        knowledge: "Synonyms – words which have similar meaning eg : Fast/quick; angry/cross; Antonyms- words which are opposites in meaning eg Bad/good; Sad /happy",
+        skills: "Application of knowledge on antonyms and synonyms",
+        values: "Knowledge and awareness of antonyms and synonyms",
+        learningActivities: [
+          "Identifying and pairing synonyms (words with similar meanings: fast/quick, angry/cross, large/big, small/little)",
+          "Identifying and pairing antonyms (words with opposite meanings: bad/good, sad/happy, hot/cold, tall/short)",
+          "Replacing words in sentences with appropriate synonyms or antonyms"
+        ],
+        expectedStandard: "Learners accurately identify and use antonyms and synonyms in spoken and written contexts."
       }
     ]
   },
   {
-    title: "3.1.13 Using Appropriate language in a social setting",
+    title: "3.1.12 Using Appropriate language in a social setting",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.1.13.1 Social Language",
-        competencies: ["Use socially acceptable language in expressing feelings and thoughts in various situations", "Identify names of wild animals"],
-        knowledge: "E.g. Expressing gratitude or disapproval e.g Thank you, (If they agree) or No, thank you (When they disapprove), Acknowledgement e.g You are welcome; Names of wild animals- lion, elephant, leopard",
-        skills: "Application of vocabulary on expressing feelings; Application of vocabulary on wild animals",
-        values: "Knowledge and awareness of expressing feelings; Knowledge and awareness of wild animals"
+        title: "3.1.12.1 Polite Social Language and Expressing Feelings",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.12.1 Use socially acceptable language in expressing feelings and thoughts in various situations"
+        ],
+        knowledge: "E.g. Expressing gratitude or disapproval e.g Thank you. (If they agree) or No, thank you. (When they disapprove); Acknowledgement e.g You are welcome.",
+        skills: "Application of vocabulary on expressing feelings and thoughts in various situations",
+        values: "Knowledge and awareness of vocabulary on expressing feelings and thoughts in various situations",
+        learningActivities: [
+          "Role-playing polite expressions of gratitude (\x27Thank you\x27, \x27Thank you very much\x27)",
+          "Role-playing polite disapproval or declining offers (\x27No, thank you\x27)",
+          "Using standard courtesy acknowledgements (\x27You are welcome\x27, \x27Don\x27t mention it\x27, \x27Excuse me\x27, \x27I am sorry\x27)",
+          "Expressing feelings and thoughts respectfully in varied social situations"
+        ],
+        expectedStandard: "Learners consistently use polite, socially acceptable language to express feelings and thoughts in various situations."
       }
     ]
   },
   {
-    title: "Games and Community",
+    title: "3.1.13 Animals",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "Games and Language",
-        competencies: ["Use language in playing games", "Talk about community practices"],
-        knowledge: "Eg pick it now; Good and bad practices in communities",
-        skills: "Application of vocabulary in playing games; Application of knowledge of community practices",
-        values: "Knowledge and awareness of vocabulary in games; Awareness of community practices"
+        title: "3.1.13.1 Names of Wild Animals",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.13.1 Identify names of wild animals"
+        ],
+        knowledge: "Names of wild animals- lion, elephant, leopard, antelope, zebra",
+        skills: "Application of vocabulary on wild animals",
+        values: "Knowledge and awareness of vocabulary of wild animals",
+        learningActivities: [
+          "Identifying wild animals from flashcards and pictorial charts (lion, elephant, leopard, antelope, zebra)",
+          "Imitating wild animal sounds and movements in conversational games",
+          "Discussing habitats, characteristics, and wildlife conservation"
+        ],
+        expectedStandard: "Learners identify and correctly pronounce names of common wild animals."
       }
     ]
   },
   {
-    title: "Oral Literature",
+    title: "3.1.14 Games",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "Riddles and Processes",
-        competencies: ["Recognize and interpret riddles", "Describe processes"],
-        knowledge: "Riddles eg A house without a door/an egg; Eg how to make a paper boat",
-        skills: "Application of knowledge on interpreting riddles; Application of knowledge describing processes",
-        values: "Knowledge and awareness of interpreting riddles; Awareness of describing processes"
+        title: "3.1.14.1 Use Language in Playing Games",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.14.1 Use language in playing games"
+        ],
+        knowledge: "Eg pick it now, pick it all, if you want now, pick it all... One man and a dog, walking to...",
+        skills: "Application of vocabulary in playing games",
+        values: "Knowledge and awareness of vocabulary in playing games",
+        learningActivities: [
+          "Chanting English game rhymes and counting verses (\x27Pick it now, pick it all...\x27, \x27One man and a dog, walking to...\x27)",
+          "Giving and following spoken verbal instructions while participating in structured games",
+          "Demonstrating sportsmanship, teamwork, and turn-taking through play"
+        ],
+        expectedStandard: "Learners use appropriate spoken English chants, vocabulary, and directions while playing games."
       }
     ]
   },
   {
-    title: "3.2 Reading",
+    title: "3.1.15 Community practices",
+    component: "Listening & Speaking",
     subtopics: [
       {
-        title: "3.2.1 Reading foundations",
-        competencies: ["Read familiar and new words", "Identify capital and small letters", "Pronounce words correctly", "Identify syllables of familiar words", "Form words using syllables", "Form sentences", "Practice silent reading"],
-        knowledge: "Reading new vocabulary; Capital and small letters; Correct word pronunciation; Syllable identification e.g /d/ /o/ /g/ = dog; Word formation eg banana; Sentence formation; Silent reading skills",
-        skills: "Application of knowledge on reading; Letter identification; Word pronunciation; Knowledge of syllable identification; Knowledge of word formation; Knowledge on sentence formation; Application of knowledge on reading",
-        values: "Knowledge and awareness of reading words; Awareness of alphabet; Correct pronunciation; Knowledge of syllables; Awareness of word formation; Knowledge of sentence formation; Awareness of reading"
-      },
+        title: "3.1.15.1 Talk About Community Practices",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.15.1 Talk about community practices"
+        ],
+        knowledge: "Good and bad practices in communities",
+        skills: "Application of knowledge of community practices",
+        values: "Knowledge and awareness of community practices",
+        learningActivities: [
+          "Discussing positive community practices (helping elders, keeping water sources clean, tree planting, cooperation)",
+          "Discussing bad practices to discourage (dumping rubbish carelessly, vandalism, fighting, dishonesty)",
+          "Sharing personal contributions towards maintaining good practices in their neighborhood"
+        ],
+        expectedStandard: "Learners articulate good and bad community practices and discuss positive civic values."
+      }
+    ]
+  },
+  {
+    title: "3.1.16 Riddles",
+    component: "Listening & Speaking",
+    subtopics: [
       {
-        title: "3.2.2 Reading aloud",
-        competencies: ["Read a given text at an appropriate pace, acceptable pronunciation and with understanding"],
+        title: "3.1.16.1 Recognize and Interpret Riddles",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.16.1 Recognize and interpret riddles"
+        ],
+        knowledge: "Riddles eg A house without a door/an egg",
+        skills: "Application of interpreting riddles",
+        values: "Knowledge and awareness of interpreting riddles",
+        learningActivities: [
+          "Listening to and solving classic English riddles (e.g. \x27A house without a door? - An egg\x27)",
+          "Creating original riddles based on everyday classroom and home objects",
+          "Explaining clues and deductive logic used to solve riddles"
+        ],
+        expectedStandard: "Learners recognise, interpret, and solve simple English riddles."
+      }
+    ]
+  },
+  {
+    title: "3.1.17 Processes",
+    component: "Listening & Speaking",
+    subtopics: [
+      {
+        title: "3.1.17.1 Describe Processes",
+        component: "Listening & Speaking",
+        competencies: [
+          "3.1.17.1 Describe processes"
+        ],
+        knowledge: "Eg how to make a paper boat",
+        skills: "Application of describing processes",
+        values: "Knowledge and awareness of describing processes",
+        learningActivities: [
+          "Observing step-by-step demonstrations (e.g. how to fold a paper boat, how to wash hands with soap, how to plant a seed)",
+          "Describing simple processes sequentially using transition words (first, next, then, after that, finally)",
+          "Practising giving simple procedural instructions to peers"
+        ],
+        expectedStandard: "Learners describe simple step-by-step processes in chronological order."
+      }
+    ]
+  },
+
+  // ==========================================
+  // COMPONENT 2: READING
+  // ==========================================
+  {
+    title: "3.2.1 Reading words",
+    component: "Reading",
+    subtopics: [
+      {
+        title: "3.2.1.1 Read Familiar and New Words",
+        component: "Reading",
+        competencies: [
+          "3.2.1.1 Read familiar and new words"
+        ],
+        knowledge: "Reading new vocabulary eg names of wild animals",
+        skills: "Application of knowledge on reading familiar and new words",
+        values: "Knowledge and awareness of reading vocabulary",
+        learningActivities: [
+          "Reading sight words and high-frequency vocabulary from word walls and flashcards",
+          "Reading newly introduced vocabulary (e.g., wild animal names: lion, elephant, leopard, antelope, zebra)",
+          "Reading words in context within sentences and short story passages"
+        ],
+        expectedStandard: "Learners read familiar and newly encountered words accurately."
+      }
+    ]
+  },
+  {
+    title: "3.2.2 The alphabet and pronunciation",
+    component: "Reading",
+    subtopics: [
+      {
+        title: "3.2.2.1 Alphabet Letter Recognition and Correct Pronunciation",
+        component: "Reading",
+        competencies: [
+          "3.2.2.1 Identify capital and small letters",
+          "3.2.2.2 Pronounce words correctly"
+        ],
+        knowledge: "Correct word pronunciation eg Car /ka:/, Cup/ kʌp",
+        skills: "Application of knowledge on letter identification and correct word pronunciation",
+        values: "Knowledge and awareness of alphabet letter cases and correct pronunciation",
+        learningActivities: [
+          "Matching uppercase (capital) letters with corresponding lowercase (small) letters",
+          "Practising distinct vowel phonemes and correct word pronunciation (e.g. Car /ka:/ vs. Cup /kʌp/)",
+          "Reading word pairs with accurate phonetic articulation"
+        ],
+        expectedStandard: "Learners recognise all capital and small letters and pronounce words with standard phonological accuracy."
+      }
+    ]
+  },
+  {
+    title: "3.2.3 Syllable Identification",
+    component: "Reading",
+    subtopics: [
+      {
+        title: "3.2.3.1 Identify Syllables of Familiar Words",
+        component: "Reading",
+        competencies: [
+          "3.2.3.1 Identify syllables of familiar words"
+        ],
+        knowledge: "Syllable identification eg /d/ /o/ /g/ = dog or /ma/ /ke/ = make or /fo/ /re/ /st/ = forest",
+        skills: "Application of knowledge on syllable identification of familiar words",
+        values: "Knowledge and awareness of syllable identification",
+        learningActivities: [
+          "Segmenting words into phonetic sounds and syllables (/d/ /o/ /g/ = dog; /ma/ /ke/ = make; /fo/ /re/ /st/ = forest)",
+          "Clapping and counting syllables in familiar 1-syllable, 2-syllable, and 3-syllable words",
+          "Marking syllable breaks in printed vocabulary words"
+        ],
+        expectedStandard: "Learners identify, segment, and count syllables in familiar words accurately."
+      }
+    ]
+  },
+  {
+    title: "3.2.4 Word formation",
+    component: "Reading",
+    subtopics: [
+      {
+        title: "3.2.4.1 Form Words Using Syllables",
+        component: "Reading",
+        competencies: [
+          "3.2.4.1 Form words using syllables"
+        ],
+        knowledge: "Word formation eg banana, dog",
+        skills: "Application of knowledge on forming words using syllables",
+        values: "Knowledge and awareness of word formation using syllables",
+        learningActivities: [
+          "Blending individual syllables to form complete words (ba + na + na = banana; d + o + g = dog)",
+          "Combining syllable flashcards to create compound and multi-syllabic words",
+          "Reading formed words aloud to verify pronunciation and meaning"
+        ],
+        expectedStandard: "Learners blend and form words correctly using syllable building blocks."
+      }
+    ]
+  },
+  {
+    title: "3.2.5 Sentence formation",
+    component: "Reading",
+    subtopics: [
+      {
+        title: "3.2.5.1 Form Sentences",
+        component: "Reading",
+        competencies: [
+          "3.2.5.1 Form sentences"
+        ],
+        knowledge: "Sentence formation using words and phrases",
+        skills: "Application of knowledge on forming sentences",
+        values: "Knowledge and awareness of forming grammatically coherent sentences",
+        learningActivities: [
+          "Arranging jumbled word cards to construct grammatically sound sentences",
+          "Substituting subjects, verbs, and objects in sentence frames to form new sentences",
+          "Reading aloud formed sentences with appropriate phrasing and intonation"
+        ],
+        expectedStandard: "Learners form grammatically coherent sentences from words and phrases."
+      }
+    ]
+  },
+  {
+    title: "3.2.6 Intensive reading",
+    component: "Reading",
+    subtopics: [
+      {
+        title: "3.2.6.1 Practice Silent Reading",
+        component: "Reading",
+        competencies: [
+          "3.2.6.1 Practice silent reading"
+        ],
+        knowledge: "Silent reading skills eg avoid lip reading, finger pointing etc",
+        skills: "Application of knowledge on silent reading skills without lip reading or finger pointing",
+        values: "Knowledge and awareness of silent reading skills and concentration",
+        learningActivities: [
+          "Engaging in silent reading sessions with short narrative passages and dialogues",
+          "Practising reading silently by moving eyes across lines without finger-pointing or vocalising/lip reading",
+          "Answering direct comprehension and factual questions following silent reading"
+        ],
+        expectedStandard: "Learners read silently with sustained concentration, avoiding lip reading and finger pointing."
+      }
+    ]
+  },
+  {
+    title: "3.2.7 Reading aloud",
+    component: "Reading",
+    subtopics: [
+      {
+        title: "3.2.7.1 Read Aloud with Fluency and Understanding",
+        component: "Reading",
+        competencies: [
+          "3.2.7.1 Read a given text at an appropriate pace, acceptable pronunciation and with understanding"
+        ],
         knowledge: "Reading and comprehension; Appropriate pace; Correct pronunciation",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
-      {
-        title: "3.2.3 Stories",
-        competencies: ["Identify themes of stories"],
-        knowledge: "Themes or Central idea of a stories",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
-      {
-        title: "3.2.4 Interpreting information in print resources",
-        competencies: ["Locate information in print resources"],
-        knowledge: "e.g. Charts, Graphs, Tables, Maps Proximity",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
+        skills: "Application of knowledge on reading aloud at an appropriate pace, with acceptable pronunciation and understanding",
+        values: "Knowledge and awareness of fluent reading aloud and comprehension",
+        learningActivities: [
+          "Reading aloud selected grade-level passages individually, in pairs, and in small groups",
+          "Observing punctuation marks (full stops, commas, question marks) to maintain correct pace and pauses",
+          "Demonstrating comprehension by retelling main events and answering oral questions after reading"
+        ],
+        expectedStandard: "Learners read passages aloud fluently at an appropriate pace with clear pronunciation and understanding."
       }
     ]
   },
   {
-    title: "3.3 Writing",
+    title: "3.2.8 Stories",
+    component: "Reading",
     subtopics: [
       {
-        title: "3.3.1 The alphabet",
-        competencies: ["Recognise and arrange longer words in alphabetical order"],
-        knowledge: "The alphabet Consider the first and second letters",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
+        title: "3.2.8.1 Identify Themes of Stories",
+        component: "Reading",
+        competencies: [
+          "3.2.8.1 Identify themes of stories"
+        ],
+        knowledge: "Themes or Central idea of a stories",
+        skills: "Application of knowledge on identifying themes and central ideas of stories",
+        values: "Knowledge and awareness of themes and central ideas of stories",
+        learningActivities: [
+          "Reading short illustrated stories with clear moral lessons or themes",
+          "Identifying the main characters, problem, resolution, and the central message (theme)",
+          "Discussing lessons learned from stories and relating them to everyday life"
+        ],
+        expectedStandard: "Learners identify and state the central idea and theme of given stories."
+      }
+    ]
+  },
+  {
+    title: "3.2.9 Interpreting information in print resources",
+    component: "Reading",
+    subtopics: [
       {
-        title: "3.3.2 Handwriting",
-        competencies: ["Write legibly and neatly"],
+        title: "3.2.9.1 Locate Information in Print Resources",
+        component: "Reading",
+        competencies: [
+          "3.2.9.1 Locate information in print resources"
+        ],
+        knowledge: "e.g. Charts, Graphs, Tables, Maps proximity",
+        skills: "Application of knowledge on locating and interpreting information in print resources",
+        values: "Knowledge and awareness of locating information in charts, graphs, tables, and maps",
+        learningActivities: [
+          "Reading simple school timetables, weather charts, and picture bar graphs",
+          "Locating places, cardinal directions, and proximities on simple classroom or community maps",
+          "Answering specific factual questions using information extracted from print visuals"
+        ],
+        expectedStandard: "Learners locate and interpret specific factual information presented in charts, tables, and maps."
+      }
+    ]
+  },
+
+  // ==========================================
+  // COMPONENT 3: WRITING
+  // ==========================================
+  {
+    title: "3.3.1 The alphabet",
+    component: "Writing",
+    subtopics: [
+      {
+        title: "3.3.1.1 Arrange Words in Alphabetical Order",
+        component: "Writing",
+        competencies: [
+          "3.3.1.1 Recognise and arrange longer words in alphabetical order"
+        ],
+        knowledge: "The alphabet; Consider the first and second letters",
+        skills: "Application of knowledge on arranging words in alphabetical order considering first and second letters",
+        values: "Knowledge and awareness of alphabetical ordering of words",
+        learningActivities: [
+          "Reviewing alphabetical order (A through Z) using alphabet strips and charts",
+          "Arranging words beginning with different letters in alphabetical order",
+          "Alphabetising words starting with the same first letter by examining the second letter (e.g., boat, book, boy)"
+        ],
+        expectedStandard: "Learners arrange words in alphabetical order by comparing both first and second letters."
+      }
+    ]
+  },
+  {
+    title: "3.3.2 Handwriting",
+    component: "Writing",
+    subtopics: [
+      {
+        title: "3.3.2.1 Legible and Neat Handwriting",
+        component: "Writing",
+        competencies: [
+          "3.3.2.1 Write legibly and neatly"
+        ],
         knowledge: "Handwriting eg Richardson Marion and cursive",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
+        skills: "Application of knowledge on writing legibly and neatly in Richardson Marion and cursive",
+        values: "Knowledge and awareness of neat, legible handwriting in cursive and print",
+        learningActivities: [
+          "Practising basic letter strokes, joins, and correct slants in Richardson Marion and cursive scripts",
+          "Writing short sentences with consistent letter sizing, line alignment, and word spacing",
+          "Transcribing textbook sentences neatly into exercise books"
+        ],
+        expectedStandard: "Learners write legibly, neatly, and with consistent letter formation in cursive and print scripts."
+      }
+    ]
+  },
+  {
+    title: "3.3.3 Sequencing",
+    component: "Writing",
+    subtopics: [
       {
-        title: "3.3.3 Sequencing",
-        competencies: ["Rearrange sentences in a logical sequence"],
+        title: "3.3.3.1 Rearrange Sentences in Logical Sequence",
+        component: "Writing",
+        competencies: [
+          "3.3.3.1 Rearrange sentences in a logical sequence"
+        ],
         knowledge: "Arranging sentences in logical order",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
+        skills: "Application of knowledge on rearranging sentences in a logical sequence",
+        values: "Knowledge and awareness of logical sentence sequencing",
+        learningActivities: [
+          "Reading sets of three to four jumbled sentences describing a daily event or routine",
+          "Numbering sentences in correct sequence according to chronological timeline",
+          "Rewriting the sentences in logical sequence into a cohesive paragraph"
+        ],
+        expectedStandard: "Learners rearrange jumbled sentences into coherent, logically sequenced paragraphs."
+      }
+    ]
+  },
+  {
+    title: "3.3.4 Conjunctions",
+    component: "Writing",
+    subtopics: [
       {
-        title: "3.3.4 Conjunctions",
-        competencies: ["Use and and but to join simple phrases"],
-        knowledge: "E.g. I am tired. I am hungry. (and) Jane went to the river. She failed to swim. (but)",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
+        title: "3.3.4.1 Joining Sentences Using \x27And\x27 and \x27But\x27",
+        component: "Writing",
+        competencies: [
+          "3.3.4.1 Use \x27and\x27 and \x27but\x27 to join simple phrases"
+        ],
+        knowledge: "E.g. I am tired. I am hungry. (and); Jane went to the river. She failed to swim. (but)",
+        skills: "Application of knowledge on using conjunctions (\x27and\x27, \x27but\x27) to join simple phrases",
+        values: "Knowledge and awareness of using conjunctions correctly to connect ideas",
+        learningActivities: [
+          "Joining two related ideas using \x27and\x27 (e.g. \x27I am tired and I am hungry\x27)",
+          "Joining contrasting ideas using \x27but\x27 (e.g. \x27Jane went to the river, but she failed to swim\x27)",
+          "Completing gap-fill sentences with the appropriate conjunction (\x27and\x27 or \x27but\x27)"
+        ],
+        expectedStandard: "Learners join phrases and sentences accurately using conjunctions \x27and\x27 and \x27but\x27."
+      }
+    ]
+  },
+  {
+    title: "3.3.5 Singular and plural",
+    component: "Writing",
+    subtopics: [
       {
-        title: "3.3.8 Singular and plural",
-        competencies: ["Write plural and singular forms of words."],
+        title: "3.3.5.1 Write Singular and Plural Forms of Nouns",
+        component: "Writing",
+        competencies: [
+          "3.3.5.1 Write plural and singular forms of words"
+        ],
         knowledge: "Nouns ending with s, y, o e.g. boy/boys, bus/buses, tomato/tomatoes",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
+        skills: "Application of knowledge on writing singular and plural forms of nouns",
+        values: "Knowledge and awareness of plural formation rules for nouns ending with s, y, and o",
+        learningActivities: [
+          "Converting nouns ending in -s, -ss, -sh, -ch, -x into plurals by adding -es (bus -> buses, box -> boxes)",
+          "Forming plurals of nouns ending in -y: adding -s for vowel + y (boy -> boys, day -> days) and -ies for consonant + y (baby -> babies)",
+          "Forming plurals of nouns ending in -o (tomato -> tomatoes, potato -> potatoes)",
+          "Writing sentences utilizing singular and plural noun forms correctly"
+        ],
+        expectedStandard: "Learners write correct singular and plural forms of nouns ending in s, y, and o."
+      }
+    ]
+  },
+  {
+    title: "3.3.6 Dictation",
+    component: "Writing",
+    subtopics: [
       {
-        title: "3.3.5 Dictation",
-        competencies: ["Take dictation"],
+        title: "3.3.6.1 Taking Dictation",
+        component: "Writing",
+        competencies: [
+          "3.3.6.1 Take dictation"
+        ],
         knowledge: "Taking dictation",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
+        skills: "Application of knowledge on taking dictation accurately",
+        values: "Knowledge and awareness of taking dictation with active listening and correct spelling",
+        learningActivities: [
+          "Listening attentively to words and short sentences read aloud by the teacher",
+          "Writing down spoken sentences accurately with correct spelling and spacing",
+          "Proofreading written dictation against the original text for self-correction"
+        ],
+        expectedStandard: "Learners write down spoken words and sentences accurately during dictation exercises."
+      }
+    ]
+  },
+  {
+    title: "3.3.7 Sentence and Paragraph construction",
+    component: "Writing",
+    subtopics: [
       {
-        title: "3.3.6 Sentence and Paragraph construction",
-        competencies: ["Construct short paragraphs on topical issues."],
+        title: "3.3.7.1 Construct Short Paragraphs on Topical Issues",
+        component: "Writing",
+        competencies: [
+          "3.3.7.1 Construct short paragraphs on topical issues"
+        ],
         knowledge: "Short paragraphs of one to three sentences eg prevention of cholera",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
+        skills: "Application of knowledge on constructing short paragraphs of one to three sentences on topical issues",
+        values: "Knowledge and awareness of constructing sentences and short paragraphs on topical issues",
+        learningActivities: [
+          "Brainstorming topical community themes (e.g. prevention of cholera, keeping water clean, tree planting)",
+          "Drafting short paragraphs consisting of one to three clear, well-structured sentences",
+          "Sharing and reading written paragraphs aloud to peers"
+        ],
+        expectedStandard: "Learners write structured short paragraphs of one to three sentences on topical community issues."
+      }
+    ]
+  },
+  {
+    title: "3.3.8 Punctuation",
+    component: "Writing",
+    subtopics: [
       {
-        title: "3.3.7 Punctuation",
-        competencies: ["Punctuate sentences and short paragraphs."],
+        title: "3.3.8.1 Punctuate Sentences and Short Paragraphs",
+        component: "Writing",
+        competencies: [
+          "3.3.8.1 Punctuate sentences and short paragraphs"
+        ],
         knowledge: "Capital letter for proper nouns and at the beginning of sentence; Full stop; Comma; Question mark.",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
-      },
+        skills: "Application of knowledge on punctuating sentences and short paragraphs correctly",
+        values: "Knowledge and awareness of punctuation marks: capital letter, full stop, comma, and question mark",
+        learningActivities: [
+          "Applying capital letters at the beginning of sentences and for proper nouns (names of people, places, days, months)",
+          "Placing full stops at the end of statements and question marks at the end of direct questions",
+          "Using commas to separate items in a list",
+          "Punctuating unpunctuated short paragraphs in exercise books"
+        ],
+        expectedStandard: "Learners accurately punctuate sentences and short paragraphs with capital letters, full stops, commas, and question marks."
+      }
+    ]
+  },
+  {
+    title: "3.3.9 Summary",
+    component: "Writing",
+    subtopics: [
       {
-        title: "3.3.9 Summary",
-        competencies: ["Summarise simple stories"],
-        knowledge: "• Identifying Content words • Identifying important points in a story",
-        skills: "Application of knowledge",
-        values: "Knowledge and awareness of"
+        title: "3.3.9.1 Summarise Simple Stories",
+        component: "Writing",
+        competencies: [
+          "3.3.9.1 Summarise simple stories"
+        ],
+        knowledge: "• Identifying Content words\n• Identifying important points in a story",
+        skills: "Application of knowledge on identifying content words and important points to summarise stories",
+        values: "Knowledge and awareness of identifying content words and key points to write summaries",
+        learningActivities: [
+          "Reading a short story and underlining essential content words (key nouns, verbs, and adjectives)",
+          "Identifying the main event or central point of each paragraph",
+          "Writing a brief, two-to-three sentence summary of the story using identified content words"
+        ],
+        expectedStandard: "Learners identify content words and key points to write concise summaries of simple stories."
       }
     ]
   }

@@ -32,6 +32,7 @@ import {
 import { toast } from 'react-hot-toast';
 import { LITERACY_GUIDE, NUMERACY_GUIDE, REMEDIAL_GUIDE, REMEDIAL_ILLUSTRATIONS, RemedialIllustration } from '../data/zambiaGuidesData';
 import AIPlanningVoiceGuide from './AIPlanningVoiceGuide';
+import InformationCenter from './InformationCenter';
 
 const BEGINNER_FRAME = [
   { activity: 'Informal Talk / Chat', competency: 'Tell own real-life story (oral speaking confidence)', duration: '10 - 15 mins', frequency: 'Alternating days with Story Telling and Picture Reading', resources: 'Teacher / learners' },
@@ -108,25 +109,11 @@ export function CatchUpGenerator({ onGenerate, onBack }: CatchUpGeneratorProps) 
     let limitMsg = "";
     
     if (!isUserGuestTier && !isUserEmailDeveloper && subscriptionDetails && !subscriptionDetails.unlimitedDownloads) {
-      const gradesCount = registeredGrades ? registeredGrades.filter(g => g !== 'all').length : 1;
-      const baseLimit = subscriptionDetails.baseLimit || 40;
-      const gradeCounts = subscriptionDetails.gradeCounts || {};
-      
-      if (gradesCount <= 2) {
-        // Separate trackers per grade
-        const usedForSelectedGrade = gradeCounts[selectedGrade] || 0;
-        if (usedForSelectedGrade >= baseLimit) {
-          activeCircleLimitReached = true;
-          limitMsg = `Grade Limit Reached: You have reached your download limit of ${baseLimit} downloads for ${selectedGrade} in this billing circle. Please contact Fortunes Edutech to upgrade or top up.`;
-        }
-      } else {
-        // Combined tracker for all grades (top-up mode)
-        const totalUsed = subscriptionDetails.circleDownloadsCount || 0;
-        const combinedLimit = 2 * baseLimit;
-        if (totalUsed >= combinedLimit) {
-          activeCircleLimitReached = true;
-          limitMsg = `Billing Cycle Limit Reached: You have reached your combined top-up package download limit of ${combinedLimit} downloads for this cycle. Please upgrade or renew your package.`;
-        }
+      const totalUsed = subscriptionDetails.circleDownloadsCount || 0;
+      const totalLimit = subscriptionDetails.circleDownloadsLimit || 180;
+      if (totalUsed >= totalLimit) {
+        activeCircleLimitReached = true;
+        limitMsg = `Billing Cycle Limit Reached: You have reached your package download limit of ${totalLimit} downloads for this billing cycle. Please contact Fortunes Edutech to renew or upgrade.`;
       }
     }
     return { isActiveCircleLimitReached: activeCircleLimitReached, gradeSpecificLimitMsg: limitMsg };
@@ -859,13 +846,6 @@ export function CatchUpGenerator({ onGenerate, onBack }: CatchUpGeneratorProps) 
 
   const handleGenerateClick = async () => {
     setError(null);
-    if (isUserGuestTier || isLimitReached) {
-      const status = getDownloadAccessStatus(user, subscriptionDetails);
-      const msg = status.message || "You have depleted your allocated downloads. Please renew or upgrade your subscription circle to continue downloading.";
-      setError(msg);
-      toast.error(msg);
-      return;
-    }
 
     if (isActiveCircleLimitReached) {
       setError(gradeSpecificLimitMsg || `Billing Cycle Limit Reached: You have reached your package download limit for this cycle. Please upgrade or renew your package.`);
@@ -1212,14 +1192,14 @@ Your response MUST be wrapped in the following HTML format. Fill every [PH_...] 
 <h3 style="text-align: left; font-size: 12pt; font-weight: bold; margin-bottom: 5px; margin-top: 15px;">LESSON DEVELOPMENT</h3>
 ${tableBlueprint}
 
-<div class="lesson-plan-footer" style="width: 100%; margin-top: 15px; page-break-inside: avoid; break-inside: avoid;">
-  <p style="margin-bottom: 2px;"><b>LEARNER'S EVALUATION:</b></p>
-  <div style="border-bottom: 1.5px dotted #000000; height: 1.6em; width: 100%; margin-bottom: 4px;"></div>
-  <div style="border-bottom: 1.5px dotted #000000; height: 1.6em; width: 100%; margin-bottom: 4px;"></div>
+<div class="lesson-plan-footer" style="width: 100%; margin-top: 5px; page-break-inside: avoid; break-inside: avoid;">
+  <p style="margin-bottom: 1px; font-size: 9.2pt;"><b>LEARNER'S EVALUATION:</b></p>
+  <div style="border-bottom: 1.5px dotted #000000; height: 1.15em; width: 100%; margin-bottom: 2px;"></div>
+  <div style="border-bottom: 1.5px dotted #000000; height: 1.15em; width: 100%; margin-bottom: 2px;"></div>
   
-  <p style="margin-top: 10px; margin-bottom: 2px;"><b>TEACHER'S EVALUATION:</b></p>
-  <div style="border-bottom: 1.5px dotted #000000; height: 1.6em; width: 100%; margin-bottom: 4px;"></div>
-  <div style="border-bottom: 1.5px dotted #000000; height: 1.6em; width: 100%; margin-bottom: 4px;"></div>
+  <p style="margin-top: 4px; margin-bottom: 1px; font-size: 9.2pt;"><b>TEACHER'S EVALUATION:</b></p>
+  <div style="border-bottom: 1.5px dotted #000000; height: 1.15em; width: 100%; margin-bottom: 2px;"></div>
+  <div style="border-bottom: 1.5px dotted #000000; height: 1.15em; width: 100%; margin-bottom: 2px;"></div>
 </div>
 
 ### CRITICAL RULES:
@@ -1243,40 +1223,379 @@ ${tableBlueprint}
    - Keep each bullet point to a maximum of 5-8 words. Total content per cell must be compact.
 `;
 
-      const response = await fetch("/api/gemini/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "DEFAULT",
-          contents: prompt
-        }),
-      });
+      let textContent = '';
+      let isFallback = false;
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        const errMsg = errorData?.error || 'Failed to generate. Please try again.';
-        throw new Error(typeof errMsg === 'string' ? errMsg : JSON.stringify(errMsg));
+      try {
+        const response = await fetch("/api/gemini/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "DEFAULT",
+            contents: prompt
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => null);
+          const errMsg = errorData?.error || 'Failed to generate. Please try again.';
+          throw new Error(typeof errMsg === 'string' ? errMsg : JSON.stringify(errMsg));
+        }
+
+        const resData = await response.json();
+        textContent = resData.text || '';
+        
+        if (textContent.includes("```")) {
+          textContent = textContent.replace(/^```[a-z]*\n/i, "").replace(/\n```$/m, "");
+        }
+
+        // Sanitize standard HTML tag typos often made by AI models
+        textContent = textContent
+          .replace(/<\/td\/>/gi, '</td>')
+          .replace(/<\/tr\/>/gi, '</tr>')
+          .replace(/<td\/>/gi, '<td>')
+          .replace(/<tr\/>/gi, '<tr>')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/<\/td>\s*<\/td>/gi, '</td>')
+          .replace(/<td>\s*<td>/gi, '<td>');
+      } catch (apiErr: any) {
+        console.warn("Gemini API call failed, generating high-fidelity local offline catch-up lesson plan:", apiErr);
+        isFallback = true;
+        
+        const isLit = mode === 'literacy';
+        let outcomesStr = "";
+        let tlAidsStr = "";
+        
+        if (isLit) {
+          tlAidsStr = "Letter cards, flashcards, word charts, storybooks, chalkboard, and colored chalk.";
+          outcomesStr = `By the end of the lesson, learners should be able to:
+1. Identify and sound focus phonemes related to "${litReadingTopic}".
+2. Read and blend focus syllables and words correctly.
+3. Write simple words and short sentences under teacher guidance.`;
+        } else {
+          tlAidsStr = "Number cards, concrete counters (pebbles, bottle caps), local market chart, chalkboard, and chalk.";
+          outcomesStr = `By the end of the lesson, learners should be able to:
+1. Recognize, chant, and write numbers related to the lesson focus.
+2. Solve simple calculations using the "${numBasicOpSelected || 'addition'}" operation.
+3. Apply numerical operations to solve realistic daily-life word problems.`;
+        }
+
+        let fallbackHtml = `
+<div style="background-color: #F0FDF4; color: #166534; padding: 14px 18px; border: 1.5px solid #86EFAC; border-radius: 12px; margin-bottom: 20px; text-align: center; font-family: 'Inter', sans-serif;">
+  <b style="font-size: 13pt;">✅ OFFLINE CATCH-UP PLAN COMPILED</b><br/>
+  <span style="font-size: 10.5pt; color: #15803D;">Generated successfully offline with complete Zambian MoE TaRL pedagogical steps, teaching outcomes, and activities. Ready to print, view, or export.</span>
+</div>
+
+<div style="text-align: center; font-family: 'Inter', sans-serif; margin-bottom: 20px;">
+  <div style="font-size: 12pt; font-weight: bold; text-transform: uppercase;">${district.toUpperCase()} DISTRICT</div>
+  <div style="font-size: 14pt; font-weight: bold; text-transform: uppercase;">${school.toUpperCase()}</div>
+  <h1 style="font-size: 18pt; font-weight: 800; margin-top: 15px; margin-bottom: 5px; text-transform: uppercase;">CATCH-UP LESSON PLAN</h1>
+  <div style="font-size: 14pt; font-weight: bold; text-transform: uppercase;">${teacherName.toUpperCase()}</div>
+  <div style="font-size: 12pt; font-weight: bold;">TS NO: ${tsNumber}</div>
+</div>
+
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-family: 'Inter', sans-serif;">
+  <tr>
+    <td style="padding: 4px 0; font-size: 11pt; width: 65%;"><strong>SCHOOL:</strong> ${school}</td>
+    <td style="padding: 4px 0; font-size: 11pt; width: 35%; text-align: right;"><strong>SUBJECT:</strong> ${isLit ? 'Literacy' : 'Numeracy'}</td>
+  </tr>
+  <tr>
+    <td style="padding: 4px 0; font-size: 11pt;"><strong>GRADE / LEVEL:</strong> ${isLit ? literacyLevel.toUpperCase() : (numeracyLevel === 'level1' ? 'LEVEL 1' : numeracyLevel === 'level23' ? 'LEVEL 2 & 3' : 'LEVEL 4')}</td>
+    <td style="padding: 4px 0; font-size: 11pt; text-align: right;"><strong>WEEK:</strong> Week ${selectedWeek}</td>
+  </tr>
+  <tr>
+    <td style="padding: 4px 0; font-size: 11pt;"><strong>DATE / DAY:</strong> ${date} (${selectedDay})</td>
+    <td style="padding: 4px 0; font-size: 11pt; text-align: right;"><strong>DURATION:</strong> ${duration}</td>
+  </tr>
+  <tr>
+    <td style="padding: 4px 0; font-size: 11pt;"><strong>TIME:</strong> ${time}</td>
+    <td style="padding: 4px 0; font-size: 11pt; text-align: right;"><strong>ZONE:</strong> ${zone}</td>
+  </tr>
+  <tr>
+    <td style="padding: 4px 0; font-size: 11pt;" colspan="2"><strong>ENROLMENT:</strong> B: ${enrolmentBoys} G: ${enrolmentGirls} &nbsp;&nbsp;&nbsp;&nbsp; <strong>TOTAL:</strong> ${Number(enrolmentBoys) + Number(enrolmentGirls)}</td>
+  </tr>
+</table>
+
+<div style="border-top: 1px solid #eee; margin-top: 10px; margin-bottom: 10px;"></div>
+
+<style>
+  .lesson-plan-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 10px; 
+    margin-bottom: 25px; 
+    table-layout: fixed;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  }
+  .lesson-plan-table th, .lesson-plan-table td { 
+    border: 1px solid #000; 
+    padding: 12px 10px; 
+    text-align: left; 
+    vertical-align: top; 
+    font-size: 10.5pt; 
+    line-height: 1.4;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  }
+  .lesson-plan-table th { 
+    background-color: #f8fafc; 
+    font-weight: 800; 
+    text-transform: uppercase;
+    font-size: 9pt;
+    letter-spacing: 0.05em;
+  }
+  .lesson-plan-table strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #000;
+    font-size: 11pt;
+    letter-spacing: -0.01em;
+  }
+</style>
+
+<div class="lesson-plan-content" style="margin-top: 10px; font-family: 'Inter', sans-serif;">
+  <strong>T/L AIDS:</strong> ${tlAidsStr}<br/>
+  <strong>REFERENCES:</strong> "Primary Teach at the Right Level (TaRL/Catch-Up) Teacher Guide"<br/>
+  <strong>SPECIFIC OUTCOMES:</strong> ${outcomesStr.replace(/\n/g, '<br/>')}<br/>
+  <strong>RATIONALE:</strong> This lesson focus on building ${isLit ? literacyLevel.toUpperCase() : 'NUMERACY'} skills. The lesson will improve competency through ${isLit ? 'phonetic awareness and reading' : 'mathematical operation'} practice essential in daily life. Whole class, group work and individual work will be used in this lesson.<br/>
+</div>
+
+<h3 style="text-align: left; font-size: 12pt; font-weight: bold; margin-bottom: 5px; margin-top: 15px;">LESSON DEVELOPMENT</h3>
+        `;
+
+        let tableHtml = "";
+        if (isLit) {
+          tableHtml = `
+<table class="lesson-plan-table">
+  <tr>
+    <th style="width: 18%;">STAGES</th>
+    <th style="width: 41%;">TEACHER'S ACTIVITIES</th>
+    <th style="width: 41%;">LEARNERS' ACTIVITIES</th>
+  </tr>
+  
+  <tr>
+    <td colspan="3" style="background-color: #f1f5f9; font-weight: bold; font-size: 11pt; padding: 10px; border-bottom: 2px solid #000; color: #000;">
+      <strong>ACTIVITY FOCUS: ${literacyLevel === 'story' ? litStoryProc1Selected : litStep1Title}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Step 1: ${literacyLevel === 'story' ? litStoryProc1Selected : 'Listening & Speaking (Intro)'}<br/>(10 mins)</td>
+    <td>
+      <b>(Whole class)</b><br/>
+      - 1. Sound out the primary phonemes related to "${litReadingTopic}".<br/>
+      - 2. Model mouth shapes and sound blending for learners.<br/>
+      - 3. Display syllable cards on the board and read them aloud.
+    </td>
+    <td>
+      - 1. Listen carefully to the sounds modeled by the teacher.<br/>
+      - 2. Practice sounding out syllables in chorusing groups.<br/>
+      - 3. Identify and point to the syllable cards when called upon.
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="3" style="background-color: #f1f5f9; font-weight: bold; font-size: 11pt; padding: 10px; border-bottom: 2px solid #000; color: #000;">
+      <strong>ACTIVITY FOCUS: ${litStep2Title}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Step 2: ${literacyLevel === 'story' ? 'Reading' : literacyLevel === 'bl' ? 'Reading (Teachers Modeling)' : 'Reading (Simple Paragraph)'}<br/>(25 mins)</td>
+    <td>
+      <b>(Whole class)</b><br/>
+      - 1. Write the reading passage "${litReadingTopic}" on the chalkboard clearly.<br/>
+      - 2. Point to words and model-read with expression and appropriate pacing.<br/>
+      - 3. Invite learners to join in reading the passage together (guided reading).
+    </td>
+    <td>
+      - 1. Follow the teacher's hand pointing at words on the board.<br/>
+      - 2. Read along with the teacher, matching their pronunciation and speed.<br/>
+      - 3. Read the text in small groups to build confidence.
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="3" style="background-color: #f1f5f9; font-weight: bold; font-size: 11pt; padding: 10px; border-bottom: 2px solid #000; color: #000;">
+      <strong>ACTIVITY FOCUS: ${litStep3Title}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Step 3: ${literacyLevel === 'bl' ? 'Level Activity' : 'Writing Activity'}<br/>(15 mins)</td>
+    <td>
+      <b>(Group work)</b><br/>
+      - 1. Divide learners into ability groups (TaRL level groups).<br/>
+      - 2. Provide word charts or story cards to each group.<br/>
+      - 3. Guide groups to find focus words and copy them into exercise books.
+    </td>
+    <td>
+      - 1. Move quickly and quietly into assigned learning groups.<br/>
+      - 2. Collaborate to read the words on the story cards/charts.<br/>
+      - 3. Write down focus words neatly under group leader guidance.
+    </td>
+  </tr>
+          `;
+
+          if (literacyLevel === 'bl' || litConclusionChoice !== 'Omit (No Conclusion)') {
+            tableHtml += `
+  <tr>
+    <td colspan="3" style="background-color: #f1f5f9; font-weight: bold; font-size: 11pt; padding: 10px; border-bottom: 2px solid #000; color: #000;">
+      <strong>ACTIVITY FOCUS: ${litStep4Title}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Step 4: ${literacyLevel === 'bl' ? 'Main Writing' : 'Conclusion'}<br/>(15 mins)</td>
+    <td>
+      <b>(Individual work)</b><br/>
+      - 1. Write individual writing exercises (e.g., fill in missing letters) on the chalkboard.<br/>
+      - 2. Give clear instructions to learners to copy and complete the exercise independently.<br/>
+      - 3. Move around the classroom to provide individual help to struggling learners.
+    </td>
+    <td>
+      - 1. Work individually and silently in exercise books.<br/>
+      - 2. Apply word knowledge to fill in missing letters/words.<br/>
+      - 3. Present completed work to the teacher for checking.
+    </td>
+  </tr>
+            `;
+          }
+
+          if (literacyLevel === 'bl' && litConclusionChoice !== 'Omit (No Conclusion)') {
+            tableHtml += `
+  <tr>
+    <td colspan="3" style="background-color: #f1f5f9; font-weight: bold; font-size: 11pt; padding: 10px; border-bottom: 2px solid #000; color: #000;">
+      <strong>ACTIVITY FOCUS: ${litStep5Title}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Step 5: Conclusion (Optional) (5 mins)</td>
+    <td>
+      <b>(Individual work)</b><br/>
+      - 1. Lead a brief, interactive word identification game with the whole class.<br/>
+      - 2. Sum up the lesson focus sounds and praise learners for active participation.<br/>
+      - 3. Note down progress in the weekly teaching file.
+    </td>
+    <td>
+      - 1. Participate actively in the closing word game.<br/>
+      - 2. Demonstrate individual sound/word identification.<br/>
+      - 3. Put away learning materials neatly.
+    </td>
+  </tr>
+            `;
+          }
+
+          tableHtml += `</table>`;
+        } else {
+          tableHtml = `
+<table class="lesson-plan-table">
+  <tr>
+    <th style="width: 18%;">STAGES</th>
+    <th style="width: 41%;">TEACHER'S ACTIVITIES</th>
+    <th style="width: 41%;">LEARNERS' ACTIVITIES</th>
+  </tr>
+  <tr>
+    <td colspan="3" style="background-color: #f1f5f9; font-weight: bold; font-size: 11pt; padding: 10px; border-bottom: 2px solid #000; color: #000;">
+      <strong>ACTIVITY FOCUS: ${numStep1Title}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Step 1: Introduction (Number Recognition)<br/>(10 mins)</td>
+    <td>
+      <b>(Whole class)</b><br/>
+      - 1. Show number cards from the target range (e.g., 1 to 50/100) to the class.<br/>
+      - 2. Lead the class in interactive counting chants and quick number pointing games.<br/>
+      - 3. Write target numbers on the board and ask learners to sound/identify them.
+    </td>
+    <td>
+      - 1. Participate in the counting chants with enthusiasm.<br/>
+      - 2. Point to the correct number cards when called upon.<br/>
+      - 3. Read and recognize numbers written on the chalkboard.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" style="background-color: #f1f5f9; font-weight: bold; font-size: 11pt; padding: 10px; border-bottom: 2px solid #000; color: #000;">
+      <strong>ACTIVITY FOCUS: ${numStep2Title}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Step 2: Development (Concept Introduction)<br/>(25 mins)</td>
+    <td>
+      <b>(Whole class)</b><br/>
+      - 1. Introduce the mathematical focus "${numTopic}" using physical counters (pebbles/bottle caps).<br/>
+      - 2. Model the operation step-by-step on the board using drawings and numbers.<br/>
+      - 3. Work through guided practice problems on the board, inviting learners to assist.
+    </td>
+    <td>
+      - 1. Observe the teacher's groupings of physical counters closely.<br/>
+      - 2. Solve practice calculation examples on the chalkboard with the class.<br/>
+      - 3. Explain the steps of the calculation to peers.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" style="background-color: #f1f5f9; font-weight: bold; font-size: 11pt; padding: 10px; border-bottom: 2px solid #000; color: #000;">
+      <strong>ACTIVITY FOCUS: ${numStep3Title}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Step 3: Applied Operation (Word Problems)<br/>(15 mins)</td>
+    <td>
+      <b>(Group work)</b><br/>
+      - 1. Divide learners into ability groups and assign concrete word problems.<br/>
+      - 2. Direct groups to model and solve the assigned word problems using counters.<br/>
+      - 3. Monitor group discussions, checking for correct calculation processes.
+    </td>
+    <td>
+      - 1. Work in groups of 5-6 with allocated math materials (counters).<br/>
+      - 2. Model and solve the word problems by grouping/sorting counters.<br/>
+      - 3. Explain the group's solution steps to the rest of the class.
+    </td>
+  </tr>
+          `;
+
+          if (numConclusionChoice !== 'Omit (No Conclusion)') {
+            tableHtml += `
+  <tr>
+    <td colspan="3" style="background-color: #f1f5f9; font-weight: bold; font-size: 11pt; padding: 10px; border-bottom: 2px solid #000; color: #000;">
+      <strong>ACTIVITY FOCUS: ${numStep4Title}</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Step 4: Conclusion (Closure Game/Recital)<br/>(10 mins)</td>
+    <td>
+      <b>(Individual work)</b><br/>
+      - 1. Guide a quick individual evaluation exercise or multiplication/chant game.<br/>
+      - 2. Review and summarize the core operation strategies taught.<br/>
+      - 3. Record lesson evaluations and assign simple home practice tasks.
+    </td>
+    <td>
+      - 1. Solve closing calculations individually in exercise books.<br/>
+      - 2. Participate in the closing math recital game with peers.<br/>
+      - 3. Note down the practice task and tidy up learning desks.
+    </td>
+  </tr>
+            `;
+          }
+
+          tableHtml += `</table>`;
+        }
+
+        fallbackHtml += tableHtml;
+        fallbackHtml += `
+<div class="lesson-plan-footer" style="width: 100%; margin-top: 5px; page-break-inside: avoid; break-inside: avoid; font-family: 'Calibri', 'Arial', sans-serif;">
+  <p style="margin-bottom: 1px; font-size: 9.2pt;"><b>LEARNER'S EVALUATION:</b></p>
+  <div style="border-bottom: 1.5px dotted #000000; height: 1.15em; width: 100%; margin-bottom: 2px;"></div>
+  <div style="border-bottom: 1.5px dotted #000000; height: 1.15em; width: 100%; margin-bottom: 2px;"></div>
+  
+  <p style="margin-top: 4px; margin-bottom: 1px; font-size: 9.2pt;"><b>TEACHER'S EVALUATION:</b></p>
+  <div style="border-bottom: 1.5px dotted #000000; height: 1.15em; width: 100%; margin-bottom: 2px;"></div>
+  <div style="border-bottom: 1.5px dotted #000000; height: 1.15em; width: 100%; margin-bottom: 2px;"></div>
+</div>
+        `;
+
+        textContent = fallbackHtml;
       }
-
-      const resData = await response.json();
-      let textContent = resData.text || '';
-      
-      if (textContent.includes("```")) {
-        textContent = textContent.replace(/^```[a-z]*\n/i, "").replace(/\n```$/m, "");
-      }
-
-      // Sanitize standard HTML tag typos often made by AI models
-      textContent = textContent
-        .replace(/<\/td\/>/gi, '</td>')
-        .replace(/<\/tr\/>/gi, '</tr>')
-        .replace(/<td\/>/gi, '<td>')
-        .replace(/<tr\/>/gi, '<tr>')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/<\/td>\s*<\/td>/gi, '</td>')
-        .replace(/<td>\s*<td>/gi, '<td>');
 
       const params = {
         type: 'catch_up',
@@ -1296,7 +1615,11 @@ ${tableBlueprint}
       };
 
       onGenerate(textContent, params);
-      toast.success('Successfully generated Catch-up Lesson Plan!');
+      if (isFallback) {
+        toast.success('Offline Catch-up Lesson Plan compiled successfully!');
+      } else {
+        toast.success('Successfully generated Catch-up Lesson Plan!');
+      }
     } catch (err: any) {
       toast.error(err.message || 'Error executing AI generation.');
     } finally {
@@ -1305,9 +1628,9 @@ ${tableBlueprint}
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-8 px-6 space-y-8 animate-in fade-in duration-500" id="catch-up-root">
+    <div className="w-full max-w-7xl mx-auto py-3 sm:py-6 px-2 sm:px-4 md:px-6 space-y-4 sm:space-y-6 animate-in fade-in duration-500" id="catch-up-root">
       {/* Header Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-6 gap-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-4 sm:pb-6 gap-4 sm:gap-6">
         <div className="flex items-center gap-5">
           <button 
             type="button"
@@ -1341,11 +1664,10 @@ ${tableBlueprint}
         </div>
       </div>
 
-      {/* AI Voice Playback & Planning Guide */}
-      <AIPlanningVoiceGuide 
+      {/* Information Center Fixed on top of General Information Block */}
+      <InformationCenter 
         toolType="catch_up" 
         toolTitle="Catch-Up & Remedial Planner"
-        className="animate-in fade-in duration-300"
       />
 
       {/* Collapsible General Information Registration Block */}
@@ -1469,20 +1791,7 @@ ${tableBlueprint}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* TS Number */}
-                  <div className="space-y-1.5">
-                    <label className="text-[11px] font-black uppercase tracking-wider text-slate-400">
-                      TS Number / Staff ID
-                    </label>
-                    <input 
-                      type="text" 
-                      value={tsNumber} 
-                      onChange={e => setTsNumber(e.target.value)}
-                      placeholder="e.g. TS/982341"
-                      className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 font-bold"
-                    />
-                  </div>
+                <div className="grid grid-cols-1 gap-4">
                   {/* District */}
                   <div className="space-y-1.5">
                     <label className="text-[11px] font-black uppercase tracking-wider text-slate-400">
@@ -1493,19 +1802,6 @@ ${tableBlueprint}
                       value={district} 
                       onChange={e => setDistrict(e.target.value)}
                       placeholder="e.g. Mkushi"
-                      className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 font-bold"
-                    />
-                  </div>
-                  {/* Zone */}
-                  <div className="space-y-1.5">
-                    <label className="text-[11px] font-black uppercase tracking-wider text-slate-400">
-                      Zone
-                    </label>
-                    <input 
-                      type="text" 
-                      value={zone} 
-                      onChange={e => setZone(e.target.value)}
-                      placeholder="e.g. Central Zone"
                       className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 font-bold"
                     />
                   </div>
@@ -1685,29 +1981,29 @@ ${tableBlueprint}
                     <p className="text-[11px] text-slate-500">Choose between Literacy or Numeracy catch-up mode</p>
                   </div>
 
-                  <div className="bg-slate-200/80 p-1.5 rounded-2xl flex gap-2 border border-slate-300/70 self-start sm:self-auto shadow-inner">
+                  <div className="bg-slate-200/80 p-1 sm:p-1.5 rounded-2xl flex gap-1.5 sm:gap-2 border border-slate-300/70 self-start sm:self-auto shadow-inner">
                     <button
                       type="button"
                       onClick={() => handleModeChange('literacy')}
-                      className={`px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+                      className={`px-3 xs:px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-[10px] xs:text-[11px] sm:text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer ${
                         mode === 'literacy' 
                           ? 'bg-[#00A86B] text-white shadow-md shadow-emerald-600/25 ring-2 ring-emerald-300' 
                           : 'text-slate-600 hover:bg-slate-300/60'
                       }`}
                     >
-                      <BookOpen size={14} />
+                      <BookOpen size={13} />
                       <span>Literacy</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => handleModeChange('numeracy')}
-                      className={`px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+                      className={`px-3 xs:px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-[10px] xs:text-[11px] sm:text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer ${
                         mode === 'numeracy' 
                           ? 'bg-blue-600 text-white shadow-md shadow-blue-600/25 ring-2 ring-blue-300' 
                           : 'text-slate-600 hover:bg-slate-300/60'
                       }`}
                     >
-                      <Maximize2 size={14} />
+                      <Maximize2 size={13} />
                       <span>Numeracy</span>
                     </button>
                   </div>
@@ -1715,48 +2011,48 @@ ${tableBlueprint}
               </div>
 
               {/* Main Catch-Up Planner Navigation Tabs (Placed below Select Subject Pathway per user request) */}
-              <div className="bg-slate-100/90 p-4 rounded-[2rem] border border-slate-200/80 space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="bg-slate-100/90 p-3 sm:p-4 rounded-[2rem] border border-slate-200/80 space-y-2.5 sm:space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
                   <div>
                     <h4 className="text-xs font-black uppercase tracking-widest text-[#0F172A] flex items-center gap-1.5">
                       Catch-Up Resource View
                     </h4>
-                    <p className="text-[11px] text-slate-500">Select view: Lesson Planner, Guiding Frames, or Reference Guides</p>
+                    <p className="text-[10px] sm:text-[11px] text-slate-500">Select view: Lesson Planner, Guiding Frames, or Reference Guides</p>
                   </div>
 
-                  <div className="flex bg-white p-1.5 rounded-2xl border border-slate-200/90 shrink-0 select-none gap-2 shadow-sm">
+                  <div className="flex flex-wrap sm:flex-nowrap bg-white p-1 sm:p-1.5 rounded-2xl border border-slate-200/90 shrink-0 select-none gap-1 sm:gap-2 shadow-sm w-full sm:w-auto">
                     <button
                       type="button"
                       onClick={() => setGeneratorTab('plan')}
-                      className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                      className={`flex-1 sm:flex-initial px-2.5 xs:px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[9px] xs:text-[10.5px] sm:text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 ${
                         (generatorTab as string) === 'plan' 
                           ? 'bg-slate-900 text-white shadow-md' 
                           : 'text-slate-600 hover:bg-slate-100'
                       }`}
                     >
-                      📝 Lesson Planner
+                      📝 Planner
                     </button>
                     <button
                       type="button"
                       onClick={() => setGeneratorTab('frames')}
-                      className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                      className={`flex-1 sm:flex-initial px-2.5 xs:px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[9px] xs:text-[10.5px] sm:text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 ${
                         (generatorTab as string) === 'frames' 
                           ? 'bg-slate-900 text-white shadow-md' 
                           : 'text-slate-600 hover:bg-slate-100'
                       }`}
                     >
-                      📋 Guiding Frames
+                      📋 Frames
                     </button>
                     <button
                       type="button"
                       onClick={() => setGeneratorTab('manual')}
-                      className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                      className={`flex-1 sm:flex-initial px-2.5 xs:px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[9px] xs:text-[10.5px] sm:text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 ${
                         (generatorTab as string) === 'manual' 
                           ? 'bg-slate-900 text-white shadow-md' 
                           : 'text-slate-600 hover:bg-slate-100'
                       }`}
                     >
-                      📖 Reference Guides
+                      📖 Guides
                     </button>
                   </div>
                 </div>
@@ -1891,7 +2187,7 @@ ${tableBlueprint}
                             onChange={(e) => setLitStoryProc1Selected(e.target.value)}
                             className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-700 font-medium"
                           >
-                            {LIT_STORY_PROC1.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                            {LIT_STORY_PROC1.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                           </select>
                         </div>
                         <div className="space-y-1.5">
@@ -1902,7 +2198,7 @@ ${tableBlueprint}
                                onChange={(e) => setLitStoryProc2Selected(e.target.value)}
                                className="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-700 font-medium"
                              >
-                               {LIT_STORY_PROC2.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                               {LIT_STORY_PROC2.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                              </select>
                            </div>
                         </div>
@@ -1923,7 +2219,7 @@ ${tableBlueprint}
                             onChange={(e) => setLitIntroSelected(e.target.value)}
                             className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-700 font-medium"
                           >
-                            {LIT_INTROS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                            {LIT_INTROS.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                           </select>
                         </div>
 
@@ -1942,7 +2238,7 @@ ${tableBlueprint}
                               onChange={(e) => setLitBlLevelAct(e.target.value)}
                               className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-700 font-medium"
                             >
-                              {LIT_BL_LEVEL_ACTIVITIES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                              {LIT_BL_LEVEL_ACTIVITIES.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                             </select>
                           </div>
                         )}
@@ -1956,8 +2252,8 @@ ${tableBlueprint}
                             onChange={(e) => setLitWritingChoice(e.target.value)}
                             className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-700 font-medium"
                           >
-                            {(literacyLevel === 'bl' ? LIT_BL_MAIN_WRITING : LIT_WSP_MAIN_WRITING).map(opt => (
-                              <option key={opt} value={opt}>{opt}</option>
+                            {(literacyLevel === 'bl' ? LIT_BL_MAIN_WRITING : LIT_WSP_MAIN_WRITING).map((opt, i) => (
+                              <option key={`${opt}-${i}`} value={opt}>{opt}</option>
                             ))}
                           </select>
                         </div>
@@ -1974,7 +2270,7 @@ ${tableBlueprint}
                         onChange={(e) => setLitConclusionChoice(e.target.value)}
                         className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-700 font-medium"
                       >
-                        {LIT_CONCLUSIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                        {LIT_CONCLUSIONS.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                       </select>
                     </div>
                   </div>
@@ -1992,7 +2288,7 @@ ${tableBlueprint}
                           onChange={(e) => setNumLevel1Recog(e.target.value)}
                           className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700 font-medium"
                         >
-                          {NUM_LEVEL1_RECOG.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                          {NUM_LEVEL1_RECOG.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                         </select>
                       ) : numeracyLevel === 'level23' ? (
                         <select
@@ -2000,7 +2296,7 @@ ${tableBlueprint}
                           onChange={(e) => setNumLevel23Recog(e.target.value)}
                           className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700 font-medium"
                         >
-                          {NUM_LEVEL23_RECOG.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                          {NUM_LEVEL23_RECOG.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                         </select>
                       ) : (
                         <select
@@ -2008,7 +2304,7 @@ ${tableBlueprint}
                           onChange={(e) => setNumLevel4Recog(e.target.value)}
                           className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700 font-medium"
                         >
-                          {NUM_LEVEL4_RECOG.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                          {NUM_LEVEL4_RECOG.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                         </select>
                       )}
                     </div>
@@ -2042,10 +2338,10 @@ ${tableBlueprint}
                           className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700 font-medium"
                         >
                           {(numOperationArea === 'Multiplication' || numOperationArea === 'Division')
-                            ? NUM_MENTAL_MATHS_MUL_DIV.map(opt => <option key={opt} value={opt}>{opt}</option>)
+                            ? NUM_MENTAL_MATHS_MUL_DIV.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)
                             : numOperationArea === 'Subtraction'
-                            ? NUM_MENTAL_MATHS_SUB.map(opt => <option key={opt} value={opt}>{opt}</option>)
-                            : NUM_MENTAL_MATHS_ADD.map(opt => <option key={opt} value={opt}>{opt}</option>)
+                            ? NUM_MENTAL_MATHS_SUB.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)
+                            : NUM_MENTAL_MATHS_ADD.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)
                           }
                         </select>
                       </div>
@@ -2061,7 +2357,7 @@ ${tableBlueprint}
                         onChange={(e) => setNumConceptSelected(e.target.value)}
                         className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700 font-medium"
                       >
-                        {NUM_CONCEPTS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                        {NUM_CONCEPTS.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                       </select>
                     </div>
 
@@ -2075,7 +2371,7 @@ ${tableBlueprint}
                         onChange={(e) => setNumBasicOpSelected(e.target.value)}
                         className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700 font-medium"
                       >
-                        {NUM_BASIC_OPERATIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                        {NUM_BASIC_OPERATIONS.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                       </select>
                     </div>
 
@@ -2089,7 +2385,7 @@ ${tableBlueprint}
                         onChange={(e) => setNumConclusionChoice(e.target.value)}
                         className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-700 font-medium"
                       >
-                        {NUM_CONCLUSIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                        {NUM_CONCLUSIONS.map((opt, i) => <option key={`${opt}-${i}`} value={opt}>{opt}</option>)}
                       </select>
                     </div>
 
@@ -2134,7 +2430,7 @@ ${tableBlueprint}
                 type="button"
                 disabled={loading}
                 onClick={handleGenerateClick}
-                className={`w-full sm:w-auto px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.25em] flex items-center justify-center gap-3 transition-all active:scale-95 shadow-md ${
+                className={`w-full sm:w-auto px-5 sm:px-10 py-3.5 sm:py-5 rounded-2xl font-black text-xs uppercase tracking-wider sm:tracking-[0.25em] flex items-center justify-center gap-2.5 sm:gap-3 transition-all active:scale-95 shadow-md ${
                   loading 
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed' 
                     : (mode === 'literacy' ? 'bg-[#00A86B] text-white hover:bg-[#008f5a]' : 'bg-blue-600 text-white hover:bg-blue-700')
@@ -2144,7 +2440,7 @@ ${tableBlueprint}
                 {loading ? (
                   <>
                     <Loader2 className="animate-spin" size={18} />
-                    <span>Synthesizing Remedial Plan...</span>
+                    <span className="truncate">Synthesizing Remedial Plan...</span>
                   </>
                 ) : (
                   <>

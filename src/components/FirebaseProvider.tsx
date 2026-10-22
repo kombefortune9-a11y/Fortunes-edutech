@@ -4,7 +4,52 @@ import { User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut 
 import { doc, setDoc, getDoc, serverTimestamp, onSnapshot, collection, query, where, getDocs, getCountFromServer, limit, Timestamp, orderBy } from 'firebase/firestore';
 import { auth, db, handleFirestoreError, OperationType, recordActivity } from '../lib/firebase';
 import { toast } from 'react-hot-toast';
-import { ADMIN_EMAIL, SUBSCRIPTION_PLANS, isDeveloperEmail, DEVELOPER_EMAILS } from '../constants';
+import { ADMIN_EMAIL, SUBSCRIPTION_PLANS, isDeveloperEmail, DEVELOPER_EMAILS, TRIAL_VIEW_LIMITS, APP_VERSION } from '../constants';
+import { calculateUnifiedSubscription } from '../lib/subscriptionUtils';
+import { FortunesLogo } from './FortunesLogo';
+import { extractUserFirstName } from '../lib/utils';
+import {
+  getTrialViewCounts,
+  recordTrialDocView as recordTrialDocViewHelper,
+  resetTrialDocViews as resetTrialDocViewsHelper,
+  checkTrialDocAccess,
+  TrialViewCounts,
+  TrialDocCheckResult
+} from '../lib/trialViewCheck';
+import { SchoolCircle, SchoolTeacherMember } from '../lib/schoolTypes';
+import { 
+  findSchoolByTeacherEmail, 
+  recordSchoolTeacherDownload, 
+  updateSchoolTeacherHeartbeat 
+} from '../lib/schoolService';
+
+export function safeParseToMs(val: any): number | null {
+  if (!val) return null;
+  if (typeof val.toDate === 'function') {
+    try {
+      const ms = val.toDate().getTime();
+      if (!isNaN(ms) && ms > 0) return ms;
+    } catch {}
+  }
+  if (typeof val.toMillis === 'function') {
+    try {
+      const ms = val.toMillis();
+      if (!isNaN(ms) && ms > 0) return ms;
+    } catch {}
+  }
+  if (typeof val === 'number' && !isNaN(val) && val > 0) return val;
+  if (val.seconds !== undefined && typeof val.seconds === 'number') {
+    const ms = val.seconds * 1000 + (val.nanoseconds ? Math.round(val.nanoseconds / 1000000) : 0);
+    if (!isNaN(ms) && ms > 0) return ms;
+  }
+  if (val._seconds !== undefined && typeof val._seconds === 'number') {
+    const ms = val._seconds * 1000;
+    if (!isNaN(ms) && ms > 0) return ms;
+  }
+  const parsed = new Date(val).getTime();
+  if (!isNaN(parsed) && parsed > 0) return parsed;
+  return null;
+}
 
 interface AuthContextType {
   user: User | null;
@@ -23,12 +68,21 @@ interface AuthContextType {
   subscriptionDetails: any;
   isQuotaExceeded: boolean;
   globalConfig: { enforceGradeLock: boolean };
-  informantData: { text: string; updatedAt: any };
-  updateInformantData: (text: string) => void;
+  informantData: { text: string; isActive: boolean; updatedAt: any };
+  updateInformantData: (text: string, isActive?: boolean) => void;
   switchSubscriptionCircle: (newCircle: string) => Promise<boolean>;
   isLoggingIn: boolean;
   authError: string | null;
   refreshSubscription: () => Promise<boolean>;
+  trialViewCounts: TrialViewCounts;
+  recordTrialDocView: (docType: string, docSessionKey?: string) => boolean;
+  canTrialUserViewDoc: (docType: string) => TrialDocCheckResult;
+  resetTrialDocViews: () => void;
+  schoolCircle: SchoolCircle | null;
+  isSchoolAccount: boolean;
+  schoolTeacher: SchoolTeacherMember | null;
+  isSchoolRepresentative: boolean;
+  refreshSchoolCircle: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -53,19 +107,39 @@ const AuthContext = createContext<AuthContextType>({
     isSubscriptionExpired: false,
     daysRemaining: 0,
     hoursRemaining: 0,
-    circleDownloadsLimit: 6,
+    circleDownloadsLimit: 4,
     circleDownloadsCount: 0,
     isTrialMode: true,
     allowedTools: [],
   },
   isQuotaExceeded: false,
   globalConfig: { enforceGradeLock: true },
-  informantData: { text: '', updatedAt: null },
+  informantData: { text: '', isActive: true, updatedAt: null },
   updateInformantData: () => {},
   switchSubscriptionCircle: async () => false,
   isLoggingIn: false,
   authError: null,
   refreshSubscription: async () => false,
+  trialViewCounts: {
+    schemes_of_work: 0,
+    weekly_forecast: 0,
+    lesson_plan: 0,
+  },
+  recordTrialDocView: () => false,
+  canTrialUserViewDoc: () => ({
+    allowed: true,
+    isTrial: false,
+    count: 0,
+    limit: 4,
+    remaining: 4,
+    docTypeName: '',
+  }),
+  resetTrialDocViews: () => {},
+  schoolCircle: null,
+  isSchoolAccount: false,
+  schoolTeacher: null,
+  isSchoolRepresentative: false,
+  refreshSchoolCircle: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -88,6 +162,22 @@ export const getWhitelistedGuestFromLocalCache = (email: string) => {
   if (!email) return null;
   const cleanEmail = email.toLowerCase().trim().replace(/\s+/g, '');
   if (!cleanEmail) return null;
+
+  if (cleanEmail === 'ngosawilliam1995@gmail.com') {
+    return {
+      email: cleanEmail,
+      grade: 'all',
+      subscriptionType: '14days',
+      amountPaid: 40,
+      paymentMethod: 'Zamtel',
+      subscriptionIndex: 1,
+      status: 'active',
+      subscriptionStart: new Date('2026-09-13T12:59:00.000Z'),
+      addedAt: new Date('2026-09-13T12:59:00.000Z'),
+      isWhitelisted: true,
+      isHardcoded: true
+    };
+  }
 
   // Check sub cache first for accurate stored subscriptionStart
   let cachedSubStart: any = null;
@@ -113,7 +203,8 @@ export const getWhitelistedGuestFromLocalCache = (email: string) => {
       status: 'active',
       subscriptionStart: cachedSubStart || new Date('2026-01-01T00:00:00.000Z'),
       addedAt: cachedSubStart || new Date('2026-01-01T00:00:00.000Z'),
-      isWhitelisted: true
+      isWhitelisted: true,
+      isHardcoded: true
     };
   }
 
@@ -122,13 +213,30 @@ export const getWhitelistedGuestFromLocalCache = (email: string) => {
       email: cleanEmail,
       grade: 'all',
       subscriptionType: 'termly',
-      amountPaid: 250,
+      amountPaid: 800,
       paymentMethod: 'MTN Mobile Money',
       subscriptionIndex: 1,
       status: 'active',
       subscriptionStart: cachedSubStart || new Date('2026-08-31T12:11:00.000Z'),
       addedAt: cachedSubStart || new Date('2026-08-31T12:11:00.000Z'),
-      isWhitelisted: true
+      isWhitelisted: true,
+      isHardcoded: true
+    };
+  }
+
+  if (cleanEmail === 'kabasojoseph7@gmail.com') {
+    return {
+      email: cleanEmail,
+      grade: 'all',
+      subscriptionType: 'monthly',
+      amountPaid: 90,
+      paymentMethod: 'MTN Mobile Money',
+      subscriptionIndex: 1,
+      status: 'active',
+      subscriptionStart: cachedSubStart || new Date('2026-08-19T00:00:00.000Z'),
+      addedAt: cachedSubStart || new Date('2026-08-19T00:00:00.000Z'),
+      isWhitelisted: true,
+      isHardcoded: true
     };
   }
 
@@ -201,7 +309,35 @@ export const getWhitelistedGuestFromLocalCache = (email: string) => {
 
 export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [realInitDone, setRealInitDone] = useState(false);
+  const [minTimeElapsed, setMinTimeElapsed] = useState(false);
+  const [initProgress, setInitProgress] = useState(0);
+  const [initStepText, setInitStepText] = useState('Connecting to Secure Services...');
+
+  const setLoading = (val: boolean) => {
+    setRealInitDone(!val);
+  };
+
+  const loading = !realInitDone || !minTimeElapsed;
+
+  useEffect(() => {
+    const startTime = Date.now();
+    const MIN_DURATION = 300; // Fast 300ms initial splash screen for instant preview loading
+    
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(100, Math.floor((elapsed / MIN_DURATION) * 100));
+      setInitProgress(pct);
+      setInitStepText('Platform Initialization Complete!');
+
+      if (elapsed >= MIN_DURATION) {
+        clearInterval(interval);
+        setMinTimeElapsed(true);
+      }
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
   const [registeredGrades, setRegisteredGrades] = useState<string[]>([]);
   const [isWhitelisted, setIsWhitelisted] = useState<boolean>(false);
   const [userType, setUserType] = useState<'guest' | 'registered' | 'developer'>('guest');
@@ -210,19 +346,50 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [circleDownloadsCount, setCircleDownloadsCount] = useState<number>(0);
   const [isQuotaExceeded, setIsQuotaExceeded] = useState(false);
   const [globalConfig, setGlobalConfig] = useState({ enforceGradeLock: true });
-  const [informantData, setInformantData] = useState<{ text: string; updatedAt: any }>(() => {
-    const cached = safeLocalStorage.getItem('eduplan_informant_text');
-    return { text: cached || '', updatedAt: null };
+
+  // Whole School Circle states
+  const [schoolCircle, setSchoolCircle] = useState<SchoolCircle | null>(null);
+  const [schoolTeacher, setSchoolTeacher] = useState<SchoolTeacherMember | null>(null);
+  const [isSchoolRepresentative, setIsSchoolRepresentative] = useState(false);
+
+  const refreshSchoolCircle = async () => {
+    if (!user?.email) return;
+    try {
+      const school = await findSchoolByTeacherEmail(user.email);
+      if (school) {
+        setSchoolCircle(school);
+        const cleanMail = user.email.toLowerCase().trim().replace(/\s+/g, '');
+        const member = school.teachers?.find(t => t.email?.toLowerCase().trim() === cleanMail) || null;
+        setSchoolTeacher(member);
+        setIsSchoolRepresentative(school.representativeEmail?.toLowerCase().trim() === cleanMail);
+      } else {
+        setSchoolCircle(null);
+        setSchoolTeacher(null);
+        setIsSchoolRepresentative(false);
+      }
+    } catch (e) {
+      console.warn('Error refreshing school circle:', e);
+    }
+  };
+  const [informantData, setInformantData] = useState<{ text: string; isActive: boolean; updatedAt: any }>(() => {
+    const cachedText = safeLocalStorage.getItem('eduplan_informant_text') || '';
+    const cachedActive = safeLocalStorage.getItem('eduplan_informant_active');
+    return { 
+      text: cachedText, 
+      isActive: cachedActive !== null ? cachedActive === 'true' : true, 
+      updatedAt: null 
+    };
   });
 
-  const updateInformantData = (text: string) => {
+  const updateInformantData = (text: string, isActive: boolean = true) => {
     const clean = text.trim();
-    setInformantData({ text: clean, updatedAt: new Date() });
+    setInformantData({ text: clean, isActive, updatedAt: new Date() });
     if (clean) {
       safeLocalStorage.setItem('eduplan_informant_text', clean);
     } else {
       safeLocalStorage.removeItem('eduplan_informant_text');
     }
+    safeLocalStorage.setItem('eduplan_informant_active', String(isActive));
   };
 
   const switchSubscriptionCircle = async (newCircle: string): Promise<boolean> => {
@@ -351,180 +518,20 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     isSubscriptionExpired: false,
     daysRemaining: 0,
     hoursRemaining: 0,
-    circleDownloadsLimit: 6,
+    circleDownloadsLimit: 4,
     circleDownloadsCount: 0,
     isTrialMode: true,
   });
 
   const calculateSubscription = (snapData: any, downloadsCount: number, gradeCounts: { [grade: string]: number } = {}) => {
+    const finalCount = downloadsCount === 0 && circleDownloadsCount > 0 ? circleDownloadsCount : downloadsCount;
+    downloadsCount = finalCount;
     const cleanUserEmail = user?.email?.toLowerCase().trim().replace(/\s+/g, '') || '';
-    const isDev = isDeveloperEmail(cleanUserEmail);
-
-    if (isDev) {
-      const plan = SUBSCRIPTION_PLANS.unlimited;
-      const devStart = snapData?.subscriptionStart?.toDate ? snapData.subscriptionStart.toDate() : (snapData?.subscriptionStart ? new Date(snapData.subscriptionStart) : new Date(2025, 0, 1));
-      const devEnd = new Date(devStart.getTime() + 10 * 365 * 24 * 60 * 60 * 1000);
-      return {
-        ...plan,
-        subscriptionType: 'unlimited',
-        subscriptionStart: devStart,
-        unlimitedDownloads: true,
-        subscriptionEnd: devEnd,
-        isSubscriptionExpired: false,
-        isQuotaExhausted: false,
-        daysRemaining: 9999,
-        hoursRemaining: 99999,
-        circleDownloadsLimit: 999999,
-        circleDownloadsCount: downloadsCount,
-        isTrialMode: false,
-        allowedTools: ['all'],
-        amountPaid: snapData?.amountPaid ?? 0,
-        paymentMethod: snapData?.paymentMethod || 'Developer Master Key',
-        subscriptionIndex: 1,
-        baseLimit: 999999,
-        isGradeSpecific: false,
-        gradeCounts: {},
-        gradesList: ['all'],
-      };
-    }
-
-    const isExplicitBlocked = snapData?.status === 'blocked';
-    const isExplicitWhitelisted = snapData?.isWhitelisted === true || 
-                                  snapData?.is_whitelisted === true || 
-                                  snapData?.status === 'active' || 
-                                  snapData?.status === 'approved';
-
-    const isWhitelistedUser = !!snapData && !isExplicitBlocked && (
-      isExplicitWhitelisted || 
-      (snapData.subscriptionType && snapData.subscriptionType !== 'guest_trial')
-    );
-
-    const isUnpaidOrTrial = !snapData || isExplicitBlocked || !isWhitelistedUser;
-
-    if (isUnpaidOrTrial) {
-      const plan = SUBSCRIPTION_PLANS.guest_trial;
-      return {
-        ...plan,
-        subscriptionType: 'guest_trial',
-        subscriptionStart: null,
-        unlimitedDownloads: false,
-        subscriptionEnd: null,
-        isSubscriptionExpired: false,
-        daysRemaining: 1,
-        hoursRemaining: 24,
-        circleDownloadsLimit: plan.limit, // 4 downloads total (1 schemes, 1 weekly, 2 lesson plans)
-        circleDownloadsCount: downloadsCount,
-        isTrialMode: true,
-        allowedTools: ['all'],
-        amountPaid: 0,
-        paymentMethod: 'Free Trial',
-        subscriptionIndex: 1,
-        baseLimit: plan.limit,
-        isGradeSpecific: false,
-        gradeCounts: {},
-        gradesList: ['all'],
-      };
-    }
-
-    let rawSub = snapData.subscriptionType || snapData.originalSubscriptionType || snapData.subType || snapData.plan || snapData.circle;
-    const amt = Number(snapData.amountPaid || snapData.amount || snapData.price || 0);
-    
-    // Always let amount paid override rawSub if amount paid indicates a specific tier
-    if (amt >= 1500) rawSub = 'unlimited';
-    else if (amt >= 250) rawSub = 'termly';
-    else if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PLANS)) {
-      if (amt >= 90) rawSub = 'monthly';
-      else if (amt >= 40) rawSub = '14days';
-      else if (amt >= 20) rawSub = 'weekly';
-      else rawSub = 'guest_trial';
-    }
-    const subType = (rawSub in SUBSCRIPTION_PLANS) ? rawSub : 'guest_trial';
-    if (cleanUserEmail && subType) {
-      safeLocalStorage.setItem(`eduplan_user_sub_circle_${cleanUserEmail}`, subType);
-    }
-    const plan = SUBSCRIPTION_PLANS[subType] || SUBSCRIPTION_PLANS.monthly;
-    const unlimitedDownloads = !!snapData.unlimitedDownloads || subType === 'unlimited';
-    const allowedTools = Array.isArray(snapData.allowed_tools) 
-      ? snapData.allowed_tools 
-      : (typeof snapData.allowed_tools === 'string' ? snapData.allowed_tools.split(',').map(s => s.trim()) : ['all']);
-    
-    let startMs: number | null = null;
-    if (snapData.subscriptionStart) {
-      if (typeof snapData.subscriptionStart.toDate === 'function') {
-        startMs = snapData.subscriptionStart.toDate().getTime();
-      } else if (typeof snapData.subscriptionStart === 'number') {
-        startMs = snapData.subscriptionStart;
-      } else if (snapData.subscriptionStart.seconds !== undefined) {
-        startMs = snapData.subscriptionStart.seconds * 1000;
-      } else if (snapData.subscriptionStart._seconds !== undefined) {
-        startMs = snapData.subscriptionStart._seconds * 1000;
-      } else {
-        const parsed = new Date(snapData.subscriptionStart).getTime();
-        if (!isNaN(parsed) && parsed > 0) startMs = parsed;
-      }
-    } else if (snapData.addedAt) {
-      if (typeof snapData.addedAt.toDate === 'function') {
-        startMs = snapData.addedAt.toDate().getTime();
-      } else if (typeof snapData.addedAt === 'number') {
-        startMs = snapData.addedAt;
-      } else if (snapData.addedAt.seconds !== undefined) {
-        startMs = snapData.addedAt.seconds * 1000;
-      } else if (snapData.addedAt._seconds !== undefined) {
-        startMs = snapData.addedAt._seconds * 1000;
-      } else {
-        const parsed = new Date(snapData.addedAt).getTime();
-        if (!isNaN(parsed) && parsed > 0) startMs = parsed;
-      }
-    }
-
-    if (!startMs || isNaN(startMs) || startMs <= 0) {
-      startMs = Date.now();
-    }
-
-    const subscriptionStart = new Date(startMs);
-
-    // Use unified pricing and limits from SUBSCRIPTION_PLANS
-    const calculatedAmount = plan.price;
-    let amountPaid = snapData.amountPaid !== undefined && snapData.amountPaid !== null && Number(snapData.amountPaid) > 0 
-      ? Number(snapData.amountPaid) 
-      : calculatedAmount;
-    if (amountPaid === 450) {
-      amountPaid = calculatedAmount;
-    }
-    const paymentMethod = snapData.paymentMethod || 'MTN Mobile Money';
-    const subscriptionIndex = snapData.subscriptionIndex !== undefined ? Number(snapData.subscriptionIndex) : 1;
-
-    let durationMs = plan.durationDays === Infinity ? 10 * 365 * 24 * 60 * 60 * 1000 : plan.durationDays * 24 * 60 * 60 * 1000;
-    const baseLimit = plan.limit;
-
-    const subscriptionEnd = new Date(subscriptionStart.getTime() + durationMs);
-    const timeDiff = subscriptionEnd.getTime() - Date.now();
-    
-    const isTimeExpired = subType !== 'unlimited' && plan.durationDays !== Infinity && timeDiff <= 0;
-    const isQuotaExhausted = !unlimitedDownloads && downloadsCount >= baseLimit;
-    const isSubscriptionExpired = subType === 'unlimited' ? false : isTimeExpired;
-
-    const daysRemaining = subType === 'unlimited' ? 9999 : Math.max(0, Math.floor(timeDiff / (1000 * 60 * 60 * 24)));
-    const hoursRemaining = subType === 'unlimited' ? 99999 : Math.max(0, Math.floor(timeDiff / (1000 * 60 * 60)));
-
+    const res = calculateUnifiedSubscription(snapData, downloadsCount, cleanUserEmail);
     return {
-      ...plan,
-      subscriptionType: subType,
-      subscriptionStart,
-      unlimitedDownloads,
-      subscriptionEnd,
-      isSubscriptionExpired,
-      isQuotaExhausted: subType === 'unlimited' ? false : isQuotaExhausted,
-      daysRemaining,
-      hoursRemaining,
-      circleDownloadsLimit: subType === 'unlimited' ? 999999 : baseLimit,
-      circleDownloadsCount: downloadsCount,
-      isTrialMode: subType === 'guest_trial',
-      allowedTools,
-      amountPaid,
-      paymentMethod,
-      subscriptionIndex,
-      baseLimit: subType === 'unlimited' ? 999999 : baseLimit,
+      ...res,
+      colorClass: (SUBSCRIPTION_PLANS[res.subscriptionType] || SUBSCRIPTION_PLANS.monthly).colorClass,
+      baseLimit: res.circleDownloadsLimit,
       isGradeSpecific: false,
       gradeCounts,
       gradesList: ['all'],
@@ -622,6 +629,30 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return newVal;
     });
 
+    // Record download for Whole School Termly Circle if connected
+    if (schoolCircle && user?.email) {
+      recordSchoolTeacherDownload(schoolCircle.id, user.email).catch(() => {});
+      setSchoolCircle(prevSchool => {
+        if (!prevSchool) return prevSchool;
+        const cleanMail = user.email!.toLowerCase().trim().replace(/\s+/g, '');
+        const updatedTeachers = (prevSchool.teachers || []).map(t => {
+          if (t.email?.toLowerCase().trim() === cleanMail) {
+            return {
+              ...t,
+              downloadsCount: (t.downloadsCount || 0) + 1,
+              lastActive: new Date().toISOString(),
+              isOnline: true,
+            };
+          }
+          return t;
+        });
+        return {
+          ...prevSchool,
+          teachers: updatedTeachers,
+        };
+      });
+    }
+
     // 2. Increment grade specific count inside subscriptionDetails if applicable
     setSubscriptionDetails((prevDetails: any) => {
       if (!prevDetails) return prevDetails;
@@ -639,14 +670,26 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const isTimeExpired = prevDetails.subscriptionType !== 'unlimited' && prevDetails.daysRemaining <= 0;
       const isSubscriptionExpired = isUnlimited ? false : isTimeExpired;
 
+      const isDev = isDeveloperEmail(user?.email);
+      const isRevertedToTrial = !isDev && !isUnlimited && (isQuotaExhausted || isSubscriptionExpired);
       const updatedDetails = {
         ...prevDetails,
         circleDownloadsCount: newCircleCount,
         gradeCounts: newGradeCounts,
         isQuotaExhausted,
         isSubscriptionExpired,
-        isTrialMode: prevDetails.subscriptionType === 'guest_trial'
+        isTrialMode: isRevertedToTrial || prevDetails.subscriptionType === 'guest_trial',
+        isWhitelisted: isRevertedToTrial ? false : prevDetails.isWhitelisted,
+        warningMessage: isQuotaExhausted
+          ? `Circle Downloads Depleted: You have downloaded ${newCircleCount} of ${baseLimit} documents. Your account has been reverted to free trial access mode immediately.`
+          : isSubscriptionExpired
+          ? 'Circle Validity Expired: Your subscription circle period has concluded. Your account has been reverted to free trial access mode immediately.'
+          : prevDetails.warningMessage
       };
+
+      if (isRevertedToTrial) {
+        setIsWhitelisted(false);
+      }
 
       try {
         const cachedGrades = registeredGrades;
@@ -726,14 +769,17 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       console.warn("Global config snapshot notice:", err?.message || err);
     });
 
-    // 2. Informant listener
+    // 2. Informant listener & immediate fetch for all users
     const informantRef = doc(db, 'global_settings', 'informant');
-    const unsubInformant = onSnapshot(informantRef, (snap) => {
+    
+    getDoc(informantRef).then((snap) => {
       if (snap.exists()) {
         const data = snap.data();
         const incomingText = data.text !== undefined ? String(data.text) : '';
+        const incomingActive = data.isActive !== false;
         setInformantData({ 
           text: incomingText, 
+          isActive: incomingActive,
           updatedAt: data.updatedAt || null 
         });
         if (incomingText) {
@@ -741,6 +787,26 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         } else {
           safeLocalStorage.removeItem('eduplan_informant_text');
         }
+        safeLocalStorage.setItem('eduplan_informant_active', String(incomingActive));
+      }
+    }).catch((err) => console.warn("Informant initial fetch notice:", err?.message || err));
+
+    const unsubInformant = onSnapshot(informantRef, (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        const incomingText = data.text !== undefined ? String(data.text) : '';
+        const incomingActive = data.isActive !== false;
+        setInformantData({ 
+          text: incomingText, 
+          isActive: incomingActive,
+          updatedAt: data.updatedAt || null 
+        });
+        if (incomingText) {
+          safeLocalStorage.setItem('eduplan_informant_text', incomingText);
+        } else {
+          safeLocalStorage.removeItem('eduplan_informant_text');
+        }
+        safeLocalStorage.setItem('eduplan_informant_active', String(incomingActive));
       }
     }, (err: any) => {
       console.warn("Informant snapshot notice:", err?.message || err);
@@ -773,24 +839,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       try {
         const guestData = JSON.parse(storedGuest);
         
-        // 1-week inactivity check on mount
-        const lastActiveLocal = safeLocalStorage.getItem('eduplan_last_active');
-        if (lastActiveLocal) {
-          const lastActiveTime = parseInt(lastActiveLocal, 10);
-          if (Date.now() - lastActiveTime > 7 * 24 * 60 * 60 * 1000) {
-            console.warn("Stored guest session expired due to 1 week inactivity on mount.");
-            safeLocalStorage.removeItem('eduplan_guest_user');
-            safeLocalStorage.removeItem('eduplan_last_active');
-            setUser(null);
-            setRegisteredGrades([]);
-            setIsWhitelisted(false);
-            setUserType('guest');
-            toast.error("You have been signed out due to 1 week of inactivity.");
-            setLoading(false);
-            return;
-          }
-        }
-
+        // Removed 1-week inactivity check on mount as per user request to never log out unless signed out
         const cleanEmail = guestData.email?.toLowerCase().trim();
         const normEmail = cleanEmail ? cleanEmail.replace(/\s+/g, '') : '';
         if (cleanEmail && normEmail) {
@@ -803,9 +852,10 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           let whitelisted = true;
           let type: 'guest' | 'registered' | 'developer' = 'registered';
 
-          if (isDeveloperEmail(normEmail)) {
+          if (isDeveloperEmail(normEmail) || normEmail === ADMIN_EMAIL.toLowerCase().trim().replace(/\s+/g, '')) {
             type = 'developer';
             gradesArray = ['all'];
+            whitelisted = true;
           }
 
           // Check if whitelist revoked (checking both clean and normalized)
@@ -888,6 +938,8 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           const cleanEmail = cachedData.email?.toLowerCase().trim() || '';
           const normEmail = cleanEmail.replace(/\s+/g, '');
           if (normEmail) {
+            const unifiedUid = `guest_${normEmail.replace(/[^a-zA-Z0-9]/g, '_')}`;
+            cachedData.uid = unifiedUid;
             const isDeveloper = isDeveloperEmail(normEmail);
             let type: 'guest' | 'registered' | 'developer' = 'guest';
             let grades: string[] = ['Trial Access'];
@@ -943,57 +995,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           safeLocalStorage.setItem('cached_admin_uid', currentUser.uid);
         }
 
-        // 1-week inactivity check during auth session load
-        const lastActiveLocal = safeLocalStorage.getItem('eduplan_last_active');
-        let sessionExpired = false;
-        if (lastActiveLocal) {
-          const lastActiveTime = parseInt(lastActiveLocal, 10);
-          if (Date.now() - lastActiveTime > 7 * 24 * 60 * 60 * 1000) {
-            sessionExpired = true;
-          }
-        }
-
-        // DB check backup is run asynchronously in the background so it never blocks UI load
-        if (!sessionExpired) {
-          (async () => {
-            try {
-              const userDocSnap = await getDoc(doc(db, 'users', currentUser.uid));
-              if (userDocSnap.exists()) {
-                const userData = userDocSnap.data();
-                const lastHb = userData.lastHeartbeat?.toDate?.() || (userData.lastHeartbeat && new Date(userData.lastHeartbeat));
-                if (lastHb && (Date.now() - lastHb.getTime() > 7 * 24 * 60 * 60 * 1000)) {
-                  console.warn("Auth session expired due to remote heartbeat inactivity.");
-                  safeLocalStorage.removeItem('eduplan_guest_user');
-                  safeLocalStorage.removeItem('eduplan_last_active');
-                  await signOut(auth);
-                  setUser(null);
-                  setRegisteredGrades([]);
-                  setIsWhitelisted(false);
-                  setUserType('guest');
-                  toast.error("You have been signed out due to 1 week of inactivity.");
-                }
-              }
-            } catch (e: any) {
-              if (checkIsQuotaError(e)) {
-                console.warn("Quota exceeded during background remote inactivity check.");
-              }
-            }
-          })();
-        }
-
-        if (sessionExpired) {
-          console.warn("Auth session expired due to 1 week inactivity.");
-          safeLocalStorage.removeItem('eduplan_guest_user');
-          safeLocalStorage.removeItem('eduplan_last_active');
-          await signOut(auth);
-          setUser(null);
-          setRegisteredGrades([]);
-          setIsWhitelisted(false);
-          setUserType('guest');
-          toast.error("You have been signed out due to 1 week of inactivity.");
-          setLoading(false);
-          return;
-        }
+        // Removed 1-week inactivity check and heartbeat check as per user request to stay logged in permanently
         
         // Instant Optimistic load using localStorage cache if available
         let type: 'guest' | 'registered' | 'developer' = 'guest';
@@ -1006,7 +1008,41 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           grades = ['all'];
         } else {
           const cacheKey = `eduplan_sub_cache_${normEmail}`;
-          const cached = safeLocalStorage.getItem(cacheKey);
+          let cached = safeLocalStorage.getItem(cacheKey);
+          
+          if (normEmail === 'ngosawilliam1995@gmail.com') {
+            const plan = SUBSCRIPTION_PLANS['14days'] || { label: '14 Days Circle', price: 40, limit: 40, durationDays: 14, colorClass: 'text-sky-700 bg-sky-50' };
+            const subStart = new Date("2026-09-13T12:59:00");
+            const subEnd = new Date(subStart.getTime() + 14 * 24 * 60 * 60 * 1000);
+            const timeDiff = subEnd.getTime() - Date.now();
+            const daysRemaining = Math.max(0, Math.ceil(timeDiff / (1000 * 60 * 60 * 24)));
+            const hoursRemaining = Math.max(0, Math.floor(timeDiff / (1000 * 60 * 60)));
+            
+            const forcedDetails = {
+              ...plan,
+              subscriptionType: '14days',
+              subscriptionStart: subStart,
+              unlimitedDownloads: false,
+              subscriptionEnd: subEnd,
+              isSubscriptionExpired: timeDiff <= 0,
+              isQuotaExhausted: false,
+              daysRemaining,
+              hoursRemaining,
+              circleDownloadsLimit: plan.limit,
+              circleDownloadsCount: 0,
+              isTrialMode: false,
+              allowedTools: ['all'],
+              amountPaid: 40,
+              paymentMethod: 'Zamtel',
+              subscriptionIndex: 1,
+              baseLimit: plan.limit,
+              isGradeSpecific: false,
+              gradeCounts: {},
+              gradesList: ['all'],
+            };
+            cached = JSON.stringify({ details: forcedDetails, grades: ['all'] });
+          }
+
           if (cached) {
             try {
               const parsed = JSON.parse(cached);
@@ -1026,12 +1062,22 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setRegisteredGrades(grades);
         setIsWhitelisted(whitelisted);
         setUserType(type);
-        setUser(currentUser);
+
+        const unifiedUid = `guest_${normEmail.replace(/[^a-zA-Z0-9]/g, '_')}`;
+        const mappedUser = {
+          ...currentUser,
+          uid: unifiedUid,
+          displayName: currentUser.displayName,
+          email: currentUser.email,
+          photoURL: currentUser.photoURL,
+        } as any;
+
+        setUser(mappedUser);
         setLoading(false);
 
         // Cache the Google profile for instant 0-second restore on next reload
         safeLocalStorage.setItem('eduplan_google_user', JSON.stringify({
-          uid: currentUser.uid,
+          uid: unifiedUid,
           displayName: currentUser.displayName,
           email: currentUser.email,
           photoURL: currentUser.photoURL
@@ -1075,7 +1121,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               } catch (e) {}
             } else {
               const localWhitelisted = getWhitelistedGuestFromLocalCache(cleanEmail) || getWhitelistedGuestFromLocalCache(normEmail);
-              if (localWhitelisted && !localWhitelisted.isBlocked) {
+              if (localWhitelisted && localWhitelisted.isHardcoded && !localWhitelisted.isBlocked) {
                 finalWhitelisted = true;
                 finalType = isDeveloperEmail(normEmail) ? 'developer' : 'registered';
                 finalGrades = ['all'];
@@ -1094,21 +1140,117 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                   paymentMethod: localWhitelisted.paymentMethod || 'MTN Mobile Money',
                   status: 'active',
                   lastLogin: serverTimestamp(),
-                  ...(existingSubStart ? { subscriptionStart: existingSubStart } : { subscriptionStart: serverTimestamp() }),
-                  ...(existingAddedAt ? { addedAt: existingAddedAt } : { addedAt: serverTimestamp() }),
+                  ...(existingSubStart ? { subscriptionStart: existingSubStart } : {}),
+                  ...(existingAddedAt ? { addedAt: existingAddedAt } : {}),
                   displayName: currentUser.displayName || 'Approved Teacher'
                 }, { merge: true }).catch(() => {});
               } else {
+                safeLocalStorage.removeItem(`eduplan_sub_cache_${normEmail}`);
+                safeLocalStorage.removeItem(`eduplan_sub_cache_${cleanEmail}`);
                 finalWhitelisted = false;
                 finalType = 'guest';
                 finalGrades = ['Trial Access'];
+                setSubscriptionDetails({
+                  subscriptionType: 'guest_trial',
+                  subscriptionStart: null,
+                  unlimitedDownloads: false,
+                  subscriptionEnd: null,
+                  isSubscriptionExpired: false,
+                  daysRemaining: 0,
+                  hoursRemaining: 0,
+                  circleDownloadsLimit: 4,
+                  circleDownloadsCount: 0,
+                  isTrialMode: true,
+                  allowedTools: [],
+                });
               }
+            }
+
+            // Check Whole School Circle membership
+            try {
+              const matchedSchool = await findSchoolByTeacherEmail(normEmail);
+              if (matchedSchool) {
+                setSchoolCircle(matchedSchool);
+                const member = matchedSchool.teachers?.find(t => t.email?.toLowerCase().trim() === normEmail) || null;
+                setSchoolTeacher(member);
+                setIsSchoolRepresentative(matchedSchool.representativeEmail?.toLowerCase().trim() === normEmail);
+
+                const isSchoolExpired = new Date() > new Date(matchedSchool.subscriptionEndDate);
+                if (isSchoolExpired) {
+                  // Revert to trial access mode as requested
+                  setSubscriptionDetails({
+                    subscriptionType: 'guest_trial',
+                    label: 'Free View-Only Trial',
+                    subscriptionStart: new Date(),
+                    subscriptionEnd: null,
+                    durationDays: 1,
+                    daysRemaining: 0,
+                    hoursRemaining: 0,
+                    minutesRemaining: 0,
+                    isSubscriptionExpired: true,
+                    isQuotaExhausted: false,
+                    circleDownloadsLimit: 4,
+                    circleDownloadsCount: member?.downloadsCount || 0,
+                    isTrialMode: true,
+                    allowedTools: [],
+                    amountPaid: matchedSchool.amountPaid,
+                    paymentMethod: matchedSchool.paymentMethod || 'Lipila',
+                    subscriptionIndex: 1,
+                    unlimitedDownloads: false,
+                    isWhitelisted: false,
+                    schoolName: matchedSchool.schoolName,
+                    schoolId: matchedSchool.id,
+                  });
+                  finalWhitelisted = false;
+                  finalType = 'guest';
+                  finalGrades = ['Trial Access'];
+                } else {
+                  const subStart = new Date(matchedSchool.subscriptionStartDate);
+                  const subEnd = new Date(matchedSchool.subscriptionEndDate);
+                  const diffMs = subEnd.getTime() - Date.now();
+                  const daysRemaining = Math.max(0, Math.ceil(diffMs / 86400000));
+                  const hoursRemaining = Math.max(0, Math.floor(diffMs / 3600000));
+                  const minutesRemaining = Math.max(0, Math.floor(diffMs / 60000));
+
+                  const schoolDetails = {
+                    subscriptionType: 'termly',
+                    label: 'Whole School Termly Circle',
+                    subscriptionStart: subStart,
+                    subscriptionEnd: subEnd,
+                    durationDays: 90,
+                    daysRemaining,
+                    hoursRemaining,
+                    minutesRemaining,
+                    isSubscriptionExpired: false,
+                    isQuotaExhausted: false,
+                    circleDownloadsLimit: 999999,
+                    circleDownloadsCount: member?.downloadsCount || 0,
+                    unlimitedDownloads: true,
+                    isTrialMode: false,
+                    allowedTools: ['all'],
+                    amountPaid: matchedSchool.amountPaid,
+                    paymentMethod: matchedSchool.paymentMethod || 'Lipila',
+                    subscriptionIndex: 1,
+                    isWhitelisted: true,
+                    schoolName: matchedSchool.schoolName,
+                    schoolId: matchedSchool.id,
+                    schoolTeacherName: member?.name,
+                  };
+
+                  setSubscriptionDetails(schoolDetails);
+                  finalWhitelisted = true;
+                  finalType = 'registered';
+                  finalGrades = ['all'];
+                }
+              }
+            } catch (err) {
+              console.warn("Error checking school circle in whitelist:", err);
             }
 
             setRegisteredGrades(finalGrades);
             setIsWhitelisted(finalWhitelisted);
             setUserType(finalType);
-            setUser(currentUser);
+            setUser(mappedUser);
           } catch (error) {
             console.error("Failed to verify fresh whitelist status:", error);
           }
@@ -1120,8 +1262,8 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const currentSub = localWhitelisted?.subscriptionType || 'guest_trial';
 
         // Record/Update user in Firestore in the background (NON-blocking)
-        setDoc(doc(db, 'users', currentUser.uid), {
-          uid: currentUser.uid,
+        setDoc(doc(db, 'users', unifiedUid), {
+          uid: unifiedUid,
           displayName: currentUser.displayName || 'Teacher',
           email: normEmail, // Normalize stored email to strip trailing/internal spaces
           photoURL: currentUser.photoURL,
@@ -1163,11 +1305,63 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           });
         }
       } else {
-        const hasGuest = safeLocalStorage.getItem('eduplan_guest_user');
-        if (!hasGuest) {
-          setUser(null);
-          setLoading(false);
+        const storedGoogle = safeLocalStorage.getItem('eduplan_google_user');
+        if (storedGoogle) {
+          try {
+            const cachedData = JSON.parse(storedGoogle);
+            const cleanEmail = cachedData.email?.toLowerCase().trim() || '';
+            const normEmail = cleanEmail.replace(/\s+/g, '');
+            if (normEmail) {
+              const unifiedUid = `guest_${normEmail.replace(/[^a-zA-Z0-9]/g, '_')}`;
+              cachedData.uid = unifiedUid;
+              const isDeveloper = isDeveloperEmail(normEmail);
+              let type: 'guest' | 'registered' | 'developer' = 'guest';
+              let grades: string[] = ['Trial Access'];
+              let whitelisted = false;
+
+              if (isDeveloper) {
+                type = 'developer';
+                whitelisted = true;
+                grades = ['all'];
+              } else {
+                const cacheKey = `eduplan_sub_cache_${normEmail}`;
+                const subCached = safeLocalStorage.getItem(cacheKey);
+                if (subCached) {
+                  try {
+                    const parsed = JSON.parse(subCached);
+                    whitelisted = true;
+                    type = 'registered';
+                    grades = parsed.grades || (parsed.details?.gradesList) || ['Grade 4'];
+                    if (parsed.details) {
+                      setSubscriptionDetails(parsed.details);
+                    }
+                  } catch (e) {}
+                }
+              }
+
+              setUser(cachedData);
+              setRegisteredGrades(grades);
+              setIsWhitelisted(whitelisted);
+              setUserType(type);
+            }
+          } catch (e) {
+            console.warn("Failed to parse cached Google user offline:", e);
+          }
+        } else {
+          const hasGuest = safeLocalStorage.getItem('eduplan_guest_user');
+          if (hasGuest) {
+            try {
+              const guestData = JSON.parse(hasGuest);
+              setUser(guestData);
+            } catch (e) {
+              console.warn("Failed to parse stored guest user in auth listener:", e);
+              setUser(null);
+            }
+          } else {
+            setUser(null);
+          }
         }
+        setLoading(false);
       }
       
       // Attempt to sync any unsynced offline trial histories on mount
@@ -1185,17 +1379,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (!user) return;
 
     const checkAndSendHeartbeat = async () => {
-      // Periodic inactivity check
-      const lastActiveLocal = safeLocalStorage.getItem('eduplan_last_active');
-      if (lastActiveLocal) {
-        const lastActiveTime = parseInt(lastActiveLocal, 10);
-        if (Date.now() - lastActiveTime > 7 * 24 * 60 * 60 * 1000) {
-          console.warn("Heartbeat periodic check failed. Inactivity > 1 week.");
-          toast.error("You have been signed out due to 1 week of inactivity.");
-          logout();
-          return;
-        }
-      }
+      // Periodic inactivity check removed as per user request to stay logged in permanently
 
       if (isQuotaExceeded) {
         console.warn("Skipping heartbeat: Firestore quota exceeded.");
@@ -1233,6 +1417,58 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           lastHeartbeat: serverTimestamp(),
         }, { merge: true });
 
+        // Update school teacher online heartbeat
+        if (schoolCircle && user?.email) {
+          updateSchoolTeacherHeartbeat(schoolCircle.id, user.email).catch(() => {});
+        }
+
+        // Trigger Expiry Warning Email (5 days before) if applicable
+        if (subscriptionDetails && subscriptionDetails.subscriptionEnd && subscriptionDetails.daysRemaining === 5 && !subscriptionDetails.isTrialMode) {
+          const userDoc = await getDoc(userRef);
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            const lastExpirySent = data.expiry_warning_sent;
+            const todayStr = new Date().toDateString();
+            if (lastExpirySent !== todayStr) {
+               // Send email
+               const docSnap = await getDoc(doc(db, 'global_settings', 'email_template'));
+               const templateData = docSnap.exists() ? docSnap.data() : {};
+               const logoHtml = templateData.logo ? `<img src="${templateData.logo}" alt="Logo" style="max-height: 80px; margin-bottom: 20px;" />` : '';
+               
+               const userFirstName = extractUserFirstName(user.displayName, user.email);
+               let subject = 'Action Required: Subscription Expiring in 5 Days';
+               let bodyText = `Hello {{NAME}},\n\nThis is a friendly reminder that your Fortunes Edutech **{{CIRCLE}}** subscription will expire in exactly 5 days.\n\nPlease renew your circle soon to maintain uninterrupted access to all your premium tools.\n\nBest regards,\nThe Fortunes Edutech Team`;
+               
+               if (templateData.expirySubject) subject = templateData.expirySubject;
+               if (templateData.expiryBody) bodyText = templateData.expiryBody;
+
+               const formattedBody = bodyText
+                 .replace(/\n\n/g, '</p><p>')
+                 .replace(/\n/g, '<br/>')
+                 .replace(/{{CIRCLE}}/gi, subscriptionDetails.subscriptionType.toUpperCase())
+                 .replace(/{{NAME}}/gi, userFirstName)
+                 .replace(/{{FIRST_NAME}}/gi, userFirstName)
+                 .replace(/Hello Educator\b/gi, `Hello ${userFirstName}`);
+
+               const response = await fetch('/api/system/email', {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({
+                   to: user.email || '',
+                   recipientName: userFirstName,
+                   subject: subject.replace(/{{CIRCLE}}/gi, subscriptionDetails.subscriptionType.toUpperCase()).replace(/{{NAME}}/gi, userFirstName),
+                   html: `<p>${formattedBody}</p>`,
+                   logoUrl: templateData.logo || undefined
+                 })
+               });
+               
+               if (response.ok) {
+                 await setDoc(userRef, { expiry_warning_sent: todayStr }, { merge: true });
+               }
+            }
+          }
+        }
+
         if (isWhitelisted && user.email) {
           const norm = user.email.toLowerCase().trim().replace(/\s+/g, '');
           setDoc(doc(db, 'authorized_guests', norm), {
@@ -1255,6 +1491,61 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const interval = setInterval(checkAndSendHeartbeat, 180000); // 180s (3 minutes)
     return () => clearInterval(interval);
   }, [user, isProfileSynced, isWhitelisted, registeredGrades, userType, isQuotaExceeded]);
+
+  const sendWelcomeEmail = async (userEmail: string, displayName: string, userType: string, uid: string) => {
+    try {
+      const userRef = doc(db, 'users', uid);
+      const userDoc = await getDoc(userRef);
+      
+      // Only send if this is their first login (we track welcome_email_sent)
+      if (userDoc.exists() && userDoc.data().welcome_email_sent) {
+        return; // Already sent
+      }
+
+      const docSnap = await getDoc(doc(db, 'global_settings', 'email_template'));
+      let subject = 'Welcome to Fortunes Edutech';
+      let bodyText = `Hello {{NAME}},\n\nYou have successfully logged in to the Fortunes Edutech portal. We are thrilled to have you onboard.\n\nYour current access level: **{{ACCESS_LEVEL}}**\n\nBest regards,\nThe Fortunes Edutech Team`;
+      let logoUrl = '';
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.logo) logoUrl = data.logo;
+        if (data.welcomeSubject) subject = data.welcomeSubject;
+        else if (data.subject) subject = data.subject; // fallback
+
+        if (data.welcomeBody) bodyText = data.welcomeBody;
+        else if (data.body) bodyText = data.body; // fallback
+      }
+
+      const recipientFirstName = extractUserFirstName(displayName, userEmail);
+      const formattedBody = bodyText
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br/>')
+        .replace(/{{NAME}}/gi, recipientFirstName)
+        .replace(/{{FIRST_NAME}}/gi, recipientFirstName)
+        .replace(/Hello Educator\b/gi, `Hello ${recipientFirstName}`)
+        .replace(/{{ACCESS_LEVEL}}/g, userType === 'guest' ? 'Trial Access' : 'Registered Access');
+
+      const response = await fetch('/api/system/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: userEmail,
+          recipientName: recipientFirstName,
+          subject: subject.replace(/{{NAME}}/gi, recipientFirstName),
+          html: `<p>${formattedBody}</p>`,
+          logoUrl: logoUrl || undefined
+        })
+      });
+
+      if (response.ok) {
+        // Mark as sent in Firestore so we don't send it again
+        await setDoc(userRef, { welcome_email_sent: true }, { merge: true });
+      }
+    } catch (e) {
+      console.warn("Error calling email API", e);
+    }
+  };
 
   const signInWithGoogle = async () => {
     if (isLoggingIn) return;
@@ -1294,15 +1585,24 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
       }
 
+      const unifiedUid = `guest_${normEmail.replace(/[^a-zA-Z0-9]/g, '_')}`;
+      const mappedUser = {
+        ...result.user,
+        uid: unifiedUid,
+        displayName: result.user?.displayName,
+        email: result.user?.email,
+        photoURL: result.user?.photoURL,
+      } as any;
+
       setRegisteredGrades(grades);
       setIsWhitelisted(whitelisted);
       setUserType(type);
-      setUser(result.user);
+      setUser(mappedUser);
 
       // Cache the Google profile for instant 0-second restore on next reload
       if (result.user) {
         safeLocalStorage.setItem('eduplan_google_user', JSON.stringify({
-          uid: result.user.uid,
+          uid: unifiedUid,
           displayName: result.user.displayName,
           email: result.user.email,
           photoURL: result.user.photoURL
@@ -1346,25 +1646,62 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       checkWhitelistFresh();
 
       toast.success(type === 'guest' ? "Welcome! Trial Access Active." : "Successfully signed in with Google!");
+      
+      // Trigger background system email notification
+      sendWelcomeEmail(normEmail, result.user?.displayName || 'Educator', type, result.user?.uid || '');
+
+      setTimeout(() => {
+        toast("Google Account: Welcome to the app! Your login was successful.", {
+          icon: "✉️",
+          style: {
+            borderRadius: '10px',
+            background: '#fff',
+            color: '#333',
+            borderLeft: '4px solid #4285F4',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+          },
+          duration: 6000
+        });
+      }, 1000);
     } catch (error: any) {
-      console.error("Google Sign-In failed:", error);
-      let userFriendlyMsg = "Sign-In failed. Please try again.";
-      
       const errorCode = error?.code || "";
-      if (errorCode === 'auth/cancelled-popup-request' || error?.message?.includes('cancelled-popup-request')) {
-        userFriendlyMsg = "Google Sign-In popup request was interrupted. This often happens if the Sign-In button was clicked multiple times or if browser cookies/sandboxing blocks the flow. Please click the 'Open in New Tab' icon in the top right of the preview to log in successfully, or use the 'Continue as Guest' option.";
-      } else if (errorCode === 'auth/popup-closed-by-user' || error?.message?.includes('popup-closed-by-user')) {
-        userFriendlyMsg = "The Google Sign-In window was closed before completing. Please try again, or use the 'Continue as Guest' option.";
-      } else if (errorCode === 'auth/popup-blocked' || error?.message?.includes('popup-blocked')) {
-        userFriendlyMsg = "The Google Sign-In popup was blocked by your browser's pop-up blocker. Please enable popups, click 'Open in New Tab' in the preview toolbar, or use the 'Continue as Guest' option.";
-      } else if (errorCode === 'auth/network-request-failed' || error?.message?.includes('network-request-failed')) {
-        userFriendlyMsg = "A network error occurred during Sign-In. Please check your internet connection and try again.";
+      const isUserCancellation = errorCode === 'auth/popup-closed-by-user' || 
+                                 errorCode === 'auth/cancelled-popup-request' ||
+                                 error?.message?.includes('popup-closed-by-user') ||
+                                 error?.message?.includes('cancelled-popup-request');
+
+      if (isUserCancellation) {
+        // User closed or dismissed the popup window; this is a normal cancellation, not a fatal runtime failure.
+        console.info("Google Sign-In popup was closed or cancelled by user:", errorCode || error?.message);
+        setAuthError(null);
+        toast("Google Sign-In window closed. You can try again or sign in with your email address above.", {
+          icon: "ℹ️",
+          style: {
+            borderRadius: '10px',
+            background: '#fff',
+            color: '#333',
+            borderLeft: '4px solid #94a3b8',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+          },
+          duration: 4000
+        });
       } else {
-        userFriendlyMsg = error?.message || "Sign-In failed. Please try again.";
+        console.error("Google Sign-In failed:", error);
+        let userFriendlyMsg = "Sign-In failed. Please try again.";
+        
+        if (errorCode === 'auth/popup-blocked' || error?.message?.includes('popup-blocked')) {
+          userFriendlyMsg = "The Google Sign-In popup was blocked by your browser. Please allow popups for this site, open the app in a new tab, or use the Email sign-in option above.";
+        } else if (errorCode === 'auth/network-request-failed' || error?.message?.includes('network-request-failed')) {
+          userFriendlyMsg = "A network error occurred during Sign-In. Please check your internet connection and try again.";
+        } else if (errorCode === 'auth/unauthorized-domain' || error?.message?.includes('unauthorized-domain')) {
+          userFriendlyMsg = "This domain is not in Firebase's authorized domains list. Please use the Email sign-in option above for instant access.";
+        } else {
+          userFriendlyMsg = error?.message || "Sign-In failed. Please try again.";
+        }
+        
+        setAuthError(userFriendlyMsg);
+        toast.error(userFriendlyMsg, { duration: 8000 });
       }
-      
-      setAuthError(userFriendlyMsg);
-      toast.error(userFriendlyMsg, { duration: 10000 });
     } finally {
       setIsLoggingIn(false);
     }
@@ -1373,8 +1710,10 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const signInAsGuest = async (email: string): Promise<boolean> => {
     // Treat any spaces typing as a user mistake and remove them
     const cleanEmail = email.toLowerCase().replace(/\s+/g, '');
-    if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
-      toast.error("Please enter a valid email address.");
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+      toast.error("Please provide an authentic email address to continue.");
       return false;
     }
 
@@ -1434,11 +1773,12 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const guestUid = `guest_${cleanEmail.replace(/[^a-zA-Z0-9]/g, '_')}`;
       const guestUser = {
         uid: guestUid,
-        displayName: isDeveloper ? 'Developer (Guest)' : (whitelisted ? 'Approved Teacher' : 'Teacher (Guest)'),
+        displayName: isDeveloper ? 'Developer (Admin)' : (whitelisted ? 'Approved Teacher' : 'Teacher (Guest)'),
         email: cleanEmail,
         grade: assignedGrades.join(', '),
         photoURL: null,
-        isWhitelisted: whitelisted
+        isWhitelisted: whitelisted,
+        userType: type
       } as any;
 
       setUser(guestUser);
@@ -1497,6 +1837,24 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
 
       toast.success(whitelisted ? `Welcome back! Signed in with ${snapData?.subscriptionType || 'Active'} Circle.` : "Welcome! Entered Trial Access.");
+      
+      // Trigger background system email notification
+      sendWelcomeEmail(cleanEmail, 'Educator', whitelisted ? 'registered' : 'guest', guestUid);
+
+      setTimeout(() => {
+        toast("Google: Welcome to the app! Your session has been verified successfully.", {
+          icon: "✉️",
+          style: {
+            borderRadius: '10px',
+            background: '#fff',
+            color: '#333',
+            borderLeft: '4px solid #4285F4',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+          },
+          duration: 6000
+        });
+      }, 1000);
+      
       return true;
     } catch (error: any) {
       const isQuota = checkIsQuotaError(error);
@@ -1584,7 +1942,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         isSubscriptionExpired: false,
         daysRemaining: 0,
         hoursRemaining: 0,
-        circleDownloadsLimit: 6,
+        circleDownloadsLimit: 4,
         circleDownloadsCount: 0,
         isTrialMode: true,
       });
@@ -1668,18 +2026,19 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           activeSnapData = data;
         }
       } else {
+        const isOffline = (docSnap as any).metadata?.fromCache;
         // Fallback 0: Check developer target accounts and local whitelist cache
         const localWhitelisted = getWhitelistedGuestFromLocalCache(cleanEmail) || getWhitelistedGuestFromLocalCache(normEmail);
-        if (localWhitelisted) {
+        if (localWhitelisted && (localWhitelisted.isHardcoded || isOffline)) {
           if (localWhitelisted.isBlocked) {
             isExplicitlyBlocked = true;
           } else {
             let rawSub = (localWhitelisted as any).subscriptionType || (localWhitelisted as any).plan || (localWhitelisted as any).circle || (localWhitelisted as any).subType;
             const amtPaid = Number(localWhitelisted.amountPaid || 0);
-            if (amtPaid >= 1500) rawSub = 'unlimited';
-            else if (amtPaid >= 250) rawSub = 'termly';
-            else if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PLANS)) {
-              if (amtPaid >= 90) rawSub = 'monthly';
+            if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PLANS)) {
+              if (amtPaid >= 800) rawSub = 'termly';
+              else if (amtPaid >= 200) rawSub = 'termly_individual';
+              else if (amtPaid >= 90) rawSub = 'monthly';
               else if (amtPaid >= 40) rawSub = '14days';
               else if (amtPaid >= 20) rawSub = 'weekly';
               else rawSub = 'monthly';
@@ -1768,10 +2127,10 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 if (isWhitelistedUser) {
                   let rawSub = uData.subscriptionType || uData.plan || uData.circle || uData.subType;
                   const amtPaid = Number(uData.amountPaid || 0);
-                  if (amtPaid >= 1500) rawSub = 'unlimited';
-                  else if (amtPaid >= 250) rawSub = 'termly';
-                  else if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PLANS)) {
-                    if (amtPaid >= 90) rawSub = 'monthly';
+                  if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PLANS)) {
+                    if (amtPaid >= 800) rawSub = 'termly';
+                    else if (amtPaid >= 200) rawSub = 'termly_individual';
+                    else if (amtPaid >= 90) rawSub = 'monthly';
                     else if (amtPaid >= 40) rawSub = '14days';
                     else if (amtPaid >= 20) rawSub = 'weekly';
                     else rawSub = 'monthly';
@@ -1796,7 +2155,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
 
         // Fallback 3: Check local storage whitelist caches (eduplan_monitor_whitelist and eduplan_whitelisted_guests)
-        if (!activeSnapData && !isExplicitlyBlocked) {
+        if (!activeSnapData && !isExplicitlyBlocked && isOffline) {
           try {
             const sources = ['eduplan_monitor_whitelist', 'eduplan_whitelisted_guests'];
             for (const src of sources) {
@@ -1815,10 +2174,10 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                   }
                   let rawSub = match.subscriptionType || match.plan || match.circle || match.subType;
                   const amtPaid = Number(match.amountPaid || 0);
-                  if (amtPaid >= 1500) rawSub = 'unlimited';
-                  else if (amtPaid >= 250) rawSub = 'termly';
-                  else if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PLANS)) {
-                    if (amtPaid >= 90) rawSub = 'monthly';
+                  if (!rawSub || rawSub === 'guest_trial' || !(rawSub in SUBSCRIPTION_PLANS)) {
+                    if (amtPaid >= 800) rawSub = 'termly';
+                    else if (amtPaid >= 200) rawSub = 'termly_individual';
+                    else if (amtPaid >= 90) rawSub = 'monthly';
                     else if (amtPaid >= 40) rawSub = '14days';
                     else if (amtPaid >= 20) rawSub = 'weekly';
                     else rawSub = 'monthly';
@@ -1832,8 +2191,8 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                     paymentMethod: match.paymentMethod || 'MTN Mobile Money',
                     subscriptionIndex: match.subscriptionIndex !== undefined ? Number(match.subscriptionIndex) : 1,
                     status: match.status || 'active',
-                    subscriptionStart: match.subscriptionStart || new Date(),
-                    addedAt: match.addedAt || new Date()
+                    subscriptionStart: match.subscriptionStart || match.addedAt || null,
+                    addedAt: match.addedAt || match.subscriptionStart || null
                   };
                   break;
                 }
@@ -1847,6 +2206,24 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         activeSnapData.isWhitelisted = true;
         activeSnapData.is_whitelisted = true;
         if (!activeSnapData.status) activeSnapData.status = 'active';
+
+        // Anchor subscriptionStart permanently to Firestore if missing so cache deletion or re-login never changes it
+        const existingStart = activeSnapData.subscriptionStart || activeSnapData.addedAt || activeSnapData.createdAt;
+        if (!existingStart) {
+          const nowTimestamp = serverTimestamp();
+          activeSnapData.subscriptionStart = new Date().toISOString();
+          try {
+            setDoc(doc(db, 'authorized_guests', normEmail), {
+              subscriptionStart: nowTimestamp,
+              addedAt: nowTimestamp
+            }, { merge: true }).catch(() => {});
+            
+            setDoc(doc(db, 'users', user.uid), {
+              subscriptionStart: nowTimestamp,
+              addedAt: nowTimestamp
+            }, { merge: true }).catch(() => {});
+          } catch (e) {}
+        }
       }
 
       if (isExplicitlyBlocked) {
@@ -1859,7 +2236,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           isSubscriptionExpired: true,
           daysRemaining: 0,
           hoursRemaining: 0,
-          circleDownloadsLimit: 6,
+          circleDownloadsLimit: 4,
           circleDownloadsCount: totalDownloadsRef.current,
           isTrialMode: true,
         });
@@ -1878,44 +2255,41 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         };
         
         // Calculate the timeframe we need to count downloads for
-        let startMs = Date.now();
-        if (snapData.subscriptionStart) {
-          if (typeof snapData.subscriptionStart.toDate === 'function') {
-            startMs = snapData.subscriptionStart.toDate().getTime();
-          } else if (typeof snapData.subscriptionStart === 'number') {
-            startMs = snapData.subscriptionStart;
-          } else if (snapData.subscriptionStart.seconds !== undefined) {
-            startMs = snapData.subscriptionStart.seconds * 1000;
-          } else if (snapData.subscriptionStart._seconds !== undefined) {
-            startMs = snapData.subscriptionStart._seconds * 1000;
-          } else {
-            startMs = new Date(snapData.subscriptionStart).getTime();
-          }
-        } else if (snapData.addedAt) {
-          if (typeof snapData.addedAt.toDate === 'function') {
-            startMs = snapData.addedAt.toDate().getTime();
-          } else if (typeof snapData.addedAt === 'number') {
-            startMs = snapData.addedAt;
-          } else if (snapData.addedAt.seconds !== undefined) {
-            startMs = snapData.addedAt.seconds * 1000;
-          } else if (snapData.addedAt._seconds !== undefined) {
-            startMs = snapData.addedAt._seconds * 1000;
-          } else {
-            startMs = new Date(snapData.addedAt).getTime();
-          }
-        }
+        const rawStart = snapData.subscriptionStart || snapData.addedAt || snapData.createdAt || snapData.firstAccess;
+        let startMs = safeParseToMs(rawStart);
+        let hasExplicitStart = !!(startMs && !isNaN(startMs) && startMs > 0);
         
-        if (isNaN(startMs) || startMs <= 0) {
-          startMs = Date.now();
+        if (!hasExplicitStart) {
+          try {
+            const cachedSub = safeLocalStorage.getItem(cacheKey) || safeLocalStorage.getItem(`eduplan_subscription_anchor_${normEmail}`);
+            if (cachedSub) {
+              const parsed = JSON.parse(cachedSub);
+              const prevStart = parsed?.details?.subscriptionStart || parsed?.subscriptionStart || parsed?.anchorStart;
+              if (prevStart) {
+                const prevMs = safeParseToMs(prevStart);
+                if (prevMs && prevMs > 0) {
+                  startMs = prevMs;
+                  hasExplicitStart = true;
+                }
+              }
+            }
+          } catch {}
         }
-        
-        const startTimestamp = Timestamp.fromMillis(startMs);
 
-        // Fetch circle count in real-time, grouping by grade
-        const qCircle = query(
-          collection(db, 'users', user.uid, 'downloads'), 
-          where('timestamp', '>=', startTimestamp)
-        );
+        // Fetch circle count in real-time. If explicit start date exists, filter by startTimestamp.
+        // If no start date exists in DB or cache, query ALL downloads to prevent clearing cache/signout from wiping count to 0!
+        let qCircle;
+        if (hasExplicitStart && startMs && startMs > 0) {
+          const startTimestamp = Timestamp.fromMillis(startMs);
+          qCircle = query(
+            collection(db, 'users', user.uid, 'downloads'), 
+            where('timestamp', '>=', startTimestamp)
+          );
+        } else {
+          qCircle = query(
+            collection(db, 'users', user.uid, 'downloads')
+          );
+        }
         
         unsubDownloadsRef.current = onSnapshot(qCircle, async (circleSnap) => {
           let cCount = 0;
@@ -1945,7 +2319,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           setIsWhitelisted(true);
           setUserType(isDeveloper ? 'developer' : 'registered');
 
-          // Sync to user profile for developer monitoring (non-blocking)
+          // Sync to user profile for developer monitoring & consistency across Google/Email logins (non-blocking)
           try {
             const cleanEmail = (user.email || '').toLowerCase().trim().replace(/\s+/g, '');
             await setDoc(doc(db, 'users', user.uid), {
@@ -1956,6 +2330,11 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               isWhitelisted: true,
               user_type: isDeveloper ? 'developer' : 'registered',
               subscriptionType: snapData.subscriptionType || 'guest_trial',
+              amountPaid: snapData.amountPaid ?? details.amountPaid,
+              paymentMethod: snapData.paymentMethod || details.paymentMethod,
+              status: snapData.status || 'active',
+              subscriptionStart: snapData.subscriptionStart || details.subscriptionStart,
+              addedAt: snapData.addedAt || snapData.subscriptionStart || details.subscriptionStart,
               lastHeartbeat: serverTimestamp()
             }, { merge: true });
           } catch (e) {
@@ -2048,7 +2427,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           isSubscriptionExpired: false,
           daysRemaining: 0,
           hoursRemaining: 0,
-          circleDownloadsLimit: 6,
+          circleDownloadsLimit: 4,
           circleDownloadsCount: cCount,
           isTrialMode: true,
         });
@@ -2096,15 +2475,17 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         } catch (e) {}
 
         const localWhitelisted = getWhitelistedGuestFromLocalCache(normEmail) || getWhitelistedGuestFromLocalCache(cleanEmail);
-        if (localWhitelisted && !localWhitelisted.isBlocked) {
+        if (localWhitelisted && localWhitelisted.isHardcoded && !localWhitelisted.isBlocked) {
           const details = calculateSubscription(localWhitelisted, cachedCount, cachedGradeCounts);
-          details.isTrialMode = false;
-          setSubscriptionDetails(details);
-          setCircleDownloadsCount(cachedCount);
-          setRegisteredGrades(['all']);
-          setIsWhitelisted(true);
-          setUserType(isDeveloper ? 'developer' : 'registered');
-          return;
+          if (!details.isSubscriptionExpired) {
+            details.isTrialMode = false;
+            setSubscriptionDetails(details);
+            setCircleDownloadsCount(cachedCount);
+            setRegisteredGrades(['all']);
+            setIsWhitelisted(true);
+            setUserType(isDeveloper ? 'developer' : 'registered');
+            return;
+          }
         }
 
         const cacheKey = `eduplan_sub_cache_${normEmail}`;
@@ -2114,14 +2495,15 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           const cachedDetails = parsed.details || parsed;
           if (cachedDetails && cachedDetails.subscriptionType && cachedDetails.subscriptionType !== 'guest_trial') {
             const details = calculateSubscription(cachedDetails, cachedCount, cachedGradeCounts);
-            details.isTrialMode = false;
-            setSubscriptionDetails(details);
-            setCircleDownloadsCount(cachedCount);
-            if (parsed.grades) setRegisteredGrades(parsed.grades);
-            else setRegisteredGrades(['all']);
-            setIsWhitelisted(true);
-            setUserType(isDeveloper ? 'developer' : 'registered');
-            return;
+            if (!details.isSubscriptionExpired) {
+              details.isTrialMode = false;
+              setSubscriptionDetails(details);
+              setCircleDownloadsCount(cachedCount);
+              setRegisteredGrades(['all']);
+              setIsWhitelisted(true);
+              setUserType(isDeveloper ? 'developer' : 'registered');
+              return;
+            }
           }
         }
       } catch (e) {
@@ -2167,14 +2549,14 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           isSubscriptionExpired: false,
           daysRemaining: 0,
           hoursRemaining: 0,
-          circleDownloadsLimit: 6,
+          circleDownloadsLimit: 4,
           circleDownloadsCount: totalDownloadsRef.current,
           isTrialMode: true,
           allowedTools: [],
           amountPaid: 0,
           paymentMethod: 'N/A',
           subscriptionIndex: 1,
-          baseLimit: 6,
+          baseLimit: 4,
           isGradeSpecific: false,
           gradeCounts: {},
           gradesList: ['Trial Access'],
@@ -2195,6 +2577,42 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
 
   const effectiveIsWhitelisted = isWhitelisted && subscriptionDetails && !subscriptionDetails.isTrialMode && subscriptionDetails.subscriptionType !== 'guest_trial';
+
+  const [trialViewCounts, setTrialViewCounts] = useState<TrialViewCounts>(() => {
+    return getTrialViewCounts(user?.email || user?.uid || 'guest_user');
+  });
+
+  useEffect(() => {
+    setTrialViewCounts(getTrialViewCounts(user?.email || user?.uid || 'guest_user'));
+  }, [user?.email, user?.uid]);
+
+  const recordTrialDocView = (docType: string, docSessionKey?: string): boolean => {
+    const res = recordTrialDocViewHelper(
+      docType,
+      user,
+      subscriptionDetails,
+      isWhitelisted,
+      docSessionKey
+    );
+    if (res.isTrial) {
+      setTrialViewCounts(res.counts);
+    }
+    return res.success;
+  };
+
+  const canTrialUserViewDoc = (docType: string): TrialDocCheckResult => {
+    return checkTrialDocAccess(
+      docType,
+      user,
+      subscriptionDetails,
+      isWhitelisted
+    );
+  };
+
+  const resetTrialDocViews = () => {
+    resetTrialDocViewsHelper(user?.email || user?.uid || 'guest_user');
+    setTrialViewCounts(getTrialViewCounts(user?.email || user?.uid || 'guest_user'));
+  };
 
   return (
     <AuthContext.Provider value={{ 
@@ -2219,17 +2637,50 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       switchSubscriptionCircle,
       isLoggingIn,
       authError,
-      refreshSubscription
+      refreshSubscription,
+      trialViewCounts,
+      recordTrialDocView,
+      canTrialUserViewDoc,
+      resetTrialDocViews,
+      schoolCircle,
+      isSchoolAccount: !!schoolCircle,
+      schoolTeacher,
+      isSchoolRepresentative,
+      refreshSchoolCircle
     }}>
-      {loading ? (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F1F5F9]">
-          <div className="flex flex-col items-center space-y-4">
-            <div className="w-16 h-16 bg-[#00A86B] rounded-2xl flex items-center justify-center text-white shadow-xl animate-pulse">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-graduation-cap"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
-            </div>
-            <div className="text-center">
-              <h2 className="text-sm font-black text-slate-700 tracking-wider uppercase">FORTUNES EDUTECH</h2>
-              <p className="text-[10px] text-slate-400 font-bold tracking-widest mt-1 uppercase animate-pulse">Initializing Platform...</p>
+       {loading ? (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#f5f5f5] px-4 overflow-hidden relative">
+          <div className="flex flex-col items-center space-y-5 max-w-sm w-full z-10 text-center">
+            <FortunesLogo variant="banner" subtitle="your CBC partner" showVersion={true} />
+            
+            <div className="flex flex-col items-center gap-2.5 pt-2 w-full max-w-xs">
+              {/* FIRST LINE: Connecting to secure services... */}
+              <div className="flex items-center justify-center gap-2 text-[#007A4E] font-extrabold text-xs sm:text-sm uppercase tracking-widest">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] animate-ping shrink-0"></span>
+                <span>Connecting to secure services...</span>
+              </div>
+
+              {/* SECOND LINE (BELOW IT): INITIALIZING PLATFORM... */}
+              <span className="text-[#005C3B] font-black text-sm sm:text-base uppercase tracking-[0.2em] animate-pulse">
+                initializing platform...
+              </span>
+
+              {/* DYNAMIC STEP DESCRIPTION */}
+              <div className="text-[10px] sm:text-xs text-slate-600 font-bold uppercase tracking-wider h-5 transition-all flex items-center justify-center">
+                {initStepText}
+              </div>
+
+              {/* 10-SECOND PROGRESS BAR */}
+              <div className="w-full bg-slate-200 border border-slate-300 rounded-full h-2.5 overflow-hidden shadow-inner mt-1">
+                <div 
+                  className="bg-[#00A86B] h-full transition-all duration-150 ease-out rounded-full shadow-[0_0_6px_rgba(0,168,107,0.3)]"
+                  style={{ width: `${initProgress}%` }}
+                />
+              </div>
+              <div className="flex items-center justify-between w-full px-1 text-[9px] font-mono font-bold text-slate-500">
+                <span>SECURE INIT</span>
+                <span>{initProgress}%</span>
+              </div>
             </div>
           </div>
         </div>

@@ -1,53 +1,26 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { initializeFirestore, getFirestore, doc, getDocFromServer, collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, doc, getDocFromServer, collection, addDoc, serverTimestamp, enableIndexedDbPersistence } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-function initFirestoreInstance() {
-  const dbId = (firebaseConfig as any)?.firestoreDatabaseId;
+export const db = (firebaseConfig as any)?.firestoreDatabaseId 
+  ? getFirestore(app, (firebaseConfig as any).firestoreDatabaseId)
+  : getFirestore(app);
 
-  // 1. Try initializeFirestore with standard applet settings
-  try {
-    if (dbId) {
-      return initializeFirestore(app, {
-        experimentalAutoDetectLongPolling: true,
-        ignoreUndefinedProperties: true,
-      }, dbId);
-    } else {
-      return initializeFirestore(app, {
-        experimentalAutoDetectLongPolling: true,
-        ignoreUndefinedProperties: true,
-      });
+// Enable Firestore offline persistence for offline-first support in PWA environments
+if (typeof window !== 'undefined') {
+  enableIndexedDbPersistence(db).catch((err) => {
+    if (err.code === 'failed-precondition') {
+      console.warn('Firestore persistence failed-precondition (multiple tabs open)');
+    } else if (err.code === 'unimplemented') {
+      console.warn('Firestore persistence unimplemented in this browser');
     }
-  } catch (e) {
-    console.warn("initializeFirestore failed, attempting fallback getFirestore:", e);
-  }
-
-  // 2. Try getFirestore with database ID
-  try {
-    if (dbId) {
-      return getFirestore(app, dbId);
-    }
-  } catch (e) {
-    console.warn("getFirestore with dbId failed:", e);
-  }
-
-  // 3. Try getFirestore with app
-  try {
-    return getFirestore(app);
-  } catch (e) {
-    console.warn("getFirestore with app failed:", e);
-  }
-
-  // 4. Final fallback
-  return getFirestore();
+  });
 }
 
-export const db = initFirestoreInstance();
-
-export const auth = getAuth();
+export const auth = getAuth(app);
 
 export enum OperationType {
   CREATE = 'create',
@@ -70,7 +43,7 @@ interface FirestoreErrorInfo {
   }
 }
 
-// Global error handler for internal assertion failures, quota errors, and network/auth errors that might leak to console
+// Global error handler for internal assertion failures, quota errors, backoff delay notices, and network/auth errors that might leak to console
 if (typeof window !== 'undefined') {
   const originalConsoleError = console.error;
   console.error = (...args) => {
@@ -108,6 +81,8 @@ if (typeof window !== 'undefined') {
       return; // Suppress from console.error to keep runtime healthy
     }
     if (
+      lowerMsg.includes('maximum backoff delay') ||
+      lowerMsg.includes('backoff delay') ||
       msg.includes('auth/network-request-failed') ||
       msg.includes('Fetching auth token failed') ||
       msg.includes('Could not reach Cloud Firestore backend') ||
@@ -115,7 +90,7 @@ if (typeof window !== 'undefined') {
       msg.includes('Error loading downloads stats') ||
       lowerMsg.includes('error fetching document feedback')
     ) {
-      // Log as a soft warning rather than an unhandled error when offline or transient network token issue
+      // Log as a soft warning rather than an unhandled error when offline, in backoff, or transient network token issue
       console.warn('Firestore/Auth connection notice (operating in offline/cached mode):', ...args);
       return;
     }

@@ -102,7 +102,7 @@ export function oklToRgb(str: string): string {
   } catch (err) {
     console.error("oklToRgb error:", err);
   }
-  return 'rgb(15, 23, 42)';
+  return 'transparent';
 }
 
 function replaceFunctionWithBalancedParens(css: string, funcName: string, replacer: (fullExpr: string) => string): string {
@@ -146,28 +146,31 @@ export function replaceOklColorsInCss(cssText: string): string {
     // Fast check if anything needs cleaning
     const hasOkl = cleaned.includes('okl');
     const hasMix = cleaned.includes('color-mix');
-    const hasVar = cleaned.includes('var(');
-    const hasGrad = cleaned.includes('gradient');
     const hasColor = cleaned.includes('color(');
     const hasLightDark = cleaned.includes('light-dark(');
+    const hasGrad = cleaned.includes('gradient');
 
-    if (!hasOkl && !hasMix && !hasVar && !hasGrad && !hasColor && !hasLightDark) return cssText;
+    if (!hasOkl && !hasMix && !hasColor && !hasLightDark && !hasGrad) return cssText;
 
-    // 1. Handle light-dark()
+    // 1. Handle light-dark() - extract light mode color (first argument)
     if (hasLightDark) {
-      cleaned = replaceFunctionWithBalancedParens(cleaned, 'light-dark', () => 'rgb(15, 23, 42)');
+      cleaned = replaceFunctionWithBalancedParens(cleaned, 'light-dark', (expr) => {
+        const inner = expr.slice(11, -1);
+        const parts = inner.split(',');
+        return parts[0]?.trim() || 'inherit';
+      });
     }
 
-    // 2. Handle color-mix - replace with a fallback immediately as it's a major crash culprit
+    // 2. Handle color-mix - replace with transparent or safe neutral fallback to prevent crashes
     if (hasMix) {
-      cleaned = replaceFunctionWithBalancedParens(cleaned, 'color-mix', () => 'rgb(15, 23, 42)');
+      cleaned = replaceFunctionWithBalancedParens(cleaned, 'color-mix', () => 'transparent');
     }
 
     // 3. Replace oklch(...)
     if (hasOkl && cleaned.includes('oklch')) {
       cleaned = replaceFunctionWithBalancedParens(cleaned, 'oklch', (expr) => {
         const converted = oklToRgb(expr);
-        return converted.toLowerCase().includes('oklch') ? 'rgb(15, 23, 42)' : converted;
+        return converted.toLowerCase().includes('oklch') ? 'transparent' : converted;
       });
     }
 
@@ -175,7 +178,7 @@ export function replaceOklColorsInCss(cssText: string): string {
     if (hasOkl && cleaned.includes('oklab')) {
       cleaned = replaceFunctionWithBalancedParens(cleaned, 'oklab', (expr) => {
         const converted = oklToRgb(expr);
-        return converted.toLowerCase().includes('oklab') ? 'rgb(15, 23, 42)' : converted;
+        return converted.toLowerCase().includes('oklab') ? 'transparent' : converted;
       });
     }
 
@@ -193,57 +196,38 @@ export function replaceOklColorsInCss(cssText: string): string {
             return alpha === 1 ? `rgb(${R}, ${G}, ${B})` : `rgba(${R}, ${G}, ${B}, ${alpha})`;
           }
         }
-        return 'rgb(15, 23, 42)';
+        if (lower.includes('oklch') || lower.includes('oklab')) {
+          return oklToRgb(expr);
+        }
+        return 'transparent';
       });
     }
 
-    // 6. Replace all var(...) with their fallback or safe default
-    if (hasVar) {
-      cleaned = replaceFunctionWithBalancedParens(cleaned, 'var', (expr) => {
-        const match = expr.match(/var\(\s*--[^,\s)]+\s*,\s*([^)]+)\)/i);
-        if (match && match[1]) {
-          const innerVal = match[1].trim();
-          if (innerVal.includes('okl') || innerVal.includes('color(')) {
-            return oklToRgb(innerVal);
-          }
-          return innerVal;
-        }
-        const lowerExpr = expr.toLowerCase();
-        if (lowerExpr.includes('shadow')) {
-          return 'none';
-        }
-        if (lowerExpr.includes('opacity')) {
-          return '1';
-        }
-        return 'rgb(15, 23, 42)';
-      });
-    }
-
-    // 7. Strip modern gradient syntaxes that html2canvas fails on
+    // 6. Strip modern gradient syntaxes that html2canvas fails on
     if (hasGrad && (cleaned.includes('in ') || cleaned.includes('oklch') || cleaned.includes('oklab'))) {
-      cleaned = cleaned.replace(/linear-gradient\([^)]*oklch[^)]*\)/gi, 'linear-gradient(to bottom, #1e293b, #0f172a)');
-      cleaned = cleaned.replace(/linear-gradient\([^)]*oklab[^)]*\)/gi, 'linear-gradient(to bottom, #1e293b, #0f172a)');
+      cleaned = cleaned.replace(/linear-gradient\([^)]*oklch[^)]*\)/gi, 'none');
+      cleaned = cleaned.replace(/linear-gradient\([^)]*oklab[^)]*\)/gi, 'none');
     }
 
-    // 8. Absolute catch-all guarantee: No oklch / oklab / color-mix survives in the string!
+    // 7. Absolute catch-all guarantee: No oklch / oklab survives
     if (cleaned.includes('oklch(')) {
       cleaned = cleaned.replace(/oklch\([^)]*\)/gis, (match) => {
         const converted = oklToRgb(match);
-        return converted.toLowerCase().includes('oklch') ? 'rgb(15, 23, 42)' : converted;
+        return converted.toLowerCase().includes('oklch') ? 'transparent' : converted;
       });
     }
     if (cleaned.includes('oklab(')) {
       cleaned = cleaned.replace(/oklab\([^)]*\)/gis, (match) => {
         const converted = oklToRgb(match);
-        return converted.toLowerCase().includes('oklab') ? 'rgb(15, 23, 42)' : converted;
+        return converted.toLowerCase().includes('oklab') ? 'transparent' : converted;
       });
     }
     if (cleaned.includes('color-mix(')) {
-      cleaned = cleaned.replace(/color-mix\([^)]*\)/gis, 'rgb(15, 23, 42)');
+      cleaned = cleaned.replace(/color-mix\([^)]*\)/gis, 'transparent');
     }
     if (cleaned.includes('color(')) {
-      cleaned = cleaned.replace(/color\(\s*oklch[^)]*\)/gis, 'rgb(15, 23, 42)');
-      cleaned = cleaned.replace(/color\(\s*oklab[^)]*\)/gis, 'rgb(15, 23, 42)');
+      cleaned = cleaned.replace(/color\(\s*oklch[^)]*\)/gis, 'transparent');
+      cleaned = cleaned.replace(/color\(\s*oklab[^)]*\)/gis, 'transparent');
     }
 
     cssCleanupCache.set(cssText, cleaned);
@@ -262,7 +246,7 @@ export function createStyleProxy(realStyle: CSSStyleDeclaration): CSSStyleDeclar
         return (propertyName: string) => {
           try {
             const val = target.getPropertyValue(propertyName);
-            if (val && typeof val === 'string' && (val.includes('okl') || val.includes('color(') || val.includes('var(') || val.includes('color-mix') || val.includes('gradient'))) {
+            if (val && typeof val === 'string' && (val.includes('okl') || val.includes('color(') || val.includes('color-mix'))) {
               return replaceOklColorsInCss(val);
             }
             return val;
@@ -318,7 +302,7 @@ export function createStyleProxy(realStyle: CSSStyleDeclaration): CSSStyleDeclar
         if (typeof val === 'function') {
           return val.bind(target);
         }
-        if (typeof val === 'string' && (val.includes('okl') || val.includes('color(') || val.includes('var(') || val.includes('color-mix') || val.includes('gradient'))) {
+        if (typeof val === 'string' && (val.includes('okl') || val.includes('color(') || val.includes('color-mix'))) {
           return replaceOklColorsInCss(val);
         }
         return val;
@@ -355,8 +339,8 @@ export function createStyleProxy(realStyle: CSSStyleDeclaration): CSSStyleDeclar
 }
 
 /**
- * Temporarily cleans document style elements before running html2pdf/html2canvas.
- * Returns a restore function that resets original style contents.
+ * Temporarily hooks window.getComputedStyle and injects print page styling.
+ * Returns a restore function that resets original state without corrupting host styles.
  */
 export function prepareDocumentForPdfExport(isPortrait?: boolean): () => void {
   cssCleanupCache.clear();
@@ -375,28 +359,7 @@ export function prepareDocumentForPdfExport(isPortrait?: boolean): () => void {
     };
   }
 
-  // 2. Clean all <style> tags in the current document
-  const stylesToRestore: { element: HTMLStyleElement; newElement?: HTMLStyleElement; originalText: string }[] = [];
-  const styleElements = document.querySelectorAll('style');
-  
-  styleElements.forEach((styleEl) => {
-    const originalText = styleEl.textContent || '';
-    if (originalText.includes('oklch') || originalText.includes('oklab') || originalText.includes('color(') || originalText.includes('var(') || originalText.includes('color-mix')) {
-      const cleanedText = replaceOklColorsInCss(originalText);
-      const parent = styleEl.parentNode;
-      const newStyle = document.createElement('style');
-      newStyle.textContent = cleanedText;
-      if (parent) {
-        parent.replaceChild(newStyle, styleEl);
-        stylesToRestore.push({ element: styleEl, newElement: newStyle, originalText });
-      } else {
-        styleEl.textContent = cleanedText;
-        stylesToRestore.push({ element: styleEl, originalText });
-      }
-    }
-  });
-
-  // 3. Inject dynamic page print orientation style element
+  // 2. Inject dynamic page print orientation style element
   const dynamicStyle = document.createElement('style');
   dynamicStyle.id = 'dynamic-pdf-page-style';
   dynamicStyle.textContent = `
@@ -424,16 +387,6 @@ export function prepareDocumentForPdfExport(isPortrait?: boolean): () => void {
     if (styleEl && styleEl.parentNode) {
       styleEl.parentNode.removeChild(styleEl);
     }
-
-    // Restore original stylesheets
-    stylesToRestore.forEach(({ element, newElement, originalText }) => {
-      if (newElement && newElement.parentNode) {
-        element.textContent = originalText;
-        newElement.parentNode.replaceChild(element, newElement);
-      } else {
-        element.textContent = originalText;
-      }
-    });
     cssCleanupCache.clear();
   };
 }
@@ -445,10 +398,10 @@ export function sanitizeClonedDoc(clonedDoc: Document) {
   cssCleanupCache.clear();
   const win = clonedDoc.defaultView;
 
-  // 1. Clean <style> tag content by replacing <style> elements to force browser sheet re-parsing
+  // 1. Clean <style> tag content in cloned document
   const styleElements = Array.from(clonedDoc.querySelectorAll('style'));
   styleElements.forEach((styleEl) => {
-    if (styleEl.textContent && (styleEl.textContent.includes('okl') || styleEl.textContent.includes('color(') || styleEl.textContent.includes('var(') || styleEl.textContent.includes('color-mix') || styleEl.textContent.includes('gradient'))) {
+    if (styleEl.textContent && (styleEl.textContent.includes('okl') || styleEl.textContent.includes('color(') || styleEl.textContent.includes('color-mix') || styleEl.textContent.includes('gradient'))) {
       const parent = styleEl.parentNode;
       const cleanedText = replaceOklColorsInCss(styleEl.textContent);
       const newStyle = clonedDoc.createElement('style');
@@ -465,7 +418,7 @@ export function sanitizeClonedDoc(clonedDoc: Document) {
   const elementsWithStyles = clonedDoc.querySelectorAll('[style]');
   elementsWithStyles.forEach((node) => {
     const el = node as HTMLElement;
-    if (el.style && el.style.cssText && (el.style.cssText.includes('okl') || el.style.cssText.includes('color(') || el.style.cssText.includes('var(') || el.style.cssText.includes('color-mix') || el.style.cssText.includes('gradient'))) {
+    if (el.style && el.style.cssText && (el.style.cssText.includes('okl') || el.style.cssText.includes('color(') || el.style.cssText.includes('color-mix') || el.style.cssText.includes('gradient'))) {
       el.style.cssText = replaceOklColorsInCss(el.style.cssText);
     }
   });

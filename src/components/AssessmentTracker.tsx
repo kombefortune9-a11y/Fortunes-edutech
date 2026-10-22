@@ -43,6 +43,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import { saveAs } from 'file-saver';
 import AIPlanningVoiceGuide from './AIPlanningVoiceGuide';
+import InformationCenter from './InformationCenter';
 import { DocumentCameraScanner, ScanResult } from './DocumentCameraScanner';
 import { BulkPasteValidationModal, ParsedLearnerRow } from './BulkPasteValidationModal';
 import { useAuth } from './FirebaseProvider';
@@ -471,7 +472,7 @@ interface AssessmentTrackerProps {
 }
 
 export function AssessmentTracker({ onBack, onNavigate }: AssessmentTrackerProps) {
-  const { user, isWhitelisted, subscriptionDetails, downloadRecords } = useAuth();
+  const { user, isWhitelisted, subscriptionDetails, downloadRecords, schoolCircle, schoolTeacher } = useAuth();
 
   const checkDownloadAccess = (): boolean => {
     const status = getDownloadAccessStatus(user, subscriptionDetails);
@@ -1368,6 +1369,22 @@ export function AssessmentTracker({ onBack, onNavigate }: AssessmentTrackerProps
           ...cleanRec,
           updatedAt: serverTimestamp()
         }, { merge: true });
+      }
+
+      // If part of Whole School Termly Circle, sync to school shared collection for all teachers
+      if (schoolCircle?.id) {
+        const schoolDocRef = doc(db, 'schools', schoolCircle.id, 'assessment_records', recordKey);
+        const cleanRec = JSON.parse(JSON.stringify(currentRec));
+        await setDoc(schoolDocRef, {
+          ...cleanRec,
+          savedByTeacher: schoolTeacher?.name || user?.displayName || 'Teacher',
+          savedByEmail: user?.email || '',
+          schoolId: schoolCircle.id,
+          schoolName: schoolCircle.schoolName,
+          updatedAt: serverTimestamp()
+        }, { merge: true }).catch(err => {
+          console.warn("Could not sync to school shared assessment records:", err);
+        });
       }
 
       if (!quiet) {
@@ -3025,7 +3042,7 @@ export function AssessmentTracker({ onBack, onNavigate }: AssessmentTrackerProps
   };
 
   return (
-    <div id="assessment-printable-container" className="max-w-[1600px] mx-auto px-4 sm:px-8 md:px-12 py-8 space-y-8 bg-slate-50 min-h-screen">
+    <div id="assessment-printable-container" className="w-full max-w-[1600px] mx-auto px-2 sm:px-4 md:px-8 py-3 sm:py-6 space-y-4 sm:space-y-8 bg-slate-50 min-h-screen">
       {/* Top Navigation Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-3xl border border-slate-200/80 shadow-xs">
         <div className="flex items-center gap-3">
@@ -3054,12 +3071,39 @@ export function AssessmentTracker({ onBack, onNavigate }: AssessmentTrackerProps
         </div>
       </div>
 
-      {/* AI Voice Playback & Planning Guide */}
-      <AIPlanningVoiceGuide 
-        toolType="assessment_tracker" 
+      {/* Information Center Fixed on top of General Information Block */}
+      <InformationCenter 
+        toolType="assessments" 
         toolTitle="Continuous Assessment Tracker & Markbook"
-        className="animate-in fade-in duration-300 print:hidden"
+        className="print:hidden"
       />
+
+      {/* WHOLE SCHOOL SHARED ASSESSMENT RECORD BANNER */}
+      {schoolCircle && (
+        <div className="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white rounded-3xl p-4 sm:p-5 shadow-xl border border-indigo-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-indigo-500/20 text-indigo-300 rounded-2xl border border-indigo-400/30 shrink-0">
+              <span className="text-xl">🏫</span>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[9px] font-black uppercase tracking-wider text-indigo-300 bg-indigo-500/20 px-2 py-0.5 rounded-full border border-indigo-400/30">
+                  Whole School Shared Assessment Records
+                </span>
+                <span className="text-[9px] font-bold text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                  {schoolCircle.teachers.length} Connected Teachers
+                </span>
+              </div>
+              <h3 className="font-extrabold text-sm text-white uppercase tracking-wider mt-1">
+                {schoolCircle.schoolName} ({schoolTeacher?.name || 'Educator'})
+              </h3>
+              <p className="text-[11px] text-slate-300 font-medium">
+                All teachers of {schoolCircle.schoolName} share visibility of: <strong>Boys &amp; Girls Marksheets, Class Performance Analysis, School Performance Summary &amp; Grade Report Cards</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 1. SELECT GRADE Selector (Always Outside the General Info Block) */}
       <div className="bg-gradient-to-r from-[#032532] to-[#0A3D50] text-white rounded-3xl p-4 sm:p-5 shadow-xl border border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -3721,8 +3765,8 @@ export function AssessmentTracker({ onBack, onNavigate }: AssessmentTrackerProps
                                 title={showRedAlert ? `Missing mark for ${sub.name} (Pupil: ${learner.name})` : "Select raw mark"}
                               >
                                 <option value="">-</option>
-                                {selectOptions.map(opt => (
-                                  <option key={opt} value={opt}>
+                                {selectOptions.map((opt, optIdx) => (
+                                  <option key={`${opt}-${optIdx}`} value={opt}>
                                     {opt}
                                   </option>
                                 ))}

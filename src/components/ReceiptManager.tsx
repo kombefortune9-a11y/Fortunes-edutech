@@ -16,10 +16,13 @@ import {
   History,
   Sparkles,
   Info,
-  Mail
+  Mail,
+  Loader2,
+  RefreshCw
 } from 'lucide-react';
 import { useAuth } from './FirebaseProvider';
 import { isDeveloperEmail } from '../constants';
+import { safeLocalStorage } from '../lib/storage';
 import { db } from '../lib/firebase';
 import { 
   collection, 
@@ -57,6 +60,8 @@ export interface ReceiptData {
   allocatedGrades?: string;
   subscriptionDateTime?: string;
   subscriptionEndDateTime?: string;
+  year?: string | number;
+  term?: string;
 }
 
 interface ReceiptManagerProps {
@@ -228,7 +233,7 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
     } else if (packageType === 'monthly') {
       setAmount(90);
     } else if (packageType === 'termly') {
-      setAmount(250);
+      setAmount(800);
     } else if (packageType === 'unlimited') {
       setAmount(1500);
     }
@@ -242,24 +247,59 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
     return d.toLocaleDateString([], { month: 'short', day: '2-digit', year: 'numeric' }) + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Helper to build active subscription receipt dynamically based on subscriptionDetails
-  const buildActiveReceipt = (): ReceiptData | null => {
-    if (!user || !subscriptionDetails) return null;
-    const subType = subscriptionDetails.subscriptionType || 'guest_trial';
-    if (subType === 'guest_trial') return null;
+  // Cache key helper
+  const getCacheKey = () => `eduplan_receipts_${user?.email || user?.uid || 'default'}`;
 
-    const subStart = subscriptionDetails.subscriptionStart 
+  const getLocalReceipts = (): ReceiptData[] => {
+    try {
+      const raw = safeLocalStorage.getItem(getCacheKey());
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return [];
+  };
+
+  const saveLocalReceipts = (list: ReceiptData[]) => {
+    try {
+      safeLocalStorage.setItem(getCacheKey(), JSON.stringify(list));
+    } catch {}
+  };
+
+  // Helper for network queries with strict timeout (never hang UI on slow networks)
+  const withTimeout = async <T,>(promise: Promise<T>, ms: number = 2500): Promise<T | null> => {
+    let timer: any;
+    const timeoutPromise = new Promise<null>((resolve) => {
+      timer = setTimeout(() => resolve(null), ms);
+    });
+    try {
+      const result = await Promise.race([promise, timeoutPromise]);
+      return result;
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+
+  // Helper to build active subscription receipt dynamically based on subscriptionDetails or current user
+  const buildActiveReceipt = (): ReceiptData => {
+    const isDev = isDeveloperEmail(user?.email) || user?.email === ADMIN_EMAIL;
+    const subType = (subscriptionDetails?.subscriptionType && subscriptionDetails.subscriptionType !== 'guest_trial')
+      ? subscriptionDetails.subscriptionType
+      : (isDev ? 'unlimited' : 'termly');
+
+    const subStart = subscriptionDetails?.subscriptionStart 
       ? new Date(subscriptionDetails.subscriptionStart) 
       : new Date();
     
     let subEnd: Date;
-    if (subscriptionDetails.subscriptionEnd) {
+    if (subscriptionDetails?.subscriptionEnd) {
       subEnd = new Date(subscriptionDetails.subscriptionEnd);
     } else {
       const durationMs = subType === 'weekly' ? 7 * 86400000 :
                          subType === '14days' ? 14 * 86400000 :
                          subType === 'monthly' ? 30 * 86400000 :
-                         subType === 'termly' ? 90 * 86400000 :
+                         subType === 'termly' || subType === 'termly_individual' ? 90 * 86400000 :
                          10 * 365 * 86400000;
       subEnd = new Date(subStart.getTime() + durationMs);
     }
@@ -275,46 +315,42 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
       '14days': '14D',
       monthly: 'M',
       termly: 'T',
+      termly_individual: 'TI',
       unlimited: 'U'
     };
-    const circleCode = codeMap[subType] || 'X';
-    const subIndex = subscriptionDetails.subscriptionIndex || 1;
+    const circleCode = codeMap[subType] || 'T';
+    const subIndex = subscriptionDetails?.subscriptionIndex || 1;
     const refNum = `F${dateCompact}-SUB${String(subIndex).padStart(4, '0')}${circleCode}`;
 
     const packageNameMapped = 
-      subType === 'weekly' ? 'Weekly Premium Cycle Access' :
-      subType === '14days' ? '14-Day Cycle Premium Access' :
-      subType === 'monthly' ? 'Monthly Premium Cycle Access' :
-      subType === 'termly' ? 'Termly Elite Cycle Access' :
-      subType === 'unlimited' ? 'Whole School Unlimited Access' :
-      'Premium Cycle Access';
+      subType === '14days' ? '14 Days Circle Access' :
+      subType === 'monthly' ? 'Monthly Circle Access' :
+      'Termly Circle Access (with Assignment & Research Hub)';
 
-    let autoAmount = 90;
-    if (subType === 'weekly') autoAmount = 20;
-    else if (subType === '14days') autoAmount = 40;
-    else if (subType === 'monthly') autoAmount = 90;
-    else if (subType === 'termly') autoAmount = 250;
-    else if (subType === 'unlimited') autoAmount = 1500;
-    if (subscriptionDetails.amountPaid !== undefined && subscriptionDetails.amountPaid > 0) {
+    let autoAmount = 180;
+    if (subType === '14days') autoAmount = 40;
+    else if (subType === 'monthly') autoAmount = 70;
+    else if (subType === 'termly' || subType === 'termly_individual') autoAmount = 180;
+
+    if (subscriptionDetails?.amountPaid !== undefined && subscriptionDetails.amountPaid > 0) {
       autoAmount = subscriptionDetails.amountPaid;
     }
 
-    const limit = subscriptionDetails.circleDownloadsLimit || (
-      subType === 'weekly' ? 30 :
-      subType === '14days' ? 60 :
-      subType === 'monthly' ? 120 :
-      subType === 'termly' ? 300 : 999999
+    const limit = subscriptionDetails?.circleDownloadsLimit || (
+      subType === '14days' ? 75 :
+      subType === 'monthly' ? 160 :
+      300
     );
 
-    const finalPayerName = user.displayName || formatPayerNameFromEmail(user.email);
+    const finalPayerName = user?.displayName || formatPayerNameFromEmail(user?.email) || 'Mr. Fortune Kombe';
     const gradesAllocated = 'All Grades (ECE Level 1 to Form 6 (A Level))';
 
     return {
-      id: `active-sub-${user.uid}`,
+      id: `active-sub-${user?.uid || 'user'}`,
       schoolName: '',
       payerName: finalPayerName,
-      payerEmail: user.email || '',
-      paymentMethod: subscriptionDetails.paymentMethod || 'MTN Mobile Money',
+      payerEmail: user?.email || ADMIN_EMAIL,
+      paymentMethod: subscriptionDetails?.paymentMethod || 'Mobile Money - MTN (Lipila)',
       packageName: packageNameMapped,
       amount: autoAmount,
       referenceNumber: refNum,
@@ -327,86 +363,115 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
     };
   };
 
-  // Load receipts from Firestore
-  const loadReceipts = async () => {
+  // Load receipts from Firestore (Non-blocking background sync)
+  const loadReceipts = async (isManualSync: boolean = false) => {
     if (!user) return;
     setLoading(true);
     try {
-      const list: ReceiptData[] = [];
       const activeReceipt = buildActiveReceipt();
-
-      // 1. If active receipt exists, make sure it is at index 0
+      const currentMap = new Map<string, ReceiptData>();
       if (activeReceipt) {
-        list.push(activeReceipt);
-      }
-      
-      // 2. Load from the active logged-in user's subcollection
-      try {
-        const qReceipts = query(
-          collection(db, 'users', user.uid, 'receipts'),
-          orderBy('transactionDate', 'desc')
-        );
-        const snap = await getDocs(qReceipts);
-        snap.forEach((docSnap) => {
-          const item = { id: docSnap.id, ...docSnap.data() } as ReceiptData;
-          if (activeReceipt && item.referenceNumber === activeReceipt.referenceNumber) {
-            // Skip old duplicate if ref matches activeReceipt
-            return;
-          }
-          if (!list.some(r => r.id === item.id || r.referenceNumber === item.referenceNumber)) {
-            list.push(item);
-          }
-        });
-      } catch (err) {
-        console.warn("Could not load from user-specific subcollection:", err);
+        currentMap.set(activeReceipt.referenceNumber, activeReceipt);
       }
 
-      // 3. Load from global receipts collection where payerEmail matches user's email
-      try {
-        const qGlobal = query(
-          collection(db, 'receipts'),
-          where('payerEmail', '==', user.email)
-        );
-        const globalSnap = await getDocs(qGlobal);
-        globalSnap.forEach((docSnap) => {
-          const data = docSnap.data() as ReceiptData;
-          if (activeReceipt && data.referenceNumber === activeReceipt.referenceNumber) {
-            return;
-          }
-          if (!list.some(r => r.id === docSnap.id || r.referenceNumber === data.referenceNumber)) {
-            list.push({ id: docSnap.id, ...data });
-          }
-        });
-      } catch (err) {
-        console.warn("Could not load from global matching receipts:", err);
-      }
+      // Pre-seed with any local receipts
+      const cached = getLocalReceipts();
+      cached.forEach(c => {
+        if (!currentMap.has(c.referenceNumber)) {
+          currentMap.set(c.referenceNumber, c);
+        }
+      });
 
-      // 4. If the user is the developer, load ALL receipts generated on the platform so they can monitor history
-      if (user.email === ADMIN_EMAIL) {
-        try {
-          const qAllGlobal = query(collection(db, 'receipts'));
-          const allGlobalSnap = await getDocs(qAllGlobal);
-          allGlobalSnap.forEach((docSnap) => {
-            const data = docSnap.data() as ReceiptData;
-            if (activeReceipt && data.referenceNumber === activeReceipt.referenceNumber) {
-              return;
-            }
-            if (!list.some(r => r.id === docSnap.id || r.referenceNumber === data.referenceNumber)) {
-              list.push({ id: docSnap.id, ...data });
-            }
+      // 1. Load from the active logged-in user's subcollection with timeout
+      try {
+        const qReceipts = query(collection(db, 'users', user.uid, 'receipts'));
+        const snap = await withTimeout(getDocs(qReceipts), 2500);
+        if (snap) {
+          snap.forEach((docSnap) => {
+            const data = docSnap.data() as any;
+            const refNum = data.referenceNumber || data.receiptNumber || docSnap.id;
+            const item: ReceiptData = {
+              id: docSnap.id,
+              schoolName: data.schoolName || '',
+              payerName: data.payerName || user.displayName || 'Teacher',
+              payerEmail: data.payerEmail || user.email || '',
+              paymentMethod: data.paymentMethod || 'Mobile Money - MTN (Lipila)',
+              packageName: data.packageName || data.packageType || 'Premium Cycle Access',
+              amount: Number(data.amount || 0),
+              referenceNumber: refNum,
+              transactionDate: data.transactionDate || data.date || new Date().toISOString().split('T')[0],
+              createdAt: data.createdAt,
+              subscriptionType: data.subscriptionType || data.packageType,
+              downloadsLimit: data.downloadsLimit,
+              allocatedGrades: data.allocatedGrades || 'All Grades',
+              subscriptionDateTime: data.subscriptionDateTime,
+              subscriptionEndDateTime: data.subscriptionEndDateTime,
+            };
+            currentMap.set(refNum, item);
           });
+        }
+      } catch (err) {
+        console.warn("User receipts fetch warning:", err);
+      }
+
+      // 2. Load from global receipts collection where payerEmail matches user's email
+      if (user.email) {
+        try {
+          const qGlobal = query(
+            collection(db, 'receipts'),
+            where('payerEmail', '==', user.email)
+          );
+          const globalSnap = await withTimeout(getDocs(qGlobal), 2500);
+          if (globalSnap) {
+            globalSnap.forEach((docSnap) => {
+              const data = docSnap.data() as any;
+              const refNum = data.referenceNumber || data.receiptNumber || docSnap.id;
+              const item: ReceiptData = {
+                id: docSnap.id,
+                schoolName: data.schoolName || '',
+                payerName: data.payerName || user.displayName || 'Teacher',
+                payerEmail: data.payerEmail || user.email || '',
+                paymentMethod: data.paymentMethod || 'Mobile Money - MTN (Lipila)',
+                packageName: data.packageName || data.packageType || 'Premium Cycle Access',
+                amount: Number(data.amount || 0),
+                referenceNumber: refNum,
+                transactionDate: data.transactionDate || data.date || new Date().toISOString().split('T')[0],
+                createdAt: data.createdAt,
+                subscriptionType: data.subscriptionType || data.packageType,
+                downloadsLimit: data.downloadsLimit,
+                allocatedGrades: data.allocatedGrades || 'All Grades',
+                subscriptionDateTime: data.subscriptionDateTime,
+                subscriptionEndDateTime: data.subscriptionEndDateTime,
+              };
+              currentMap.set(refNum, item);
+            });
+          }
         } catch (err) {
-          console.warn("Could not load all global receipts as developer:", err);
+          console.warn("Global receipts fetch warning:", err);
         }
       }
 
-      setReceipts(list);
-      
-      // Default select the activeReceipt (or list[0]) when modal opens or loads
-      if (activeReceipt) {
-        setSelectedReceipt(activeReceipt);
-      } else if (list.length > 0) {
-        setSelectedReceipt(list[0]);
+      const mergedList = Array.from(currentMap.values());
+      // Sort in memory: newest first, keeping active receipt top
+      mergedList.sort((a, b) => {
+        if (a.id?.startsWith('active-sub-')) return -1;
+        if (b.id?.startsWith('active-sub-')) return 1;
+        return (b.transactionDate || '').localeCompare(a.transactionDate || '');
+      });
+
+      if (mergedList.length > 0) {
+        setReceipts(mergedList);
+        saveLocalReceipts(mergedList);
+        setSelectedReceipt(prev => {
+          if (prev && mergedList.some(r => r.id === prev.id || r.referenceNumber === prev.referenceNumber)) {
+            return prev;
+          }
+          return mergedList[0];
+        });
+      }
+
+      if (isManualSync) {
+        toast.success("Receipts synchronized successfully!");
       }
     } catch (err) {
       console.error("Error loading receipts:", err);
@@ -415,37 +480,55 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
     }
   };
 
-  // Trigger loading on open or tab change
+  // Instantly populate receipts on open or tab change, followed by background sync
   useEffect(() => {
-    if (isOpen && user) {
+    if (!isOpen) return;
+
+    const activeReceipt = buildActiveReceipt();
+    const cached = getLocalReceipts();
+    const initialList: ReceiptData[] = [];
+    
+    if (activeReceipt) {
+      initialList.push(activeReceipt);
+    }
+    cached.forEach(c => {
+      if (!initialList.some(r => r.id === c.id || r.referenceNumber === c.referenceNumber)) {
+        initialList.push(c);
+      }
+    });
+
+    setReceipts(initialList);
+    setSelectedReceipt(prev => prev || initialList[0] || activeReceipt);
+    saveLocalReceipts(initialList);
+
+    // Non-blocking background sync from Firestore
+    if (user) {
       loadReceipts();
     }
-  }, [isOpen, user, subscriptionDetails]);
+  }, [isOpen, user?.uid, user?.email, subscriptionDetails?.subscriptionType]);
 
   // Auto-generate / sync active subscription receipt in background if whitelisted
   useEffect(() => {
     const autoGen = async () => {
-      if (loading || !user || !subscriptionDetails) return;
+      if (!user) return;
       const activeReceipt = buildActiveReceipt();
       if (!activeReceipt) return;
 
-      // Check if this active receipt already exists in Firestore subcollection
       try {
         const qCheck = query(
           collection(db, 'users', user.uid, 'receipts'),
           where('referenceNumber', '==', activeReceipt.referenceNumber)
         );
-        const checkSnap = await getDocs(qCheck);
-        if (checkSnap.empty) {
-          // Save active receipt to user subcollection & global receipts so it's persisted permanently
+        const checkSnap = await withTimeout(getDocs(qCheck), 2500);
+        if (checkSnap && checkSnap.empty) {
           await addDoc(collection(db, 'users', user.uid, 'receipts'), {
             ...activeReceipt,
             createdAt: serverTimestamp()
-          });
+          }).catch(() => {});
           await addDoc(collection(db, 'receipts'), {
             ...activeReceipt,
             createdAt: serverTimestamp()
-          });
+          }).catch(() => {});
         }
       } catch (err) {
         console.warn("Background receipt sync notice:", err);
@@ -453,7 +536,7 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
     };
 
     autoGen();
-  }, [user, subscriptionDetails, loading]);
+  }, [user?.uid, subscriptionDetails?.subscriptionType]);
 
   const handleSaveReceipt = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -635,11 +718,17 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
         <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #f1f5f9; padding-bottom: 1rem; margin-bottom: 1rem;">
           <div>
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-              <div style="background: #10b981; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 18px;">F</div>
+              <div style="background: linear-gradient(135deg, #064223, #00A86B); width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; border: 1px solid rgba(16, 185, 129, 0.4); shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <svg width="22" height="22" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 50 15 L 85 32 L 50 49 L 15 32 Z" fill="#76E000" />
+                  <path d="M 28 42 L 28 68 C 28 75, 72 75, 72 68 L 72 42" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" />
+                  <path d="M 85 32 L 85 58" stroke="#76E000" stroke-width="5" stroke-linecap="round" />
+                </svg>
+              </div>
               <h1 style="font-size: 20px; font-weight: 900; letter-spacing: -0.05em; color: #0f172a; margin: 0;">FORTUNES <span style="color: #10b981;">EDUTECH</span></h1>
             </div>
             <p style="font-size: 9px; font-weight: 800; color: #00A86B; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 2px 0;">Zambia national curriculum support system web app</p>
-            <p style="font-size: 9px; color: #94a3b8; margin: 0;">WhatsApp Activations: +260 96 1622222 | Lusaka, Zambia</p>
+            <p style="font-size: 9px; color: #94a3b8; margin: 0;">PACRA BN No.: 320261079581 | ZRA TPIN: 1005958991 | WhatsApp Activations: +260 96 1622222 | Lusaka, Zambia</p>
           </div>
           <div style="text-align: right;">
             <div style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 10px; font-weight: 800; text-transform: uppercase; padding: 4px 12px; border-radius: 9999px; display: inline-block; letter-spacing: 0.05em;">
@@ -650,9 +739,20 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
           </div>
         </div>
 
-        <!-- Paid Watermark Stamp -->
-        <div style="position: absolute; top: 45%; right: 15%; transform: rotate(-15deg); border: 4px double #10b981; color: #10b981; font-size: 28px; font-weight: 900; letter-spacing: 0.15em; padding: 6px 20px; border-radius: 8px; text-transform: uppercase; opacity: 0.85; pointer-events: none; background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); z-index: 10;">
-          PAID IN FULL
+        <!-- Concentric Circular Rubber Stamp (Outer circle, inside circle, dashed center circle) -->
+        <div style="position: absolute; top: 12%; right: 8%; transform: rotate(-12deg); border: 2.5px solid #059669; border-radius: 9999px; width: 126px; height: 126px; display: flex; align-items: center; justify-content: center; background: rgba(236, 253, 245, 0.95); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); z-index: 10; text-align: center; padding: 3px;">
+          <div style="border: 1.5px solid #10b981; border-radius: 9999px; width: 114px; height: 114px; display: flex; align-items: center; justify-content: center; padding: 2px;">
+            <div style="border: 1.5px dashed #059669; border-radius: 9999px; width: 100px; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2px;">
+              <span style="font-size: 6.5px; font-weight: 900; color: #065f46; text-transform: uppercase; letter-spacing: 0.06em;">FORTUNES EDUTECH</span>
+              <span style="font-size: 11px; font-weight: 900; color: #059669; text-transform: uppercase; letter-spacing: 0.1em; margin: 1px 0;">PAID</span>
+              <span style="font-size: 6px; font-weight: 800; color: #047857; text-transform: uppercase; letter-spacing: 0.02em;">@${receipt.year || 2026} ${(() => {
+                const t = (receipt.term || 'Term 3').toLowerCase();
+                if (t.includes('1') || t.includes('one')) return 'TERM ONE';
+                if (t.includes('2') || t.includes('two')) return 'TERM TWO';
+                return 'TERM THREE';
+              })()}</span>
+            </div>
+          </div>
         </div>
 
         <!-- Client & Payer Info Grid (No School Name / No System Username) -->
@@ -699,7 +799,7 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
             <tr style="border-bottom: 1px solid #f1f5f9;">
               <td style="padding: 12px 0; vertical-align: top;">
                 <p style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0 0 2px 0;">Fortunes Edutech Premium Cycle Access Activation</p>
-                <p style="font-size: 9px; color: #64748b; margin: 0; line-height: 1.3;">Gives full digital generation of lesson plans, weekly forecasts, syllabi matrices, exams, and schemes of work mapped onto Zambian national educational rules.</p>
+                <p style="font-size: 9px; color: #64748b; margin: 0; line-height: 1.3;">Gives full digital generation of lesson plans, weekly forecasts, syllabi matrices, exams, and schemes of work mapped onto Fortunes Edutech educational standards.</p>
               </td>
               <td style="padding: 12px 0; text-align: center; font-size: 11px; font-weight: 600; color: #334155; vertical-align: top;">1</td>
               <td style="padding: 12px 0; text-align: right; font-size: 11px; font-weight: 600; color: #334155; vertical-align: top;">ZMK ${receipt.amount.toFixed(2)}</td>
@@ -715,38 +815,32 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
             <div style="border: 1.5px solid #10b981; border-radius: 0.5rem; padding: 8px 10px; background: #f0fdf4; color: #047857; font-family: monospace; display: inline-block; text-align: left; box-sizing: border-box; width: 100%; margin-bottom: 8px;">
               <div style="font-size: 8px; font-weight: 900; letter-spacing: 0.05em; color: #065f46; text-transform: uppercase; margin-bottom: 2px;">★ SYSTEM VERIFICATION STAMP ★</div>
               <div style="font-size: 7.5px; font-weight: 700; color: #0f766e; margin-bottom: 2px;">APP LICENSE: FORTUNES EDUTECH</div>
-              <div style="font-size: 7.5px; color: #047857; font-weight: 800; margin-bottom: 1px;">RECEIVED BY: F. KOMBE</div>
+              <div style="font-size: 7.5px; color: #047857; font-weight: 800; margin-bottom: 1px;">RECEIVED BY: LIPILA PAYMENTS GATEWAY (LPL-${receipt.referenceNumber || '94821093'})</div>
               <div style="font-size: 7.5px; color: #047857; font-weight: 800; margin-bottom: 1px; text-transform: uppercase;">SUBSCRIPTION DATE & TIME: ${subDateTime}</div>
               <div style="font-size: 7.5px; color: #047857; font-weight: 800; margin-bottom: 1px; text-transform: uppercase;">SUBSCRIPTION CYCLE END: ${subEndDateTime}</div>
-              <div style="font-size: 7.5px; color: #047857; font-weight: 800; text-transform: uppercase;">RECEIPT DOWNLOADED ON: ${generationDateTime}</div>
+              <div style="font-size: 7.5px; color: #047857; font-weight: 800; text-transform: uppercase;">RECEIPT DOWNLOADED ON: ${new Date().toLocaleString()} (VERIFIED DIGITAL STAMP)</div>
             </div>
             <p style="font-size: 7.5px; color: #64748b; line-height: 1.3; margin: 0;">
-              This document is an electronically generated receipt verified by Fortunes Edutech. Under Ministry of Education accounting standards, this serves as official proof of payment for teacher professional funding reimbursable allocations.
+              This document is an electronically generated receipt verified by Fortunes Edutech. Under Fortunes Edutech accounting standards, this serves as official proof of payment for teacher professional funding reimbursable allocations.
             </p>
           </div>
           <div style="text-align: right;">
             <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
-              <p style="font-size: 9px; color: #64748b; margin: 0;">Subtotal: <strong style="color: #334155;">ZMK ${receipt.amount.toFixed(2)}</strong></p>
-              <p style="font-size: 9px; color: #64748b; margin: 0;">VAT/Tax (Exempt): <strong style="color: #334155;">ZMK 0.00</strong></p>
-              <div style="width: 100px; height: 1px; background: #e2e8f0; margin: 4px 0;"></div>
+              <p style="font-size: 8px; color: #64748b; margin: 0; font-family: monospace;">ZRA TPIN: <strong>1005958991</strong></p>
+              <p style="font-size: 9px; color: #64748b; margin: 0;">Net Amount: <strong style="color: #334155;">ZMK ${(receipt.amount * 0.97).toFixed(2)}</strong></p>
+              <p style="font-size: 9px; color: #64748b; margin: 0;">Business Tax / Turnover (3%): <strong style="color: #334155;">ZMK ${(receipt.amount * 0.03).toFixed(2)}</strong></p>
+              <div style="width: 120px; height: 1px; background: #e2e8f0; margin: 4px 0;"></div>
               <p style="font-size: 11px; color: #0f172a; margin: 0;">Total Paid: <strong style="color: #10b981; font-weight: 900;">ZMK ${receipt.amount.toFixed(2)}</strong></p>
             </div>
             
             <div style="margin-top: 10px; display: inline-flex; flex-direction: column; align-items: center; text-align: center;">
-              <!-- Handdrawn Signature SVG from F. Kombe's Upload -->
-              <div style="height: 40px; margin-bottom: -12px; opacity: 0.95; display: flex; justify-content: center; align-items: center; transform: rotate(-1deg); pointer-events: none;">
-                <svg width="115" height="40" viewBox="0 0 120 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Left circular/loop element of F. Kombe signature in blue ballpoint ink -->
-                  <path d="M 22 26 C 10 15 12 36 21 38 C 29 40 31 22 26 16 C 22 11 16 16 18 25 C 20 34 26 28 31 15" stroke="#1e3a8a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-                  <!-- Dynamic cursive flow for 'K-o-m-b-e' -->
-                  <path d="M 31 15 C 33 10 36 8 36 14 C 36 20 35 30 38 31 C 41 32 44 24 45 22 C 46 20 48 20 48 26 C 48 31 52 32 54 24 C 55 20 57 20 58 24 C 59 28 62 30 65 24 C 67 15 72 8 71 14 C 70 20 72 29 76 27 C 80 25 82 20 84 22 C 86 24 84 28 81 29" stroke="#1e3a8a" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" />
-                  <!-- Underline pen sweep starting under the left loop and finishing on the right -->
-                  <path d="M 12 34 C 42 38 78 33 112 25" stroke="#1e3a8a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
+              <!-- Official Stamp & Merchant Signature -->
+              <div style="border: 1.5px dashed #059669; background: #ecfdf5; border-radius: 6px; padding: 4px 8px; margin-bottom: 4px;">
+                <span style="font-family: monospace; font-size: 8.5px; font-weight: 900; color: #065f46; letter-spacing: 0.05em;">PAID VIA LIPILA</span>
               </div>
-              <div style="border-top: 1px dashed #cbd5e1; padding-top: 4px; min-width: 110px;">
-                <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 11px; margin: 0 0 1px 0; color: #334155; font-weight: bold;">F. Kombe</p>
-                <p style="font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Controller, Edutech</p>
+              <div style="border-top: 1px dashed #cbd5e1; padding-top: 4px; min-width: 120px;">
+                <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 11px; margin: 0 0 1px 0; color: #065f46; font-weight: bold;">Lipila Payments Gateway</p>
+                <p style="font-size: 7.5px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Authorized MoMo Merchant</p>
               </div>
             </div>
           </div>
@@ -919,7 +1013,7 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
                       required
                       value={payerName}
                       onChange={(e) => setPayerName(e.target.value)}
-                      placeholder="e.g. Kombe Fortune"
+                      placeholder="e.g. Mr. Mwansa"
                       className="w-full text-xs font-bold px-4 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-500 text-slate-800 focus:outline-hidden"
                     />
                     <p className="text-[9px] text-slate-400 font-medium">Specify the receipt holder's name</p>
@@ -998,11 +1092,9 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
                     onChange={(e) => setPackageType(e.target.value)}
                     className="w-full text-xs font-black uppercase tracking-wider px-3 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:outline-hidden text-slate-800"
                   >
-                    <option value="weekly">Weekly Premium Cycle Access (K20)</option>
-                    <option value="14days">14-Day Cycle Premium Access (K40)</option>
-                    <option value="monthly">Monthly Premium Cycle Access (K90)</option>
-                    <option value="termly">Termly Elite Cycle Access (K250)</option>
-                    <option value="unlimited">Whole School Unlimited Access (K1500)</option>
+                    <option value="14days">14 Days Circle Access (ZMK 40 - 75 Downloads)</option>
+                    <option value="monthly">Monthly Circle Access (ZMK 70 - 160 Downloads)</option>
+                    <option value="termly">Termly Circle Access (ZMK 180 - 300 Downloads & Research Hub)</option>
                     <option value="custom">Custom Billing Agreement</option>
                   </select>
                 </div>
@@ -1179,12 +1271,25 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                     <History size={11} className="text-emerald-500" />
                     Historic Records ({receipts.length})
+                    {loading && <Loader2 size={11} className="animate-spin text-emerald-600 ml-1" />}
                   </span>
+                  <button
+                    onClick={() => loadReceipts(true)}
+                    disabled={loading}
+                    className="p-1 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-200/50 transition-all text-[10px] flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                    title="Refresh records from cloud"
+                  >
+                    <RefreshCw size={11} className={cn(loading && "animate-spin text-emerald-500")} />
+                    <span className="font-bold text-[9px] uppercase hidden sm:inline">Sync</span>
+                  </button>
                 </div>
                 
                 <div className="flex-1 overflow-y-auto divide-y divide-slate-100 p-2">
-                  {loading ? (
-                    <div className="p-8 text-center text-xs text-slate-400">Loading your history...</div>
+                  {receipts.length === 0 && loading ? (
+                    <div className="p-8 text-center text-xs text-slate-400 flex flex-col items-center gap-2">
+                      <Loader2 size={16} className="animate-spin text-emerald-500" />
+                      <span>Loading your receipts...</span>
+                    </div>
                   ) : receipts.length === 0 ? (
                     <div className="p-8 text-center text-xs text-slate-400 space-y-2">
                       <p>No historic receipts saved yet.</p>
@@ -1198,11 +1303,11 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
                       )}
                     </div>
                   ) : (
-                    receipts.map((r) => {
+                    receipts.map((r, idx) => {
                       const isSelected = selectedReceipt?.id === r.id;
                       return (
                         <div
-                          key={r.id}
+                          key={`${r.id || 'rec'}-${idx}`}
                           onClick={() => setSelectedReceipt(r)}
                           className={`p-3 rounded-xl cursor-pointer transition-all flex justify-between items-start gap-2 ${
                             isSelected 
@@ -1270,9 +1375,22 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
                       ref={receiptPreviewRef}
                       className="bg-white border-2 border-slate-200/80 p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden"
                     >
-                      {/* Watermark Paid */}
-                      <div className="absolute top-[40%] right-[10%] -rotate-12 border-4 border-double border-emerald-500 text-emerald-500 font-extrabold text-3xl tracking-widest px-6 py-2.5 rounded-xl uppercase pointer-events-none select-none opacity-90 shadow-sm bg-white/95">
-                        PAID IN FULL
+                      {/* Concentric Triple Circular Rubber Stamp */}
+                      <div className="absolute top-[38%] right-[12%] -rotate-10 border-2 border-emerald-600 rounded-full w-32 h-32 flex items-center justify-center bg-emerald-50/95 p-1 shadow-md pointer-events-none select-none">
+                        <div className="border border-emerald-500 rounded-full w-28 h-28 flex items-center justify-center p-1">
+                          <div className="border-1.5 border-dashed border-emerald-600 rounded-full w-24 h-24 flex flex-col items-center justify-center p-1 text-center">
+                            <span className="text-[7px] font-black uppercase text-emerald-900 tracking-wider">FORTUNES EDUTECH</span>
+                            <span className="text-xs font-black uppercase text-emerald-600 tracking-widest my-0.5">PAID</span>
+                            <span className="text-[6.5px] font-extrabold uppercase text-emerald-800 tracking-tight">
+                              @{selectedReceipt.year || 2026} {(() => {
+                                const t = (selectedReceipt.term || 'Term 3').toLowerCase();
+                                if (t.includes('1') || t.includes('one')) return 'TERM ONE';
+                                if (t.includes('2') || t.includes('two')) return 'TERM TWO';
+                                return 'TERM THREE';
+                              })()}
+                            </span>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Receipt Header */}
@@ -1284,8 +1402,8 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
                           </div>
                           <p className="text-[9px] font-extrabold text-[#00A86B] uppercase tracking-widest">Zambia national curriculum support system web app</p>
                           <p className="text-[9px] text-slate-400 mt-1 font-semibold leading-normal">
-                            WhatsApp Activations: +260 96 1622222<br />
-                            Zambia National Curriculum Support
+                            PACRA BN No.: 320261079581 • ZRA TPIN: 1005958991<br />
+                            WhatsApp Activations: +260 96 1622222 • Lusaka, Zambia
                           </p>
                         </div>
                         <div className="text-left sm:text-right w-full sm:w-auto">
@@ -1382,28 +1500,28 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
                         <div className="space-y-3">
                           {/* System Verification Stamp with fortunes edutech app name & received by F kombe */}
                           <div className="border-2 border-emerald-500 rounded-xl p-3 bg-emerald-50/50 text-left font-mono text-[9px] text-emerald-800 leading-tight uppercase tracking-wider">
-                            <div className="font-black text-[10px] text-emerald-700 mb-0.5">★ SYSTEM VERIFICATION STAMP ★</div>
-                            <div className="font-bold text-teal-700 mb-1">APP LICENSE: FORTUNES EDUTECH</div>
-                            <div className="font-extrabold text-emerald-900">RECEIVED BY: F. KOMBE</div>
-                            <div className="font-extrabold text-emerald-900 mt-1 uppercase tracking-tighter">AUTHENTICATED DIGITAL LICENSE</div>
+                            <div className="font-black text-[10px] text-emerald-700 mb-0.5">★ LIPILA MoMo GATEWAY STAMP ★</div>
+                            <div className="font-bold text-teal-700 mb-1">BUSINESS TPIN: 1005958991 (ZRA REG.)</div>
+                            <div className="font-extrabold text-emerald-900">RECEIVED BY: LIPILA PAYMENTS GATEWAY</div>
+                            <div className="font-extrabold text-emerald-900">LIPILA TXN: LPL-{selectedReceipt.referenceNumber || '94821093'}</div>
                             <div className="font-extrabold text-emerald-900 mt-0.5">RECEIPT DOWNLOADED ON: {new Date().toLocaleString([], { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</div>
                           </div>
 
                           <div className="space-y-1">
                             <h5 className="text-[9px] font-black uppercase tracking-wider text-slate-400">Terms & Verification</h5>
                             <p className="text-[9px] text-slate-400 leading-relaxed font-medium">
-                              This document is electronically processed proof of payment for services provided by Fortunes Edutech. It serves as official proof of purchase for reimbursable professional educator fees under Zambian school accounting standards.
+                              This document is electronically processed proof of payment for services provided by Fortunes Edutech. It serves as official proof of purchase for reimbursable professional educator fees under Fortunes Edutech accounting standards.
                             </p>
                           </div>
                         </div>
                         <div className="text-right space-y-2">
                           <div className="flex justify-between text-[11px] text-slate-500">
-                            <span>Subtotal:</span>
-                            <span className="font-bold text-slate-700">ZMK {selectedReceipt.amount.toFixed(2)}</span>
+                            <span>Subtotal (Excl. Tax):</span>
+                            <span className="font-bold text-slate-700">ZMK {(selectedReceipt.amount * 0.97).toFixed(2)}</span>
                           </div>
                           <div className="flex justify-between text-[11px] text-slate-500">
-                            <span>VAT (Exempt):</span>
-                            <span className="font-bold text-slate-700">ZMK 0.00</span>
+                            <span>Turnover Tax / VAT (3%):</span>
+                            <span className="font-bold text-slate-700">ZMK {(selectedReceipt.amount * 0.03).toFixed(2)}</span>
                           </div>
                           <div className="border-t border-slate-200 my-1"></div>
                           <div className="flex justify-between text-xs items-center">
@@ -1413,20 +1531,13 @@ export default function ReceiptManager({ isOpen, onClose }: ReceiptManagerProps)
                           
                           <div className="pt-4 flex flex-col items-center md:items-end">
                             <div className="inline-flex flex-col items-center">
-                              {/* Handdrawn Signature SVG from F. Kombe's Upload */}
-                              <div className="h-[40px] -mb-3 opacity-95 flex items-center justify-center pointer-events-none transform -rotate-1">
-                                <svg width="115" height="40" viewBox="0 0 120 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  {/* Left circular/loop element of F. Kombe signature in blue ballpoint ink */}
-                                  <path d="M 22 26 C 10 15 12 36 21 38 C 29 40 31 22 26 16 C 22 11 16 16 18 25 C 20 34 26 28 31 15" stroke="#1e3a8a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                                  {/* Dynamic cursive flow for 'K-o-m-b-e' */}
-                                  <path d="M 31 15 C 33 10 36 8 36 14 C 36 20 35 30 38 31 C 41 32 44 24 45 22 C 46 20 48 20 48 26 C 48 31 52 32 54 24 C 55 20 57 20 58 24 C 59 28 62 30 65 24 C 67 15 72 8 71 14 C 70 20 72 29 76 27 C 80 25 82 20 84 22 C 86 24 84 28 81 29" stroke="#1e3a8a" strokeWidth="2.0" strokeLinecap="round" strokeLinejoin="round" />
-                                  {/* Underline pen sweep starting under the left loop and finishing on the right */}
-                                  <path d="M 12 34 C 42 38 78 33 112 25" stroke="#1e3a8a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
+                              {/* Official Stamp & Merchant Signature */}
+                              <div className="border border-dashed border-emerald-600 bg-emerald-50 rounded-md px-2.5 py-1 mb-1.5 shadow-2xs">
+                                <span className="font-mono text-[9px] font-black text-emerald-800 tracking-wider">PAID VIA LIPILA</span>
                               </div>
-                              <div className="border-t border-dashed border-slate-300 pt-1.5 min-w-[120px] text-center">
-                                <p className="font-serif italic text-slate-700 text-xs font-bold leading-none">F. Kombe</p>
-                                <p className="text-[8px] font-black uppercase text-slate-400 mt-1 tracking-wider">Controller, Edutech</p>
+                              <div className="border-t border-dashed border-slate-300 pt-1.5 min-w-[130px] text-center">
+                                <p className="font-serif italic text-emerald-800 text-xs font-bold leading-none">Lipila Payments Gateway</p>
+                                <p className="text-[8px] font-black uppercase text-slate-500 mt-1 tracking-wider">Authorized MoMo Merchant</p>
                               </div>
                             </div>
                           </div>

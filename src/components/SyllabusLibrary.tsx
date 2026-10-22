@@ -785,72 +785,13 @@ export function SyllabusLibrary({ onBack, embedded = false }: { onBack?: () => v
                   </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-1.5 p-1.5 bg-[#F1F5F3] rounded-2xl border border-slate-200/80">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedCurriculumType('ALL');
-                      setSelectedGradeFilter('All Grades');
-                    }}
-                    className={cn(
-                      "py-2.5 px-2 rounded-xl font-black text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none",
-                      selectedCurriculumType === 'ALL'
-                        ? "bg-white text-slate-900 shadow-xs border border-slate-200/80"
-                        : "text-slate-500 hover:text-slate-800 hover:bg-white/50"
-                    )}
-                  >
-                    <span>All</span>
-                    <span className={cn(
-                      "px-1.5 py-0.5 rounded-full text-[10px] font-black",
-                      selectedCurriculumType === 'ALL' ? "bg-slate-900 text-white" : "bg-slate-200 text-slate-600"
-                    )}>
-                      {allSyllabiList.length}
+                <div className="flex items-center gap-2 p-1.5 bg-[#F1F5F3] rounded-2xl border border-slate-200/80">
+                  <div className="flex-1 py-2 px-3 rounded-xl font-black text-xs bg-[#D95D39] text-white shadow-xs flex items-center justify-between">
+                    <span>Competency-Based Curriculum (CBC)</span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-white/25 text-white">
+                      {cbcCount || allSyllabiList.length} Syllabi
                     </span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedCurriculumType('CBC');
-                      setSelectedGradeFilter('All Grades');
-                    }}
-                    className={cn(
-                      "py-2.5 px-2 rounded-xl font-black text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none",
-                      selectedCurriculumType === 'CBC'
-                        ? "bg-[#D95D39] text-white shadow-xs"
-                        : "text-slate-500 hover:text-slate-800 hover:bg-white/50"
-                    )}
-                  >
-                    <span>CBC</span>
-                    <span className={cn(
-                      "px-1.5 py-0.5 rounded-full text-[10px] font-black",
-                      selectedCurriculumType === 'CBC' ? "bg-white/25 text-white" : "bg-slate-200 text-slate-600"
-                    )}>
-                      {cbcCount}
-                    </span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedCurriculumType('OBC');
-                      setSelectedGradeFilter('All Grades');
-                    }}
-                    className={cn(
-                      "py-2.5 px-2 rounded-xl font-black text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none",
-                      selectedCurriculumType === 'OBC'
-                        ? "bg-slate-900 text-white shadow-xs"
-                        : "text-slate-500 hover:text-slate-800 hover:bg-white/50"
-                    )}
-                  >
-                    <span>OBC</span>
-                    <span className={cn(
-                      "px-1.5 py-0.5 rounded-full text-[10px] font-black",
-                      selectedCurriculumType === 'OBC' ? "bg-white/25 text-white" : "bg-slate-200 text-slate-600"
-                    )}>
-                      {obcCount}
-                    </span>
-                  </button>
+                  </div>
                 </div>
               </div>
 

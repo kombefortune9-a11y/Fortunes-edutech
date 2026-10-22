@@ -1,3 +1,8 @@
+import buildMetadata from './build-metadata.json';
+
+export const APP_VERSION = buildMetadata?.version ? `v${buildMetadata.version}` : 'v2.4.0';
+export const APP_BUILD_METADATA = buildMetadata;
+
 export const ADMIN_EMAIL = 'kombefortune9@gmail.com';
 export const DEVELOPER_EMAILS = [
   'kombefortune9@gmail.com',
@@ -80,6 +85,8 @@ export const ROLE_SPECIFIC_KRAS: Record<string, string[]> = {
 };
 
 export const DEFAULT_AI_INSTRUCTIONS = `Instructions to AI 
+(Schemes of work:) Generate schemes based on the topics in the drop-down as arranged from topic 1 to the end OR start from the first topic, subtopic and first specific competencies entered going forward until the last topic number entered by user. Curriculum framework stipulations about periods must be followed strictly and must allocate Subtopics and learning activities accordingly based on periods assigned to this subject until all learning activities showing on each topic in the syllabus are used and exhausted. The rightful syllabus must be used correctly. No generic learning activities and other information should be seen in the schemes of work.
+
 (Weekly forecast/ Lesson plan:) let the weekly forecast/ Lesson plan be syllabus based and modules quoted based. All information should nothing but with authenticity, ready to deliver lessons with detailed but easy to follow through class standard.
 
 Modules have been aligned properly in line with the Zambian curriculum framework or CBC curriculum`;
@@ -88,7 +95,7 @@ export const DOC_TEMPLATES: DocTemplate[] = [
   {
     id: "lesson_plan",
     title: "Lesson Plans",
-    description: "Professional, CBC/OBC-aligned lesson plans.",
+    description: "Professional, CBC-aligned lesson plans.",
     prompt: `Generate a detailed Lesson Plan in the following exact format. Provide all placeholders.
 
 <style>
@@ -148,16 +155,17 @@ export const DOC_TEMPLATES: DocTemplate[] = [
 <h3 style="text-align: left; font-size: 12pt; font-weight: bold; margin-bottom: 15px; margin-top: 25px;">LESSON DEVELOPMENT</h3>
 <table class="lesson-plan-table">
   <tr>
-    <th style="width: 12%;">STAGE</th>
-    <th style="width: 36%;">TEACHER'S ACTIVITIES</th>
-    <th style="width: 36%;">LEARNERS' ACTIVITIES</th>
-    <th style="width: 16%;">PERFORMANCE INDICATOR</th>
+    <th style="width: 11%;">STAGE</th>
+    <th style="width: 25%;">TEACHER'S ACTIVITIES</th>
+    <th style="width: 25%;">LEARNERS' ACTIVITIES</th>
+    <th style="width: 24%;">CONTENT</th>
+    <th style="width: 15%;">ASSESSMENT CRITERIA</th>
   </tr>
-  <tr><td class="stage-cell">INTRODUCTION</td><td>[Text]</td><td>[Text]</td><td>[Text]</td></tr>
-  <tr><td class="stage-cell">LESSON DEVELOPMENT</td><td>[Text]</td><td>[Text]</td><td>[Text]</td></tr>
-  <tr><td class="stage-cell">PRACTICE/APPLICATION</td><td>[Text]</td><td>[Text]</td><td>[Text]</td></tr>
-  <tr><td class="stage-cell">EXERCISE</td><td>[Text]</td><td>[Text]</td><td>[Text]</td></tr>
-  <tr><td class="stage-cell">CONCLUSION</td><td>[Text]</td><td>[Text]</td><td>[Text]</td></tr>
+  <tr><td class="stage-cell">INTRODUCTION</td><td>[Text]</td><td>[Text]</td><td>[Content items/materials]</td><td>[Criteria]</td></tr>
+  <tr><td class="stage-cell">LESSON DEVELOPMENT</td><td>[Text]</td><td>[Text]</td><td>[Content items/materials]</td><td>[Criteria]</td></tr>
+  <tr><td class="stage-cell">PRACTICE/APPLICATION</td><td>[Text]</td><td>[Text]</td><td>[Content items/materials]</td><td>[Criteria]</td></tr>
+  <tr><td class="stage-cell">EXERCISE</td><td>[Text]</td><td>[Text]</td><td>[Content items/materials]</td><td>[Criteria]</td></tr>
+  <tr><td class="stage-cell">CONCLUSION</td><td>[Text]</td><td>[Text]</td><td>[Content items/materials]</td><td>[Criteria]</td></tr>
 </table>
 
 <div class="lesson-plan-homework-section" style="margin-top: 20px;">
@@ -172,12 +180,24 @@ export const DOC_TEMPLATES: DocTemplate[] = [
 - OFFICIAL NUMBERING: Include the exact numerical sequence prefixes (e.g., 1.1.2) for all topics and subtopics.
 - AUTHENTIC PRINTED PAGE NUMBERS: The "TEXTBOOK REFERENCES" and citation sections MUST use the original printed page numbers from the hard-copy CDC modules provided in the data. Do NOT use soft-copy page numbers.
 - NOTE: "Knowledge", "Skills", and "Values" MUST be moved to the "PRIOR KNOWLEDGE/SKILLS/VALUES" section or integrated into Rationale. They should NOT appear as separate sub-sections in the Outcomes or elsewhere.
-- CRITICAL: The primary lesson plan from the Republic/Ministry Header down to the Evaluations (LEARNER'S EVALUATION and TEACHER'S EVALUATION) should fit within TWO to THREE PAGES. 
+- CRITICAL: The primary lesson plan from the Republic/Ministry Header down to the Evaluations (LEARNER'S EVALUATION and TEACHER'S EVALUATION) MUST fit within strictly TWO (2) PAGES. 
 - CRITICAL HOMEWORK RULE: Homework MUST ONLY be included if the lesson date falls on a WEDNESDAY or a FRIDAY. If the lesson date is not a Wednesday or Friday, completely omit the entire "Homework" component from the generated markup (do not output the homework section at all).
 - CDC FOUNDATION: Fill all placeholders ([Text]) with meaningful, high-quality content derived EXCLUSIVELY from the Zambian CDC modules and syllabus data. Any content outside this is considered not fit for purpose.
-- RATIONALE: The RATIONALE must briefly explain the core importance of this lesson, its benefits, and explicitly name the teaching methods used (e.g. teacher exposition). Keep it under 60 words.
-- The "LESSON DEVELOPMENT" table: Under Teacher's Activities, Learners' Activities, and Assessment Criteria columns, provide detailed, step-by-step bullet points using the '*' symbol. 
-- DETAILED INSTRUCTIONS: Provide explicit, clear action points with concrete CDC examples (e.g., "identifying 5 stones" if in syllabus).
+- RATIONALE: The RATIONALE must briefly explain the core importance of this lesson, its benefits, and explicitly name the teaching methods used (e.g., teacher exposition, collaborative group work, demonstration, gradual release "I do, we do, you do"). Keep it under 60 words.
+- CBC GRADUAL RELEASE OF RESPONSIBILITY & GROUP WORK MANDATE:
+  * Stage 2 (LESSON DEVELOPMENT / "I DO"): Direct teacher instruction and modeling.
+  * Stage 3 (PRACTICE/APPLICATION / "WE DO"): MANDATORY COLLABORATIVE GROUP WORK OR PAIR WORK. Teacher organizes learners into small groups/pairs, assigns collaborative group tasks, and circulates to facilitate peer learning. Learners work together in groups, solve tasks collaboratively, and present findings.
+  * Stage 4 (EXERCISE / "YOU DO"): Independent practice where learners complete individual tasks to demonstrate personal mastery.
+- The "LESSON DEVELOPMENT" table:
+  * TEACHER'S ACTIVITIES & LEARNERS' ACTIVITIES: Describe ONLY actions (starting with "Teacher to..." and "Learners to..."). In Stage 3, explicitly include group/pair work setup, peer discussions, and group reporting. DO NOT mention or list specific examples, objects, or items in these columns.
+  * CONTENT: This is the dedicated column for all specific examples, materials, lists, classifications, small drawings/illustrations, exercise questions/prompts, and conclusion summaries/questions.
+    - Start each stage with a brief underlined title (e.g. <u>Man-made / Natural Materials</u>, <u>Written Exercise / Task</u>).
+    - Format categories with bold labels (e.g. * <b>A) Man-made:</b> Plastic, Bicycle / * <b>B) Natural:</b> Stone, Trees).
+    - DO NOT accompany words with pictures when listing, classifying, naming, or writing.
+    - Include pictures/illustrations ONLY when the activity explicitly requires drawing, showing picture cards, or visual diagrams.
+    - Adapt the EXERCISE stage to diverse learning tasks: written comprehension/recall questions, fill-in-the-blanks, classification tasks, calculations, writing tasks, or drawing & labeling with compact visual references where appropriate.
+    - Dynamically vary items and examples across lessons following the specific lesson's flow.
+  * ASSESSMENT CRITERIA: State the measurable criteria for each stage.
 - STRICT INFORMATION TALLYING: Teacher and learner activities MUST tally perfectly across the row. Every teacher action must have a corresponding learner response.
 - Provide all content directly as plain text within the specified HTML structures.
 
@@ -216,11 +236,33 @@ export const DOC_TEMPLATES: DocTemplate[] = [
 
     ### TABLE STRUCTURE:
     Create a standard Markdown table with the required columns. You MUST include both leading and trailing pipes (|) for every row, including the alignment row.
-    | WEEK | TOPIC | SUBTOPIC | SPECIFIC COMPETENCIES | EXPECTED STANDARD | LEARNING ACTIVITIES | TEACHING METHODS | TEACHING AND LEARNING AIDS | REFERENCE |
-    |:---|:---|:---|:---|:---|:---|:---|:---|:---|
+    - Standard (Non-Language subjects):
+      | WEEK | TOPIC/Subtopics | SPECIFIC COMPETENCIES | EXPECTED STANDARD | LEARNING ACTIVITIES | TEACHING METHODS | TEACHING AND LEARNING AIDS | REFERENCE |
+      |:---|:---|:---|:---|:---|:---|:---|:---|
+    - For English Language and Zambian Languages (where syllabus components like Listening & Speaking, Reading, Writing, Structure are strictly followed):
+      Introduce the COMPONENT column immediately before TOPIC/Subtopics:
+      | WEEK | COMPONENT | TOPIC/Subtopics | SPECIFIC COMPETENCIES | EXPECTED STANDARD | LEARNING ACTIVITIES | TEACHING METHODS | TEACHING AND LEARNING AIDS | REFERENCE |
+      |:---|:---|:---|:---|:---|:---|:---|:---|:---|
+    - For OBC Curriculum (Grades 3, 5-12):
+      | WEEK | TOPIC/Subtopics | SPECIFIC OUTCOMES | KNOWLEDGE | SKILLS | VALUES | TEACHING METHODS | T/L AIDS | REFERENCE |
+      |:---|:---|:---|:---|:---|:---|:---|:---|:---|
+    - For OBC Language subjects with COMPONENT:
+      | WEEK | COMPONENT | TOPIC/Subtopics | SPECIFIC OUTCOMES | KNOWLEDGE | SKILLS | VALUES | TEACHING METHODS | T/L AIDS | REFERENCE |
+      |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+
+    ### TOPIC/Subtopics & NUMBER SEQUENCING FORMATTING MANDATE (CRITICAL - FOR OBC & CBC):
+    - EXACT NUMBER SEQUENCING HIERARCHY (MANDATORY): You MUST preserve and display the official syllabus numerical sequence prefixes starting from Topic, to Subtopics, to Specific Outcomes (for OBC) / Competencies:
+      * 1. TOPIC: Must include its official number prefix in normal uppercase title font on top (e.g., 3.8 FRACTIONS or 1.1 SOCIAL ENVIRONMENT).
+      * 2. SUBTOPICS: Must include its official 3-level sequence number prefix in smaller bold text wrapped in HTML small/b tags underneath double break (e.g., <small><b>• 3.8.1 Identify and represent proper fractions as equal parts of a whole</b></small>).
+      * 3. SPECIFIC OUTCOMES (OBC): Must include its official 4-level sequence number prefix with bullet (e.g., • 3.8.1.1 Identify proper fractions as equal parts of a whole).
+    - The separate Subtopic column has been removed across both CBC and OBC. Subtopics are now merged inside the "TOPIC/Subtopics" column.
+    - In each cell of TOPIC/Subtopics: First state the main TOPIC with its number prefix on top, then insert double break (<br/><br/>), then state the Subtopic(s) with its 3-level number prefix.
+    - It is strictly forbidden to omit the main Topic or strip any number sequences.
+    - The space formerly taken by the Subtopic column is shared equally between the Learning Activities / Knowledge column and the Specific Competencies / Outcomes column.
 
     ### STRICT PAGE LIMIT, ROW BALANCING & VERTICAL FILL MANDATE:
-    - The entire Schemes of Work document MUST fit comfortably within FIVE to SIX PAGES (maximum 6 pages for the whole term).
+    - The entire Schemes of Work document MUST NOT be generated above 7 pages. It MUST strictly fit within 7 pages and below (maximum 7 pages for the whole term).
+    - Header font sizes are scaled to a compact small font so headers never grab excessive vertical space.
     - CRITICAL ROW DENSITY & FULL-PAGE VERTICAL FILL:
       * Every single week's row MUST have an even, balanced height so that exactly 2 to 3 weeks fit onto each landscape page, filling the page completely from top to bottom without leaving huge empty gaps at the bottom of any page.
       * In LEARNING ACTIVITIES: Provide exactly 3 to 4 concise, high-impact bullet points per week (do NOT write 8-10 verbose paragraphs in one week and 2 in another).
@@ -228,12 +270,22 @@ export const DOC_TEMPLATES: DocTemplate[] = [
       * In TEACHING METHODS and TEACHING AND LEARNING AIDS: Provide 2 to 4 concise items.
       * This ensures every week row has an even, predictable height (~200px-230px), allowing each printed/exported page to fill vertically with 3 full weeks with zero wasted bottom space.
 
+    ### MANDATORY BULLET POINTS ("BULLETINS") IN TABLE CELLS:
+    - You MUST use clean bullet points (• or <br>• ) for all items inside table cells so it is crystal clear where each outcome or piece of information starts:
+      * SPECIFIC COMPETENCIES / SPECIFIC OUTCOMES: Prefix every outcome with a bullet point: • 1.1.1.1 [Outcome 1]<br>• 1.1.1.2 [Outcome 2]
+      * EXPECTED STANDARDS: Prefix with bullet points: • [Standard 1]<br>• [Standard 2]
+      * LEARNING ACTIVITIES: Prefix every activity with a bullet point: • [Activity 1]<br>• [Activity 2]
+      * KNOWLEDGE, SKILLS, VALUES: Prefix each statement with a bullet point: • [Item 1]<br>• [Item 2]
+      * TEACHING METHODS & T/L AIDS: Prefix each item with a bullet point: • [Item 1]<br>• [Item 2]
+      * SUBTOPICS (if multiple): Prefix with bullet points: • [Subtopic 1]<br>• [Subtopic 2]
+
     ### REQUIREMENTS:
     - ONLY output the table. DO NOT include any "Weekly Forecast", "Weekly Record", or additional tables at the end.
     - Ensure there is a blank line before the table starts.
     - EVERY row must start with a pipe (|) and end with a pipe (|).
     - The alignment row (the second row with dashes) MUST have exactly 9 columns matching the header (or 10 if OBC).
-    - REFERENCE COLUMN MANDATE: You MUST ALWAYS fill the "REFERENCE" column with a specific citation from the Zambian Syllabus (e.g., "CDC Grade 8 Social Studies Syllabus pg. 12"). NEVER leave it blank, dots, or placeholder symbols.
+    - REFERENCE COLUMN MANDATE: You MUST ALWAYS fill the "REFERENCE" column with a specific, concise citation from the Zambian Syllabus (e.g., "CBC Grade 3 (OBC) Mathematics Syllabus (Ref: 3.5 MULTIPLICATION)" or "CDC Grade 8 Social Studies Syllabus pg. 12"). 
+      CRITICAL SAFETY RULE: Under NO circumstances should the "REFERENCE" column repeat the subtopics, outcomes, skills, values, learning activities, or assessments. It must ONLY contain the syllabus name and the main Topic citation. Absolutely do NOT list subtopic numbers or descriptions (like 3.6.1, 3.6.2, or descriptions), specific outcomes, knowledge statements, or "[Continuous Assessment Test 1]" inside the REFERENCE column! Keep it strictly clean and minimal! NEVER leave it blank, dots, or placeholder symbols.
     - DO NOT include sections for "Remarks", "Evaluation", "Signatures", or "Success Indicators" at the bottom of the document. Keep them ONLY as columns in the table.
     - WEEKLY RULES:
         * Week 4 and Week 8 MUST include "Monthly Assessment" alongside learning topics.
@@ -269,20 +321,39 @@ export const DOC_TEMPLATES: DocTemplate[] = [
     <center><b># WEEKLY FORECAST - WEEK {week}</b></center>
 
     ### TABLE STRUCTURE:
-    Create a standard Markdown table with EXACTLY 10 columns. You MUST include leading and trailing pipes.
-    | DAY | TOPIC | SUBTOPICS | SPECIFIC COMPETENCIES | EXPECTED STANDARDS | LEARNING ACTIVITIES | TEACHING METHODS | TEACHING AND LEARNING AIDS | REFERENCE | RECORD OF WORK |
-    |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+    Create a standard Markdown table with the required columns. You MUST include leading and trailing pipes.
+    - Table Structure for All Subjects (CBC & OBC):
+      | DAY | TOPIC/SUBTOPICS | SPECIFIC COMPETENCIES | EXPECTED STANDARDS | LEARNING ACTIVITIES | TEACHING METHODS | TEACHING AND LEARNING AIDS | REFERENCE | RECORD OF WORK |
+      |:---|:---|:---|:---|:---|:---|:---|:---|:---|
+      (Note: Do NOT create a separate COMP column for English or Zambian Languages. If component names like Phonics or Oral English exist, place them inside the TOPIC/SUBTOPICS cell alongside the main topic).
+
+    ### TOPIC & SUBTOPICS FORMATTING MANDATE (CRITICAL - FOR CBC ONLY):
+    - EXHAUSTIVE CONTIGUOUS SUBTOPIC & OUTCOME PACING ACROSS ALL SUBJECTS (ABSOLUTE MANDATE - ZERO PING-PONG): Across ALL SUBJECTS (Creative and Technology Studies, Social Studies, Mathematics, Science, English, Zambian Languages, Expressive Arts, CTS, etc.), subtopics and specific outcomes MUST be taught in strict contiguous sequence. Day 1 MUST contain Outcome 1 (e.g. 3.14.1.1), Day 2 MUST contain Outcome 1 (e.g. 3.14.1.1) to exhaust it, and Day 3 MUST contain Outcome 2 (e.g. 3.14.1.2). Alternating outcomes or subtopics back and forth across days is STRICTLY PROHIBITED in ALL subjects.
+    - EXACT NUMBER SEQUENCING HIERARCHY (MANDATORY): You MUST preserve and display the official syllabus numerical sequence prefixes starting from Topic, to Subtopics, to Specific Outcomes (for OBC) / Competencies:
+      * 1. TOPIC: State the main Topic with its official number prefix on top in normal uppercase title font (e.g., 2.2 UNDERSTANDING MY BODY).
+      * 2. SUBTOPICS: State the Subtopic with its official 3-level sequence number prefix in smaller bold text wrapped in HTML small/b tags (e.g., <small><b>• 2.2.1 The Human Body</b></small>).
+    - For CBC (Grades ECE, 1, 2, 4): Keep TOPIC and SUBTOPICS as two completely separate columns in the table:
+      * In 'TOPIC' column, write ONLY the Topic name with its number (e.g., 2.2 UNDERSTANDING MY BODY).
+      * In 'SUBTOPICS' column, write ONLY the Subtopic name with its number (e.g., 2.2.1 The Human Body).
+    
+    ### TOPIC/SUBTOPICS & NUMBER SEQUENCING FORMATTING MANDATE (CRITICAL - FOR OBC ONLY):
+    - For OBC (Grades 3, 5-12): Merge them inside 'TOPIC/SUBTOPICS' column:
+      * In each cell of 'TOPIC/SUBTOPICS': First state the main TOPIC with its number on top, then insert double break (<br/><br/>), then state the Subtopic with its number underneath.
+      * It is strictly forbidden to omit the main Topic name from the top of the cell.
+      * It is strictly forbidden to strip or omit any number sequencing prefixes. Follow the Schemes of Work formatting pattern precisely.
+      * The space formerly taken by the Subtopic column is redistributed to Knowledge, Skills, Values, and Record of Work columns.
   
     ### STRICT 1-PAGE MANDATE & ROW DENSITY REQUIREMENTS:
     - ABSOLUTE SINGLE PAGE MANDATE: The ENTIRE Weekly Forecast document (header + all 5 days from Day 1 to Day 5) MUST fit on EXACTLY ONE (1) A4 LANDSCAPE PAGE. It is strictly forbidden to overflow into a 2nd page or create gaps.
+    - MANDATORY BULLET POINTS ("BULLETINS"): Use clean bullet points (• or <br>• ) for all items in table cells (SPECIFIC COMPETENCIES/OUTCOMES, EXPECTED STANDARDS, LEARNING ACTIVITIES, TEACHING METHODS, T/L AIDS, SUBTOPICS) to distinctly show where each item starts.
     - To guarantee fitting perfectly on 1 page:
       * Keep every row concise and compact so all 5 rows plus header fit completely on one single page.
-      * LEARNING ACTIVITIES: Provide exactly 1 to 2 concise action phrases per day (e.g. 'Activity: Exploring materials (wood, stone)'). DO NOT write long paragraphs.
-      * SPECIFIC COMPETENCIES: 1 concise competency statement (e.g. '1.4.1.1 Explore different materials').
-      * TEACHING METHODS: 2 concise items (e.g. 'Demonstration, Group work').
-      * TEACHING AND LEARNING AIDS: 2 concise items (e.g. 'Flashcards, Pictures').
+      * LEARNING ACTIVITIES: Provide exactly 1 to 2 concise action phrases per day prefixed with bullet points (e.g. '• Activity: Exploring materials (wood, stone)'). DO NOT write long paragraphs.
+      * SPECIFIC COMPETENCIES: 1 concise competency statement prefixed with a bullet point (e.g. '• 1.4.1.1 Explore different materials').
+      * TEACHING METHODS: List ALL methods used in that lesson (at least 3 to 4 distinct methods per day, e.g. '• Teacher exposition<br>• Question and answer<br>• Class discussion<br>• Group work'). ALWAYS include "Question and answer" and "Teacher exposition".
+      * TEACHING AND LEARNING AIDS: Explicitly describe specific content shown (e.g. '• Wall chart showing causes of division in families<br>• Pictures showing instances of nepotism'). ALWAYS include foundational classroom aids: 'Chalkboard & Chalk / Whiteboard & Markers' and 'Worksheets / Exercise books'.
       * REFERENCE: Concise official syllabus citation (e.g. 'Grade 1-3 lower primary Mathematics CDC 2024-2025 CBC syllabus page 12' or 'Grade 1-3 lower primary English Language CDC 2024-2025 CBC syllabus page .....; PLP Oral English Teaching Module').
-      * EXPECTED STANDARDS: 1 concise statement (e.g. 'Materials explored accordingly').
+      * EXPECTED STANDARDS: 1 concise statement with bullet point (e.g. '• Materials explored accordingly').
       * RECORD OF WORK: Keep empty for handwriting or manual records.
     - Include all 5 days (Day 1, Day 2, Day 3, Day 4, Day 5).
     - All table rows must perfectly align with the 10 columns.`,
@@ -420,7 +491,7 @@ export const DOC_TEMPLATES: DocTemplate[] = [
 </div>
 
 <div class="lesson-notes-footer" style="margin-top: 40px; border-top: 1.5px solid black; padding-top: 15px; font-size: 9.5pt; text-align: center;">
-  <strong>FORTUNES EDUTECH CBC/OBC Resource Suite © {year}</strong>
+  <strong>FORTUNES EDUTECH CBC Resource Suite © {year}</strong>
 </div>
 
 **Requirements:**
@@ -544,33 +615,32 @@ export const DOC_TEMPLATES: DocTemplate[] = [
 
 export const CATEGORY_SUBJECTS: Record<string, string[]> = {
   ECE: [
-    "Creative and technology studies",
-    "Zambian language",
-    "English",
     "Pre-Mathematics & Science",
+    "Creative and Technology Studies",
+    "Zambian Language",
+    "English",
   ],
   "Grade 1-3": [
-    "Mathematics and science",
-    "Creative and technology studies",
-    "Zambian language",
+    "Mathematics and Science",
+    "Creative and Technology Studies",
+    "Zambian Language",
     "English",
   ],
   "Grade 4-6": [
-    "Creative and technology studies",
-    "Science",
-    "English",
-    "Zambian language",
-    "Home Economics",
-    "Home Economics & Hospitality",
     "Mathematics",
-    "Expressive arts",
+    "Science",
     "Social Studies",
+    "Technology Studies",
+    "Expressive Arts",
+    "Home Economics & Hospitality",
+    "English",
+    "Zambian Language",
   ],
   Secondary: [
     "Mathematics 1",
     "Mathematics 2",
     "English",
-    "Zambian language",
+    "Zambian Language",
     "Biology",
     "Chemistry",
     "Physics",
@@ -596,45 +666,9 @@ export const CATEGORY_SUBJECTS: Record<string, string[]> = {
   ],
 };
 
-export const OBC_GRADES = [
-  "Grade 3 (OBC)",
-  "Grade 5 (OBC)",
-  "Grade 6 (OBC)",
-  "Grade 7 (OBC)",
-  "Grade 10 (OBC)",
-  "Grade 11 (OBC)",
-  "Grade 12 (OBC)",
-];
-
-export const OBC_LEVELS = [
-  "Grade 3 (OBC)",
-  "Grade 5 (OBC)",
-  "Grade 6 (OBC)",
-  "Grade 7 (OBC)",
-  "Grade 10 (OBC)",
-  "Grade 11 (OBC)",
-  "Grade 12 (OBC)",
-];
-
-export const OBC_SUBJECTS: string[] = [
-  "Mathematics",
-  "Integrated Science",
-  "Creative and Technology Studies",
-  "Technology Studies",
-  "Social Studies",
-  "English",
-  "Zambian language",
-  "Home Economics and Hospitality",
-  "Home Economics",
-  "Civic Education",
-  "Computer Studies",
-  "Additional Mathematics",
-  "Biology",
-  "Religious Education 2044",
-  "Zambian language",
-  "Chemistry",
-  "Physics",
-];
+export const OBC_GRADES: string[] = [];
+export const OBC_LEVELS: string[] = [];
+export const OBC_SUBJECTS: string[] = [];
 
 export const GRADES = [
   "ECE level 1",
@@ -645,13 +679,6 @@ export const GRADES = [
   "Grade 4",
   "Grade 5",
   "Grade 6",
-  "Grade 3 (OBC)",
-  "Grade 5 (OBC)",
-  "Grade 6 (OBC)",
-  "Grade 7 (OBC)",
-  "Grade 10 (OBC)",
-  "Grade 11 (OBC)",
-  "Form 3 (OBC)",
   "Form 1 O Level",
   "Form 2 O Level",
   "Form 3 O Level",
@@ -667,48 +694,40 @@ export const SUBSCRIPTION_PLANS: Record<string, {
   durationDays: number;
   colorClass: string;
 }> = {
-  weekly: {
-    label: 'Weekly Circle',
-    price: 20,
-    limit: 40,
-    durationDays: 7,
-    colorClass: 'text-amber-700 bg-amber-50 border-amber-100',
-  },
   '14days': {
     label: '14 Days Circle',
     price: 40,
-    limit: 80,
+    limit: 75,
     durationDays: 14,
-    colorClass: 'text-cyan-700 bg-cyan-50 border-cyan-100',
+    colorClass: 'text-slate-900 bg-white border-2 border-black',
   },
   monthly: {
     label: 'Monthly Circle',
-    price: 90,
-    limit: 180,
+    price: 70,
+    limit: 160,
     durationDays: 30,
-    colorClass: 'text-purple-700 bg-purple-50 border-purple-100',
+    colorClass: 'text-sky-950 bg-sky-50 border-2 border-sky-400',
   },
   termly: {
     label: 'Termly Circle',
-    price: 250,
-    limit: 500,
+    price: 180,
+    limit: 300,
     durationDays: 90,
-    colorClass: 'text-indigo-700 bg-indigo-50 border-indigo-100',
-  },
-  unlimited: {
-    label: 'Unlimited Access',
-    price: 1500,
-    limit: Infinity,
-    durationDays: Infinity,
-    colorClass: 'text-emerald-700 bg-emerald-50 border-emerald-100',
+    colorClass: 'text-emerald-950 bg-emerald-50 border-2 border-emerald-500',
   },
   guest_trial: {
-    label: 'Trial Access',
+    label: 'Free View-Only Trial',
     price: 0,
-    limit: 4,
+    limit: 4, // 1 Schemes + 1 Forecast + 2 Lesson Plans
     durationDays: 1,
     colorClass: 'text-blue-700 bg-blue-50 border-blue-100',
   }
+};
+
+export const TRIAL_VIEW_LIMITS: Record<string, number> = {
+  schemes_of_work: 1,
+  weekly_forecast: 1,
+  lesson_plan: 2,
 };
 
 export const SECONDARY_GRADES = [
@@ -722,74 +741,7 @@ export const getSubjectsForGrade = (grade: string): string[] => {
   if (!grade) return [];
   const g = grade.toLowerCase();
   
-  // Custom mapping for OBC levels to exactly match the SYLLABI keys
-  if (g.includes("(obc)")) {
-    if ((g.includes("grade 1") && !g.includes("grade 10") && !g.includes("grade 11") && !g.includes("grade 12")) || g.includes("grade 2")) {
-      return [
-        "Mathematics",
-        "Integrated science",
-        "Creative and Technology Studies",
-        "Zambian language",
-        "English",
-        "Literacy in English",
-        "Oral English"
-      ];
-    }
-    if (g.includes("grade 3")) {
-      return [
-        "Integrated science",
-        "Creative and Technology Studies",
-        "English",
-        "Zambian language",
-        "Mathematics",
-        "Social Studies"
-      ];
-    }
-    if (g.includes("grade 4")) {
-      return [
-        "English",
-        "Integrated science",
-        "Social Studies",
-        "Zambian language",
-        "Mathematics",
-        "Technology Studies",
-        "Home Economics and Hospitality"
-      ];
-    }
-    if (g.includes("grade 5") || g.includes("grade 6") || g.includes("grade 7")) {
-      return [
-        "Integrated science",
-        "Technology Studies",
-        "English",
-        "Zambian language",
-        "Home Economics",
-        "Expressive arts",
-        "Mathematics",
-        "Social Studies"
-      ];
-    }
-    if (g.includes("form 1 o level") ||
-      g.includes("form 2 o level") ||
-      g.includes("form 3 o level") ||
-      g.includes("form 4 o level") ||
-      g.includes("grade 10") ||
-      g.includes("grade 11") ||
-      g.includes("grade 12")
-    ) {
-      return [
-        "English",
-        "Home Economics",
-        "Civic Education",
-        "Computer Studies",
-        "Additional Mathematics",
-        "Biology",
-        "Religious Education 2044",
-        "Zambian language",
-        "Chemistry",
-        "Physics"
-      ];
-    }
-  }
+
 
   if (g.includes("form 5") || g.includes("form 6") || g.includes("form 5-6")) {
     return [
@@ -828,9 +780,9 @@ export const getSubjectsForGrade = (grade: string): string[] => {
     if (num >= 1 && num <= 3) {
       if (num === 1 || num === 2) {
         return [
-          "Mathematics and science",
-          "Creative and technology studies",
-          "Zambian language",
+          "Mathematics and Science",
+          "Creative and Technology Studies",
+          "Zambian Language",
           "English",
           "Literacy in English",
           "Oral English"
@@ -838,15 +790,10 @@ export const getSubjectsForGrade = (grade: string): string[] => {
       }
       return CATEGORY_SUBJECTS["Grade 1-3"];
     }
-    if (num >= 4 && num <= 6) {
-      const subjects = CATEGORY_SUBJECTS["Grade 4-6"];
-      if (!subjects.includes("Social Studies")) {
-        return ["Social Studies", ...subjects];
-      }
-      return subjects;
+    if (num >= 4 && num <= 7) {
+      return CATEGORY_SUBJECTS["Grade 4-6"];
     }
     if (num >= 8) return CATEGORY_SUBJECTS["Secondary"];
-    if (num >= 7) return CATEGORY_SUBJECTS["Grade 4-6"]; // Still use these subjects for Grade 7 OBC if applicable
   }
 
   if (g.includes("form") || g.includes("secondary"))

@@ -1,10 +1,20 @@
+import { obcSocialStudiesGrade3 } from './obcSocialStudiesData';
+
 export interface Subtopic {
   title: string;
   competencies: string[];
+  learningActivities?: string[] | Record<string, string[]>;
+  expectedStandard?: string | string[];
+  knowledge?: string;
+  skills?: string;
+  values?: string;
+  component?: string;
 }
 
 export interface Topic {
   title: string;
+  component?: string;
+  generalCompetency?: string;
   subtopics: Subtopic[];
 }
 
@@ -218,122 +228,7 @@ export const socialStudiesGrade2: Topic[] = [
   }
 ];
 
-export const socialStudiesGrade3: Topic[] = [
-  {
-    title: "3.1 DIRECTION AND LOCATION",
-    subtopics: [
-      {
-        title: "3.1.1 Location on a Map",
-        competencies: [
-          "Specific Competency: 3.1.1.1 Identify the location of home, school and nearby places on a map | Expected Standard: Location of places | [Skills]: Identification of places on a map | Values: -"
-        ]
-      }
-    ]
-  },
-  {
-    title: "3.2 GOVERNANCE",
-    subtopics: [
-      {
-        title: "3.2.1 The National Anthem",
-        competencies: [
-          "Specific Competency: 3.2.1.1 Sing the Zambian National Anthem in English | Expected Standard: Zambian National Anthem in English | [Skills]: - | Values: Sense of Patriotism"
-        ]
-      }
-    ]
-  },
-  {
-    title: "3.3 LEARNING ABOUT MONEY",
-    subtopics: [
-      {
-        title: "3.3.1 Keeping track of money",
-        competencies: [
-          "Specific Competency: 3.3.1.1 Describe a simple budget | Expected Standard: Income and Expenditure | [Skills]: Draw up a simple budget using pocket money | Values: Appreciate why people plan to use their money",
-          "Specific Competency: 3.3.1.2 Identify lists of priorities for different people | Expected Standard: Items people ‘need’ and ‘want’ in life | [Skills]: Create prioritised lists for different people | Values: Appreciate that different people have different priorities",
-          "Specific Competency: 3.3.1.3 Explain the importance of saving money for children and adults | Expected Standard: Saving up for things you need or want in the future | [Skills]: Make priorities for spending and saving | Values: Appreciate why saving makes sense",
-          "Specific Competency: 3.3.1.4 Describe how money can make one feel in different circumstances | Expected Standard: Having money, losing money stolen, wanting things you cannot afford | [Skills]: Explain the way you feel about money | Values: Recognise that different people have different feelings about money"
-        ]
-      }
-    ]
-  },
-  {
-    title: "3.4 RELIGION",
-    subtopics: [
-      {
-        title: "3.4.1 Different Religions and Places of Worship",
-        competencies: [
-          "Specific Competency: 3.4.1.1 Name different religions in Zambia | Expected Standard: Traditional religion, Christianity, Islam, Hinduism | [Skills]: Identification of different religions and places of worship | Values: Awareness of different religions in Zambia",
-          "Specific Competency: 3.4.1.2 Mention places where members of different religions worship | Expected Standard: Places of worship: shrines, churches, mosques, temples | [Skills]: Identification of different religions and places of worship | Values: Appreciation of other people's religion"
-        ]
-      }
-    ]
-  },
-  {
-    title: "3.5 CHRISTIAN LIVING",
-    subtopics: [
-      {
-        title: "3.5.1 Division and Forgiveness",
-        competencies: [
-          "Specific Competency: 3.5.1.1 Identify causes of division among people | Expected Standard: Nepotism, favouritism, theft, greedy, unfairness, jealousy | [Skills]: Identification of causes of division | Values: Appreciation of values of Patience, Responsibility, Tolerance, Reconciliation, Cooperation, Respect, Remorsefulness",
-          "Specific Competency: 3.5.1.2 Mention effects of division | Expected Standard: Conflict, underdevelopment, hatred | [Skills]: - | Values: Appreciation of values",
-          "Specific Competency: 3.5.1.3 State different ways of showing remorse | Expected Standard: Saying sorry, looking sad, crying | [Skills]: Identification of ways of showing remorse | Values: Appreciation of values",
-          "Specific Competency: 3.5.1.4 Describe the importance of forgiveness | Expected Standard: Unity, peace, love, happiness, good health | [Skills]: - | Values: Appreciation of values"
-        ]
-      }
-    ]
-  },
-  {
-    title: "3.6 FESTIVALS",
-    subtopics: [
-      {
-        title: "3.6.1 Cultural Celebrations and Festivals",
-        competencies: [
-          "Specific Competency: 3.6.1.1 Mention occasions celebrated by local communities | Expected Standard: Birth of a child, initiation ceremonies, installation of leaders, marriage | [Skills]: Identification of cultural celebrations | Values: Awareness of cultural celebrations/ festivals",
-          "Specific Competency: 3.6.1.2 Explain the importance of celebrations/festivals | Expected Standard: Identity, unity, happiness | [Skills]: - | Values: Awareness of cultural celebrations/ festivals"
-        ]
-      },
-      {
-        title: "3.6.2 Religious Celebrations and Festivals",
-        competencies: [
-          "Specific Competency: 3.6.2.1 Identify religious festivals in the locality | Expected Standard: Christmas, Good Friday, Easter, Ramadan | [Skills]: - | Values: Appreciation; Awareness of religious festivals and celebrations.",
-          "Specific Competency: 3.6.2.2 Mention the significance of religious festivals | Expected Standard: Identification with God, thanksgiving | [Skills]: - | Values: Appreciation; Awareness"
-        ]
-      }
-    ]
-  },
-  {
-    title: "3.7 CEREMONIES",
-    subtopics: [
-      {
-        title: "3.7.1 Traditional Ceremonies",
-        competencies: [
-          "Specific Competency: 3.7.1.1 Describe traditional ceremonies | Expected Standard: Local traditional ceremonies | [Skills]: Classification of traditional ceremonies | Values: Appreciation of traditional ceremonies",
-          "Specific Competency: 3.7.1.2 State the significance of traditional ceremonies | Expected Standard: Identity, unity, happiness | [Skills]: - | Values: Appreciation"
-        ]
-      },
-      {
-        title: "3.7.2 Initiation Ceremonies",
-        competencies: [
-          "Specific Competency: 3.6.2.1 Describe local initiation ceremonies | Expected Standard: Local initiation ceremonies | [Skills]: Identification of initiation ceremonies | Values: Appreciation of initiation ceremonies.",
-          "Specific Competency: 3.6.2.2 State the significance of local initiation ceremonies | Expected Standard: Identity, unity, happiness | [Skills]: - | Values: Appreciation",
-          "Specific Competency: 3.6.2.3 Describe the initiation of Jesus | Expected Standard: Initiation of Jesus (Luke 2:41) | [Skills]: - | Values: Appreciation",
-          "Specific Competency: 3.6.2.4 Describe the relevance of traditional teachings and practices today | Expected Standard: Identity, unity, happiness | [Skills]: - | Values: Appreciation"
-        ]
-      }
-    ]
-  },
-  {
-    title: "3.8 TRANSPORT AND COMMUNICATION",
-    subtopics: [
-      {
-        title: "3.8.1 Safety Precautions",
-        competencies: [
-          "Specific Competency: 3.8.1.1 Identify safety precautions applied on vehicles | Expected Standard: Using seat belts, no hanging on moving vehicles, no jumping on and off moving vehicles | [Skills]: Identification of safety precautions applied on vehicles | Values: Care on the road",
-          "Specific Competency: 3.8.1.2 Explain risky behaviour on the road | Expected Standard: Playing on the road, running back onto the road to pick an object | [Skills]: - | Values: Care on the road"
-        ]
-      }
-    ]
-  }
-];
+export const socialStudiesGrade3: Topic[] = obcSocialStudiesGrade3;
 
 export const socialStudiesGrade4: Topic[] = [
   {
@@ -343,7 +238,8 @@ export const socialStudiesGrade4: Topic[] = [
         title: "4.1.1 Members of the Family",
         competencies: [
           "Specific Competency: 4.1.1.1 Demonstrate understanding of relationships in families | Expected Standard: Understanding of relationships in families demonstrated accordingly | [Learning Activities]: Identifying members of the family (Father, mother, brothers, sisters, uncles, aunties, cousins); Describing different types of families (Nuclear, extended, single parent, child headed, guardian headed); Role playing ways of developing strong relationships with family members (love, kindness, support)",
-          "Specific Competency: 4.1.1.2 Express sympathy and empathy to others | Expected Standard: Sympathy and empathy to others expressed correctly | [Learning Activities]: Expressing sympathy and empathy to others (showing support, being kind, helping others)"
+          "Specific Competency: 4.1.1.2 Express sympathy and empathy to others | Expected Standard: Sympathy and empathy to others expressed correctly | [Learning Activities]: Expressing sympathy and empathy to others (showing support, being kind, helping others)",
+          "Specific Competency: 4.1.1.3 Show understanding of family values | Expected Standard: Understanding of family values shown accordingly | [Learning Activities]: Identifying family values; Practising family values (respect, honest, responsibility, loyalty, hard work, fairness, selflessness)"
         ]
       },
       {
@@ -469,7 +365,7 @@ export const socialStudiesGrade4: Topic[] = [
       {
         title: "4.9.1 Impulse Buying",
         competencies: [
-          "Specific Competency: 4.9.1.2 Manage impulse buying | Expected Standard: Impulse buying managed accordingly | [Learning Activities]: Distinguishing wants from needs; Making a shopping list"
+          "Specific Competency: 4.9.1.1 Manage impulse buying | Expected Standard: Impulse buying managed accordingly | [Learning Activities]: Distinguishing wants from needs; Making a shopping list"
         ]
       },
       {

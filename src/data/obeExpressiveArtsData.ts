@@ -10,29 +10,27 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.1.1.1 Use appropriate attire and tools"
         ],
         learningActivities: [
-          "Identifying correct attire and safety tools for physical activities and art workshops",
-          "Demonstrating proper wearing of protective clothing and safety footwear in specialised rooms",
-          "Practising safe handling, cleaning, and storage of tools, equipment, and materials"
+          "Identifying correct attire and tools.",
+          "Using appropriate attire In specialised rooms"
         ],
-        expectedStandard: "Appropriate attire and tools correctly identified and safely used in specialised rooms with full safety adherence.",
-        knowledge: "Identifying correct attire and tools; Using appropriate attire in specialised rooms; Tool care and storage",
-        skills: "Identification and correct usage of protective attire and safety tools",
-        values: "Safety consciousness, Appreciation of protective attire and safe work habits"
+        expectedStandard: "Appropriate attire and tools used correctly",
+        knowledge: "Identifying correct attire and tools; Using appropriate attire in specialised rooms",
+        skills: "Identification and correct usage of protective attire and tools",
+        values: "Safety consciousness, responsibility"
       },
       {
         title: "4.1.2 Health",
         competencies: [
-          "4.1.2.1 Compose health related songs"
+          "4.1.2.2 Compose health related songs"
         ],
         learningActivities: [
-          "Singing existing health and hygiene songs",
-          "Composing short songs and rhymes on personal hygiene, safe drinking water, and sanitation",
-          "Performing composed health songs with rhythmic body percussion and simple movements"
+          "Singing existing health related songs",
+          "Composing health related songs"
         ],
-        expectedStandard: "Health-related songs composed and performed with clear hygiene messages and rhythm.",
-        knowledge: "Singing existing health related songs; Composing health related songs on personal and environmental hygiene",
-        skills: "Creativity in singing and songwriting on health themes",
-        values: "Health awareness, Promotion of good hygienic practices"
+        expectedStandard: "Health related songs composed accordingly",
+        knowledge: "Singing existing health related songs; Composing health related songs",
+        skills: "Singing, songwriting, creative expression",
+        values: "Health awareness, appreciation of music"
       }
     ]
   },
@@ -46,14 +44,13 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.2.1.2 Display balancing skills using various equipment"
         ],
         learningActivities: [
-          "Performing structured calisthenic movements with dumb bells, climbing ropes, and skipping ropes",
-          "Displaying balancing skills using various equipment (bottle race, hula hoop, balance bench)",
-          "Executing coordinated body movements in response to musical beats and verbal signals"
+          "Performing structured movements (Dumb bells, Climbing ropes, skipping ropes...)",
+          "Displaying balancing skills using various equipment (bottle race, hula hoop...)"
         ],
-        expectedStandard: "Structured movement patterns and balancing routines performed with agility and coordination.",
-        knowledge: "Performing structured movements (Dumb bells, Climbing ropes, skipping ropes); Displaying balancing skills using various equipment",
-        skills: "Coordination, physical agility, balance control, and rhythmic movement",
-        values: "Discipline, spatial awareness, teamwork, physical fitness"
+        expectedStandard: "Structured movements performed accurately. Balancing skills using various equipment displayed skillfully.",
+        knowledge: "Performing structured movements; Displaying balancing skills using various equipment",
+        skills: "Body coordination, balancing, agility",
+        values: "Discipline, teamwork, physical fitness"
       }
     ]
   },
@@ -67,14 +64,14 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.3.1.2 Draw different objects"
         ],
         learningActivities: [
-          "Drawing straight, curved, zig-zag, spiral, and diagonal lines with varied thickness",
-          "Drawing common household and natural objects (fruits, pots, cups, flowers)",
-          "Combining lines and shapes to represent volumetric objects with clear outlines"
+          "Identifying types of lines",
+          "Drawing lines (straight, curved, diagonal, Centre)",
+          "Drawing different objects (fruits, pots, cups, flowers...)"
         ],
-        expectedStandard: "Different lines and everyday objects drawn with accurate forms, clean lines, and balanced proportions.",
-        knowledge: "Identifying types of lines (straight, curved, diagonal, centre); Drawing different objects (fruits, pots, cups, flowers)",
-        skills: "Line drawing, hand-eye coordination, object observation and representation",
-        values: "Creativity, precision, appreciation of natural and man-made forms"
+        expectedStandard: "Lines drawn correctly. Different objects drawn correctly.",
+        knowledge: "Identifying types of lines; Drawing different objects (fruits, pots, cups, flowers)",
+        skills: "Drawing lines, hand-eye coordination, object representation",
+        values: "Creativity, precision, appreciation of art"
       },
       {
         title: "4.3.2 Colour Mixing",
@@ -83,14 +80,13 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.3.2.2 Identify secondary colours"
         ],
         learningActivities: [
-          "Mixing primary pigments (red + yellow, yellow + blue, blue + red) in equal proportions",
-          "Identifying and naming the resulting secondary colours (orange, green, violet/purple)",
-          "Painting colour swatches and simple test wheels showing primary and secondary hues"
+          "Mixing any two primary colours.",
+          "Identifying secondary colours (orange, violet and green)"
         ],
-        expectedStandard: "Secondary colours accurately produced by blending pairs of primary colours and correctly named.",
-        knowledge: "Mixing any two primary colours; Identifying secondary colours (orange, violet, and green)",
-        skills: "Colour mixing, visual discrimination, and pigment blending",
-        values: "Curiosity, artistic exploration, appreciation of colour relationships"
+        expectedStandard: "Primary colours mixed correctly. Secondary colours identified correctly.",
+        knowledge: "Mixing any two primary colours; Identifying secondary colours (orange, violet and green)",
+        skills: "Colour mixing, visual discrimination",
+        values: "Curiosity, artistic exploration"
       },
       {
         title: "4.3.3 Painting from Observation",
@@ -98,29 +94,25 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.3.3.1 Paint from nature"
         ],
         learningActivities: [
-          "Observing natural forms (leaves, flowers, fruits, trees, insects) in the outdoor environment",
-          "Painting still-life and natural objects matching actual natural hues and lighting",
-          "Applying brushstrokes neatly to capture textures and contours of natural objects"
+          "Painting objects from observation (fruits, trees, flowers...)"
         ],
-        expectedStandard: "Paintings produced from direct nature observation depicting accurate natural colours and forms.",
+        expectedStandard: "Observed objects painted accordingly",
         knowledge: "Painting objects from observation (fruits, trees, flowers)",
-        skills: "Observation, brush control, pigment application, depiction of nature",
-        values: "Appreciation of environment, patience, aesthetic sensitivity"
+        skills: "Observation, brushwork, colour application",
+        values: "Appreciation of nature, patience"
       },
       {
         title: "4.3.4 Imaginative Composition",
         competencies: [
-          "4.3.4.1 Create imaginative composition in colour"
+          "4.3.4.1 Create imaginative composition in colour."
         ],
         learningActivities: [
-          "Brainstorming imaginative narrative themes (extended family gathering, market day, climate change)",
-          "Sketching narrative scenes with foreground, midground, and background elements",
-          "Applying expressive colours to complete imaginative story pictures"
+          "Creating imaginative Compositions in colour. (extended family, climate change...)"
         ],
-        expectedStandard: "Imaginative compositions created in colour showing creative storytelling, balance, and expressive colour use.",
+        expectedStandard: "Imaginative composition in colour created appropriately.",
         knowledge: "Creating imaginative compositions in colour (extended family, climate change)",
-        skills: "Imaginative synthesis, narrative illustration, harmonious colour usage",
-        values: "Creativity, emotional expression, social awareness"
+        skills: "Imaginative synthesis, creative colouring",
+        values: "Creativity, social and environmental awareness"
       }
     ]
   },
@@ -133,14 +125,13 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.4.1.1 Perform musical notes"
         ],
         learningActivities: [
-          "Identifying shapes and names of musical notes (semibreve, minim, crotchet, quaver)",
-          "Clapping and tapping note durations to a steady beat",
-          "Vocalizing rhythmic durations using syllable chants (ta-ah-ah-ah, ta-ah, ta, ti-ti)"
+          "Identifying musical notes (semi-brave minim, crochet and quaver.)",
+          "Performing musical notes (semi-brave minim, crochet and quaver.)"
         ],
-        expectedStandard: "Musical notes identified and performed with accurate rhythmic durations.",
-        knowledge: "Identifying and performing musical notes (semi-breve, minim, crotchet, and quaver)",
-        skills: "Identification, clapping, tapping, and vocalization of musical note durations",
-        values: "Rhythmic discipline, musical appreciation, active listening"
+        expectedStandard: "Musical notes performed correctly",
+        knowledge: "Identifying and performing musical notes (semi-breve, minim, crotchet, quaver)",
+        skills: "Note identification, rhythmic clapping, vocalization",
+        values: "Rhythmic discipline, musical appreciation"
       },
       {
         title: "4.4.2 Simple Rhythmic Patterns",
@@ -148,29 +139,25 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.4.2.1 Compose simple rhythmic pattern"
         ],
         learningActivities: [
-          "Arranging learned note symbols into 2-bar and 4-bar rhythmic phrases",
-          "Clapping and performing peer-composed rhythmic patterns using percussion and clapping",
-          "Recording simple rhythmic patterns on paper using standard note values"
+          "Composing simple rhythmic patterns"
         ],
-        expectedStandard: "Simple rhythmic patterns composed and performed in steady tempo.",
-        knowledge: "Composing simple rhythmic patterns using combinations of learnt notes",
-        skills: "Composition, rhythmic sequencing, beat keeping",
-        values: "Creativity, collaboration in musical timing"
+        expectedStandard: "Simple rhythmic patterns composed creatively.",
+        knowledge: "Composing simple rhythmic patterns",
+        skills: "Rhythmic sequencing, composition",
+        values: "Creativity, beat keeping"
       },
       {
         title: "4.4.3 Tonic Solfa",
         competencies: [
-          "4.4.3.1 Perform tonic solfa (singing only)"
+          "4.4.3.2 Perform tonic solfa (singing only)"
         ],
         learningActivities: [
-          "Singing the tonic solfa scale (d, r, m, f, s, l, t, d') ascending and descending with hand signs",
-          "Pitch-matching simple 3-note and 5-note vocal exercises (d-m-s, s-m-d)",
-          "Singing simple melodies by reading tonic solfa letter notation"
+          "Performing the tonic solfa (singing only)"
         ],
-        expectedStandard: "Tonic solfa scale and simple stepwise melodic patterns sung with accurate pitch and clear tone.",
-        knowledge: "Performing the tonic solfa scale (d, r, m, f, s, l, t, d') singing only with accurate pitch",
-        skills: "Pitch matching, melodic singing, ear training",
-        values: "Vocal confidence, appreciation of melodic harmony"
+        expectedStandard: "Tonic solfa performed correctly.",
+        knowledge: "Performing tonic solfa (singing only)",
+        skills: "Singing in pitch, solfa notation",
+        values: "Vocal confidence, melodic harmony"
       }
     ]
   },
@@ -183,14 +170,12 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.5.1.1 Perform Zambian authentic traditional music"
         ],
         learningActivities: [
-          "Listening to traditional songs from different Zambian regions and discussing their cultural origins",
-          "Singing authentic Zambian traditional songs with proper pronunciation and phrasing",
-          "Performing traditional dance movements and call-and-response choruses with rhythmic drumming/clapping"
+          "Performing Zambian authentic traditional music (Singing and dancing)"
         ],
-        expectedStandard: "Zambian authentic traditional songs and dances performed with cultural integrity and rhythm.",
-        knowledge: "Performing Zambian authentic traditional music (Singing and dancing from diverse Zambian ethnic groups)",
-        skills: "Cultural singing, traditional dance steps, rhythmic accompaniment",
-        values: "Cultural identity, respect for heritage, community unity"
+        expectedStandard: "Zambian authentic traditional music performed appropriately",
+        knowledge: "Performing Zambian authentic traditional music (Singing and dancing)",
+        skills: "Traditional singing, dancing, rhythmic accompaniment",
+        values: "Cultural appreciation, national pride"
       }
     ]
   },
@@ -203,14 +188,12 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.6.1.1 Demonstrate developmental activities"
         ],
         learningActivities: [
-          "Navigating circuit training courses with agility ladders, hurdles, and floor mats",
-          "Performing calisthenic exercises (jumping jacks, squats, arm circles) to develop muscular strength",
-          "Participating in continuous shuttle runs to build cardiovascular endurance"
+          "Demonstrating developmental activities (obstacles, parallel bars, mats, muscle...)"
         ],
-        expectedStandard: "Developmental physical exercises and obstacle drills performed with endurance, strength, and correct form.",
-        knowledge: "Demonstrating developmental activities (obstacles, parallel bars, mats, muscle conditioning exercises)",
-        skills: "Physical endurance, muscular strength, agility",
-        values: "Self-discipline, perseverance, fitness consciousness"
+        expectedStandard: "Developmental activities demonstrated appropriately.",
+        knowledge: "Demonstrating developmental activities (obstacles, parallel bars, mats, muscle)",
+        skills: "Physical agility, muscular coordination",
+        values: "Fitness consciousness, endurance"
       },
       {
         title: "4.6.2 Gymnastics",
@@ -219,14 +202,13 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.6.2.2 Perform stunt activities"
         ],
         learningActivities: [
-          "Performing forward rolls, backward rolls, and frog jumps on padded gymnastics mats",
-          "Executing crouch balances and 3-point head balances with spotting assistance",
-          "Building 2-person and 3-person partner stunt pyramids emphasizing safe weight distribution and landing"
+          "Performing tumbling activities (Frog jumps, backward roll, crouch, balance...)",
+          "Performing stunt activities (pyramids)"
         ],
-        expectedStandard: "Gymnastic tumbling movements and partner stunts performed with balance, precision, and safety.",
-        knowledge: "Performing tumbling activities (Frog jumps, backward roll, crouch, balance); Performing stunt activities (pyramids, partnered balances)",
-        skills: "Gymnastic tumbling, body posture, stunt coordination, weight support",
-        values: "Trust, safety awareness, teamwork, physical bravery"
+        expectedStandard: "Tumbling activities performed correctly. Stunt activities performed correctly.",
+        knowledge: "Performing tumbling activities (Frog jumps, backward roll, crouch, balance); Performing stunt activities (pyramids)",
+        skills: "Tumbling, balancing, stunt formation",
+        values: "Safety alertness, teamwork, bravery"
       }
     ]
   },
@@ -239,14 +221,12 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.7.1.1 Practise ball games"
         ],
         learningActivities: [
-          "Practising fundamental ball control skills (chest pass, bounce pass, overhead throw, kicking, dribbling)",
-          "Playing mini-sided football, netball, volleyball, and basketball training drills",
-          "Applying fair play rules, positional teamwork, and sportsmanship in small-sided friendly games"
+          "Practising sport exercises (Football, netball, volleyball, basketballexercises)"
         ],
-        expectedStandard: "Core ball handling, passing, receiving, and game rules applied in small-sided sporting activities.",
-        knowledge: "Practising sport exercises (Football, netball, volleyball, basketball exercises: passing, receiving, dribbling)",
-        skills: "Ball handling, footwork, spatial coordination, team play",
-        values: "Sportsmanship, cooperation, fair play, rule compliance"
+        expectedStandard: "Ball games practised appropriately",
+        knowledge: "Practising sport exercises (Football, netball, volleyball, basketball)",
+        skills: "Ball control, passing, team play",
+        values: "Sportsmanship, fair play, cooperation"
       }
     ]
   },
@@ -259,14 +239,12 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.8.1.1 Demonstrate simple swimming skills"
         ],
         learningActivities: [
-          "Practising controlled water entry, rhythmic face-in-water exhalation, and bubble blowing",
-          "Demonstrating jellyfish float, starfish float, and push-and-glide on front and back",
-          "Performing flutter kicks with kickboards and basic side stroke arm movements in shallow water"
+          "Demonstrating simple swimming skills (side strokes)"
         ],
-        expectedStandard: "Water confidence, flotation techniques, and basic swimming propulsion demonstrated safely in shallow water.",
-        knowledge: "Demonstrating simple swimming skills (water confidence, breathing, floating, side strokes)",
-        skills: "Buoyancy control, rhythmic breathing in water, basic side arm-leg coordination",
-        values: "Water safety, self-confidence, composure"
+        expectedStandard: "Simple swimming skills demonstrated skillfully",
+        knowledge: "Demonstrating simple swimming skills (side strokes)",
+        skills: "Water buoyancy, breathing, side strokes",
+        values: "Water confidence, safety awareness"
       },
       {
         title: "4.8.2 Water Games",
@@ -275,14 +253,13 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.8.2.2 Play group games"
         ],
         learningActivities: [
-          "Practising modified front paddle and back paddle strokes with partner support",
-          "Playing cooperative water games (water polo passing, shallow water ring tag, object retrieval)",
-          "Demonstrating pool hygiene rules (showering before entering, avoiding running on wet decks)"
+          "Performing unskilled strokes",
+          "Playing group games (Volleyball, netball...)"
         ],
-        expectedStandard: "Recreational swimming strokes and group water games executed with joy, cooperation, and safety.",
-        knowledge: "Performing unskilled strokes; Playing water group games (water polo, tag in shallow water)",
-        skills: "Water mobility, group interaction, aquatic agility",
-        values: "Teamwork, joy in water recreation, safety alertness"
+        expectedStandard: "Unskilled strokes performed accordingly. Group games played accordingly.",
+        knowledge: "Performing unskilled strokes; Playing group games (volleyball, netball in water)",
+        skills: "Water mobility, recreational play",
+        values: "Teamwork, aquatic joy, water safety"
       }
     ]
   },
@@ -297,14 +274,15 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.9.1.3 Create patterns using natural motifs"
         ],
         learningActivities: [
-          "Designing unique geometric and natural motifs (leaves, seeds, simple shapes)",
-          "Creating linear border repeat patterns and all-over surface designs using stamp printing",
-          "Using natural objects (potatoes, leaves, sponges) to print colourful decorative wrapping papers"
+          "Designing motifs (circle, semi-circle, wavy line...)",
+          "Making repeat patterns (shapes...)",
+          "Exploring natural motifs (Leaf, Foot...)",
+          "Creating patterns using natural motifs (Leaf, foot...)"
         ],
-        expectedStandard: "Motifs designed and printed as consistent, balanced repeat patterns using natural and geometric elements.",
-        knowledge: "Designing motifs; Making repeat patterns; Creating patterns using natural motifs",
-        skills: "Motif design, printing technique, repeat pattern spacing and alignment",
-        values: "Design aesthetics, visual rhythm, creative originality"
+        expectedStandard: "Motifs designed creatively. Repeat patterns made accurately. Patterns using natural motifs created skillfully.",
+        knowledge: "Designing motifs; Making repeat patterns; Exploring and creating patterns using natural motifs",
+        skills: "Motif design, pattern repetition, nature exploration",
+        values: "Creativity, precision, design aesthetics"
       }
     ]
   },
@@ -317,14 +295,12 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.10.1.1 Make various paper items"
         ],
         learningActivities: [
-          "Folding, scoring, and cutting paper to make greeting cards, decorative fans, and envelopes",
-          "Constructing origami animal figures and geometric 3D paper forms",
-          "Applying surface decorations using markers, crayons, and paint"
+          "Making various paper items (envelops, paper houses, festive decorations...)"
         ],
-        expectedStandard: "Functional and decorative paper crafts made with clean folds, accurate cuts, and sturdy adhesion.",
-        knowledge: "Making various paper items (origami, fans, envelopes, boxes, cards)",
-        skills: "Paper folding, scoring, precise cutting, geometric measurement",
-        values: "Patience, manual dexterity, resourcefulness"
+        expectedStandard: "Various paper items made creatively",
+        knowledge: "Making various paper items (envelops, paper houses, festive decorations)",
+        skills: "Paper folding, cutting, assembling",
+        values: "Resourcefulness, manual neatness"
       },
       {
         title: "4.10.2 Weaving",
@@ -332,14 +308,13 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.10.2.1 Produce items using weaving techniques"
         ],
         learningActivities: [
-          "Preparing warp threads and weft materials from local grasses, reeds, sisal, or paper strips",
-          "Weaving simple table mats and coasters using plain over-and-under weave",
-          "Finishing edges securely with neat fringes or bound borders"
+          "Identifying weaving materials (fibre, plastics, sisal, banana fibre, paper...)",
+          "Producing items using weaving techniques (table mats, door mats, baskets, fishing nets, brooms...)"
         ],
-        expectedStandard: "Table mats or small craft items produced using plain weaving techniques with uniform tension.",
-        knowledge: "Producing items using weaving techniques (table mats, paper weave, reed coasters)",
-        skills: "Warp preparation, weft interlacing, tension control, edge binding",
-        values: "Craftsmanship, patience, appreciation of traditional textile methods"
+        expectedStandard: "Items using weaving techniques produced creatively",
+        knowledge: "Identifying weaving materials; Producing items using weaving techniques",
+        skills: "Weaving, material preparation, craft construction",
+        values: "Patience, craftsmanship, appreciation of local materials"
       },
       {
         title: "4.10.3 Plaiting",
@@ -347,45 +322,41 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.10.3.1 Demonstrate various plaiting techniques"
         ],
         learningActivities: [
-          "Practising 3-strand plaiting using yarn, sisal fibres, or banana bark strips",
-          "Making plaited bookmarks, wristbands, and decorative skipping ropes",
-          "Joining and finishing plaited strands securely with binding threads"
+          "Discussing various plaiting materials in the environment",
+          "Demonstrating various plaiting techniques (belts, ropes...)"
         ],
-        expectedStandard: "Smooth, even plaited articles made using 3-strand plaiting techniques.",
-        knowledge: "Demonstrating various plaiting techniques (3-strand braids, ropes, bands)",
-        skills: "Braiding, strand tension management, neat fastening",
-        values: "Dexterity, attention to detail, traditional craft preservation"
+        expectedStandard: "Various plaiting techniques demonstrated creatively",
+        knowledge: "Discussing plaiting materials; Demonstrating plaiting techniques (belts, ropes)",
+        skills: "Plaiting, braiding, tension control",
+        values: "Dexterity, cultural craft appreciation"
       },
       {
-        title: "4.10.4 Knitting",
+        title: "4.10.4 Knotting",
         competencies: [
-          "4.10.4.1 Make items using knitting techniques"
+          "4.10.4.1 Make items using knotting techniques"
         ],
         learningActivities: [
-          "Casting on stitches on knitting needles or simple peg looms",
-          "Knitting garter-stitch strips maintaining consistent tension and loop count",
-          "Casting off and assembling knitted strips into small coin purses or pot holders"
+          "Making various items using knotting techniques (ropes, shoelaces bags...)"
         ],
-        expectedStandard: "Basic knit stitches worked with consistent tension and cast off neatly to make simple articles.",
-        knowledge: "Making items using knitting techniques (casting on, knit stitch, garter stitch, casting off)",
-        skills: "Needle handling, tension regulation, loop manipulation",
-        values: "Perseverance, manual focus, textile appreciation"
+        expectedStandard: "Items made using knotting techniques creatively",
+        knowledge: "Making various items using knotting techniques (ropes, shoelaces, bags)",
+        skills: "Knot tying, joining, macramé craft",
+        values: "Patience, functional design"
       },
       {
         title: "4.10.5 Modelling",
         competencies: [
           "4.10.5.1 Make objects using clay/plasticine",
-          "4.10.5.2 Make objects using paper mache pulp"
+          "4.10.5.2 Make objects using papier mache pulp"
         ],
         learningActivities: [
-          "Kneading clay to remove air bubbles and shaping pinch pots, animal figures, and clay cups",
-          "Preparing papier-mâché pulp from shredded newsprint and flour paste",
-          "Moulding papier-mâché pulp over balloons or bowls to create lightweight decorative vessels"
+          "Making objects using clay/plasticine (bowls, ashtrays, cups, pots...)",
+          "Making objects using Papier mache pulp (balls, fruits, plates, animals, people...)"
         ],
-        expectedStandard: "Smooth, crack-free 3D objects sculpted from clay and papier-mâché pulp with stable bases.",
-        knowledge: "Making objects using clay/plasticine; Making objects using paper mache pulp",
-        skills: "Clay conditioning, pinch pot forming, pulp preparation, sculptural smoothing",
-        values: "Tactile sensitivity, 3D spatial awareness, creative persistence"
+        expectedStandard: "Objects made using Clay/plasticine creatively. Objects using Papier mache pulp made skillfully.",
+        knowledge: "Making objects using clay/plasticine; Making objects using papier mache pulp",
+        skills: "Moulding, shaping, clay conditioning, papier mache crafting",
+        values: "Creativity, tactile sensitivity"
       },
       {
         title: "4.10.6 Construction",
@@ -393,14 +364,12 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.10.6.1 Construct objects"
         ],
         learningActivities: [
-          "Collecting and sorting recycled materials (boxes, plastic containers, wire, bottle tops)",
-          "Cutting, joining, and assembling parts to build toy cars, model houses, and push carts",
-          "Testing stability and structural mobility of constructed model items"
+          "Constructing various objects (houses, wire cars, bicycles, animals...)"
         ],
-        expectedStandard: "Sturdy functional toy models constructed from recycled materials using secure joining techniques.",
-        knowledge: "Constructing objects from recycled scrap, wire, boxes, and sticks",
-        skills: "Structural joinery, wire bending, cardboard slotting, mechanical assembly",
-        values: "Eco-friendly recycling, inventive engineering, problem solving"
+        expectedStandard: "Objects constructed accordingly",
+        knowledge: "Constructing various objects (houses, wire cars, bicycles, animals)",
+        skills: "Structural construction, wire bending, assembling",
+        values: "Inventiveness, recycling, problem solving"
       },
       {
         title: "4.10.7 Picture Making",
@@ -408,14 +377,12 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.10.7.1 Make pictures using mosaic technique"
         ],
         learningActivities: [
-          "Drawing clear picture outlines on heavy paper or cardboard backing",
-          "Cutting coloured paper, dried seeds, eggshells, or fabric scraps into small tesserae",
-          "Gluing tesserae pieces closely within outlines to form vibrant mosaic pictures"
+          "Making pictures using Mosaic technique"
         ],
-        expectedStandard: "Mosaic pictures created with closely fitted tesserae pieces, neat adhesion, and high contrast.",
-        knowledge: "Making pictures using mosaic technique (paper mosaic, seed mosaic, eggshell mosaic)",
-        skills: "Tesserae sizing, adhesive application, spatial arrangement, surface coverage",
-        values: "Patience, visual precision, texture appreciation"
+        expectedStandard: "Pictures made using mosaic technique creatively",
+        knowledge: "Making pictures using mosaic technique",
+        skills: "Tesserae arrangement, gluing, mosaic composition",
+        values: "Patience, visual precision"
       }
     ]
   },
@@ -428,14 +395,12 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.11.1.1 Design letters"
         ],
         learningActivities: [
-          "Drawing parallel guidelines to ensure uniform uppercase and lowercase letter heights",
-          "Constructing bold block letters with even stroke widths and consistent character spacing",
-          "Writing short words and slogans with neat typographical balance"
+          "Designing Letters (forms of letters, typefaces, bold letters...)"
         ],
-        expectedStandard: "Block letters drawn with uniform height, even stroke thickness, and proper spacing.",
-        knowledge: "Designing letters (block capitals, lowercase letters, guidelines, spacing)",
-        skills: "Letter construction, geometric spacing, typographical alignment",
-        values: "Neatness, graphic clarity, self-discipline"
+        expectedStandard: "Letters designed correctly",
+        knowledge: "Designing letters (forms of letters, typefaces, bold letters)",
+        skills: "Lettering, spacing, font styling",
+        values: "Neatness, graphic clarity"
       },
       {
         title: "4.11.2 Poster Work",
@@ -443,14 +408,12 @@ export const expressiveArtsGrade4: Topic[] = [
           "4.11.2.1 Design posters based on different themes"
         ],
         learningActivities: [
-          "Discussing school, health, and community themes (e.g. Keep Clean, Eat Healthy, Road Safety)",
-          "Sketching poster layouts with prominent headline lettering and supportive central illustrations",
-          "Applying contrasting colours to produce eye-catching, persuasive message posters"
+          "Designing posters based on different themes (environmental education, child rights...)"
         ],
-        expectedStandard: "Thematic posters produced featuring clear message hierarchy, legible lettering, and illustrative appeal.",
-        knowledge: "Designing posters based on different themes (health, sanitation, safety, environmental care)",
-        skills: "Visual layout planning, slogan writing, graphic communication, colour contrast",
-        values: "Civic advocacy, visual communication, community responsibility"
+        expectedStandard: "Posters designed based on different themes accordingly",
+        knowledge: "Designing posters based on different themes (environmental education, child rights)",
+        skills: "Poster layout, visual communication",
+        values: "Social responsibility, creative advocacy"
       }
     ]
   }
@@ -463,21 +426,21 @@ export const expressiveArtsGrade5: Topic[] = [
       {
         title: "5.1.1 Safety",
         competencies: [
-          "5.1.1.1 Demonstrate storage of tools, equipment and artifacts",
-          "5.1.1.2 Show care of space",
-          "5.1.1.3 Compose songs on safety",
-          "5.1.1.4 Draw pictures on safety"
+          "5.1.1.1 Explain the importance of appropriate dress in practical activities",
+          "5.1.1.2 Perform activities to show how inappropriate dress can affect performance in practical activities",
+          "5.1.1.3 Demonstrate general safety",
+          "5.1.1.4 Design posters and visual signs for safety notification"
         ],
         learningActivities: [
-          "Demonstrating proper cleaning, oiling, and organized storage of tools and equipment in cabinets and shadow boards",
-          "Showing care of specialized spaces by sweeping workrooms, levelling playing fields, and arranging seating",
-          "Composing and singing original songs promoting workshop and playground safety rules",
-          "Drawing illustrative posters warning peers against common physical hazards and improper tool handling"
+          "Explaining the importance of appropriate dress.",
+          "Performing activities showing effects of inappropriate dress.",
+          "Demonstrating general safety.",
+          "Designing posters and visual signs."
         ],
-        expectedStandard: "Tools, equipment, and art/sports spaces properly maintained; safety songs composed and posters drawn.",
-        knowledge: "Caring for and storing tools, equipment and artifacts; Showing care of space (Levelling fields, cleaning playground, art room, music room); Composing safety songs; Drawing safety posters",
-        skills: "Equipment maintenance, organizational care, safety songwriting, visual safety illustration",
-        values: "Responsibility, hygiene, proactive risk prevention, community stewardship"
+        expectedStandard: "Learners will be able to explain dress importance and demonstrate general safety.",
+        knowledge: "Attire\nCare\nStorage\nEquipment\nSpace\nPoster designing",
+        skills: "Critical thinking in dealing with health and safety\nCreativity in designing posters and appropriate dress code",
+        values: "Appreciation of safety and health\nAwareness of knowledge in safety"
       }
     ]
   },
@@ -485,99 +448,50 @@ export const expressiveArtsGrade5: Topic[] = [
     title: "5.2 MOVEMENT",
     subtopics: [
       {
-        title: "5.2.1 Sport Skills Movements",
+        title: "5.2.1 Movement",
         competencies: [
-          "5.2.1.1 Use movement patterns for specific sports"
+          "5.2.1.1 Perform movement patterns for specific sports"
         ],
         learningActivities: [
-          "Practising sport-specific footwork, pivoting, and defensive stances for volleyball, football, and netball",
-          "Executing rapid changes of direction, accelerations, and deceleration drills using cone markers",
-          "Demonstrating coordinated jumping, landing, and spatial repositioning during modified practice matches"
+          "Performing movement patterns."
         ],
-        expectedStandard: "Sport-specific movement patterns (pivoting, jumping, sliding, feinting) executed with dynamic agility and balance.",
-        knowledge: "Using movement patterns for specific sports (volleyball, football, netball, basketball skills)",
-        skills: "Footwork, pivoting, jumping, defensive and offensive movement execution",
-        values: "Coordination, tactical agility, sporting discipline"
+        expectedStandard: "Learners will be able to perform movement patterns for specific sports.",
+        knowledge: "Use of movement patterns skills for specific sports",
+        skills: "Correct positioning in a specific game & sports situations",
+        values: "Concentration in movement activities\nCoordination through cooperative learning"
       }
     ]
   },
   {
-    title: "5.3 DRAWING AND PAINTING",
+    title: "5.3 DRAWING AND COLOURING",
     subtopics: [
       {
-        title: "5.3.1 Tonal Gradation",
+        title: "5.3.1 Imaginative Composition",
         competencies: [
-          "5.3.1.1 Apply tonal gradation"
+          "5.3.1.1 Draw and colour pictures based on imagination"
         ],
         learningActivities: [
-          "Creating 5-step and 7-step tonal value scales from light to dark using shading pencils",
-          "Applying smooth tonal transitions across cylindrical and spherical forms to show light source direction",
-          "Evaluating tonal contrast and smooth blending in peer artwork"
+          "Drawing and colouring imaginative pictures."
         ],
-        expectedStandard: "Smooth tonal gradations created demonstrating controlled transitions from highlight to deep shadow.",
-        knowledge: "Applying tonal gradation (light and shade transitions, value scale creation)",
-        skills: "Pencil shading, tone blending, pressure control",
-        values: "Artistic refinement, keen observation of light"
+        expectedStandard: "Learners will be able to draw and colour pictures based on imagination.",
+        knowledge: "Composing pictures (my family, market place, hunting, village scenery)",
+        skills: "Composition of pictures\nApplication of colours",
+        values: "Creativity in drawing and colouring\nAppreciation of colours"
       },
       {
-        title: "5.3.2 Shading Techniques",
+        title: "5.3.2 Figure Drawing",
         competencies: [
-          "5.3.2.1 Demonstrate shading techniques"
+          "5.3.2.1 Draw and colour figures in action",
+          "5.3.2.2 Draw and colour portraits"
         ],
         learningActivities: [
-          "Practising cross-hatching, hatching, stippling (dotism), and doodling techniques on drawing paper",
-          "Shading geometric shapes (cones, cubes, spheres) using different shading techniques to render 3D volume",
-          "Comparing visual textures created by different shading methods"
+          "Drawing figures in action.",
+          "Drawing and colouring portraits."
         ],
-        expectedStandard: "Hatching, cross-hatching, stippling, and blending shading techniques demonstrated accurately on 3D forms.",
-        knowledge: "Demonstrating shading techniques (cross-hatching, dotism/stippling, hatching, doodling)",
-        skills: "Hatching, stippling, rendering three-dimensional depth",
-        values: "Patience, technical precision, creative variety"
-      },
-      {
-        title: "5.3.3 Imaginative Composition",
-        competencies: [
-          "5.3.3.1 Compose pictures showing light and shade"
-        ],
-        learningActivities: [
-          "Brainstorming dramatic scene concepts (marketplace at sunset, classroom discussion, bus terminal)",
-          "Drafting full composition sketches establishing a consistent light source",
-          "Rendering foreground, midground, and background with expressive light and shade contrasts"
-        ],
-        expectedStandard: "Imaginative compositions rendered depicting clear light source, depth, and balanced focal interest.",
-        knowledge: "Composing pictures showing light and shade (market place, an argument, bus stop); Evaluating composed pictures",
-        skills: "Compositional balance, dramatic lighting, narrative rendering",
-        values: "Critical thinking, aesthetic judgment, storytelling"
-      },
-      {
-        title: "5.3.4 Colour",
-        competencies: [
-          "5.3.4.1 Identify types of colour"
-        ],
-        learningActivities: [
-          "Mixing primary and secondary colours to produce tertiary hues (e.g. red-orange, blue-green, yellow-green)",
-          "Creating tints by adding white paint and shades by adding black paint in measured increments",
-          "Constructing an expanded 12-colour wheel chart displaying primary, secondary, and tertiary hues"
-        ],
-        expectedStandard: "Tertiary colours identified, mixed correctly, and modified into consistent tints and shades.",
-        knowledge: "Identifying types of colour (tertiary colours); Creating tints and shades; Analysing quality of tints and shades",
-        skills: "Tertiary color mixing, adding white for tints and black for shades",
-        values: "Colour sensitivity, analytical experimentation"
-      },
-      {
-        title: "5.3.5 Figure Drawing",
-        competencies: [
-          "5.3.5.1 Draw human figures"
-        ],
-        learningActivities: [
-          "Studying basic human body proportions using the 6-to-7 head proportion rule",
-          "Drawing quick gesture stick and contour figures showing movement (running, digging, dancing, jumping)",
-          "Adding clothing folds, facial features, and tonal shading to create realistic figures in action"
-        ],
-        expectedStandard: "Human figures in dynamic action drawn with proportional accuracy and expressive posture.",
-        knowledge: "Drawing human figures in action (effects of drugs on people, people planting, and campaign meeting)",
-        skills: "Anatomy proportions, gesture drawing, depicting motion and emotion",
-        values: "Social empathy, expressive honesty, observational acuity"
+        expectedStandard: "Learners will be able to draw and colour figures in action and portraits.",
+        knowledge: "Composing pictures (stick figures in action)\nPortraits (grid technique)\nTonal gradation",
+        skills: "Composition of pictures\nComposition of portrait using grid technique",
+        values: "Creativity in drawing\nCreativity in drawing"
       }
     ]
   },
@@ -587,33 +501,19 @@ export const expressiveArtsGrade5: Topic[] = [
       {
         title: "5.4.1 Musical Notes",
         competencies: [
-          "5.4.1.1 Demonstrate rhythm and tonic solfa",
-          "5.4.1.2 Perform rhythmic patterns using learnt musical notes"
+          "5.4.1.1 Identify musical notes",
+          "5.4.1.2 Recite and compose musical notes",
+          "5.4.1.3 Draw musical notes"
         ],
         learningActivities: [
-          "Recognizing semiquavers and dotted notes (dotted minim, dotted crotchet) and their fractional values",
-          "Clapping, tapping, and vocalizing syncopated rhythmic patterns containing dotted and semiquaver notes",
-          "Singing tonic solfa melodic sequences with hand signs matching rhythmic time"
+          "Identifying musical notes.",
+          "Reciting and composing notes.",
+          "Drawing musical notes."
         ],
-        expectedStandard: "Rhythmic patterns containing dotted notes and semiquavers clapped and sung with steady meter.",
-        knowledge: "Demonstrating rhythm and tonic solfa; Performing rhythmic patterns using semi-quaver, dotted notes introduced",
-        skills: "Rhythmic sight-reading, note division, solfa singing with hand signs",
-        values: "Musical accuracy, attentive listening, timing discipline"
-      },
-      {
-        title: "5.4.2 Simple Time Signature",
-        competencies: [
-          "5.4.2.1 Perform simple time signature"
-        ],
-        learningActivities: [
-          "Explaining the meaning of upper and lower digits in 2/4, 3/4, and 4/4 time signatures",
-          "Conducting standard 2/4, 3/4, and 4/4 beat patterns with right-hand conducting movements",
-          "Dividing musical notation into bars using bar lines matching specified time signatures"
-        ],
-        expectedStandard: "Simple time signatures (2/4, 3/4, 4/4) conducted, counted, and barred correctly.",
-        knowledge: "Practicing simple duple, triple (3/4) and quadruple (4/4) time signatures",
-        skills: "Conducting patterns, counting measures, beat grouping",
-        values: "Rhythmic synchronization, ensemble coordination"
+        expectedStandard: "Learners will be able to identify, recite, compose and draw musical notes.",
+        knowledge: "Musical notes e.g. minim, crochet, Semi-quaver",
+        skills: "Identification, application and reciting of musical notes",
+        values: "Creativity in composing and drawing musical notes\nAppreciation of musical notes"
       }
     ]
   },
@@ -621,55 +521,61 @@ export const expressiveArtsGrade5: Topic[] = [
     title: "5.5 ZAMBIAN MUSIC",
     subtopics: [
       {
-        title: "5.5.1 Zambian Contemporary Music",
+        title: "5.5.1 Harmony",
         competencies: [
-          "5.5.1.1 Perform Zambian contemporary music"
+          "5.5.1.1 Sing songs with harmonies"
         ],
         learningActivities: [
-          "Identifying genres and artists of modern Zambian popular and contemporary gospel/kalindula music",
-          "Composing and singing contemporary Zambian songs with acoustic and percussion accompaniments",
-          "Choreographing modern Zambian dance routines blending traditional steps with contemporary rhythms"
+          "Singing songs with harmonies."
         ],
-        expectedStandard: "Contemporary Zambian songs and modern choreography performed with vocal clarity and stylistic energy.",
-        knowledge: "Identifying Zambian contemporary music; Performing Zambian contemporary music (compose, mime, dance)",
-        skills: "Modern Zambian musical style execution, creative choreography, miming",
-        values: "Appreciation of evolving national arts, cultural dynamism"
+        expectedStandard: "Learners will be able to sing songs with harmonies.",
+        knowledge: "Traditional harmonies\nPopular harmonies",
+        skills: "Listening and singing to traditional and popular harmonies\nApplication of harmonies",
+        values: "Appreciation of harmony"
       },
       {
-        title: "5.5.2 Zambian Traditional Music",
+        title: "5.5.2 Style and Form",
         competencies: [
-          "5.5.2.1 Perform various styles and forms of Zambian traditional music"
+          "5.5.2.1 Describe the form and style of Zambian music"
         ],
         learningActivities: [
-          "Analyzing structural elements of Zambian traditional songs (call-and-response, vocal polyphony, ostinato)",
-          "Performing traditional songs representing multiple cultural ceremonies (e.g. Kuomboka, Nc'wala, Umutomboko)",
-          "Playing traditional percussion instruments (drums, rattle, clappers) accompanying traditional singing"
+          "Describing form and style of Zambian music."
         ],
-        expectedStandard: "Various styles of Zambian traditional music performed authentically with call-and-response mastery.",
-        knowledge: "Performing various styles and forms of Zambian traditional music (call and response, repetition); Analysing styles; Evaluating dances performed",
-        skills: "Call and response leadership, indigenous dance styles, cultural critique",
-        values: "Heritage preservation, communal harmony, cultural pride"
+        expectedStandard: "Learners will be able to describe the form and style of Zambian music.",
+        knowledge: "Style and Form of traditional and popular Zambian music",
+        skills: "Application of form and style",
+        values: "Appreciation of form and style of Zambian music"
       }
     ]
   },
   {
-    title: "5.6 AFRICAN MUSIC",
+    title: "5.6 EDUCATIONAL GYMNASTICS",
     subtopics: [
       {
-        title: "5.6.1 Traditional Instruments",
+        title: "5.6.1 Tumbling",
         competencies: [
-          "5.6.1.1 Make simple African traditional instruments",
-          "5.6.1.2 Play traditional instruments"
+          "5.6.1.1 Perform a series of tumbling activities"
         ],
         learningActivities: [
-          "Constructing simple African percussion and melodic instruments (shakers/hosho, banjos, thumb pianos/kalimba, drums) from local materials",
-          "Learning basic tuning, strike points, and playing techniques on traditional African instruments",
-          "Forming a classroom traditional instrument ensemble playing interlocking rhythmic accompaniments"
+          "Performing tumbling activities."
         ],
-        expectedStandard: "Simple traditional African musical instruments constructed from local materials and played with accurate rhythms.",
-        knowledge: "Making simple African traditional instruments; Playing African traditional musical instruments (African drums, silimba, banjo, kalumbu)",
-        skills: "Instrument fabrication from local materials, percussion techniques, melodic tuning",
-        values: "Resourcefulness, acoustic appreciation, cultural preservation"
+        expectedStandard: "Learners will be able to perform a series of tumbling activities.",
+        knowledge: "Tumbling activities using (ladder, horizontal bar, beams)\nPyramid building",
+        skills: "Ability to use landing, climbing and twisting in tumbling, floor and balancing activities",
+        values: "Concentration during tumbling and stunts\nArtistic performance of activities"
+      },
+      {
+        title: "5.6.2 Stunts",
+        competencies: [
+          "5.6.2.1 Perform floor and balancing activities"
+        ],
+        learningActivities: [
+          "Performing floor and balancing activities."
+        ],
+        expectedStandard: "Learners will be able to perform floor and balancing activities.",
+        knowledge: "Floor and balancing activities",
+        skills: "Balancing skills",
+        values: "Concentration and artistic performance"
       }
     ]
   },
@@ -677,50 +583,32 @@ export const expressiveArtsGrade5: Topic[] = [
     title: "5.7 HEALTH AND FITNESS MANAGEMENT",
     subtopics: [
       {
-        title: "5.7.1 Health Performances",
+        title: "5.7.1 Health",
         competencies: [
-          "5.7.1.1 Perform series of developmental activities"
+          "5.7.1.1 Perform a series of physical activities with obstacles"
         ],
         learningActivities: [
-          "Completing complex multi-station fitness circuits incorporating agility runs, tire flips, and rope skips",
-          "Measuring heart rate and breathing recovery before, during, and after aerobic exercise",
-          "Setting personal fitness goals and recording weekly training progress in fitness logs"
+          "Performing activities with obstacles."
         ],
-        expectedStandard: "Multi-station developmental conditioning circuits completed with proper technique and stamina.",
-        knowledge: "Performing series of developmental activities using obstacles, parallel bars, mats, hurdles",
-        skills: "Circuit navigation, obstacle clearance, endurance training",
-        values: "Perseverance, determination, athletic development"
+        expectedStandard: "Learners will be able to perform a series of physical activities with obstacles.",
+        knowledge: "Developmental activities using (obstacles, parallel bars, mats, hurdles)\nPress ups",
+        skills: "Application of hanging and lying skills",
+        values: "Appreciation of health and fitness management\nEndurance during isometric activities"
       },
       {
         title: "5.7.2 Fitness",
         competencies: [
-          "5.7.2.1 Practise fitness activities"
+          "5.7.2.1 Perform a series of developmental activities",
+          "5.7.2.2 Demonstrate isometric activities"
         ],
         learningActivities: [
-          "Executing bodyweight conditioning exercises (pushups, situps, squats, burpees) with proper biomechanics",
-          "Performing interval sprints and endurance running to develop aerobic and anaerobic fitness",
-          "Practising dynamic stretching routines before workouts and static cooldown stretches afterwards"
+          "Performing developmental activities.",
+          "Demonstrating isometric activities."
         ],
-        expectedStandard: "Core fitness exercises and interval training completed with safe posture and high effort.",
-        knowledge: "Practicing fitness activities (press ups, sit ups, pushups, sprint intervals)",
-        skills: "Core strengthening, cardiovascular fitness, proper workout technique",
-        values: "Lifelong health commitment, bodily resilience"
-      },
-      {
-        title: "5.7.3 Gymnastics",
-        competencies: [
-          "5.7.3.1 Perform tumbling activities",
-          "5.7.3.2 Demonstrate stunt activities"
-        ],
-        learningActivities: [
-          "Performing continuous forward rolls, backward rolls, cartwheels, and headstands on gymnastics mats",
-          "Executing low-bar support hangs, swings, and dismounts with controlled landing form",
-          "Building 3-tier and 4-tier human pyramids with strict safety spotters and steady base foundations"
-        ],
-        expectedStandard: "Tumbling routines and partner pyramid stunts executed with balance, control, and team trust.",
-        knowledge: "Performing tumbling (using ladder horizontal bar, beams); Demonstrating stunt activities (pyramid building)",
-        skills: "Beam balance, bar hanging/swinging, partnered pyramid formation",
-        values: "Mutual trust, balance, physical control, team safety"
+        expectedStandard: "Learners will be able to perform developmental activities and demonstrate isometric activities.",
+        knowledge: "Developmental and isometric activities",
+        skills: "Application of fitness activities",
+        values: "Endurance and appreciation of fitness"
       }
     ]
   },
@@ -728,19 +616,43 @@ export const expressiveArtsGrade5: Topic[] = [
     title: "5.8 SPORTS SKILLS DEVELOPMENT",
     subtopics: [
       {
-        title: "5.8.1 Conventional Games",
+        title: "5.8.1 Games (Conventional Modified Games)",
         competencies: [
-          "5.8.1.1 Practise modified conventional games"
+          "5.8.1.1 Demonstrate sporting skills"
         ],
         learningActivities: [
-          "Applying offensive strategies (passing, moving into open space, wall passes) in mini football and netball",
-          "Demonstrating defensive techniques (zonal marking, intercepting, blocking) in volleyball and basketball",
-          "Officiating modified mini-games to demonstrate thorough understanding of sports rules and refereeing signals"
+          "Demonstrating sporting skills."
         ],
-        expectedStandard: "Offensive tactics, defensive positioning, and sportsmanship applied in modified conventional games.",
-        knowledge: "Practising modified conventional games (Mini football, Mini netball, Volleyball, Basketball)",
-        skills: "Modified game tactics, small-sided strategy, rules adaptation",
-        values: "Inclusion, teamwork, respect for opponents"
+        expectedStandard: "Learners will be able to demonstrate sporting skills.",
+        knowledge: "Mini football:\nMini netball,\nVolley ball\nDribble\nKick",
+        skills: "Skill development in sporting activities",
+        values: "Team spirit through cooperative learning\nAppreciation of sports activities"
+      },
+      {
+        title: "5.8.2 Track and Field Events",
+        competencies: [
+          "5.8.2.1 Perform field activities"
+        ],
+        learningActivities: [
+          "Performing field activities."
+        ],
+        expectedStandard: "Learners will be able to perform field activities.",
+        knowledge: "Field and track: (long jump, high jump)",
+        skills: "Track and field skills",
+        values: "Appreciation of sports activities"
+      },
+      {
+        title: "5.8.3 Traditional Games",
+        competencies: [
+          "5.8.3.1 Perform traditional games"
+        ],
+        learningActivities: [
+          "Performing traditional games."
+        ],
+        expectedStandard: "Learners will be able to perform traditional games.",
+        knowledge: "Games with health related messages (nsolo, chiyato)",
+        skills: "Traditional game skills",
+        values: "Appreciation of traditional games"
       }
     ]
   },
@@ -748,235 +660,180 @@ export const expressiveArtsGrade5: Topic[] = [
     title: "5.9 RECREATION",
     subtopics: [
       {
-        title: "5.9.1 Dances",
+        title: "5.9.1 Dance",
         competencies: [
-          "5.9.1.1 Perform Zambian dances"
+          "5.9.1.1 Perform traditional dances with rhythm"
         ],
         learningActivities: [
-          "Mastering rhythmic footwork, torso articulations, and clapping sequences of Zambian traditional dances",
-          "Performing choreographed traditional group dances in ceremonial formations",
-          "Critiquing dance performances focusing on expressive timing, costume authenticity, and synchrony"
+          "Performing traditional dances with rhythm."
         ],
-        expectedStandard: "Authentic Zambian traditional dances performed with rhythmic synchrony and cultural expression.",
-        knowledge: "Performing various Zambian dances (rhythmic steps, clapping, spatial arrangement, sequence flow)",
-        skills: "Choreographic memory, expressive body language, rhythmic synchronization",
-        values: "Cultural celebration, artistic joy, social connection"
+        expectedStandard: "Learners will be able to perform traditional dances with rhythm.",
+        knowledge: "Dance (steps, clap, space, sequence)",
+        skills: "Use of dancing, clapping, singing,\nAbilities in dance and games",
+        values: "Appreciation of traditional dance and games"
       },
       {
-        title: "5.9.2 Instrument Playing",
+        title: "5.9.2 Environmental Issues",
         competencies: [
-          "5.9.2.1 Demonstrate playing instruments"
+          "5.9.2.1 Perform structured movement in dances",
+          "5.9.2.2 Perform games with messages of environmental issues"
         ],
         learningActivities: [
-          "Playing melodic instruments (recorders, silimba, keyboard, kalimba) following simple scores",
-          "Accompanying recreational singing with layered percussion rhythms on drums, tambourines, and triangles",
-          "Improvising short instrumental solos during group musical games"
+          "Performing structured movement in dances.",
+          "Performing games with environmental messages."
         ],
-        expectedStandard: "Melodic and percussion instruments played accurately to accompany group recreational singing.",
-        knowledge: "Demonstrating playing various instruments (melodic and rhythmic instruments in recreation)",
-        skills: "Instrumental dexterity, accompaniment, creative musicality",
-        values: "Recreational enjoyment, creative expression"
+        expectedStandard: "Learners will be able to perform structured movement and environmental games.",
+        knowledge: "Structured movement e.g. (kayowe)\nSimulation games (computer games)\nEnvironmental issues",
+        skills: "Abilities in dance and games",
+        values: "Appreciation of traditional dance and games"
       }
     ]
   },
   {
-    title: "5.10 SWIMMING",
+    title: "5.10 CRAFTS",
     subtopics: [
       {
-        title: "5.10.1 Swimming Pool Management",
+        title: "5.10.1 Knotting",
         competencies: [
-          "5.10.1.1 Practise pool hygiene"
+          "5.10.1.1 Knot different items using local materials"
         ],
         learningActivities: [
-          "Explaining pool sanitation principles (chlorination, filtration, water testing)",
-          "Demonstrating personal pool hygiene protocols (footbaths, pre-swim showers, clean swim gear)",
-          "Performing pool surround safety checks (identifying slippery decks, checking emergency rescue equipment)"
+          "Knotting different items."
         ],
-        expectedStandard: "Pool hygiene rules and safety inspections executed systematically to maintain sanitary conditions.",
-        knowledge: "Practising pool hygiene (chlorination, filtration, shower before swimming, clean swimwear)",
-        skills: "Hygiene testing, maintenance awareness, aquatic health safety",
-        values: "Cleanliness, public health consciousness, environmental safety"
+        expectedStandard: "Learners will be able to knot different items using local materials.",
+        knowledge: "Knotting (holders, storage)",
+        skills: "Knotting of functional items\nCoordination of eye and hand",
+        values: "Creativity in knotting of functional items"
       },
       {
-        title: "5.10.2 Water Games",
+        title: "5.10.2 Modelling",
         competencies: [
-          "5.10.2.1 Perform Swimming activities"
+          "5.10.2.1 Model items using different materials"
         ],
         learningActivities: [
-          "Swimming 25-meter intervals using front crawl, backstroke, and breaststroke mechanics",
-          "Practising treading water, survival sculling, and object recovery from medium pool depths",
-          "Playing competitive and recreational water sports (mini water polo, relay races, swimming obstacle courses)"
+          "Modelling items using different materials."
         ],
-        expectedStandard: "Competent stroke mechanics and water endurance displayed during 25-meter swims and aquatic games.",
-        knowledge: "Performing various swimming activities (water polo, tag, metre races, floating, side stroke)",
-        skills: "Speed swimming, floating endurance, aquatic competitive gaming",
-        values: "Sportsmanship in aquatic sports, water competence"
+        expectedStandard: "Learners will be able to model items using different materials.",
+        knowledge: "Modelling (human figures, animals, birds, insects)",
+        skills: "Modelling of different items\nManipulation of materials",
+        values: "Craftsmanship in modelling"
+      },
+      {
+        title: "5.10.3 Papier Machè",
+        competencies: [
+          "5.10.3.1 Make different items using mashed paper",
+          "5.10.3.2 Decorate finished items"
+        ],
+        learningActivities: [
+          "Making items using mashed paper.",
+          "Decorating finished items."
+        ],
+        expectedStandard: "Learners will be able to make and decorate papier machè items.",
+        knowledge: "Papier mache (cups, masks, hats, plates)\nDecorating (firing, vanishing, painting)",
+        skills: "Decorating of finished items",
+        values: "Craftsmanship in papier machè"
+      },
+      {
+        title: "5.10.4 Construction",
+        competencies: [
+          "5.10.4.1 Construct toys using different materials"
+        ],
+        learningActivities: [
+          "Constructing toys."
+        ],
+        expectedStandard: "Learners will be able to construct toys using different materials.",
+        knowledge: "Constructing e.g. (dolls, soft toys, cars, puppets)",
+        skills: "Construction skills",
+        values: "Creativity in construction"
+      },
+      {
+        title: "5.10.5 Picture Making",
+        competencies: [
+          "5.10.5.1 Make collage pictures using different techniques"
+        ],
+        learningActivities: [
+          "Making collage pictures."
+        ],
+        expectedStandard: "Learners will be able to make collage pictures using different techniques.",
+        knowledge: "Picture making (collage, mosaic, montage)",
+        skills: "manipulation of different materials\ncomposing pictures using different techniques",
+        values: "Appreciation of different techniques\nResourcefulness in use of materials"
+      },
+      {
+        title: "5.10.6 Carving",
+        competencies: [
+          "5.10.6.1 Carve simple items using suitable wood",
+          "5.10.6.2 Decorate finished carved items"
+        ],
+        learningActivities: [
+          "Carving simple items.",
+          "Decorating carved items."
+        ],
+        expectedStandard: "Learners will be able to carve and decorate simple items.",
+        knowledge: "Carving of: (spoons, toys, cooking sticks)\nDecorations (simple patterns)",
+        skills: "Carving of simple items\nDecorating using simple patterns",
+        values: "Appreciation and resourcefulness in use of carved items\nCraftsmanship in carving"
+      },
+      {
+        title: "5.10.7 General Crafts",
+        competencies: [
+          "5.10.7.1 Make different items using local Materials"
+        ],
+        learningActivities: [
+          "Making different items using local materials."
+        ],
+        expectedStandard: "Learners will be able to make different items using local materials.",
+        knowledge: "Making of: (necklaces, mobiles, junk sculptures)",
+        skills: "Manipulation of found materials",
+        values: "Appreciation of knowledge on general crafts\nCraftsmanship in crafts"
       }
     ]
   },
   {
-    title: "5.11 PATTERNS",
+    title: "5.11 SWIMMING",
     subtopics: [
       {
-        title: "5.11.1 Types of Patterns",
+        title: "5.11.1 Pool Hygiene",
         competencies: [
-          "5.11.1.1 Design patterns"
+          "5.11.1.1 Discuss effects of poor pool hygiene"
         ],
         learningActivities: [
-          "Designing complex alternating, counterchange, and geometric grid repeat patterns",
-          "Creating free-brush repeat borders and all-over wallpaper prints on fabric and paper",
-          "Applying complementary and contrasting colour harmonies to enhance visual depth in patterns"
+          "Discussing effects of poor pool hygiene."
         ],
-        expectedStandard: "Alternating and geometric repeat patterns designed and printed with precise alignment and colour contrast.",
-        knowledge: "Designing different patterns (Free brush repeat, border and all over, alternating contrasting, geometrical block)",
-        skills: "Geometrical pattern layout, block printing, contrast balancing",
-        values: "Design aesthetics, visual rhythm, creative originality"
-      }
-    ]
-  },
-  {
-    title: "5.12 CRAFTS",
-    subtopics: [
-      {
-        title: "5.12.1 Weaving",
-        competencies: [
-          "5.12.1.1 Make items using weaving techniques"
-        ],
-        learningActivities: [
-          "Weaving functional items (small baskets, shopping bags, wall hangings) using reed, sisal, or raffia fibres",
-          "Incorporating twill weave and diagonal patterns into woven structures",
-          "Reinforcing rim edges and attaching sturdy woven handles"
-        ],
-        expectedStandard: "Functional woven articles (baskets, bags, mats) constructed with tight weave and sturdy handles.",
-        knowledge: "Making items using weaving techniques (baskets, bags, reed mats)",
-        skills: "Complex pattern weaving, structural reinforcement, edge binding",
-        values: "Craftsmanship, dedication, indigenous technology pride"
+        expectedStandard: "Learners will be able to discuss effects of poor pool hygiene.",
+        knowledge: "Effects: (learners illness, loss of school time)",
+        skills: "Application of inhaling, pushing, pulling and floating abilities",
+        values: "Concentration in swimming\nAppreciation of knowledge in swimming"
       },
       {
-        title: "5.12.2 Knotting",
+        title: "5.11.2 Survival Skills",
         competencies: [
-          "5.12.2.1 Make items using knotting techniques"
+          "5.11.2.1 Demonstrate simple skilled strokes",
+          "5.11.2.2 Perform competitions in metre races",
+          "5.11.2.3 Perform simple rescue skills"
         ],
         learningActivities: [
-          "Tying decorative and utility knots (square knot, half-hitch, lark's head, clove hitch)",
-          "Producing macramé plant hangers, utility belts, and small string fishing nets",
-          "Finishing knotted strands with decorative bead inserts and secure binding"
+          "Demonstrating simple skilled strokes.",
+          "Performing competitions.",
+          "Performing rescue skills."
         ],
-        expectedStandard: "Macramé plant hangers or netted utility articles produced using multiple knotting techniques.",
-        knowledge: "Making items using knotting techniques (fishing nets, belts, ropes)",
-        skills: "Macramé, netting knots, utility rope craft",
-        values: "Patience, manual dexterity, utilitarian innovation"
+        expectedStandard: "Learners will be able to demonstrate simple skilled strokes and survival skills.",
+        knowledge: "Metre races (floating, side stroke)",
+        skills: "Swimming survival skills",
+        values: "Teamwork and courage"
       },
       {
-        title: "5.12.3 Modelling",
+        title: "5.11.3 Water Games",
         competencies: [
-          "5.12.3.1 Demonstrate modelling using materials"
+          "5.11.3.1 Perform simple water games"
         ],
         learningActivities: [
-          "Sculpting animal, insect, and human figures using clay, plasticine, and wire armatures",
-          "Modelling decorative relief tiles with incised geometric patterns and textures",
-          "Applying surface smoothing, firing preparation, and painted glazes on dried clay pieces"
+          "Performing simple water games."
         ],
-        expectedStandard: "Detailed 3D sculptural models and relief tiles created with structural stability and smooth finishes.",
-        knowledge: "Making tiles, birds, insects.. using appropriate materials (clay, plasticine, papier machè)",
-        skills: "Detail sculpting, surface texturing, structural balance in 3D forms",
-        values: "Sculptural creativity, realistic representation"
-      },
-      {
-        title: "5.12.4 Papier Mâché",
-        competencies: [
-          "5.12.4.1 Make items using paper pulp"
-        ],
-        learningActivities: [
-          "Preparing fine papier-mâché pulp mixed with starch glue and sawdust/chalk filler",
-          "Moulding functional masks, hollow bowls, and hats over greased moulds",
-          "Sanding dried papier-mâché pieces smooth and painting intricate decorative motifs with varnish sealing"
-        ],
-        expectedStandard: "Hollow papier-mâché vessels and cultural masks constructed, smoothed, and painted with waterproof sealant.",
-        knowledge: "Making items using paper pulp (cups, masks, hats, plates)",
-        skills: "Pulp preparation, mould casting, smoothing, painting decorative finishes",
-        values: "Recycling awareness, resourcefulness, decorative craftsmanship"
-      },
-      {
-        title: "5.12.5 Construction",
-        competencies: [
-          "5.12.5.1 Construct objects"
-        ],
-        learningActivities: [
-          "Designing pattern templates for fabric dolls, glove puppets, and soft toys",
-          "Cutting fabric, stitching seams using backstitch, and stuffing with cotton/fabric scrap filler",
-          "Embellishing constructed soft toys with button eyes, yarn hair, and miniature clothing"
-        ],
-        expectedStandard: "Soft fabric toys and puppets assembled with strong seam stitching and expressive facial details.",
-        knowledge: "Constructing various objects (dolls, soft toys, puppets)",
-        skills: "Pattern cutting, stitching, stuffing, facial feature embellishment",
-        values: "Creativity, empathy in toy design, craftsmanship"
-      },
-      {
-        title: "5.12.6 Picture Making",
-        competencies: [
-          "5.12.6.1 Create pictures using various picture making techniques"
-        ],
-        learningActivities: [
-          "Creating layered appliqué pictures using fabric remnants sewn onto a heavy canvas backing",
-          "Assembling thematic photomontages and textured collages using newspaper cuttings, bark, and seeds",
-          "Evaluating composition, textural variety, and focal balance in mixed-media pictures"
-        ],
-        expectedStandard: "Appliqué, montage, and collage pictures composed displaying high textural harmony and visual storytelling.",
-        knowledge: "Creating pictures using various picture making techniques (Applique, Montage, Collage)",
-        skills: "Fabric layering, photomontage assembly, multi-medium collage composition",
-        values: "Creative synthesis, visual storytelling, textural appreciation"
-      },
-      {
-        title: "5.12.7 Carving",
-        competencies: [
-          "5.12.7.1 Make carved items"
-        ],
-        learningActivities: [
-          "Practising safe cutting and gouging techniques on soft media (soap, soft wood, avocado seeds, chalk)",
-          "Carving traditional cooking sticks, spoons, and miniature animal figures",
-          "Sanding carved wooden items smooth and decorating surfaces using pyrography and oil finishes"
-        ],
-        expectedStandard: "Smooth functional utensils or decorative sculptures carved safely from soft wood or soap.",
-        knowledge: "Making various carved items (spoons, toys, cooking sticks); Decorating carved items with pyrography/patterns",
-        skills: "Safe knife/gouge handling, wood shaping, sanding, decorative incision",
-        values: "Safe tool usage, traditional carving mastery, respect for timber resources"
-      },
-      {
-        title: "5.12.8 General Crafts",
-        competencies: [
-          "5.12.8.1 Make items"
-        ],
-        learningActivities: [
-          "Gathering and drilling dried seeds, beads, clay balls, and shells for threading",
-          "Designing beaded necklaces, bracelets, and ornamental twig wall hangers",
-          "Finishing craft items with secure knotting and durable clasps"
-        ],
-        expectedStandard: "Ornamental jewelry and wall decorations crafted neatly from local seeds, beads, and natural materials.",
-        knowledge: "Making various items (necklaces, seed decorations, twig decorations)",
-        skills: "Bead threading, seed piercing, natural material decoration",
-        values: "Eco-friendly design, cultural adornment appreciation"
-      }
-    ]
-  },
-  {
-    title: "5.13 LETTERING AND POSTER WORK",
-    subtopics: [
-      {
-        title: "5.13.1 Poster Designing",
-        competencies: [
-          "5.13.1.1 Design posters based on different themes",
-          "5.13.1.2 Practise Calligraphy"
-        ],
-        learningActivities: [
-          "Practising broad-edge calligraphy letterforms (italic and gothic alphabets) with angled nibs/pencils",
-          "Designing campaign posters addressing national themes (substance abuse prevention, children's rights, reforestation)",
-          "Integrating calligraphic headlines, concise slogans, and high-impact graphic illustrations"
-        ],
-        expectedStandard: "Persuasive campaign posters created featuring calligraphic lettering, clear visual hierarchy, and powerful messaging.",
-        knowledge: "Describing types of posters; Designing posters based on different themes (drug abuse, human rights); Practising calligraphy lettering",
-        skills: "Calligraphic nib control, slogan drafting, graphic balance, social campaign design",
-        values: "Advocacy for social justice, elegance in typography, civic awareness"
+        expectedStandard: "Learners will be able to perform simple water games.",
+        knowledge: "Water games (group and pairs)",
+        skills: "Water games skills",
+        values: "Team spirit"
       }
     ]
   }
@@ -989,18 +846,32 @@ export const expressiveArtsGrade6: Topic[] = [
       {
         title: "6.1.1 Safety",
         competencies: [
-          "6.1.1.1 Use appropriate attire and tools",
-          "6.1.1.2 Practise safety rules"
+          "6.1.1.1 Explain the importance of good health habits in practical activities",
+          "6.1.1.2 Perform a series of activities to show how in inappropriate dress can affect performance"
         ],
         learningActivities: [
-          "Inspecting sports equipment, gymnastics apparatus, and art tools before practical sessions",
-          "Demonstrating emergency safety protocols (First Aid procedures, fire drills, spillage cleanups) in specialised rooms",
-          "Enforcing safety rules and peer protection during contact sports, throwing events, and tool crafting"
+          "Explaining importance of good health habits.",
+          "Performing activities showing effects of inappropriate dress."
         ],
-        expectedStandard: "Safety rules, proper protective gear, and emergency first aid procedures applied autonomously across all activities.",
-        knowledge: "Using appropriate attire and tools during different activities; Practising safety rules in various practical and sporting activities",
-        skills: "Hazard identification, safety protocol compliance, emergency preparedness",
-        values: "Responsibility for self and peers, culture of safety in workshops and sports fields"
+        expectedStandard: "Learners will be able to explain the importance of good health habits.",
+        knowledge: "Effects of inappropriate dress (discomfort in activities, performance)\nSafety rules",
+        skills: "Creativity in use of knowledge in safety and leadership",
+        values: "Responsibility over self and others\nAppreciation of knowledge in safety and health"
+      },
+      {
+        title: "6.1.2 Environmental Protection",
+        competencies: [
+          "6.1.2.1 Demonstrate safety rules on working areas",
+          "6.1.2.2 Perform activities to show how certain sports can have an effect on the environment or playground"
+        ],
+        learningActivities: [
+          "Demonstrating safety rules.",
+          "Performing activities showing sports effects on environment."
+        ],
+        expectedStandard: "Learners will be able to demonstrate safety rules on working areas.",
+        knowledge: "Erosion of fields",
+        skills: "Environmental awareness",
+        values: "Care for the environment"
       }
     ]
   },
@@ -1013,49 +884,71 @@ export const expressiveArtsGrade6: Topic[] = [
           "6.2.1.1 Demonstrate perceptual motor learning skills"
         ],
         learningActivities: [
-          "Executing visual and auditory reaction drills (e.g. traffic light agility games, whistle sprints)",
-          "Demonstrating complex dribbling, dodging, and feinting maneuvers against active defenders in space",
-          "Performing synchronized movement routines matching changing tempos and spatial patterns"
+          "Demonstrating perceptual motor learning skills."
         ],
-        expectedStandard: "Perceptual motor skills, rapid directional changes, and spatial maneuvers demonstrated with speed and precision.",
-        knowledge: "Demonstrating perceptual learning skills (Traffic lights game, follow the leader, dribble and feint)",
-        skills: "Visual-spatial tracking, feinting maneuvers, change of pace and direction",
-        values: "Quick decision making, athletic discipline, spatial intelligence"
+        expectedStandard: "Learners will be able to demonstrate perceptual motor learning skills.",
+        knowledge: "Perceptual motor learning: (Traffic lights game, follow the leader, dribble and feint)",
+        skills: "Application of knowledge in Sliding, Feinting, Spinning",
+        values: "Concentration and Endurance in movement\nLeadership in movement activities"
       }
     ]
   },
   {
-    title: "6.3 DRAWING AND PAINTING",
+    title: "6.3 DRAWING AND COLOURING",
     subtopics: [
       {
-        title: "6.3.1 Imaginative Composition",
+        title: "6.3.1 Colour",
         competencies: [
-          "6.3.1.1 Draw pictures depicting different themes"
+          "6.3.1.1 Identify tertiary colours",
+          "6.3.1.2 Design a colour wheel"
         ],
         learningActivities: [
-          "Analyzing composition principles (rule of thirds, linear perspective, atmospheric depth, focal dominance)",
-          "Drawing and painting complex thematic artworks (climate crisis, rural-urban migration, national independence festival)",
-          "Utilizing rich colour harmonies and expressive brushwork to evoke mood and narrative tension"
+          "Identifying tertiary colours.",
+          "Designing a colour wheel."
         ],
-        expectedStandard: "Thematic imaginative paintings created showing linear perspective, strong focal points, and expressive colour use.",
-        knowledge: "Drawing pictures depicting different themes (market place, climate change, population)",
-        skills: "Conceptual drawing, thematic illustration, visual metaphor, spatial perspective",
-        values: "Critical thinking on global issues, creative maturity, emotional expression"
+        expectedStandard: "Learners will be able to identify tertiary colours and design a colour wheel.",
+        knowledge: "Intermediate colours (yellow-green, black-white)\nColour wheel",
+        skills: "Identification of tertiary colours\nDesigning of colour wheel",
+        values: "Appreciation of drawing themes in designing a colour wheel"
       },
       {
-        title: "6.3.2 Colour",
+        title: "6.3.2 Imaginative Composition",
         competencies: [
-          "6.3.2.1 Design colour wheel"
+          "6.3.2.1 Draw pictures based on the given themes"
         ],
         learningActivities: [
-          "Constructing a mathematically accurate 12-hue colour wheel using compasses and rulers",
-          "Mixing and applying primary, secondary, and tertiary hues in systematic chromatic order",
-          "Demonstrating complementary, analogous, and monochromatic colour schemes on sample design templates"
+          "Drawing pictures based on themes."
         ],
-        expectedStandard: "Complete 12-hue colour wheel constructed and painted with precise hue accuracy and clean geometric divisions.",
-        knowledge: "Designing colour wheel on paper (primary, secondary, and tertiary hues in standard 12-color progression)",
-        skills: "Precise circular geometry, systematic color gradation, complementary matching",
-        values: "Scientific and artistic harmony, chromatic precision"
+        expectedStandard: "Learners will be able to draw pictures based on given themes.",
+        knowledge: "Composing pictures showing light and dark (market place, an argument, bus stop)",
+        skills: "Application of knowledge in drawing",
+        values: "Appreciation of drawing themes\nCraftsmanship in Imaginative composition"
+      },
+      {
+        title: "6.3.3 Still Life",
+        competencies: [
+          "6.3.3.1 Draw and shade pictures"
+        ],
+        learningActivities: [
+          "Drawing and shading still life pictures."
+        ],
+        expectedStandard: "Learners will be able to draw and shade pictures.",
+        knowledge: "Still objects (bones, tools, flower pots)",
+        skills: "Creativity in still drawing",
+        values: "Appreciation of still drawing\nCraftsmanship in still drawing"
+      },
+      {
+        title: "6.3.4 Types of Patterns",
+        competencies: [
+          "6.3.4.1 Design different patterns using a motif"
+        ],
+        learningActivities: [
+          "Designing patterns using motifs."
+        ],
+        expectedStandard: "Learners will be able to design different patterns using a motif.",
+        knowledge: "Types of Patterns (monochrome, contrasting, horizontal and vertical, rhythmic, traditional)",
+        skills: "Application in use of various designs",
+        values: "Creativity in use of different patterns"
       }
     ]
   },
@@ -1063,49 +956,21 @@ export const expressiveArtsGrade6: Topic[] = [
     title: "6.4 NOTATION",
     subtopics: [
       {
-        title: "6.4.1 Rhythm",
+        title: "6.4.1 Rhythm and Tonic-sofa",
         competencies: [
-          "6.4.1.1 Practise rhythmic patterns"
+          "6.4.1.1 Transcribe notes",
+          "6.4.1.2 Distribute notes into bars",
+          "6.4.1.3 Recite tonic-sofa",
+          "6.4.1.4 Clap rhythms"
         ],
         learningActivities: [
-          "Sight-reading and clapping advanced polyrhythms, syncopated measures, and triplets",
-          "Composing 8-bar rhythmic duets with contrasting call-and-response rhythm parts",
-          "Performing complex rhythmic scores using diverse percussion instruments and body percussion"
+          "Transcribing notes and distributing into bars.",
+          "Reciting tonic-sofa and clapping rhythms."
         ],
-        expectedStandard: "Syncopated and polyrhythmic scores sight-read and clapped accurately in multi-part ensembles.",
-        knowledge: "Practising various complex rhythmic patterns including syncopation and compound rhythms",
-        skills: "Polyrhythmic clapping, sight-reading advanced rhythms, tempo stability",
-        values: "Musical discipline, acute auditory awareness"
-      },
-      {
-        title: "6.4.2 Time Signature",
-        competencies: [
-          "6.4.2.1 Apply time signature"
-        ],
-        learningActivities: [
-          "Analyzing compound duple time (6/8 time) and distinguishing it from simple duple/triple/quadruple time (2/4, 3/4, 4/4)",
-          "Conducting 6/8 and 4/4 meter patterns with accurate preparatory beats and cut-offs",
-          "Transcribing heard melodies into correctly barred musical staves matching indicated time signatures"
-        ],
-        expectedStandard: "Simple and compound time signatures (2/4, 3/4, 4/4, 6/8) analyzed, conducted, and correctly notated with bar lines.",
-        knowledge: "Applying time signature on various rhythms (2/4, 3/4, 4/4, 6/8)",
-        skills: "Time signature transposition, bar line placement, metronomic timing",
-        values: "Analytical musical literacy, structural precision"
-      },
-      {
-        title: "6.4.3 Pitch",
-        competencies: [
-          "6.4.3.1 Construct the treble staff"
-        ],
-        learningActivities: [
-          "Drawing 5-line treble staves and correctly inscribing the Treble Clef (G-clef)",
-          "Placing pitch notes on lines (E-G-B-D-F) and spaces (F-A-C-E) of the treble staff",
-          "Singing and sight-reading melodies written on the treble staff in the key of C Major"
-        ],
-        expectedStandard: "Treble staff constructed with G-clef and C Major notes identified and sung accurately from sheet music.",
-        knowledge: "Constructing the treble staff (C major scale only: lines E-G-B-D-F, spaces F-A-C-E, ledger lines)",
-        skills: "Staff drawing, clef inscription, note placement on lines and spaces",
-        values: "Notation mastery, classical literacy in music"
+        expectedStandard: "Learners will be able to transcribe notes, distribute into bars, recite tonic-sofa and clap rhythms.",
+        knowledge: "Note duration\nBars and bar lines\nTonic-sofa\nRhythmic patterns",
+        skills: "Application of knowledge in sequencing, singing, clapping and transcribing",
+        values: "Appreciation of knowledge in notation"
       }
     ]
   },
@@ -1115,362 +980,345 @@ export const expressiveArtsGrade6: Topic[] = [
       {
         title: "6.5.1 Style and Form",
         competencies: [
-          "6.5.1.1 Perform style and form"
+          "6.5.1.1 Analyse the form and style of African music",
+          "6.5.1.2 Compose African music"
         ],
         learningActivities: [
-          "Identifying musical structures of African folk music (binary, ternary, ostinato, call-and-response)",
-          "Performing traditional songs in 2-part and 3-part vocal harmonies",
-          "Analyzing the cultural, spiritual, and social functions of songs across various African traditions"
+          "Analysing form and style of African music.",
+          "Composing African music."
         ],
-        expectedStandard: "Multi-part African choral music and traditional song forms performed with stylistic authenticity and vocal blend.",
-        knowledge: "Performing style and form (call and response, repetition harmony); Distinguishing various styles and forms of African Music",
-        skills: "African vocal polyphony, structural analysis of folk songs, vocal ornamentation",
-        values: "Pan-African cultural appreciation, musical unity"
+        expectedStandard: "Learners will be able to analyse the form and style and compose African music.",
+        knowledge: "Style and form (call and response harmony, repetition)\nAfrican music",
+        skills: "Application of knowledge in composing",
+        values: "Appreciation of style and form in composing music"
       },
       {
         title: "6.5.2 Dancing",
         competencies: [
-          "6.5.2.1 Perform African dances"
+          "6.5.2.1 Create dances in response to African music",
+          "6.5.2.2 Perform dances in response to songs on reduction of poverty"
         ],
         learningActivities: [
-          "Learning authentic choreography of regional African traditional dances (e.g. Makishi, Gule Wamkulu, Vimbuza steps)",
-          "Performing complex polyrhythmic body isolations, stamping patterns, and prop manipulations",
-          "Coordinating group stage entrances, dynamic climaxes, and ceremonial exits in traditional costumes"
+          "Creating dances in response to African music.",
+          "Performing dances to songs on poverty reduction."
         ],
-        expectedStandard: "Regional African ceremonial dances executed with authentic footwork, expressive stamina, and theatrical presence.",
-        knowledge: "Identifying various African dances; Performing African music and dance with authentic cultural movements",
-        skills: "Complex footwork, torso polyrhythms, expressive dramatization in dance",
-        values: "Cultural celebration, physical stamina, ancestral pride"
+        expectedStandard: "Learners will be able to create and perform dances in response to African music.",
+        knowledge: "African Dance\nKnow some songs that express ideas on poverty reduction",
+        skills: "Listening and dancing to African music\nExpress personal ideas on poverty reduction through dance",
+        values: "Appreciation of use of dances\nSelf-expression in dances\nAppreciate self-expression in relation to poverty reduction"
       },
       {
         title: "6.5.3 Instrument Playing",
         competencies: [
-          "6.5.3.1 Demonstrate instrument playing"
+          "6.5.3.1 Play African musical instruments",
+          "6.5.3.2 Play African musical instruments to raise money"
         ],
         learningActivities: [
-          "Playing lead and response drums in a traditional multi-drum ensemble (bass drum, tenor drum, master drum)",
-          "Performing complex melodic lines on traditional instruments (Silimba, Kalimba/Mbira, Valimba)",
-          "Maintaining interlocking cross-rhythms during extended ensemble musical performances"
+          "Playing African musical instruments."
         ],
-        expectedStandard: "Lead and accompaniment parts performed on traditional African melodic and percussion instruments.",
-        knowledge: "Demonstrating instrument playing (drum techniques, string strumming, rattle/shaker patterns)",
-        skills: "Multi-instrumental performance, ensemble playing, tempo maintenance",
-        values: "Musical collaboration, sonic excellence"
+        expectedStandard: "Learners will be able to play African musical instruments.",
+        knowledge: "Musical instruments (drum, strum, rattle)\nUnderstand the importance of charity giving in the community",
+        skills: "Analysis of musical instruments\nBeing able to play the instruments to raise money for charity",
+        values: "Appreciation of musical instruments\nAppreciate the importance of charity giving"
       },
       {
         title: "6.5.4 Music Composition",
         competencies: [
-          "6.5.4.1 Compose songs"
+          "6.5.4.1 Compose songs based on different themes using rhythmic and harmonic melody lines"
         ],
         learningActivities: [
-          "Writing socially conscious lyrics addressing contemporary national issues (peace, environmental conservation, girl-child empowerment)",
-          "Setting lyrics to original melodies using pentatonic and diatonic scales",
-          "Arranging vocal harmonies and percussion accompaniments for student choral presentations"
+          "Composing songs based on different themes."
         ],
-        expectedStandard: "Original songs composed with inspiring lyrics, catchy melody, and structured musical accompaniment.",
-        knowledge: "Composing songs addressing cross-cutting issues (climate action, health, unity, education)",
-        skills: "Lyric writing, melodic construction, thematic song crafting",
-        values: "Social advocacy through art, creative ingenuity"
+        expectedStandard: "Learners will be able to compose songs based on different themes.",
+        knowledge: "Compose songs: (HIV and AIDS, child abuse, water, sanitation, governance, substance abuse, nutrition, health)",
+        skills: "Composing and Analysis of songs",
+        values: "Awareness of music composition"
       }
     ]
   },
   {
-    title: "6.6 HEALTH AND FITNESS MANAGEMENT",
+    title: "6.6 EDUCATIONAL GYMNASTICS",
     subtopics: [
       {
-        title: "6.6.1 Health Performances",
+        title: "6.6.1 Tumbling",
         competencies: [
-          "6.6.1.1 Perform developmental activities"
+          "6.6.1.1 Perform a series of tumbling activities in a sequence"
         ],
         learningActivities: [
-          "Designing and leading fitness obstacle courses incorporating parallel bar dips, tire runs, and agility slaloms",
-          "Conducting dual-task athletic drills combining ball dribbling/shooting with high-intensity cardio runs",
-          "Analyzing the physiological benefits of consistent cardiovascular and strength training"
+          "Performing a series of tumbling activities."
         ],
-        expectedStandard: "High-intensity developmental obstacle courses completed and led with athletic stamina and technical safety.",
-        knowledge: "Identifying developmental activities (obstacle, parallel bars, circuit training stations); Performing developmental sporting activities in parallel (shooting, dribbling, passing)",
-        skills: "Circuit training mastery, dual-task sporting drills, athletic agility",
-        values: "High performance mindset, stamina, systematic training"
+        expectedStandard: "Learners will be able to perform tumbling activities in a sequence.",
+        knowledge: "Tumbling activities with (rope, horse)",
+        skills: "Application of knowledge of tumbling activities",
+        values: "Concentration through cooperative learning\nTeam spirit through courage and self-esteem"
       },
       {
-        title: "6.6.2 Fitness",
+        title: "6.6.2 Stunts",
         competencies: [
-          "6.6.2.1 Perform a series of fitness activities"
+          "6.6.2.1 Perform refined floor activities"
         ],
         learningActivities: [
-          "Performing fitness test batteries (pushup maximums, 1-minute situp test, beep test, standing broad jump)",
-          "Executing plyometric jump drills, core stability planks, and sprint endurance intervals",
-          "Developing a personalized daily fitness routine to enhance athletic performance and overall health"
+          "Performing refined floor activities."
         ],
-        expectedStandard: "Standardized physical fitness battery tests performed achieving age-appropriate stamina and strength benchmarks.",
-        knowledge: "Performing a series of fitness activities (pushups, sit ups, ladder runs, squats)",
-        skills: "Explosive power, core stabilization, cardiovascular conditioning",
-        values: "Commitment to personal physical excellence, health resilience"
-      },
-      {
-        title: "6.6.3 Gymnastics",
-        competencies: [
-          "6.6.3.1 Demonstrate tumbling activities"
-        ],
-        learningActivities: [
-          "Demonstrating advanced gymnastics agilities (handstands with 5-second hold, cartwheels, round-offs, dive rolls)",
-          "Performing vaulting horse approaches, springboard takeoff, straddle vaults, and stuck landings",
-          "Constructing complex multi-level gymnastic pyramids with synchronized entry and dismount transitions"
-        ],
-        expectedStandard: "Advanced gymnastics vaulting, handstand balances, and multi-tier pyramids executed with athletic precision and safety.",
-        knowledge: "Demonstrating tumbling activities (rope climbing, vaulting horse, head stand, hand belly support, takeoff, safe landing)",
-        skills: "Inverted balance, vaulting takeoff, soft kinetic landing, apparatus dismount",
-        values: "Courage, body control, acrobatic precision, safety adherence"
+        expectedStandard: "Learners will be able to perform refined floor activities.",
+        knowledge: "Take-off: Stationary, with a short run\nLanding: safe landing",
+        skills: "Stunts and floor activities skills",
+        values: "Concentration and courage"
       }
     ]
   },
   {
-    title: "6.7 SPORTS SKILLS DEVELOPMENT",
+    title: "6.7 HEALTH AND FITNESS MANAGEMENT",
     subtopics: [
       {
-        title: "6.7.1 Track Events",
+        title: "6.7.1 Health",
         competencies: [
-          "6.7.1.1 Perform track events"
+          "6.7.1.1 Perform a series of physical activities"
         ],
         learningActivities: [
-          "Practising sprint starting techniques (crouch start, 'On your marks', 'Set', 'Go' reaction drives) for 60m, 100m, and 200m",
-          "Executing blind and visual baton exchanges within 20-meter changeover boxes in 4x100m and 4x400m relays",
-          "Applying pacing strategies and finishing leans across middle-distance track races (400m, 800m)"
+          "Performing a series of physical activities."
         ],
-        expectedStandard: "Sprint starting mechanics, relay baton exchanges in regulation zones, and track running pacing demonstrated competitively.",
-        knowledge: "Performing track events (60m, 100m, 200m, 400m and Relay races: 4x 100m and 4x 400m)",
-        skills: "Sprint starting technique, baton exchange, pace judgment, finishing lean",
-        values: "Athletic speed, teamwork in relay squads, fair competitive spirit"
+        expectedStandard: "Learners will be able to perform a series of physical activities.",
+        knowledge: "Developmental activities (obstacle, parallel bars, circuit training stations)",
+        skills: "Application of knowledge of hanging and lying",
+        values: "Appreciation of developmental activities\nResponsibility over self and others"
       },
       {
-        title: "6.7.2 Field Events",
+        title: "6.7.2 Fitness",
         competencies: [
-          "6.7.2.1 Perform field events"
+          "6.7.2.1 Perform a series of developmental activities"
         ],
         learningActivities: [
-          "Practising throwing techniques for shot put (glide/rotational stance) and modified javelin/discus throws with safe recovery",
-          "Mastering approach run, takeoff, flight hitch-kick/hang technique, and soft sand pit landing for Long Jump and Triple Jump",
-          "Executing the scissors and Fosbury flop high jump techniques over training bars with safe mat landings"
+          "Performing developmental activities."
         ],
-        expectedStandard: "Field event jumps (long jump, high jump) and throws (shot put, modified javelin) executed with correct technical biomechanics and safety.",
-        knowledge: "Performing field events: Throws (Discus, shot put and javelin); Jumps (High jump, long jump and triple jump)",
-        skills: "Rotational throwing, glide shot put, approach run-up, jump takeoff and landing",
-        values: "Power, technical mastery, safety during field throws"
+        expectedStandard: "Learners will be able to perform a series of developmental activities.",
+        knowledge: "Fitness and developmental activities",
+        skills: "Fitness management",
+        values: "Endurance and responsibility"
       }
     ]
   },
   {
-    title: "6.8 RECREATION",
+    title: "6.8 SPORTS SKILLS DEVELOPMENT",
     subtopics: [
       {
-        title: "6.8.1 Dances",
+        title: "6.8.1 Games (Conventional Modified Games)",
         competencies: [
-          "6.8.1.1 Perform dances"
+          "6.8.1.1 Perform refined sports activities and games"
         ],
         learningActivities: [
-          "Learning and performing contemporary social line dances and popular Zambian street dances",
-          "Choreographing group dance routines showcasing creative formations, level changes, and rhythmic breaks",
-          "Organizing school recreational dance showcases promoting healthy active leisure"
+          "Performing refined sports activities."
         ],
-        expectedStandard: "Creative recreational and contemporary group dances performed with enthusiasm, rhythm, and stage coordination.",
-        knowledge: "Performing various contemporary and recreational dances (steps, clap, space, sequence)",
-        skills: "Social dance coordination, modern group routines, recreational performance",
-        values: "Joy of movement, social interaction, active leisure"
+        expectedStandard: "Learners will be able to perform refined sports activities and games.",
+        knowledge: "basket ball\nsoccer\ndiscus\n100 metre relays\n400 x 4 metre relays\nTrap\nJumps (long and high)\nOrienteering\nFind paths\nRead maps\nRead compass",
+        skills: "Application of knowledge in sports activities",
+        values: "Concentration through cooperative learning\nTeam spirit through sports"
       },
       {
-        title: "6.8.2 Songs",
+        title: "6.8.2 Track and Field Events",
         competencies: [
-          "6.8.2.1 Sing regulated songs on various themes"
+          "6.8.2.1 Perform track and field events"
         ],
         learningActivities: [
-          "Singing the National Anthem in English and Zambian languages with proper dignity, posture, and intonation",
-          "Performing patriotic songs, school anthems, and inspirational melodies in multi-part harmony",
-          "Leading school assembly singing and commemorative community musical presentations"
+          "Performing track and field events."
         ],
-        expectedStandard: "National anthem and regulated patriotic anthems sung with pitch accuracy, clear diction, and dignified expression.",
-        knowledge: "Singing regulated songs on various themes (anthem, national songs, inspirational melodies)",
-        skills: "Choral blend, dynamic expression, lyrical clarity",
-        values: "Patriotism, emotional resonance, choral unity"
+        expectedStandard: "Learners will be able to perform track and field events.",
+        knowledge: "Track and field events",
+        skills: "Athletics skills",
+        values: "Team spirit"
+      },
+      {
+        title: "6.8.3 Traditional Games",
+        competencies: [
+          "6.8.3.1 Demonstrate simple traditional games"
+        ],
+        learningActivities: [
+          "Demonstrating simple traditional games."
+        ],
+        expectedStandard: "Learners will be able to demonstrate simple traditional games.",
+        knowledge: "Traditional games",
+        skills: "Playing traditional games",
+        values: "Appreciation of culture"
       }
     ]
   },
   {
-    title: "6.9 SWIMMING",
+    title: "6.9 RECREATION",
     subtopics: [
       {
-        title: "6.9.1 Swimming Activities",
+        title: "6.9.1 Dance",
         competencies: [
-          "6.9.1.1 Practise swimming activities"
+          "6.9.1.1 Perform dances with music from different cultures"
         ],
         learningActivities: [
-          "Refining mechanics for the four competitive swimming strokes (freestyle crawl, backstroke, breaststroke, butterfly)",
-          "Performing continuous 50-meter stroke laps maintaining bilateral breathing and steady kick rhythms",
-          "Executing forward tumble turns, underwater streamlining push-offs, and diving entries"
+          "Performing dances with music from different cultures."
         ],
-        expectedStandard: "Competitive swimming strokes (freestyle, backstroke, breaststroke) executed over 50 meters with efficient technique.",
-        knowledge: "Practising swimming activities (back stroke, breast stroke, butterfly, free style)",
-        skills: "Four competitive stroke mechanics, bilateral breathing, flutter/frog/dolphin kicks",
-        values: "Aquatic endurance, stroke efficiency, confidence in deep water"
+        expectedStandard: "Learners will be able to perform dances with music from different cultures.",
+        knowledge: "Dances (steps, clap, space, sequence)",
+        skills: "Creativity in recreation, dance and games",
+        values: "Appreciation of coordination through cooperative learning\nAppreciate the need to spend money responsibly"
       },
       {
-        title: "6.9.2 Survival Skills",
+        title: "6.9.2 Drug Abuse",
         competencies: [
-          "6.9.2.1 Exhibit survival skills"
+          "6.9.2.1 Compose songs with messages on drug abuse",
+          "6.9.2.2 Perform a dance to show awareness of responsible use of money"
         ],
         learningActivities: [
-          "Demonstrating deep-water survival float (HELP and Huddle positions) and treading water for 3 consecutive minutes",
-          "Practising safe non-contact water rescue techniques using reaching poles, throwing ropes, and flotation aids",
-          "Properly donning life jackets in water and swimming survival laps"
+          "Composing songs on drug abuse.",
+          "Performing dances on responsible use of money."
         ],
-        expectedStandard: "Water survival flotation, life jacket usage, and reaching/throwing rescue techniques demonstrated proficiently.",
-        knowledge: "Exhibiting survival skills (diving, buoyancy- Life jackets/aids for swimming, treading water, rescue reaching)",
-        skills: "Shallow/deep water diving, survival float, life vest donning, reach rescues",
-        values: "Lifesaving readiness, emergency calm, water survival"
+        expectedStandard: "Learners will be able to compose songs and perform dances on drug abuse and money.",
+        knowledge: "Songs on drug abuse\nAwareness of responsible use of money - especially in relation to drugs",
+        skills: "Song composition and dance performance",
+        values: "Responsibility and awareness"
       }
     ]
   },
   {
-    title: "6.10 PATTERNS",
+    title: "6.10 CRAFTS",
     subtopics: [
       {
-        title: "6.10.1 Patterns",
+        title: "6.10.1 Weaving Plaiting and Knotting",
         competencies: [
-          "6.10.1.1 Design different patterns"
+          "6.10.1.1 Make items using different techniques",
+          "6.10.1.2 Make various weaved, plaited and knotted Items",
+          "6.10.1.3 Assess the value of local materials used to make items"
         ],
         learningActivities: [
-          "Designing complex monochrome and polychrome repeating surface patterns inspired by traditional Zambian motifs",
-          "Creating tessellations and rotational symmetry designs using geometric drafting tools",
-          "Printing multi-layered textile patterns on cloth using linocut, stencils, and fabric paints"
+          "Making items using weaving, plaiting and knotting techniques."
         ],
-        expectedStandard: "Sophisticated repeating patterns and fabric prints designed demonstrating symmetry, rhythm, and cultural symbolism.",
-        knowledge: "Designing different patterns (monochrome, horizontal, vertical, rhythmic, traditional symbols)",
-        skills: "Monochromatic shading, geometric tessellation, cultural symbol motifs",
-        values: "Graphic sophistication, appreciation of indigenous design symbolism"
+        expectedStandard: "Learners will be able to make items using different techniques and assess material value.",
+        knowledge: "Making of (shawls, chair backs, table clothes, table mats)\nKnow the cost of the raw materials and the value of the made product",
+        skills: "Manipulation of different materials\nApplication of different techniques\nLooking after resources",
+        values: "craftsmanship in craft work\nAppreciate the richness of resources that are around them and not taking them for granted"
+      },
+      {
+        title: "6.10.2 Picture Making",
+        competencies: [
+          "6.10.2.1 Describe different techniques of picture making",
+          "6.10.2.2 Make various types of pictures"
+        ],
+        learningActivities: [
+          "Describing techniques and making pictures."
+        ],
+        expectedStandard: "Learners will be able to describe techniques and make various types of pictures.",
+        knowledge: "Collage, mosaic, appliqué, montage\nPicture composition",
+        skills: "Analysis of different techniques in picture making",
+        values: "Creativity in making various pictures\ncraftsmanship"
+      },
+      {
+        title: "6.10.3 Carving",
+        competencies: [
+          "6.10.3.1 Carve traditional items from wood or stone",
+          "6.10.3.2 Decorate finished carved items"
+        ],
+        learningActivities: [
+          "Carving traditional items and decorating them."
+        ],
+        expectedStandard: "Learners will be able to carve and decorate traditional items.",
+        knowledge: "Carving of (sugar bowls, drums, hoe/axe handles)\nIncision",
+        skills: "Carving and of functional items",
+        values: "Creativity in carving"
+      },
+      {
+        title: "6.10.4 General Crafts",
+        competencies: [
+          "6.10.4.1 Make different types of decorations using local materials"
+        ],
+        learningActivities: [
+          "Making decorations using local materials."
+        ],
+        expectedStandard: "Learners will be able to make decorations using local materials.",
+        knowledge: "Gourd cutting and paper decorations",
+        skills: "Designing of decorations using found materials",
+        values: "Creativity in making different types of decorations"
+      },
+      {
+        title: "6.10.5 Money and Art",
+        competencies: [
+          "6.10.4.2 Discuss importance of poverty reduction using art works",
+          "6.10.4.3 Make a piece of art to depict poverty or wealth"
+        ],
+        learningActivities: [
+          "Discussing poverty reduction through art.",
+          "Making art depicting poverty or wealth."
+        ],
+        expectedStandard: "Learners will be able to discuss poverty reduction and make representative art pieces.",
+        knowledge: "A range of examples from past and present of representations of plenty and poverty in pieces of art\nWhich technique to employ to bring out either plenty or poverty",
+        skills: "Distinguish between styles that are used to represent wealth and poverty, such as colour, style, etc.\nProduce a piece of art based on either plenty or poverty",
+        values: "Appreciate how artists use different techniques to send messages to the observer\nEmpathy for the theme chosen"
       }
     ]
   },
   {
-    title: "6.11 CRAFTS",
+    title: "6.11 SWIMMING",
     subtopics: [
       {
-        title: "6.11.1 Plaiting",
+        title: "6.11.1 Strokes",
         competencies: [
-          "6.11.1.1 Practise plaiting techniques"
+          "6.11.1.1 Demonstrate skilled strokes without buoyancy"
         ],
         learningActivities: [
-          "Practising 4-strand, 6-strand, and flat braid plaiting using leather strips, sisal, or palm fronds",
-          "Constructing heavy-duty utility ropes, decorative belts, and floor mats from plaited braids",
-          "Joining plaited coils with hidden stitching to produce durable woven vessels"
+          "Demonstrating skilled strokes without buoyancy."
         ],
-        expectedStandard: "Multi-strand plaited items (belts, coiled mats, utility ropes) constructed with even tension and sturdy finishing.",
-        knowledge: "Practising various plaiting techniques (belts, ropes, four-strand and multi-strand braids)",
-        skills: "Complex braiding, tension management, durable edge fastening",
-        values: "Patience, manual dexterity, pride in craftsmanship"
+        expectedStandard: "Learners will be able to demonstrate skilled strokes without buoyancy.",
+        knowledge: "Side stroke\nWater games\nBuoyancy (Life jackets/aids for swimming)\nDive",
+        skills: "Application in swimming skills",
+        values: "Team work through self-esteem and cleanliness"
       },
       {
-        title: "6.11.2 Knotting",
+        title: "6.11.2 Water Games",
         competencies: [
-          "6.11.2.1 Make items using knotting techniques"
+          "6.11.2.1 Perform competitions in group/relay races",
+          "6.11.2.2 Perform simple water games in groups."
         ],
         learningActivities: [
-          "Executing advanced macramé patterns (cavitandoli knotting, spiral hitch, diagonal clove hitch)",
-          "Making hanging hammock chairs, string carry bags, and sports net bags",
-          "Incorporating wooden ring supports and decorative fringe terminations"
+          "Performing water competitions and games."
         ],
-        expectedStandard: "Complex knotted macramé articles (string bags, plant hangers, sports nets) fabricated with structural strength.",
-        knowledge: "Making various items using knotting techniques (ropes, belts, hanging baskets, nets)",
-        skills: "Decorative knotting, utility splicing, macramé craft",
-        values: "Practical innovation, structural neatness"
+        expectedStandard: "Learners will be able to perform water competitions and games.",
+        knowledge: "Water games",
+        skills: "Water games skills",
+        values: "Teamwork"
       },
       {
-        title: "6.11.3 Modelling",
+        title: "6.11.3 Survival Skills",
         competencies: [
-          "6.11.3.1 Make objects using clay/plasticine"
+          "6.11.3.1 Perform rescue skills"
         ],
         learningActivities: [
-          "Coiling and slab-building functional ceramic vessels (flower vases, decorated bowls, storage jars)",
-          "Modelling anatomically detailed wildlife and human figurative sculptures in clay",
-          "Applying sgraffito, burnishing, and incised geometric decorations onto leather-hard clay surfaces"
+          "Performing rescue skills."
         ],
-        expectedStandard: "Functional ceramic pottery and detailed figurative sculptures sculpted, decorated, and fired/sealed smoothly.",
-        knowledge: "Making objects using clay/plasticine (flower vessels, figures, fish, bowls, coil pots)",
-        skills: "Pottery shaping, clay smoothing, incised decoration, sculptural anatomical modeling",
-        values: "Sculptural appreciation, patience, fine motor control"
+        expectedStandard: "Learners will be able to perform rescue skills.",
+        knowledge: "Rescue techniques",
+        skills: "Swimming survival skills",
+        values: "Courage and responsibility"
       },
       {
-        title: "6.11.4 Toy Making",
+        title: "6.11.4 Pool Hygiene",
         competencies: [
-          "6.11.4.1 Make toys"
+          "6.11.4.1 Demonstrate advantages of pool hygiene"
         ],
         learningActivities: [
-          "Designing blueprints for kinetic wire cars, rubber-band powered boats, and articulated wooden toys",
-          "Cutting, bending, and soldering/binding wire chassis and fitting steering mechanisms and bottle-top wheels",
-          "Testing toy mobility, balance, and mechanical durability in classroom demonstrations"
+          "Demonstrating advantages of pool hygiene."
         ],
-        expectedStandard: "Functional kinetic toys (wire steering cars, mechanical models) engineered from recycled wire and plastics.",
-        knowledge: "Making toys of their choice (wire toys, motorized carts, recycled toys, wooden models)",
-        skills: "Mechanical design, fabrication, kinetic assembly",
-        values: "Resourcefulness, inventive play, entrepreneurial spirit"
+        expectedStandard: "Learners will be able to demonstrate advantages of pool hygiene.",
+        knowledge: "Pool hygiene",
+        skills: "Hygiene application",
+        values: "Cleanliness"
       },
       {
-        title: "6.11.5 Puppets",
+        title: "6.11.5 Pool Treatment",
         competencies: [
-          "6.11.5.1 Produce puppets"
+          "6.11.5.1 Demonstrate the importance of treating the pool"
         ],
         learningActivities: [
-          "Constructing marionette string puppets, glove puppets, and shadow puppets with movable joints",
-          "Sculpting puppet heads from papier-mâché and sewing detailed costume garments",
-          "Writing puppet scripts and staging a classroom puppet theatre performance on social themes"
+          "Demonstrating the importance of pool treatment."
         ],
-        expectedStandard: "Articulated puppets constructed and manipulated expressively in theatrical script presentations.",
-        knowledge: "Producing puppets (glove puppets, marionettes, shadow puppets) and script dramatization",
-        skills: "Puppet construction, string rigging, expressive puppet manipulation",
-        values: "Theatrical storytelling, humor, creative empathy"
-      },
-      {
-        title: "6.11.6 Book Crafts",
-        competencies: [
-          "6.11.6.1 Reconstruct library paper materials"
-        ],
-        learningActivities: [
-          "Repairing damaged library books using bookbinding tape, spine adhesives, and paper corner mends",
-          "Binding loose paper folios into hardback notebooks using pamphlet stitch and Japanese stab binding",
-          "Creating protective laminated book jackets and library archive storage boxes"
-        ],
-        expectedStandard: "Damaged books repaired and custom hardback notebooks bound using proper archival bookbinding methods.",
-        knowledge: "Reconstructing library paper materials (repairing books, rebinding covers, making archive files)",
-        skills: "Bookbinding, spine gluing, paper stitching, cover lamination",
-        values: "Preservation of knowledge, book care, library stewardship"
-      },
-      {
-        title: "6.11.7 Picture Making",
-        competencies: [
-          "6.11.7.1 Make pictures using various techniques"
-        ],
-        learningActivities: [
-          "Collaborating on a large-scale frieze wall mural depicting Zambian economic and cultural heritage",
-          "Creating multi-layered composite pictures integrating painting, collage, printmaking, and relief elements",
-          "Applying varnish topcoats to preserve and enhance the luminosity of finished mixed-media pictures"
-        ],
-        expectedStandard: "Large frieze murals and composite mixed-media artworks created demonstrating creative synergy and rich texture.",
-        knowledge: "Making pictures using various techniques (Frieze, Collage, montage, mosaic)",
-        skills: "Frieze mural design, composite photomontage, mixed-media layering",
-        values: "Monumental art appreciation, collaborative mural creation"
-      },
-      {
-        title: "6.11.8 General Crafts",
-        competencies: [
-          "6.11.8.1 Create crafts using different materials"
-        ],
-        learningActivities: [
-          "Decorating natural gourds and calabashes using pyrography, bead inlays, and carved relief designs",
-          "Transforming scrap metal, bottle caps, and plastics into artistic junk sculptures and functional kitchen organizers",
-          "Evaluating structural finish, environmental value, and market appeal of created craft pieces"
-        ],
-        expectedStandard: "Decorative calabashes and junk scrap sculptures crafted with artistic ingenuity and polished finish.",
-        knowledge: "Making crafts using different materials (gourd cutting and decorations, egg decorations, junkie sculpture)",
-        skills: "Gourd pyrography, scrap metal/plastic assemblage, decorative embellishment",
-        values: "Environmental waste reduction through art, transformative creativity"
+        expectedStandard: "Learners will be able to demonstrate the importance of treating the pool.",
+        knowledge: "Pool treatment",
+        skills: "Maintenance skills",
+        values: "Responsibility"
       }
     ]
   },
@@ -1478,54 +1326,30 @@ export const expressiveArtsGrade6: Topic[] = [
     title: "6.12 LETTERING AND POSTER WORK",
     subtopics: [
       {
-        title: "6.12.1 Letter Designing",
+        title: "6.12.1 Lettering",
         competencies: [
-          "6.12.1.1 Design different types of letters"
+          "6.12.1.1 Design and make stencils"
         ],
         learningActivities: [
-          "Designing 3-dimensional isometric lettering with cast drop-shadows and light source highlights",
-          "Creating stylized display alphabets (Gothic, Serif, Sans-Serif, Decorative script) for signage",
-          "Cutting block letters from cardboard and wood veneer for architectural wall signage"
+          "Designing and making stencils."
         ],
-        expectedStandard: "3D perspective lettering and customized display typography drafted with precision and geometric balance.",
-        knowledge: "Designing different types of letters (block lettering, 3D lettering, letter cutting, gothic & modern styles)",
-        skills: "Geometric font construction, 3D perspective lettering, typography cutting",
-        values: "Graphic professionalism, typographical aesthetics"
+        expectedStandard: "Learners will be able to design and make stencils.",
+        knowledge: "Letter and number cutting",
+        skills: "Designing of letters",
+        values: "Creativity in letter cutting"
       },
       {
-        title: "6.12.2 Poster Design",
+        title: "6.12.2 Poster Making",
         competencies: [
-          "6.12.2.1 Design posters depicting various themes"
+          "6.12.2.1 Make posters depicting different situations"
         ],
         learningActivities: [
-          "Developing comprehensive promotional and advocacy poster campaigns for school and civic events",
-          "Applying advanced graphic design principles (hierarchy, white space, typography scaling, focal contrast)",
-          "Critiquing poster effectiveness in communicating urgent social messages (e.g. tree planting, road safety, sports festival)"
+          "Making posters depicting different situations."
         ],
-        expectedStandard: "Professional advocacy and event posters produced featuring visual hierarchy, compelling copy, and bold graphic impact.",
-        knowledge: "Designing posters depicting various themes (riding a bicycle, planting trees, sports day, safety, initiation ceremony)",
-        skills: "Visual communication design, color psychology, persuasive visual layout",
-        values: "Community leadership, civic advocacy, artistic excellence"
-      }
-    ]
-  },
-  {
-    title: "6.13 ENTREPRENEURSHIP",
-    subtopics: [
-      {
-        title: "6.13.1 Business Plan",
-        competencies: [
-          "6.13.1.1 Develop a business plan"
-        ],
-        learningActivities: [
-          "Developing a comprehensive business plan for an arts or sports venture (business description, brand name, target market)",
-          "Formulating a financial budget calculating startup capital, production costs, pricing strategies, and projected profit margins",
-          "Staging a mock craft fair demonstrating sales pitches, customer service, invoice recording, and product display marketing"
-        ],
-        expectedStandard: "Actionable business plan formulated detailing product marketing, financial costing, pricing, and sales strategy.",
-        knowledge: "Developing a business plan (business description, business name, business location); Developing Financial plan (startup capital, sources of capital, expected profit); Demonstrating marketing skills (goods and services, customers, pricing, methods of selling)",
-        skills: "Business model formulation, basic financial budgeting, product pricing, sales pitches",
-        values: "Entrepreneurial initiative, economic self-reliance, financial integrity"
+        expectedStandard: "Learners will be able to make posters.",
+        knowledge: "Poster making: (environmental issues, sports day, human rights)",
+        skills: "Designing of posters",
+        values: "Creativity in poster work"
       }
     ]
   }
@@ -1533,102 +1357,512 @@ export const expressiveArtsGrade6: Topic[] = [
 
 export const expressiveArtsGrade7: Topic[] = [
   {
-    title: "7.1 SAFETY AND HEALTH",
+    title: "7.1 DRAWING AND COLOURING",
     subtopics: [
       {
-        title: "7.1.1 Safety and Health Management",
+        title: "7.1.1 Colour",
         competencies: [
-          "7.1.1.1 Demonstrate advanced safety and environmental care in artistic and athletic environments"
+          "7.1.1.1 Identify complimentary colours",
+          "7.1.1.2 Use monochromatic colours for various designs"
         ],
         learningActivities: [
-          "Conducting safety audits of physical education facilities, gymnasium apparatus, and studio equipment",
-          "Demonstrating advanced first aid response for sports injuries (RICE method, fracture immobilisation, CPR basics)",
-          "Managing safe handling and eco-friendly disposal of chemical paints, solvents, and studio dusts"
+          "Identifying complimentary colours.",
+          "Using monochromatic colours for designs."
         ],
-        expectedStandard: "Facility safety audits conducted, environmental studio care enforced, and advanced sports first aid demonstrated.",
-        knowledge: "Safety regulations, emergency response in physical and studio activities; Workshop and athletic health management",
-        skills: "Risk management, safety audits, injury response protocols",
-        values: "Accountability, preventive care, community wellbeing"
+        expectedStandard: "Learners will be able to identify complimentary and use monochromatic colours.",
+        knowledge: "Colours\nComplimentary (red and green, yellow and violet, blue and orange)\nMonochromatic (any single colour)",
+        skills: "Application of colours",
+        values: "Appreciation of colours"
+      },
+      {
+        title: "7.1.2 Imaginative Composition",
+        competencies: [
+          "7.1.2.1 Draw and shade pictures depicting subjects of local and traditional interest",
+          "7.1.2.2 Apply the principles of tonal variation"
+        ],
+        learningActivities: [
+          "Drawing and shading imaginative pictures.",
+          "Applying principles of tonal variation."
+        ],
+        expectedStandard: "Learners will be able to draw, shade and apply tonal variation.",
+        knowledge: "Composing pictures (portraits, landscape, village scenery, town scape)\nTonal gradation",
+        skills: "Composition of pictures",
+        values: "Appreciation of imaginary pictures"
+      },
+      {
+        title: "7.1.3 Figure Drawing",
+        competencies: [
+          "7.1.3.1 Draw figures in action"
+        ],
+        learningActivities: [
+          "Drawing figures in action."
+        ],
+        expectedStandard: "Learners will be able to draw figures in action.",
+        knowledge: "Figure drawing\nPersons in different postures",
+        skills: "Drawing figures in action",
+        values: "Craftsmanship in drawing"
       }
     ]
   },
   {
-    title: "7.2 MOVEMENT & SPORTS",
+    title: "7.2 PATTERNS",
     subtopics: [
       {
-        title: "7.2.1 Tactical Game Play",
+        title: "7.2.1 Types of Patterns",
         competencies: [
-          "7.2.1.1 Execute complex offensive and defensive game strategies in conventional sports"
+          "7.2.1.1 Use different media to make patterns"
         ],
         learningActivities: [
-          "Designing tactical game plans (zonal marking, counter-attacks, fast breaks, set-piece execution) for football, netball, and basketball",
-          "Executing specialized positional duties and game leadership in competitive match tournaments",
-          "Officiating standard sports matches adhering strictly to international rules and refereeing codes of conduct"
+          "Using different media to make patterns."
         ],
-        expectedStandard: "Advanced tactical plays, set-piece strategies, and fair officiating executed in competitive sports matches.",
-        knowledge: "Zonal marking, fast breaks, offensive formations, rulebooks, tactical set-pieces",
-        skills: "Strategic execution, tactical teamwork, sports officiating",
-        values: "Fair play, competitive resilience, leadership"
+        expectedStandard: "Learners will be able to use different media to make patterns.",
+        knowledge: "Patterns (wax resist counter change, mechanical aids print)",
+        skills: "Designing of patterns",
+        values: "Creativity in designing patterns"
       }
     ]
   },
   {
-    title: "7.3 VISUAL ARTS & DESIGN",
+    title: "7.3 MELODY WRITING",
     subtopics: [
       {
-        title: "7.3.1 Advanced Drawing, Painting & Sculpture",
+        title: "7.3.1 The Staff",
         competencies: [
-          "7.3.1.1 Create portfolio artworks incorporating advanced perspective, colour harmony, and mixed media"
+          "7.3.1.1 Draw bass and treble clefs",
+          "7.3.1.2 Transcribe music on the staff",
+          "7.3.1.3 Extend motifs into melodies",
+          "7.3.1.4 Translate melodies",
+          "7.3.1.5 Transpose melodies"
         ],
         learningActivities: [
-          "Drawing architectural and outdoor scenes using 2-point linear perspective and accurate atmospheric shading",
-          "Painting studio still-life and landscape compositions using advanced colour temperature and value contrast",
-          "Sculpting freestanding 3D ceramic and mixed-media sculptures expressing personal artistic identity"
+          "Drawing clefs and transcribing music.",
+          "Extending, translating, and transposing melodies."
         ],
-        expectedStandard: "Portfolio of visual artworks produced showcasing 2-point perspective, tonal mastery, and sculptural balance.",
-        knowledge: "Linear perspective (1-point and 2-point), colour theory, sculptural balance, portfolio development",
-        skills: "Mastery of media, portfolio presentation, perspective drafting",
-        values: "Artistic identity, creative excellence, dedication"
+        expectedStandard: "Learners will be able to draw clefs, transcribe, extend, translate, and transpose melodies.",
+        knowledge: "Staff notation: (spaces and lines, bass and treble, transposition, translation, transcribe)",
+        skills: "Application of knowledge in melody writing",
+        values: "Appreciation of knowledge in melody writing"
       }
     ]
   },
   {
-    title: "7.4 MUSICAL ARTS",
+    title: "7.4 POPULAR WORLD MUSIC",
     subtopics: [
       {
-        title: "7.4.1 Musical Composition & Performance",
+        title: "7.4.1 Form and Style",
         competencies: [
-          "7.4.1.1 Compose and perform vocal and instrumental pieces in standard notation"
+          "7.4.1.1 Analyse the form and style of popular world music",
+          "7.4.1.2 Perform world popular music"
         ],
         learningActivities: [
-          "Composing 16-bar melodies on the treble staff in C Major and G Major using standard note values and rests",
-          "Performing 3-part vocal choral pieces and instrumental ensemble arrangements from musical scores",
-          "Conducting student choir and instrumental ensemble performances with expressive dynamics and tempo control"
+          "Analysing and performing world popular music."
         ],
-        expectedStandard: "Multi-part vocal and instrumental musical pieces composed in standard staff notation and performed expressively.",
-        knowledge: "Staff notation, harmony arrangement, choral leadership, tempo and dynamics markings",
-        skills: "Advanced sight-reading, instrumental performance, choral conducting",
-        values: "Expressive mastery, cultural heritage promotion, artistic rigor"
+        expectedStandard: "Learners will be able to analyse and perform world popular music.",
+        knowledge: "Popular world music",
+        skills: "Application of skills in performing popular music",
+        values: "Appreciation of knowledge in world music"
+      },
+      {
+        title: "7.4.2 Instrument Playing",
+        competencies: [
+          "7.4.2.1 Play popular musical instruments"
+        ],
+        learningActivities: [
+          "Playing popular musical instruments."
+        ],
+        expectedStandard: "Learners will be able to play popular musical instruments.",
+        knowledge: "Instrument playing (strum, blow, rattle, strike)",
+        skills: "Application of knowledge in instrument playing",
+        values: "Appreciation of instrument playing"
+      },
+      {
+        title: "7.4.3 Music Composition",
+        competencies: [
+          "7.4.3.1 Compose songs using variations of world popular music"
+        ],
+        learningActivities: [
+          "Composing songs using popular world music variations."
+        ],
+        expectedStandard: "Learners will be able to compose songs using variations of world popular music.",
+        knowledge: "Composing songs",
+        skills: "Creativity in composing and performing",
+        values: "Appreciation of music Compositions"
+      },
+      {
+        title: "7.4.4 Music to enhance life",
+        competencies: [
+          "7.4.4.1 Describe how music is used to raise money for charity"
+        ],
+        learningActivities: [
+          "Describing how music is used for charity."
+        ],
+        expectedStandard: "Learners will be able to describe how music is used for charity.",
+        knowledge: "Music is used for raising money for charity",
+        skills: "Application in charity functions",
+        values: "Appreciate how music is used to raise money for charity"
       }
     ]
   },
   {
-    title: "7.5 ENTREPRENEURSHIP IN CREATIVE ARTS",
+    title: "7.5 EDUCATIONAL GYMNASTICS",
     subtopics: [
       {
-        title: "7.5.1 Creative Enterprise & Exhibition",
+        title: "7.5.1 Tumbling",
         competencies: [
-          "7.5.1.1 Organize an arts and crafts exhibition with commercial pricing and marketing strategy"
+          "7.5.1.1 Perform a series of gymnastic activities"
         ],
         learningActivities: [
-          "Curating an end-of-year school exhibition displaying student artworks, crafts, and manufactured sports equipment",
-          "Establishing commercial selling prices calculating raw materials, labour hours, and competitive market markups",
-          "Managing exhibition promotions, catalogue design, customer sales transactions, and financial bookkeeping"
+          "Performing a series of gymnastic activities."
         ],
-        expectedStandard: "Comprehensive arts and crafts exhibition curated and staged with commercial pricing, promotional campaigns, and financial accounting.",
-        knowledge: "Art marketing, exhibition curation, customer relations, profit calculation, promotional branding",
-        skills: "Event planning, marketing communication, enterprise budgeting, sales management",
-        values: "Commercial innovation, professionalism, financial integrity"
+        expectedStandard: "Learners will be able to perform a series of gymnastic activities.",
+        knowledge: "Vaulting box\nWooden horse\nMats",
+        skills: "Creativity in gymnastic activities",
+        values: "Team work through cooperative learning"
+      },
+      {
+        title: "7.5.2 Stunts",
+        competencies: [
+          "7.5.2.1 Perform refined stunt activities"
+        ],
+        learningActivities: [
+          "Performing refined stunt activities."
+        ],
+        expectedStandard: "Learners will be able to perform refined stunt activities.",
+        knowledge: "Refined floor activities\nBenches\nBalance",
+        skills: "Stunting skills",
+        values: "Concentration and balance"
+      }
+    ]
+  },
+  {
+    title: "7.6 HEALTH AND FITNESS MANAGEMENT",
+    subtopics: [
+      {
+        title: "7.6.1 Health",
+        competencies: [
+          "7.6.1.1 Perform a series of practical activities using obstacles"
+        ],
+        learningActivities: [
+          "Performing practical activities using obstacles."
+        ],
+        expectedStandard: "Learners will be able to perform practical activities using obstacles.",
+        knowledge: "Developmental activities with (obstacle, parallel bars, circuit training stations and hurdles)",
+        skills: "Application of knowledge in fitness activities",
+        values: "Appreciation of knowledge in developmental activities"
+      },
+      {
+        title: "7.6.2 Fitness",
+        competencies: [
+          "7.6.2.1 Perform a series of developmental activities",
+          "7.6.2.2 Demonstrate simple circuit training"
+        ],
+        learningActivities: [
+          "Performing developmental activities and circuit training."
+        ],
+        expectedStandard: "Learners will be able to perform developmental activities and circuit training.",
+        knowledge: "Fitness exercises and circuit training",
+        skills: "Fitness application",
+        values: "Endurance"
+      }
+    ]
+  },
+  {
+    title: "7.7 SPORTS SKILLS DEVELOPMENT",
+    subtopics: [
+      {
+        title: "7.7.1 Games (Conventional Modified Games)",
+        competencies: [
+          "7.7.1.1 Perform refined sports activities",
+          "7.7.1.2 Demonstrate refined sporting skills"
+        ],
+        learningActivities: [
+          "Performing and demonstrating refined sports activities and skills."
+        ],
+        expectedStandard: "Learners will be able to perform and demonstrate refined sporting skills.",
+        knowledge: "Basket ball\nDiscus\n400 meter relays\n800 x 4 metre relays\nSoccer\nOrienteering",
+        skills: "Application of knowledge sports activities",
+        values: "Team spirit in sports"
+      },
+      {
+        title: "7.7.2 Track and Field Events",
+        competencies: [
+          "7.7.2.1 Perform refined fundamental athletic movements"
+        ],
+        learningActivities: [
+          "Performing athletic movements."
+        ],
+        expectedStandard: "Learners will be able to perform refined fundamental athletic movements.",
+        knowledge: "Track and field events",
+        skills: "Athletics skills",
+        values: "Teamwork and endurance"
+      },
+      {
+        title: "7.7.3 Traditional Games",
+        competencies: [
+          "7.7.3.1 Perform refined traditional games"
+        ],
+        learningActivities: [
+          "Performing traditional games."
+        ],
+        expectedStandard: "Learners will be able to perform refined traditional games.",
+        knowledge: "Traditional games rules",
+        skills: "Playing traditional games",
+        values: "Appreciation of culture"
+      }
+    ]
+  },
+  {
+    title: "7.8 RECREATION",
+    subtopics: [
+      {
+        title: "7.8.1 Dance",
+        competencies: [
+          "7.8.1.1 Perform dances with music from different cultures"
+        ],
+        learningActivities: [
+          "Performing dances with different cultural music."
+        ],
+        expectedStandard: "Learners will be able to perform dances with music from different cultures.",
+        knowledge: "Dancing and singing (steps, clap, space, sequence)",
+        skills: "Creativity in recreational activities",
+        values: "Appreciation of health messages\nCooperation through team work"
+      },
+      {
+        title: "7.8.2 Games",
+        competencies: [
+          "7.8.2.1 Perform structured movement in dances",
+          "7.8.2.2 Demonstrate a group choreograph simple dance",
+          "7.8.2.3 Perform games and dances with health messages"
+        ],
+        learningActivities: [
+          "Performing structured dance movements and games."
+        ],
+        expectedStandard: "Learners will be able to perform structured movements, choreograph dance, and games with health messages.",
+        knowledge: "Games and structured dance movements",
+        skills: "Choreography",
+        values: "Teamwork"
+      }
+    ]
+  },
+  {
+    title: "7.9 CONSTRUCTIONAL CRAFTS",
+    subtopics: [
+      {
+        title: "7.9.1 Weaving Plaiting and Knotting",
+        competencies: [
+          "7.9.1.1 Make different items using materials in the local environment"
+        ],
+        learningActivities: [
+          "Making items using local materials."
+        ],
+        expectedStandard: "Learners will be able to make different items using materials in the local environment.",
+        knowledge: "Making of items (decorative wall mats, basket, table mats, fish traps, reed mats)",
+        skills: "Application of different techniques in making functional items",
+        values: "Appreciation of weaving, plaiting and knotting"
+      },
+      {
+        title: "7.9.2 Modelling",
+        competencies: [
+          "7.9.2.1 Model items using different techniques",
+          "7.9.2.2 Make papier machè models",
+          "7.9.2.3 Decorate finished models"
+        ],
+        learningActivities: [
+          "Modelling items and making papier machè models."
+        ],
+        expectedStandard: "Learners will be able to model, make papier machè models and decorate them.",
+        knowledge: "Models of items\nPapier machè models\nDecorating models",
+        skills: "Modelling of functional items",
+        values: "Appreciation of craft work"
+      },
+      {
+        title: "7.9.3 Construction",
+        competencies: [
+          "7.9.3.1 Construct different items using plastics and light metals"
+        ],
+        learningActivities: [
+          "Constructing items using plastics and light metals."
+        ],
+        expectedStandard: "Learners will be able to construct different items using plastics and light metals.",
+        knowledge: "Constructing items (soft toys, cars, aeroplane, insects)",
+        skills: "Construction of toys\nManipulation of various materials",
+        values: "Appreciation of importance of toys"
+      },
+      {
+        title: "7.9.4 Picture Making",
+        competencies: [
+          "7.9.4.1 Make different pictures using paper"
+        ],
+        learningActivities: [
+          "Making pictures using paper."
+        ],
+        expectedStandard: "Learners will be able to make different pictures using paper.",
+        knowledge: "Picture making: (collage, mosaic and montage)",
+        skills: "Application of different techniques in picture making",
+        values: "Creativity in picture making"
+      },
+      {
+        title: "7.9.5 Book Craft",
+        competencies: [
+          "7.9.5.1 Repair books by binding using different materials"
+        ],
+        learningActivities: [
+          "Repairing and binding books."
+        ],
+        expectedStandard: "Learners will be able to repair books by binding.",
+        knowledge: "Book repairing",
+        skills: "Binding of different books",
+        values: "Creativity in binding"
+      },
+      {
+        title: "7.9.6 Carving",
+        competencies: [
+          "7.9.6.1 Carve different items",
+          "7.9.6.2 Decorate carvings using traditional patterns"
+        ],
+        learningActivities: [
+          "Carving and decorating items."
+        ],
+        expectedStandard: "Learners will be able to carve and decorate items.",
+        knowledge: "Carving of (masks and stool, decorations)",
+        skills: "Carving of different items",
+        values: "Appreciation of craft works"
+      },
+      {
+        title: "7.9.7 General Crafts",
+        competencies: [
+          "7.9.7.1 Make different items using man-made and natural materials"
+        ],
+        learningActivities: [
+          "Making items using man-made and natural materials."
+        ],
+        expectedStandard: "Learners will be able to make items using man-made and natural materials.",
+        knowledge: "Making of (egg decorations, twig decorations and bead work)",
+        skills: "Identification and manipulation of local materials",
+        values: "Resourcefulness and creativity in general crafts"
+      }
+    ]
+  },
+  {
+    title: "7.10 LEARNING ABOUT MONEY",
+    subtopics: [
+      {
+        title: "7.10.1 Money and art",
+        competencies: [
+          "7.10.1.1 Identify existing works of art which represent wealth creation",
+          "7.10.1.2 Make different items using found materials to represent wealth creation"
+        ],
+        learningActivities: [
+          "Identifying art representing wealth and making items."
+        ],
+        expectedStandard: "Learners will be able to identify works of art and make items to represent wealth creation.",
+        knowledge: "A range of examples from past and present artists\nTechniques to employ with found materials",
+        skills: "Observation of works of art\nCreativity in representing wealth creation using found materials",
+        values: "Appreciation of techniques of artists\nEmpathy for chosen theme"
+      }
+    ]
+  },
+  {
+    title: "7.11 SWIMMING",
+    subtopics: [
+      {
+        title: "7.11.1 Strokes",
+        competencies: [
+          "7.11.1.1 Demonstrate strokes with correct timing"
+        ],
+        learningActivities: [
+          "Demonstrating strokes with correct timing."
+        ],
+        expectedStandard: "Learners will be able to demonstrate strokes with correct timing.",
+        knowledge: "Side stroke\nWater games (baseball, basketball, polo)\nSpring board\nDiving\nRescue\nDrown\nFirst Aid\nClean",
+        skills: "Creativity through use of different survival skills",
+        values: "Concentration and courage through team work in water games"
+      },
+      {
+        title: "7.11.2 Water Games",
+        competencies: [
+          "7.11.2.1 Perform water games in groups"
+        ],
+        learningActivities: [
+          "Performing water games in groups."
+        ],
+        expectedStandard: "Learners will be able to perform water games in groups.",
+        knowledge: "Water games",
+        skills: "Water games skills",
+        values: "Teamwork"
+      },
+      {
+        title: "7.11.3 Survival Skills",
+        competencies: [
+          "7.11.3.1 Demonstrate how to rescue a drowning person",
+          "7.11.3.2 Demonstrate how to apply first Aid"
+        ],
+        learningActivities: [
+          "Demonstrating rescuing and first aid."
+        ],
+        expectedStandard: "Learners will be able to demonstrate rescue skills and first aid.",
+        knowledge: "Rescue and first aid techniques",
+        skills: "Application of survival skills",
+        values: "Courage and responsibility"
+      },
+      {
+        title: "7.11.4 Pool Hygiene",
+        competencies: [
+          "7.11.4.1 Demonstrate advantages of pool hygiene"
+        ],
+        learningActivities: [
+          "Demonstrating advantages of pool hygiene."
+        ],
+        expectedStandard: "Learners will be able to demonstrate advantages of pool hygiene.",
+        knowledge: "Pool hygiene rules",
+        skills: "Hygiene application",
+        values: "Cleanliness"
+      },
+      {
+        title: "7.11.5 Pool Treatment",
+        competencies: [
+          "7.11.5.1 Demonstrate how to treat the pool"
+        ],
+        learningActivities: [
+          "Demonstrating how to treat the pool."
+        ],
+        expectedStandard: "Learners will be able to demonstrate how to treat the pool.",
+        knowledge: "Pool treatment methods",
+        skills: "Maintenance skills",
+        values: "Responsibility"
+      }
+    ]
+  },
+  {
+    title: "7.12 LETTERING AND POSTER WORK",
+    subtopics: [
+      {
+        title: "7.12.1 Lettering",
+        competencies: [
+          "7.12.1.1 Design block and roman letters",
+          "7.12.1.2 Create basic calligraphy"
+        ],
+        learningActivities: [
+          "Designing letters and creating calligraphy."
+        ],
+        expectedStandard: "Learners will be able to design letters and create calligraphy.",
+        knowledge: "Letter spacing, block and roman lettering and Calligraphy",
+        skills: "Designing of letters",
+        values: "Appreciation of different letters"
+      },
+      {
+        title: "7.12.2 Posters",
+        competencies: [
+          "7.12.2.1 Design posters depicting different themes",
+          "7.12.2.2 Convey messages clearly on posters"
+        ],
+        learningActivities: [
+          "Designing posters and conveying messages."
+        ],
+        expectedStandard: "Learners will be able to design posters and convey messages clearly.",
+        knowledge: "Poster making (conservation, Social activities)\nConvey messages",
+        skills: "Designing of posters",
+        values: "Appreciation of poster work"
       }
     ]
   }

@@ -2,20 +2,40 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>FORTUNES EDUTECH</title>
+    <meta name="description" content="Comprehensive AI teacher portal for the Zambian curriculum, covering Early Childhood Education (ECE), Primary Grades 1-6, O-Level Forms 1-4, and A-Level Forms 5-6. Features automated curriculum integrity auditing, CBC lesson planning, and assessment tools." />
+    <meta property="og:title" content="FORTUNES EDUTECH" />
+    <meta property="og:description" content="Comprehensive AI teacher portal for the Zambian curriculum, covering Early Childhood Education (ECE), Primary Grades 1-6, O-Level Forms 1-4, and A-Level Forms 5-6. Features automated curriculum integrity auditing, CBC lesson planning, and assessment tools." />
+    <meta name="theme-color" content="#00A86B" />
     <link rel="manifest" href="/manifest.json" />
+    <!-- Standard & Favicon support -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48 64x64" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <!-- Android / Chromium PWA support -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/logo192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/logo512.png" />
     <!-- iOS / Safari PWA support -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="FORTUNES EDUTECH" />
-    <link rel="apple-touch-icon" href="/logo512.png" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="FORTUNES" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <script>
       // Gracefully capture and suppress non-critical or third-party/extension-injected "Script error."
       window.addEventListener('error', function (event) {
         if (!event || !event.message) return;
-        if (event.message === 'Script error.' || event.message.includes('extension') || event.message.includes('cross-origin')) {
-          console.warn('Gracefully ignored generic cross-origin or extension environment error:', event.message);
+        const msg = String(event.message).toLowerCase();
+        if (
+          msg === 'script error.' ||
+          msg.includes('extension') ||
+          msg.includes('cross-origin') ||
+          msg.includes('invalid state') ||
+          msg.includes('serviceworker')
+        ) {
+          console.warn('Gracefully ignored preview environment error:', event.message);
           event.preventDefault();
           event.stopPropagation();
           return true;
@@ -23,10 +43,16 @@
       }, true);
 
       window.addEventListener('unhandledrejection', function (event) {
-        if (event && event.reason && event.reason.message) {
-          const msg = event.reason.message;
-          if (msg === 'Script error.' || msg.includes('extension') || msg.includes('cross-origin')) {
-            console.warn('Gracefully ignored unhandled cross-origin rejection:', msg);
+        if (event && event.reason) {
+          const msg = String(event.reason.message || event.reason).toLowerCase();
+          if (
+            msg === 'script error.' ||
+            msg.includes('extension') ||
+            msg.includes('cross-origin') ||
+            msg.includes('invalid state') ||
+            msg.includes('serviceworker')
+          ) {
+            console.warn('Gracefully ignored unhandled preview environment rejection:', event.reason);
             event.preventDefault();
             event.stopPropagation();
           }

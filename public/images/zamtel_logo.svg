@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Zamtel Green Circular Emblem -->
+  <circle cx="250" cy="250" r="240" fill="#00A84D"/>
+
+  <!-- Phone & ZMW Receipt Graphic -->
+  <g transform="translate(250, 150) rotate(14) scale(0.95)">
+    <!-- Smartphone Outline -->
+    <rect x="-42" y="-15" width="84" height="110" rx="16" fill="none" stroke="#FFFFFF" stroke-width="12"/>
+    <!-- Home / Base Indicator -->
+    <rect x="-14" y="80" width="28" height="4" rx="2" fill="#FFFFFF"/>
+    
+    <!-- Receipt Paper Emerging from Phone -->
+    <path d="M -36 -72 Q -38 -80 -25 -80 L 15 -80 Q 28 -80 32 -70 L 36 2 C 30 18 -10 18 -16 6 L -36 -72 Z" fill="#FFFFFF"/>
+    
+    <!-- Purple folded corner / bottom accent swoosh -->
+    <path d="M -24 0 Q -10 18 20 6 Q 0 8 -24 0 Z" fill="#800080"/>
+    <path d="M 12 -58 C 22 -58 26 -50 28 -40 C 24 -46 18 -52 10 -54 Z" fill="#800080"/>
+    
+    <!-- "ZMW" Currency text on receipt -->
+    <text x="-4" y="-38" font-family="'Inter', -apple-system, sans-serif" font-weight="900" font-size="21" fill="#00A84D" text-anchor="middle" letter-spacing="1">ZMW</text>
+  </g>
+
+  <!-- "Zamtel" Brand Typography -->
+  <text x="250" y="325" font-family="'Inter', -apple-system, sans-serif" font-weight="900" font-size="78" fill="#FFFFFF" text-anchor="middle" letter-spacing="-1">Zamtel</text>
+
+  <!-- "Mobile Money" Brand Typography -->
+  <text x="250" y="380" font-family="'Inter', -apple-system, sans-serif" font-weight="700" font-size="44" fill="#FFFFFF" text-anchor="middle" letter-spacing="0">Mobile Money</text>
+</svg>

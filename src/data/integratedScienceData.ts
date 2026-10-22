@@ -705,117 +705,232 @@ export const integratedScienceGrade3CBC: Topic[] = [
 
 export const integratedScienceGrade3 = integratedScienceGrade3CBC;
 
-export const integratedScienceGrade3OBC = [
+export const integratedScienceGrade3OBC: Topic[] = [
   {
-    "title": "3.1.0 THE HUMAN BODY (Page 180)",
-    "subtopics": [
+    title: "3.1.0 THE HUMAN BODY",
+    generalCompetency: "Demonstrate an understanding of the basic facts about the human body; Develop investigative skills; Show basic knowledge and skills in taking the pulse rate; Show basic skills and knowledge in measuring temperature of various objects; Demonstrate the ability to classify plants and animals.",
+    subtopics: [
       {
-        "title": "3.1.1 Mouth",
-        "competencies": ["3.1.1.1 State the function of the teeth and tongue"],
-        "learningActivities": ["Examining mirrors to see teeth", "Discussing tooth decay and prevention"],
-        "expectedStandard": "Knows the functions of the mouth components."
-      },
-      {
-        "title": "3.1.2 Nose",
-        "competencies": ["3.1.2.1 State the function of the nose"],
-        "learningActivities": ["Breathing exercises", "Identifying various smells (flowers, food)"],
-        "expectedStandard": "Understands the functions of the nose."
-      },
-      {
-        "title": "3.1.3 Structure of the Body",
-        "competencies": [
-          "3.1.3.1 Demonstrate the movement of arms and legs",
-          "3.1.3.2 Name the major movable joints in the body",
-          "3.1.3.3 Explain the role played by bones, joints and muscles",
-          "3.1.3.4 Explain what happens if a bone gets broken",
-          "3.1.3.5 Identify the major parts of the human skeleton"
+        title: "3.1.1 Mouth",
+        competencies: [
+          "Specific Outcome: 3.1.1.1 State the function of the teeth and tongue | Knowledge: Functions; teeth for chewing the food, tongue for tasting with | Skills: Communicating information on the function of the mouth | Values: Appreciating the function of the teeth and tongue; Cooperating in group work"
         ],
-        "learningActivities": ["Physical exercises showing joint limits", "Labeling joints on a diagram", "Discussing bone safety"],
-        "expectedStandard": "Can identify joints and understands skeletal structure and role."
+        knowledge: "Functions; teeth for chewing the food, tongue for tasting with.",
+        skills: "Communicating information on the function of the mouth.",
+        values: "Appreciating the function of the teeth and tongue; Cooperating in group work.",
+        learningActivities: [
+          "Examining the mouth, teeth and tongue using clean mirrors or partner observation",
+          "Demonstrating chewing food with teeth and tasting with tongue",
+          "Communicating findings on oral functions and cooperating in group discussions"
+        ],
+        expectedStandard: "Functions of teeth (chewing food) and tongue (tasting) stated clearly and appreciated."
+      },
+      {
+        title: "3.1.2 Nose",
+        competencies: [
+          "Specific Outcome: 3.1.2.1 State the function of the nose | Knowledge: Function of the nose: for smelling and breathing with | Skills: Communicating information on the function of the nose | Values: Participating actively in class activities"
+        ],
+        knowledge: "Function of the nose: for smelling and breathing with.",
+        skills: "Communicating information on the function of the nose.",
+        values: "Participating actively in class activities.",
+        learningActivities: [
+          "Breathing exercises inhaling and exhaling air through the nose",
+          "Identifying pleasant and unpleasant scents and aromas using the nose",
+          "Communicating information on the dual functions of the nose in smelling and respiration"
+        ],
+        expectedStandard: "Functions of the nose for breathing and smelling stated accurately."
+      },
+      {
+        title: "3.1.3 Structure of the Body",
+        competencies: [
+          "Specific Outcome: 3.1.3.1 Demonstrate the movement of arms and legs | Knowledge: Movement of arms and legs | Skills: Comparing movement of legs and arms | Values: Appreciating body movements",
+          "Specific Outcome: 3.1.3.2 Name the major movable joints in the body | Knowledge: Movable joints (Elbow, knee, shoulder, hip, wrist and ankle) | Skills: Observing major movable joints of the body | Values: Asking questions for more understanding",
+          "Specific Outcome: 3.1.3.3 Explain the role played by bones, joints and muscles | Knowledge: Function of bones and muscles (Hold structure, support the body and help in movement) | Skills: Communicating information on the human skeleton | Values: Appreciating body movements",
+          "Specific Outcome: 3.1.3.4 Explain what happens if a bone gets broken | Knowledge: Broken arm or leg: pain, no movement or playing | Skills: Communicating information on bone injury and first care | Values: Asking questions for more understanding",
+          "Specific Outcome: 3.1.3.5 Identify the major parts of the human skeleton | Knowledge: Parts of the human skeleton (Skull, neck, arms, ribs, hip, legs, feet, spine) | Skills: Communicating information on the human skeleton | Values: Appreciating body movements; Asking questions for more understanding"
+        ],
+        knowledge: "Movement of arms and legs; Movable joints (Elbow, knee, shoulder, hip, wrist and ankle); Function of bones and muscles (Hold structure, support the body and help in movement); Broken arm or leg: pain, no movement or playing; Parts of the human skeleton (Skull, neck, arms, ribs, hip, legs, feet, spine).",
+        skills: "Comparing movement of legs and arms; Observing major movable joints of the body; Communicating information on the human skeleton.",
+        values: "Appreciating body movements; Asking questions for more understanding.",
+        learningActivities: [
+          "Demonstrating, testing, and comparing physical movement of arms and legs",
+          "Locating and naming the major movable joints (elbow, knee, shoulder, hip, wrist, ankle)",
+          "Examining skeletal models and charts to identify skull, neck, arms, ribs, hip, legs, feet, and spine",
+          "Explaining how bones, joints, and muscles collaborate to hold structure, provide support, and facilitate movement",
+          "Discussing safety and the impact of broken bones (pain, inability to play or move)"
+        ],
+        expectedStandard: "Body movements demonstrated, major movable joints and skeletal parts identified, and functions of bones and muscles explained."
       }
     ]
   },
   {
-    "title": "3.2.0 Health",
-    "subtopics": [
+    title: "3.2.0 HEALTH",
+    generalCompetency: "Recognise the importance of personal health; Develop investigative skills on personal health.",
+    subtopics: [
       {
-        "title": "3.2.1 Food",
-        "competencies": [
-          "Specific Competency: 3.2.1.1 State the importance of food | Expected Standard: Importance of food for Energy, body building and Protection | [Skills]: Classifying foods according to nutrients",
-          "Specific Competency: 3.2.1.2 Classify foods according to their nutrients | Expected Standard: Food nutrients such as Energy foods, Body building foods, Protective foods",
-          "Specific Competency: 3.2.1.3 Demonstrate the composition of a balanced diet for health | Expected Standard: Composition of balanced diet: e.g. sadza, meat and vegetables | [Skills]: Communicating the composition of a balanced diet for health"
-        ]
+        title: "3.2.1 Food",
+        competencies: [
+          "Specific Outcome: 3.2.1.1 State the importance of food | Knowledge: Importance of food for: Energy, body building and protection | Skills: Classifying foods according to nutrients | Values: Appreciating food nutrients; Cooperating in group activities",
+          "Specific Outcome: 3.2.1.2 Classify foods according to their nutrients | Knowledge: Food nutrients such as Energy foods: rice, nshima, potatoes; Body building foods: meat, eggs, beans; Protective foods: fruits, vegetables | Skills: Classifying foods according to nutrients | Values: Appreciating food nutrients; Applying the knowledge of a balanced diet in everyday life",
+          "Specific Outcome: 3.2.1.3 Demonstrate the composition of a balanced diet for health from available foods | Knowledge: Composition of balanced diet: e.g. nshima, meat and vegetables | Skills: Communicating the composition of a balanced diet for health | Values: Applying the knowledge of a balanced diet in everyday life; Cooperating in group activities"
+        ],
+        knowledge: "Importance of food for: Energy, body building and protection; Food nutrients such as Energy foods: rice, nshima, potatoes; Body building foods: meat, eggs, beans; Protective foods: fruits, vegetables; Composition of balanced diet: e.g. nshima, meat and vegetables.",
+        skills: "Classifying foods according to nutrients; Communicating the composition of a balanced diet for health.",
+        values: "Appreciating food nutrients; Cooperating in group activities; Applying the knowledge of a balanced diet in everyday life.",
+        learningActivities: [
+          "Discussing the triple importance of food (providing energy, body building, and body protection)",
+          "Sorting and classifying actual or illustrated food items into energy foods (rice, nshima, potatoes), body building foods (meat, eggs, beans), and protective foods (fruits, vegetables)",
+          "Designing and demonstrating a balanced meal model from locally available Zambian foods (e.g. nshima with meat/beans and green vegetables)"
+        ],
+        expectedStandard: "Importance of food stated, food classified into 3 nutrient categories, and balanced diet composed from available foods."
       },
       {
-        "title": "3.2.2 Drug Abuse",
-        "competencies": [
-          "Specific Competency: 3.2.2.1 Identify common drugs in the community | Expected Standard: Common drugs: cigarettes, glue, mutoriro, ganja, alcohol | [Skills]: Investigating common drugs",
-          "Specific Competency: 3.2.2.2 Explain the effects of taking too much drugs | Expected Standard: Effects of too much drugs: addiction, death, Poor bad health | [Skills]: Communicating the effects of taking drugs"
-        ]
+        title: "3.2.2 Drug Abuse",
+        competencies: [
+          "Specific Outcome: 3.2.2.1 Identify common drugs in the community | Knowledge: Common drugs: paracetamol, quinine, vermox, alcohol | Skills: Investigating common drugs | Values: Awareness of common drugs; Using drugs correctly",
+          "Specific Outcome: 3.2.2.2 Explain the effects of taking too much drugs | Knowledge: Effects of too much drugs: addiction, death, poor/bad health | Skills: Communicating the effects of taking drugs | Values: Awareness of common drugs; Using drugs correctly"
+        ],
+        knowledge: "Common drugs: paracetamol, quinine, vermox, alcohol; Effects of too much drugs: addiction, death, poor/bad health.",
+        skills: "Investigating common drugs; Communicating the effects of taking drugs.",
+        values: "Awareness of common drugs; Using drugs correctly.",
+        learningActivities: [
+          "Investigating and identifying common medicines and substances in the community (paracetamol, quinine, vermox, alcohol)",
+          "Discussing the dangers and consequences of taking too much medicine or abusing drugs (addiction, death, poor health)",
+          "Practicing rules for taking medicine safely only when prescribed by a doctor or given by parents"
+        ],
+        expectedStandard: "Common community drugs identified and harmful effects of drug abuse explained accurately."
       },
       {
-        "title": "3.2.3 Illnesses and diseases",
-        "competencies": [
-          "Specific Competency: 3.2.3.1 Identify the common causes of diseases | Expected Standard: Parasites, bacteria and viruses | [Skills]: Investigating the common causes of diseases",
-          "Specific Competency: 3.2.3.2 List common diseases in the community | Expected Standard: Malaria, cholera, dysentery, colds, bilharzia",
-          "Specific Competency: 3.2.3.3 Distinguish between infectious and non-infectious diseases | Expected Standard: Infections: HIV, TB, Measles | [Skills]: Comparing infectious and non-infectious diseases",
-          "Specific Competency: 3.2.3.4 Explain different ways of preventing diseases | Expected Standard: Personal hygiene, good sanitation, vaccination, healthy food | [Skills]: Communicating ways of preventing diseases"
-        ]
+        title: "3.2.3 Illnesses and diseases",
+        competencies: [
+          "Specific Outcome: 3.2.3.1 Identify the common causes of diseases | Knowledge: Common causes of diseases: Parasites, bacteria and viruses | Skills: Investigating the common causes of diseases | Values: Awareness of common diseases, their causes and prevention",
+          "Specific Outcome: 3.2.3.2 List common diseases in the community | Knowledge: Common diseases: Malaria, cholera, dysentery, colds, bilharzia | Skills: Investigating the common causes of diseases | Values: Cooperating in group work; Caring for the sick",
+          "Specific Outcome: 3.2.3.3 Distinguish between infectious and non-infectious diseases | Knowledge: Infectious (HIV, TB, Measles, chicken pox); Non-infectious (Asthma, Malnutrition) | Skills: Comparing infectious and non-infectious diseases | Values: Awareness of common diseases, their causes and prevention; Caring for the sick",
+          "Specific Outcome: 3.2.3.4 Explain different ways of preventing diseases | Knowledge: Personal hygiene, good sanitation, vaccination, healthy food | Skills: Communicating ways of preventing diseases | Values: Cooperating in group work; Caring for the sick; Awareness of common diseases"
+        ],
+        knowledge: "Common causes of diseases: Parasites, bacteria and viruses; Common diseases: Malaria, cholera, dysentery, colds, bilharzia; Infectious (HIV, TB, Measles, chicken pox); Non-infectious (Asthma, Malnutrition); Personal hygiene, good sanitation, vaccination, healthy food.",
+        skills: "Investigating the common causes of diseases; Comparing infectious and non-infectious diseases; Communicating ways of preventing diseases.",
+        values: "Awareness of common diseases, their causes and prevention; Cooperating in group work; Caring for the sick.",
+        learningActivities: [
+          "Investigating biological causes of illnesses (parasites, bacteria, viruses)",
+          "Listing common local illnesses: malaria, cholera, dysentery, colds, bilharzia",
+          "Sorting and comparing diseases into infectious (HIV, TB, measles, chickenpox) and non-infectious (asthma, malnutrition)",
+          "Discussing and communicating key disease prevention strategies: personal hygiene, handwashing, sanitation, immunization/vaccination, and eating healthy food"
+        ],
+        expectedStandard: "Causes and common diseases identified, infectious and non-infectious diseases distinguished, and disease prevention methods explained."
       }
     ]
   },
   {
-    "title": "3.3.0 The Environment",
-    "subtopics": [
+    title: "3.3.0 THE ENVIRONMENT",
+    generalCompetency: "Develop knowledge, values and positive attitudes for the immediate environment; Develop investigative skills about the immediate environment.",
+    subtopics: [
       {
-        "title": "3.3.1 Soil formation",
-        "competencies": [
-          "Specific Competency: 3.3.1.1 State what weathering is | Expected Standard: Weathering as the breaking up of rocks to form soil | [Skills]: Investigating the layers of soil",
-          "Specific Competency: 3.3.1.2 Identify the agents of weathering | Expected Standard: Agents of weathering: Wind, aves, water, animals | [Skills]: Communicating the agents of weathering",
-          "Specific Competency: 3.3.1.3 Demonstrate the formation of soil layers | Expected Standard: Soil layers: top soil, subsoil and bedrock"
-        ]
+        title: "3.3.1 Soil formation",
+        competencies: [
+          "Specific Outcome: 3.3.1.1 State what weathering is | Knowledge: Weathering as the breaking up of rocks to form soil | Skills: Communicating the agents of weathering | Values: Appreciating the formation of soil",
+          "Specific Outcome: 3.3.1.2 Identify the agents of weathering in soil formation | Knowledge: Agents of weathering: Wind, trees, water, animals | Skills: Communicating the agents of weathering; Investigating the layers of soil | Values: Appreciating the formation of soil; Cooperating in group work",
+          "Specific Outcome: 3.3.1.3 Demonstrate the formation of soil layers | Knowledge: Soil layers: top soil, subsoil and bedrock | Skills: Investigating the layers of soil | Values: Appreciating the formation of soil; Cooperating in group work"
+        ],
+        knowledge: "Weathering as the breaking up of rocks to form soil; Agents of weathering: Wind, trees, water, animals; Soil layers: top soil, subsoil and bedrock.",
+        skills: "Communicating the agents of weathering; Investigating the layers of soil.",
+        values: "Appreciating the formation of soil; Cooperating in group work.",
+        learningActivities: [
+          "Observing crumbling rocks and defining weathering as the breaking up of rocks to form soil",
+          "Identifying and discussing the four natural agents of weathering: wind, trees, water, and animals",
+          "Investigating soil profile in a pit or glass jar to identify soil layers: top soil, subsoil, and bedrock",
+          "Working cooperatively to present findings on soil formation and its importance to plant growth"
+        ],
+        expectedStandard: "Weathering defined, agents of weathering identified, and soil profile layers demonstrated clearly."
       }
     ]
   },
   {
-    "title": "3.4.0 Plants and Animals",
-    "subtopics": [
+    title: "3.4.0 PLANTS AND ANIMALS",
+    generalCompetency: "Demonstrate an understanding of the basic facts about plants and animals; Develop investigative skills about plants and animals; Demonstrate the ability to classify plants and animals.",
+    subtopics: [
       {
-        "title": "3.4.1 Plant Classification",
-        "competencies": [
-          "Specific Competency: 3.4.1.1 Classify plants into flowering and non-flowering | Expected Standard: Flowering Plants vs non-flowering plants | [Skills]: Classifying plants into flowering and non-flowering"
-        ]
+        title: "3.4.1 Plant Classification",
+        competencies: [
+          "Specific Outcome: 3.4.1.1 Classify plants into flowering and non-flowering | Knowledge: Flowering Plants (e.g. maize, beans, rose flower) and non-flowering plants (e.g. ferns, moss, pine) | Skills: Classifying plants into flowering and non-flowering | Values: Appreciating classes of plants"
+        ],
+        knowledge: "Flowering Plants (e.g. maize, beans, rose flower) and non-flowering plants (e.g. ferns, moss, pine).",
+        skills: "Classifying plants into flowering and non-flowering.",
+        values: "Appreciating classes of plants.",
+        learningActivities: [
+          "Collecting and inspecting varied plant specimens around the school and home environment",
+          "Sorting and grouping plants into flowering (maize, beans, rose flower) and non-flowering (ferns, moss, pine)",
+          "Appreciating the botanical diversity of plants in the environment"
+        ],
+        expectedStandard: "Plants classified into flowering and non-flowering groups with appropriate local examples."
       },
       {
-        "title": "3.4.2 Animal Classification",
-        "competencies": [
-          "Specific Competency: 3.4.2.1 Classify animals into vertebrates and invertebrates | Expected Standard: Vertebrates and Invertebrates | [Skills]: Classifying vertebrates and invertebrates",
-          "Specific Competency: 3.4.2.2 Classify vertebrates into their groups | Expected Standard: Mammals, birds, amphibians, fish, reptiles | [Skills]: Grouping vertebrates into their five groups"
-        ]
+        title: "3.4.2 Animal Classification",
+        competencies: [
+          "Specific Outcome: 3.4.2.1 Classify animals into vertebrates and invertebrates | Knowledge: Vertebrates e.g. Man, chicken, snake, fish, frog; Invertebrates e.g. Worms, spiders, insects | Skills: Classifying vertebrate and invertebrates | Values: Participating actively in class discussion; Appreciating groups of animals",
+          "Specific Outcome: 3.4.2.2 Classify vertebrates into their groups | Knowledge: Groups of vertebrates: Mammals, birds, amphibians, fish, reptiles | Skills: Grouping vertebrates into their five groups | Values: Participating actively in class discussion; Appreciating groups of animals"
+        ],
+        knowledge: "Vertebrates e.g. Man, chicken, snake, fish, frog; Invertebrates e.g. Worms, spiders, insects; Groups of vertebrates: Mammals, birds, amphibians, fish, reptiles.",
+        skills: "Classifying vertebrate and invertebrates; Grouping vertebrates into their five groups.",
+        values: "Participating actively in class discussion; Appreciating groups of animals.",
+        learningActivities: [
+          "Classifying animals into vertebrates (having backbones: man, chicken, snake, fish, frog) and invertebrates (lacking backbones: worms, spiders, insects)",
+          "Grouping vertebrates into their five distinct classes: mammals, birds, amphibians, fish, and reptiles",
+          "Participating actively in class discussions and quizzes classifying diverse animals"
+        ],
+        expectedStandard: "Animals classified into vertebrates and invertebrates, and vertebrates categorized into their five classes correctly."
       },
       {
-        "title": "3.4.3 Homes of living things",
-        "competencies": [
-          "Specific Competency: 3.4.3.1 Identify different places where animals and plants live | Expected Standard: Place of living: Land, water | [Skills]: Comparing places where animals and plants live"
-        ]
+        title: "3.4.3 Homes of living things",
+        competencies: [
+          "Specific Outcome: 3.4.3.1 Identify different places where animals and plants live | Knowledge: Place of living (e.g. Land: forest, soil, plains, mounds; Water: ponds, rivers, seas) | Skills: Comparing places where animals and plants live | Values: Caring for environment where plants and animals live"
+        ],
+        knowledge: "Place of living (e.g. Land (forest, soil, plains, mounds), water (ponds, rivers, seas)).",
+        skills: "Comparing places where animals and plants live.",
+        values: "Caring for environment where plants and animals live.",
+        learningActivities: [
+          "Identifying and comparing natural living places: land habitats (forests, soil, plains, mounds) and aquatic habitats (ponds, rivers, seas)",
+          "Matching different animal and plant species to their specific living places",
+          "Discussing conservation habits for caring for environments where living things make their homes"
+        ],
+        expectedStandard: "Habitats of plants and animals identified and compared, with commitment to environmental care."
       }
     ]
   },
   {
-    "title": "3.5.0 Materials and energy",
-    "subtopics": [
+    title: "3.5.0 MATERIALS AND ENERGY",
+    generalCompetency: "Develop knowledge, values and positive attitudes about materials and energy; Demonstrate investigative skills about materials and energy.",
+    subtopics: [
       {
-        "title": "3.5.1 Three States of matter",
-        "competencies": [
-          "Specific Competency: 3.5.1.1 Demonstrate the effect of heating and cooling on matter | Expected Standard: Effects of heating and cooling | [Skills]: Investigating the effect of heating and cooling",
-          "Specific Competency: 3.5.1.2 Demonstrate the process of melting, evaporation and freezing | Expected Standard: Process of Melting, Evaporation, Freezing | [Skills]: Communicating the process of melting, evaporation"
-        ]
+        title: "3.5.1 Three States of matter",
+        competencies: [
+          "Specific Outcome: 3.5.1.1 Demonstrate the effect of heating and cooling on matter | Knowledge: Effects of heating and cooling on matter: change of state into solid, liquid and gas | Skills: Investigating the effect of heating and cooling on matter | Values: Cooperating in group activities; Appreciating change of state of matter; Applying Safety rules during demonstration on heating/cooling",
+          "Specific Outcome: 3.5.1.2 Demonstrate the process of melting, evaporation and freezing | Knowledge: Process of: Melting, Evaporation, freezing and condensation | Skills: Investigating the effect of heating and cooling on matter; Communicating the process of melting, evaporation and condensation | Values: Cooperating in group activities; Appreciating change of state of matter; Applying Safety rules during demonstration on heating/cooling"
+        ],
+        knowledge: "Effects of heating and cooling on matter: change of state into solid, liquid and gas; Process of: Melting, Evaporation, freezing and condensation.",
+        skills: "Investigating the effect of heating and cooling on matter; Communicating the process of melting, evaporation and condensation.",
+        values: "Cooperating in group activities; Appreciating change of state of matter; Applying Safety rules during demonstration on heating/cooling.",
+        learningActivities: [
+          "Investigating the physical effect of heating and cooling on water and wax",
+          "Demonstrating phase change processes: melting (ice to water), evaporation (water to steam/vapor), freezing (water to ice), and condensation (steam to water droplets)",
+          "Communicating observations and practicing safety rules when heating and cooling matter"
+        ],
+        expectedStandard: "Effects of heating and cooling demonstrated, and phase changes (melting, evaporation, freezing, condensation) demonstrated safely and accurately."
       },
       {
-        "title": "3.5.2 Solutions",
-        "competencies": [
-          "Specific Competency: 3.5.2.1 Demonstrate the existence of saturated and unsaturated solutions | Expected Standard: Salt and sugar solutions | [Skills]: Observing saturated and unsaturated solutions"
-        ]
+        title: "3.5.2 Solutions",
+        competencies: [
+          "Specific Outcome: 3.5.2.1 Demonstrate the existence of saturated and unsaturated solutions | Knowledge: Saturated and unsaturated solution of: Salt and sugar solutions | Skills: Observing the existence of saturated and unsaturated solutions | Values: Cooperating in group activities"
+        ],
+        knowledge: "Saturated and unsaturated solution of: Salt and sugar solutions.",
+        skills: "Observing the existence of saturated and unsaturated solutions.",
+        values: "Cooperating in group activities.",
+        learningActivities: [
+          "Dissolving small amounts of salt and sugar in cups of water to produce unsaturated solutions",
+          "Continuously adding salt and sugar until no more can dissolve, leaving crystals at the bottom to demonstrate saturated solutions",
+          "Observing, comparing, and recording the differences between unsaturated and saturated solutions in cooperative groups"
+        ],
+        expectedStandard: "Existence of saturated and unsaturated solutions demonstrated clearly using salt and sugar."
       }
     ]
   }
@@ -825,215 +940,612 @@ export const integratedScienceGrade4 = [
   {
     title: "4.1 THE HUMAN BODY",
     subtopics: [
-      { title: "4.1.1 The Respiratory System", competencies: ["4.1.1.1 Demonstrate understanding of the respiratory system in the human body"] },
-      { title: "4.1.2 Blood Circulatory System", competencies: ["4.1.2.1 Demonstrate understanding of the blood circulatory system in the human body"] }
+      {
+        title: "4.1.1 The Respiratory System",
+        competencies: [
+          "4.1.1.1 Demonstrate understanding of the respiratory system in the human body"
+        ],
+        learningActivities: [
+          "Describing the respiratory system in humans",
+          "Analysing the main parts of the respiratory system in man (nose, trachea, bronchi, and lungs)",
+          "Drawing of the human respiratory system",
+          "Making models and charts of the human respiratory system illustrating the movement of air from outside into the lungs and vice-versa",
+          "Investigating respiratory diseases and disorders in man (Bronchitis, Tuberculosis, Influenza, Asthma...)",
+          "Creating a self-care plan to promote respiratory health"
+        ],
+        expectedStandard: "Understanding of the respiratory system demonstrated satisfactorily"
+      },
+      {
+        title: "4.1.2 Blood Circulatory System",
+        competencies: [
+          "4.1.2.1 Demonstrate understanding of the blood circulatory system in the human body"
+        ],
+        learningActivities: [
+          "Describing the Blood Circulatory System in man",
+          "Analysing the components of blood (red blood cells, white blood cells, platelets and plasma)",
+          "Drawing and labeling the parts of the human heart collaboratively",
+          "Making a simple longitudinal model of the human blood circulating system illustrating the flow of blood around the body",
+          "Making a simple longitudinal model of the human heart",
+          "Tracking the flow of blood in the vessels (veins and arteries)",
+          "Analysing the importance of the Blood Circulatory System in man",
+          "Calculating the pulse rate",
+          "Investigating common cardiac diseases in the community (Heart failure, coronary heart disease...)",
+          "Analysing the possible causes of cardiac diseases (Unhealthy diets, tobacco use, alcohol abuse, diabetes, high blood pressure...)"
+        ],
+        expectedStandard: "Understanding of the blood circulatory system demonstrated appropriately"
+      }
     ]
   },
   {
     title: "4.2 NUTRITION AND HEALTH",
     subtopics: [
-      { title: "4.2.1 Classification of Food", competencies: ["4.2.1.1 Classify foods based on their nutritional content"] },
-      { title: "4.2.2 Healthy Diets", competencies: ["4.2.2.1 Practise eating healthy diets"] },
-      { title: "4.2.3 Air, Water and Foodborne Diseases", competencies: ["4.2.3.1 Show the ability to prevent transmission of air, water and food-borne diseases"] }
+      {
+        title: "4.2.1 Classification of Food",
+        competencies: [
+          "4.2.1.1 Classify foods based on their nutritional content"
+        ],
+        learningActivities: [
+          "Collecting different foods found in the local environment (raw and processed foods)",
+          "Sorting a variety of foods into their respective groups based on the nutritive content (cereals and tubers; fish, insects and meat; pulses, beans, nuts and seeds; dairy products; vegetables; and fruits)",
+          "Classifying food nutrients into proteins, carbohydrates, fats, vitamins and minerals"
+        ],
+        expectedStandard: "Foods classified into their respective groups correctly"
+      },
+      {
+        title: "4.2.2 Healthy Diets",
+        competencies: [
+          "4.2.2.1 Practise eating healthy diets"
+        ],
+        learningActivities: [
+          "Designing healthy diets for persons with different dietary needs",
+          "Discussing the importance of eating smaller quantities from all the food groups regularly (Apportionment)",
+          "Making informed choices about healthy living (taking light exercises, taking the Body Mass Index (BMI) test, taking enough water daily...)"
+        ],
+        expectedStandard: "Eating healthy diets practised accordingly"
+      },
+      {
+        title: "4.2.3 Air, Water and Foodborne Diseases",
+        competencies: [
+          "4.2.3.1 Show the ability to prevent the transmission of air, water and food-borne diseases"
+        ],
+        learningActivities: [
+          "Investigating air borne, waterborne and food-borne diseases",
+          "Identifying the causative agents (fungi, bacteria, parasites and viruses)",
+          "Practising ways of preventing airborne, waterborne and foodborne diseases (reducing smoke, wearing masks, planting trees, safe water handling/storage, hand washing, safe food storage...)"
+        ],
+        expectedStandard: "Ability to prevent air, water and food-borne diseases demonstrated accordingly"
+      }
     ]
   },
   {
     title: "4.3 THE ENVIRONMENT",
     subtopics: [
-      { title: "4.3.1 Environmental Management", competencies: ["4.3.1.1 Manage natural resources and waste in the environment"] }
+      {
+        title: "4.3.1 Environmental Management",
+        competencies: [
+          "4.3.1.1 Manage natural resources and waste in the environment"
+        ],
+        learningActivities: [
+          "Describing natural resources and wastes",
+          "Exploring natural resources in the local environment (biotic and abiotic factors)",
+          "Analysing the importance of natural resources (sources of raw materials for industries, source of fresh air, water and food, source of income, tourism...)",
+          "Devising ways of managing natural resources in the local environment",
+          "Identifying types of wastes in the local environment (liquids and solids)",
+          "Devising ways of managing solid and liquid wastes in the local environment (Three Rs- Reuse, Recycle, Reduce, incinerators...)"
+        ],
+        expectedStandard: "Natural resources and waste in the environmental managed correctly"
+      }
     ]
   },
   {
     title: "4.4 PLANTS AND ANIMALS",
     subtopics: [
-      { title: "4.4.1 Invertebrate Animals", competencies: ["4.4.1.1 Classify invertebrates found in the local environment", "4.4.1.2 Evaluate the economic importance of invertebrates"] },
-      { title: "4.4.2 Pests and Parasites", competencies: ["4.4.2.1 Explain ways of controlling pests and parasites in the local environment", "4.4.2.2 Analyse the economic importance of pests and parasites"] },
-      { title: "4.4.3 Livestock Production in Zambia", competencies: ["4.4.3.1 Evaluate the importance of livestock farming in Zambia"] },
-      { title: "4.4.4 Soil Structure", competencies: ["4.4.4.1 Analyse soil profiles", "4.4.4.2 Classify types of soil based on their characteristics"] },
-      { title: "4.4.5 Classification of Plants", competencies: ["4.4.5.1 Classify plants into flowering and non-flowering plants"] },
-      { title: "4.4.6 Horticulture", competencies: ["4.4.6.1 Grow common ornamental plants found in the environment"] },
-      { title: "4.4.7 Crop Production", competencies: ["4.4.7.1 Grow a variety of field crops"] }
+      {
+        title: "4.4.1 Invertebrate Animals",
+        competencies: [
+          "4.4.1.1 Classify invertebrates found in the local environment",
+          "4.4.1.2 Evaluate the economic importance of invertebrates"
+        ],
+        learningActivities: [
+          "Identifying different invertebrates in the local environment through a field trip",
+          "Sorting invertebrate animals (Insects, Worms, Spiders, Snails...)",
+          "Evaluating the economic importance of invertebrates (pollination, source of food, decomposition, pest control...)"
+        ],
+        expectedStandard: [
+          "Invertebrates classified correctly",
+          "Economic importance of invertebrates evaluated appropriately"
+        ]
+      },
+      {
+        title: "4.4.2 Pests and Parasites",
+        competencies: [
+          "4.4.2.1 Explore ways of controlling pests and parasites in the local environment",
+          "4.4.2.2 Analyse the economic importance of pests and parasites"
+        ],
+        learningActivities: [
+          "Identifying common pests and parasites in the local environment by collecting the specimen",
+          "Distinguishing parasites from pests",
+          "Examining the structure and function of the parts of the pests and parasites",
+          "Analysing factors which lead to the spread of pests and parasites in the environment",
+          "Exploring ways of making pesticides using local materials",
+          "Investigating the economic importance of pests and parasites (refer to; human health, agriculture, livestock health...)"
+        ],
+        expectedStandard: [
+          "Common pests and parasites in the local environment controlled accordingly",
+          "Economic importance of pests and parasites analysed accordingly"
+        ]
+      },
+      {
+        title: "4.4.3 Livestock Production in Zambia",
+        competencies: [
+          "4.4.3.1 Evaluate the importance of livestock farming in Zambia"
+        ],
+        learningActivities: [
+          "Describing livestock production",
+          "Identifying the types of livestock found in the local environment",
+          "Evaluating the importance of livestock farming (source of food, provide employment, income generation, provide raw materials...)",
+          "Exploring ways of improving livestock farming in Zambia"
+        ],
+        expectedStandard: "Importance of livestock farming evaluated satisfactorily"
+      },
+      {
+        title: "4.4.4 Soil Structure",
+        competencies: [
+          "4.4.4.1 Analyse soil profile",
+          "4.4.4.2 Classify types of soil based on their characteristics"
+        ],
+        learningActivities: [
+          "Describing soil profile",
+          "Profiling soil (top soil, sub soil, weathered rock and parent rock) by digging a trench",
+          "Drawing and labeling the layers of the soil profile",
+          "Collecting different soil samples from the local environment",
+          "Experimenting on different soil samples to identify the soil types",
+          "Deducing the type of soil based on experimental results (loam, clay and sand)",
+          "Analysing the importance of soil in crop production"
+        ],
+        expectedStandard: [
+          "Soil profile analysed correctly",
+          "Types of soils classified correctly"
+        ]
+      },
+      {
+        title: "4.4.5 Classification of Plants",
+        competencies: [
+          "4.4.5.1 Classify plants into flowering and non-flowering plants"
+        ],
+        learningActivities: [
+          "Identifying flowering plants found in the local environment using common names (monocotyledonous and dicotyledonous)",
+          "Identifying non-flowering plants found in the local environment using common names (algae, mosses, ferns...)",
+          "Distinguishing flowering plants from non-flowering plants based on their physical characteristics",
+          "Investigating the importance of flowering and non-flowering plants (ornamental, health, income, source of oxygen ...)"
+        ],
+        expectedStandard: "Flowering and non-flowering plants classified based on their characteristics accordingly"
+      },
+      {
+        title: "4.4.6 Horticulture",
+        competencies: [
+          "4.4.6.1 Grow common horticultural plants found in the environment"
+        ],
+        learningActivities: [
+          "Describing horticultural plants",
+          "Identifying suitable site for growing horticultural crops",
+          "Preparing the land for growing horticultural plants",
+          "Carrying out simple propagation by (budding, grafting, cuttings...)",
+          "Evaluating the importance of horticultural plants in the environment (source of food, source of income, ornamental, medicinal, aesthetic, environmental benefits ...)",
+          "Marketing horticultural plants"
+        ],
+        expectedStandard: "Common horticultural plants found in the local environment grown properly"
+      },
+      {
+        title: "4.4.7 Crop Production",
+        competencies: [
+          "4.4.7.1 Grow a variety of field crops"
+        ],
+        learningActivities: [
+          "Selecting suitable site for growing field crops (legumes, cereals, cucurbits, pumpkin and watermelon)",
+          "Preparing land",
+          "Practicing crop management (seed selection, soil fertility, weed and disease control and harvesting)",
+          "Adding value to the produce",
+          "Marketing the crop produce and product"
+        ],
+        expectedStandard: "A variety of field crops grown to maturity successfully"
+      }
     ]
   },
   {
     title: "4.5 MATERIALS AND ENERGY",
     subtopics: [
-      { title: "4.5.1 Nature of Matter", competencies: ["4.5.1.1 Analyse the nature of matter"] },
-      { title: "4.5.2 Types of Materials", competencies: ["4.5.2.1 Explore different types of materials used in the production of items", "4.5.2.2 Categorise materials as metals and non-metals"] },
-      { title: "4.5.3 Measuring Matter and Phenomena", competencies: ["4.5.3.1 Measure quantities of different types of matter and phenomena"] },
-      { title: "4.5.4 Nature of Air", competencies: ["4.5.4.1 Investigate the composition of air"] },
-      { title: "4.5.5 Simple Machines", competencies: ["4.5.5.1 Design simple machines"] },
-      { title: "4.5.6 Communication Devices", competencies: ["4.5.6.1 Utilise different types of communication devices"] },
-      { title: "4.5.7 Light Energy", competencies: ["4.5.7.1 Explore different sources of light energy"] }
+      {
+        title: "4.5.1 Nature of Matter",
+        competencies: [
+          "4.5.1.1 Analyse the nature of matter"
+        ],
+        learningActivities: [
+          "Exploring matter in the environment",
+          "Investigating the states of matter (solid, liquid and gas...)",
+          "Experimenting on the changes of state of matter",
+          "Experimenting on the solubility and insolubility of different solid substances",
+          "Classifying substances as pure and mixtures"
+        ],
+        expectedStandard: "Nature of matter categorised accordingly"
+      },
+      {
+        title: "4.5.2 Types of Materials",
+        competencies: [
+          "4.5.2.1 Explore different types of materials used in the production of items",
+          "4.5.2.2 Categorise materials as metals and non-metals"
+        ],
+        learningActivities: [
+          "Collecting different types of materials from the environment",
+          "Determining sources of materials (mining - metals; forests - timber; fossil fuel, cellulose and salt - plastics) used in the production of the various items",
+          "Exploring the importance of materials (minerals, timber, and plastics)",
+          "Collecting different materials found in the environment",
+          "Distinguishing metals from non-metals (Iron, copper, zinc; wood, plastics, rubber, ceramics...)",
+          "Analysing the physical characteristics of metals and non-metals"
+        ],
+        expectedStandard: [
+          "Different types of materials used in production of items explored accordingly",
+          "Metals and non-metals categorised correctly"
+        ]
+      },
+      {
+        title: "4.5.3 Measuring Matter and Phenomena",
+        competencies: [
+          "4.5.3.1 Measure quantities of different types of matter and phenomena"
+        ],
+        learningActivities: [
+          "Exploring different types of matter (solids, liquids gases...)",
+          "Measuring different quantities of matter such as: volume, length and mass in their respective units (grams, centimetres, cubic centimetres...)",
+          "Measuring different phenomena such as energy and time"
+        ],
+        expectedStandard: "Different types of matter measured correctly"
+      },
+      {
+        title: "4.5.4 Nature of Air",
+        competencies: [
+          "4.5.4.1 Investigate the composition of air"
+        ],
+        learningActivities: [
+          "Experimenting on the composition of air (water vapour, oxygen, carbon dioxide, nitrogen)",
+          "Designing a pie chart to illustrate the percentage by composition of air using available software"
+        ],
+        expectedStandard: "Composition of air investigated correctly"
+      },
+      {
+        title: "4.5.5 Simple Machines",
+        competencies: [
+          "4.5.5.1 Design simple machines"
+        ],
+        learningActivities: [
+          "Describing simple machines",
+          "Investigating different simple machines used in everyday activities (levers, pulleys, wedges, inclined planes, wheel and axle and screw)",
+          "Applying the load, pivot and effort of simple machines",
+          "Designing different simple machines using locally available materials"
+        ],
+        expectedStandard: "Simple machines designed appropriately"
+      },
+      {
+        title: "4.5.6 Communication Devices",
+        competencies: [
+          "4.5.6.1 Utilise different types of communication devices"
+        ],
+        learningActivities: [
+          "Identifying the different types of communication devices: (drums, siren, mobile phones, fixed line telephone, television, radio, email/fax, computers, modem ...)",
+          "Using different devices to communicate"
+        ],
+        expectedStandard: "Different types of communication devices utilised satisfactorily"
+      },
+      {
+        title: "4.5.7 Light Energy",
+        competencies: [
+          "4.5.7.1 Explore different sources of light energy"
+        ],
+        learningActivities: [
+          "Describing light energy (visible light)",
+          "Identifying natural and artificial sources of light (sun, stars, moon, bulbs...)",
+          "Investigating the uses of light energy (Photosynthesis, source of electrical energy, growth of human body, drying and evaporation...)"
+        ],
+        expectedStandard: "Different sources of light explored correctly"
+      }
     ]
   }
 ];
 
 export const integratedScienceGrade5 = [
   {
-    "title": "5.1 THE HUMAN BODY",
-    "subtopics": [
+    title: "5.1 THE HUMAN BODY",
+    subtopics: [
       {
-        "title": "5.1.1 The Heart",
-        "competencies": [
-          "Specific Competency: 5.1.1.1 State the function of the heart",
-          "Specific Competency: 5.1.1.2 Describe the structure of the heart",
-          "Specific Competency: 5.1.1.3 Demonstrate how to take the pulse"
-        ]
+        title: "5.1.1 The Skeletal System",
+        competencies: [
+          "5.1.1.1 Demonstrate understanding of the skeletal system of the human body"
+        ],
+        learningActivities: [
+          "Describing the skeletal system of the human body",
+          "Analysing the skeletal system in man using a model or chart (Structure- Skull, vertebral column, collarbone, shoulder blades, ribcage, pelvic girdle and limbs. Functions- Support, protection, shape, movement, blood cell production...)",
+          "Examining the functions of the parts of the human skeleton system in man (structure and function of the bones)",
+          "Comparing and contrasting the human skeleton and other vertebrates",
+          "Investigating diseases and disorders affecting the human skeletal system",
+          "Making human skeletal models using locally available materials"
+        ],
+        expectedStandard: "Understanding of the skeletal system of the human body demonstrated accordingly"
       },
       {
-         "title": "5.1.2 Puberty",
-         "competencies": [
-           "Specific Competency: 5.1.2.1 Identify male and female parts of the body",
-           "Specific Competency: 5.1.2.2 Describe changes that occur at puberty in human beings"
-         ]
+        title: "5.1.2 Puberty",
+        competencies: [
+          "5.1.2.1 Examine changes associated with puberty in girls and boys",
+          "5.1.2.2 Practise personal hygiene at puberty stage",
+          "5.1.2.3 Examine risks associated with puberty"
+        ],
+        learningActivities: [
+          "Describing puberty in boys and girls",
+          "Describing physical changes in girls - enlargement of breast, menstruation, pubic hair, acne, body odour",
+          "Describing physical changes in boys - deepening of the voice, pubic hair, acne, enlargement of the penis and testes",
+          "Identifying social and emotional changes in both boys and girls",
+          "Discussing personal hygiene",
+          "Practising personal hygiene by: (bathing regularly, cleaning armpit and pubic areas regularly, wearing clean clothes)",
+          "Managing menstrual hygiene effectively (correct disposal of used sanitary pads, regular hand washing, bathing, changing of sanitary pads)",
+          "Demystifying issues around menstruation",
+          "Identifying risks associated with puberty (teenage pregnancy, STIs including HIV and AIDS, drug and alcohol consumption...)",
+          "Devising ways of reducing risks associated with puberty"
+        ],
+        expectedStandard: [
+          "Changes associated with puberty examined accordingly",
+          "Personal hygiene at puberty stage practiced correctly",
+          "Risks associated with puberty Examined accordingly"
+        ]
       }
     ]
   },
   {
-    "title": "5.2 NUTRITION AND HEALTH",
-    "subtopics": [
+    title: "5.2 NUTRITION AND HEALTH",
+    subtopics: [
       {
-        "title": "5.2.1 Fresh Air",
-        "competencies": [
-          "Specific Competency: 5.2.1.1 Explain the importance of good ventilation",
-          "Specific Competency: 5.2.1.2 Explain ways of providing good ventilation in buildings",
-          "Specific Competency: 5.2.1.3 Demonstrate ways of treating a suffocated person"
-        ]
+        title: "5.2.1 Food Nutrients",
+        competencies: [
+          "5.2.1.1 Classify food nutrients according to their function in the body"
+        ],
+        learningActivities: [
+          "Identifying food nutrients according to their function in the body (proteins, vitamins, carbohydrates, fats and oils, minerals and dietary fibre)",
+          "Carrying out simple food tests on nutrients (grease spot...)",
+          "Investigating the functions of nutrients in the body"
+        ],
+        expectedStandard: "Food nutrients classified correctly"
       },
       {
-        "title": "5.2.2 Air and water borne Diseases",
-        "competencies": [
-          "Specific Competency: 5.2.2.1 Name common airborne and water borne diseases",
-          "Specific Competency: 5.2.2.2 Describe symptoms of diseases",
-          "Specific Competency: 5.2.2.3 Describe how to prevent diseases"
-        ]
+        title: "5.2.2 Labels on Packaged Foods",
+        competencies: [
+          "5.2.2.1 Interpret the labels on the packaged foods"
+        ],
+        learningActivities: [
+          "Collecting packaged food containers with labels",
+          "Identifying nutrients contained and their respective quantities indicated on the information label",
+          "Checking manufacturing and expiry dates",
+          "Checking quantities to be consumed"
+        ],
+        expectedStandard: "Labels on the packaged foods interpreted correctly"
       },
       {
-        "title": "5.2.3 Malaria",
-        "competencies": [
-          "Specific Competency: 5.2.3.1 Identify causes of malaria",
-          "Specific Competency: 5.2.3.2 State the symptoms of malaria",
-          "Specific Competency: 5.2.3.3 Describe ways of preventing and treating malaria"
-        ]
+        title: "5.2.3 Malnutrition",
+        competencies: [
+          "5.2.3.1 Solve triple burdens of malnutrition in the community"
+        ],
+        learningActivities: [
+          "Describing malnutrition in human beings",
+          "Investigating prevalence of malnutrition in the community such as under-nutrition, over-nutrition and micro-nutrient deficiency",
+          "Practicing eating food in the right groups and quantities (food portioning)",
+          "Exercising regularly",
+          "Taking the Body Mass Index (BMI) test regularly",
+          "Inviting a nutritionist to discuss the triple burdens of malnutrition"
+        ],
+        expectedStandard: "Triple burdens of malnutrition in the community solved accordingly"
       },
       {
-         "title": "5.2.4 HIV and AIDS and STIs",
-         "competencies": [
-           "Specific Competency: 5.2.4.1 Describe ways in which STIs and HIV are transmitted",
-           "Specific Competency: 5.2.4.2 Identify ways of preventing the spread",
-           "Specific Competency: 5.2.4.3 Describe the care and treatment for AIDS patients"
-         ]
+        title: "5.2.4 Harmful Substances and their Effects",
+        competencies: [
+          "5.2.4.1 Investigate the effects of harmful substances on the health of individuals"
+        ],
+        learningActivities: [
+          "Identifying harmful substances that are abused by individuals in the community (alcohol, drugs such as marijuana and cocaine, solvents...)",
+          "Examining the effects of abused drugs on the body (aggressiveness, organ damage, restlessness, nausea, addiction, mental illness, isolation, suicide...)",
+          "Exploring ways of preventing substance abuse in the community"
+        ],
+        expectedStandard: "The effects of harmful substances on the health of individuals investigated accordingly"
       },
       {
-         "title": "5.2.5 Harmful substances and their effects",
-         "competencies": [
-           "Specific Competency: 5.2.5.1 Mention the substances which are harmful",
-           "Specific Competency: 5.2.5.2 State the harmful effects of substance abuse",
-           "Specific Competency: 5.2.5.3 Explain the effects of drinking alcohol"
-         ]
+        title: "5.2.5 Parasitic Diseases",
+        competencies: [
+          "5.2.5.1 Explore ways of preventing the spread of parasitic diseases in the community"
+        ],
+        learningActivities: [
+          "Describing parasitic diseases",
+          "Investigating common parasitic diseases in the community (malaria, sleeping sickness, anthrax, acne, yellow fever, toxoplasmosis...)",
+          "Exploring ways of preventing the spread of parasitic diseases (practicing sleeping under treated mosquito net, keeping the environment clean by slashing tall grass, good hygiene, burying over rubbish pits, residual spraying regularly in the community...)"
+        ],
+        expectedStandard: "Ways of preventing the spread of parasitic diseases in the community analysed accordingly"
+      },
+      {
+        title: "5.2.6 STIs, HIV and AIDS",
+        competencies: [
+          "5.2.6.1 Analyse ways of preventing infection of STIs, including HIV"
+        ],
+        learningActivities: [
+          "Identifying health risky behaviours associated with the infection of STIs, including HIV infection (multiple and concurrent sexual partners, unprotected sexual intercourse, sharing unsterilized sharp instruments, drug and substance abuse...)",
+          "Practising healthy behaviours to reduce the risk of contracting STIs and HIV (Regular testing, abstinence from sexual activities....)"
+        ],
+        expectedStandard: "Ways of preventing STIs including HIV analysed accordingly"
       }
     ]
   },
   {
-     "title": "5.3 THE ENVIRONMENT",
-     "subtopics": [
-       {
-         "title": "5.3.1 Soil",
-         "competencies": [
-           "Specific Competency: 5.3.1.1 Explain the importance of water retained in the soil",
-           "Specific Competency: 5.3.1.2 Identify types of water in which water can be retained in the soil",
-           "Specific Competency: 5.3.1.3 Demonstrate the drainage rates of soils"
-         ]
-       },
-       {
-         "title": "5.3.2 Fertilizers",
-         "competencies": [
-           "Specific Competency: 5.3.2.1 Explain what organic and inorganic fertilizers are",
-           "Specific Competency: 5.3.2.2 Demonstrate how to prepare compost manure",
-           "Specific Competency: 5.3.2.3 Explain the importance of maintaining a supply of composted materials",
-           "Specific Competency: 5.3.2.4 Explain the advantages and disadvantages of chemical fertilizers"
-         ]
-       }
-     ]
-  },
-  {
-     "title": "5.4 PLANTS AND ANIMALS",
-     "subtopics": [
-       {
-         "title": "5.4.1 Non-Flowering Plants",
-         "competencies": [
-           "Specific Competency: 5.4.1.1 Identify different types of non-flowering plants",
-           "Specific Competency: 5.4.1.2 Identify use of ferns and fungi"
-         ]
-       },
-       {
-         "title": "5.4.2 Invertebrate Animals",
-         "competencies": [
-            "Specific Competency: 5.4.2.1 Identify the different types of invertebrate animals",
-            "Specific Competency: 5.4.2.2 Investigate the basic structure of insects",
-            "Specific Competency: 5.4.2.3 Explain the difference between insects and spiders",
-            "Specific Competency: 5.4.2.4 State ways in which insects are useful"
-         ]
-       },
-       {
-         "title": "5.4.3 Pest and Parasites",
-         "competencies": [
-           "Specific Competency: 5.4.3.1 Identify common pests and parasites",
-           "Specific Competency: 5.4.3.2 Describe the harm caused by pests and parasites",
-           "Specific Competency: 5.4.3.3 Explain how pests are controlled using local plant extracts",
-           "Specific Competency: 5.4.3.4 Explain how chemical pesticides can harm the environment"
-         ]
-       }
-     ]
-  },
-  {
-    "title": "5.5 MATERIALS AND ENERGY",
-    "subtopics": [
+    title: "5.3 THE ENVIRONMENT",
+    subtopics: [
       {
-        "title": "5.5.1 Electricity",
-        "competencies": [
-          "Specific Competency: 5.5.1.1 State what electricity can do",
-          "Specific Competency: 5.5.1.2 Identify sources of electricity",
-          "Specific Competency: 5.5.1.3 Identify electrical appliances",
-          "Specific Competency: 5.5.1.4 Identify good and bad conductors of electricity",
-          "Specific Competency: 5.5.1.5 Describe the uses of good and bad conductors",
-          "Specific Competency: 5.5.1.6 Explain methods of conserving electricity"
+        title: "5.3.1 Climate Change",
+        competencies: [
+          "5.3.1.1 Explore the causes and effects of climate change on the environment"
+        ],
+        learningActivities: [
+          "Describing climate change",
+          "Investigating the causes of climate change (deforestation, indiscriminate burning of bushes, emissions of greenhouse gases...)",
+          "Analysing the effects of climate change (loss of habitat for wildlife, droughts, hotter temperatures, severe storms, floods...)"
+        ],
+        expectedStandard: "The causes and effects of climate change explored satisfactorily"
+      },
+      {
+        title: "5.3.2 The Water Cycle",
+        competencies: [
+          "5.3.2.1 Analyse the water cycle"
+        ],
+        learningActivities: [
+          "Describing the water cycle",
+          "Carrying out experiments on processes of evaporation, transpiration, condensation and precipitation",
+          "Interpreting effects of water cycles on the environment (droughts, floods, changes in weather pattern)",
+          "Making models and drawings of the water cycle",
+          "Analysing the importance of the water cycle in the environment (Availability of fresh water, regulating weather patterns...)",
+          "Analysing measures to mitigate the adverse effects in the water cycle (water conservation and water harvesting, reafforestation, fire guards)"
+        ],
+        expectedStandard: "Water cycle analysed accordingly"
+      }
+    ]
+  },
+  {
+    title: "5.4 PLANTS AND ANIMALS",
+    subtopics: [
+      {
+        title: "5.4.1 Soil Health",
+        competencies: [
+          "5.4.1.1 Explore ways of improving soil health"
+        ],
+        learningActivities: [
+          "Describing soil health",
+          "Carrying out experiments to test the fertility of given soil samples",
+          "Determining the acidity or alkalinity of the soil",
+          "Improving soil fertility (adding agricultural lime, manure and compost, and inorganic fertilisers)",
+          "Comparing advantage of using organic and inorganic fertilisers",
+          "Determining suitable crops for planting in tested soil"
+        ],
+        expectedStandard: "Ways of improving soil health explored accordingly"
+      },
+      {
+        title: "5.4.2 Vertebrate Animals",
+        competencies: [
+          "5.4.2.1 Classify vertebrate animals based on their characteristics",
+          "5.4.2.2 Evaluate the economic importance of vertebrate animals"
+        ],
+        learningActivities: [
+          "Classifying vertebrates based on their characteristics",
+          "Analysing the economic importance of vertebrates (refer to; Food, Pets, Tourist attraction, Source of raw materials, pollination, vectors of diseases and key players in the ecosystem...)"
+        ],
+        expectedStandard: [
+          "Different vertebrates classified accordingly",
+          "Economic importance of vertebrates evaluated accordingly"
         ]
       },
       {
-         "title": "5.5.2 Heat Conduction",
-         "competencies": [
-           "Specific Competency: 5.5.2.1 Describe what heat is",
-           "Specific Competency: 5.5.2.2 Determine the temperature of human body, etc.",
-           "Specific Competency: 5.5.2.3 Distinguish good and bad conductors of heat",
-           "Specific Competency: 5.5.2.4 Identify materials which are good insulators",
-           "Specific Competency: 5.5.2.5 Explain the uses of good and bad conduction of heat"
-         ]
+        title: "5.4.3 Poultry",
+        competencies: [
+          "5.4.3.1 Demonstrate basic understanding of poultry production"
+        ],
+        learningActivities: [
+          "Describing poultry production",
+          "Classifying poultry birds into groups according to their characteristics (Laying breeds, meat breeds and dual breeds)",
+          "Designing basic housing for poultry",
+          "Managing the living environment for birds (dry and wet cleaning), disinfection, fumigation and feed system)",
+          "Managing the nutrition, health and conditions for the birds (vaccination, feeding, temperature, ventilation, nutrition, watering)",
+          "Marketing the birds",
+          "Adding value to the products"
+        ],
+        expectedStandard: "Basic understanding of poultry production demonstrated accordingly"
+      }
+    ]
+  },
+  {
+    title: "5.5 MATERIALS AND ENERGY",
+    subtopics: [
+      {
+        title: "5.5.1 Harnessing Electrical Energy",
+        competencies: [
+          "5.5.1.1 Explore alternative sources of electrical energy"
+        ],
+        learningActivities: [
+          "Describing electrical energy",
+          "Exploring ways of harnessing electrical energy from sources such as wind, solar, hydro, fossil fuels.",
+          "Investigating the designs of solar panels in harnessing electrical energy from the sun (Use locally sourced materials)"
+        ],
+        expectedStandard: "Alternative sources of electrical energy explored accordingly"
       },
       {
-         "title": "5.5.3 Measuring Matter",
-         "competencies": [
-           "Specific Competency: 5.5.4.1 Identify instruments used to compare how heavy objects are",
-           "Specific Competency: 5.5.4.2 Demonstrate the effect of gravity on objects",
-           "Specific Competency: 5.5.4.3 Distinguish between mass and weight"
-         ]
+        title: "5.5.2 Electricity",
+        competencies: [
+          "5.5.2.1 Construct electric circuits to demonstrate the flow of electricity",
+          "5.5.2.2 Construct a simple Direct Current motor"
+        ],
+        learningActivities: [
+          "Describing an electric circuit",
+          "Identifying the components of a simple circuit",
+          "Constructing a simple circuit that can power a light bulb",
+          "Differentiating series and parallel circuits",
+          "Exploring the use of various electric appliances",
+          "Experimenting with good and bad conductors of electricity",
+          "Exploring safety measures when using electricity (refer to the use of insulators, earthing...)",
+          "Identifying the components of a simple Direct Current motor",
+          "Constructing Direct Current motors (Identifying motors in electrical appliances, collecting necessary materials needed)"
+        ],
+        expectedStandard: [
+          "Electric circuits constructed to demonstrate the flow of electricity correctly",
+          "Simple DC motor constructed correctly"
+        ]
       },
       {
-         "title": "5.5.4 Volume",
-         "competencies": [
-           "Specific Competency: 5.5.4.1 Identify various instruments to measure volume",
-           "Specific Competency: 5.5.4.2 Measure the volume of liquids",
-           "Specific Competency: 5.5.4.3 Measure the volume of regular and irregular solid objects"
-         ]
+        title: "5.5.3 Storage of Energy",
+        competencies: [
+          "5.5.3.1 Explore ways of storing energy"
+        ],
+        learningActivities: [
+          "Describing the storage of energy and its importance",
+          "Exploring different ways of storing energy: (Compressed air storage, battery storage, liquid air storage...)"
+        ],
+        expectedStandard: "Ways of storing energy explored correctly"
       },
       {
-         "title": "5.5.5 Simple Machines",
-         "competencies": [
-           "Specific Competency: 5.5.5.1 Explain what simple machine is",
-           "Specific Competency: 5.5.5.2 Identify six kinds of simple machines",
-           "Specific Competency: 5.5.5.3 Demonstrate the use of simple machines"
-         ]
+        title: "5.5.4 Separation Techniques",
+        competencies: [
+          "5.5.4.1 Separate mixtures using an appropriate technique"
+        ],
+        learningActivities: [
+          "Describing different types of mixtures",
+          "Analysing appropriate techniques for separating different mixtures (sorting, decantation, filtration, magnetism, evaporation and sublimation)",
+          "Devising appropriate separating techniques to separate the different mixtures (sorting, decantation, filtration, magnetism, evaporation, sublimation...)",
+          "Creating a water filter and evaporating different solutions"
+        ],
+        expectedStandard: "Mixtures separated using various techniques appropriately"
+      },
+      {
+        title: "5.5.5 Simple Machines",
+        competencies: [
+          "5.5.5.1 Construct inclined planes"
+        ],
+        learningActivities: [
+          "Exploring inclined planes and their importance",
+          "Applying force to move objects using inclined planes",
+          "Identifying inclined planes in everyday life",
+          "Designing a simple inclined plane",
+          "Using inclined planes in everyday life"
+        ],
+        expectedStandard: "Inclined plane constructed efficiently"
+      },
+      {
+        title: "5.5.6 Farm Machinery",
+        competencies: [
+          "5.5.6.1 Use simple farm tools and implements"
+        ],
+        learningActivities: [
+          "Describing farm tools and implements",
+          "Making simple farm tools and implements",
+          "Using simple farm tools and implements (hoes, sprayers, ploughs...)"
+        ],
+        expectedStandard: "Simple farm tools and implements handled and used effectively"
       }
     ]
   }
@@ -1041,142 +1553,309 @@ export const integratedScienceGrade5 = [
 
 export const integratedScienceGrade6 = [
   {
-     "title": "6.1 THE HUMAN BODY",
-     "subtopics": [
-       {
-          "title": "6.1.1 The Blood",
-          "competencies": [
-            "Specific Competency: 6.1.1.1 Describe the composition of blood",
-            "Specific Competency: 6.1.1.2 Describe the function of blood in the body"
-          ]
-       },
-       {
-         "title": "6.1.2 Features of pregnancy",
-         "competencies": [
-           "Specific Competency: 6.1.2.1 Describe how blood circulates in the body",
-           "Specific Competency: 6.1.2.2 Describe features of pregnancy",
-           "Specific Competency: 6.1.2.3 Identify signs and symptoms of pregnancy"
-         ]
-       },
-       {
-         "title": "6.1.3 Health risks",
-         "competencies": [
-           "Specific Competency: 6.1.3.1 Identify health and social risks for teenage pregnancy"
-         ]
-       }
-     ]
-  },
-  {
-    "title": "6.2 NUTRITION AND HEALTH",
-    "subtopics": [
+    title: "6.1 THE HUMAN BODY",
+    subtopics: [
       {
-        "title": "6.2.1 Food Nutrients",
-        "competencies": [
-          "Specific Competency: 6.2.1.1 List foods which are good sources of vitamins and minerals",
-          "Specific Competency: 6.2.1.2 Explain the importance of vitamins and minerals",
-          "Specific Competency: 6.2.1.3 Explain the importance of eating a variety of foods",
-          "Specific Competency: 6.2.1.4 Explain the importance of food labeling",
-          "Specific Competency: 6.2.1.5 Identify deficiency diseases",
-          "Specific Competency: 6.2.1.6 Interpret children's clinic cards"
-        ]
+        title: "6.1.1 The Digestive System",
+        competencies: [
+          "6.1.1.1 Demonstrate understanding of the digestive system of the human body"
+        ],
+        learningActivities: [
+          "Describing the digestive system in human beings",
+          "Making a model of the alimentary canal collaboratively",
+          "Drawing and labelling the parts of the alimentary canal",
+          "Examining the movement of food in the alimentary canal (ingestion, digestion, absorption, utilization, egestion)",
+          "Evaluating the importance of the digestive system in human",
+          "Investigate the common diseases of the elementary canal (constipation, ulcers...)"
+        ],
+        expectedStandard: "Understanding of the digestive system of the human body demonstrated appropriately"
       },
       {
-        "title": "6.2.2 Effects of harmful substance use",
-        "competencies": [
-           "Specific Competency: 6.2.2.1 Explain how substance abuse can ruin lives",
-           "Specific Competency: 6.2.2.2 Explain how substance abuse can be helped"
-        ]
-      },
-      {
-         "title": "6.2.3 Living with HIV and AIDS",
-         "competencies": [
-           "Specific Competency: 6.2.3.1 Describe the challenges of living with HIV and AIDS"
-         ]
+        title: "6.1.2 Risk of Teenage Pregnancy",
+        competencies: [
+          "6.1.2.1 Examine risks associated with teenage pregnancy"
+        ],
+        learningActivities: [
+          "Describing teenage pregnancy",
+          "Investigating the causes of teenage pregnancies (peer pressure, poverty, sexual violence, lack of information...)",
+          "Analysing health, social and emotional risks of teenage pregnancy",
+          "Finding solutions to teenage pregnancies (creating behavioural change in learners to develop positive attitudes towards preventing teenage pregnancies...)",
+          "Creating and sharing simple behavioural change messages with the community members."
+        ],
+        expectedStandard: "Risks associated with teenage pregnancy examined satisfactorily"
       }
     ]
   },
   {
-     "title": "6.3 THE ENVIRONMENT",
-     "subtopics": [
-       {
-          "title": "6.3.1 The water cycle",
-          "competencies": [
-            "Specific Competency: 6.3.1.1 Describe the water cycle system",
-            "Specific Competency: 6.3.1.2 Describe the process of evaporation and condensation",
-            "Specific Competency: 6.3.1.3 State the effects of the water cycle"
-          ]
-       }
-     ]
+    title: "6.2 NUTRITION AND HEALTH",
+    subtopics: [
+      {
+        title: "6.2.1 Health Risks Associated with Nutrition",
+        competencies: [
+          "6.2.1.1 Relate nutritional disorders to poor nutrition in human beings"
+        ],
+        learningActivities: [
+          "Exploring health risks associated with poor nutrition (Hypertension, obesity, heart diseases, Marasmus, Kwashiorkor, Rickets...)",
+          "Investigating ways of reducing health risks associated with poor nutrition"
+        ],
+        expectedStandard: "Disorders associated with poor nutrition explored correctly"
+      },
+      {
+        title: "6.2.2 Tuberculosis",
+        competencies: [
+          "6.2.2.1 Practise effective ways of preventing the spread of Tuberculosis in the community"
+        ],
+        learningActivities: [
+          "Analysing Tuberculosis (TB) and its causative agent",
+          "Identifying common signs and symptoms of TB infection in patients (basic signs and symptoms)",
+          "Investigating ways of how TB is spread from one person to another (visit to the nearest health facility-project)",
+          "Identifying persons that are more susceptible to infection of the TB bacteria (under 5 children, immune-compromised individuals)",
+          "Devising ways of preventing the spread of TB in the community (improving ventilation, medical checkups, community sensitisations, immunisation and vaccination, contact tracing...)",
+          "Managing and treating of persons infected with TB through consistent taking of medication and counselling",
+          "Discussing ways of showing empathy with patients of TB in the community (care, support group....)"
+        ],
+        expectedStandard: "Ways of preventing the spread of TB in the community effectively practised"
+      },
+      {
+        title: "6.2.3 Bacteria, Fungi and Viruses",
+        competencies: [
+          "6.2.3.1 Classify bacteria, fungi and viruses based on the structure and mode of infection"
+        ],
+        learningActivities: [
+          "Describing bacteria, fungi and viruses",
+          "Identifying similarities and differences of bacteria, fungi and viruses",
+          "Draw basic structures of bacteria, fungi and viruses (observation/pictorial)",
+          "Evaluating the economic importance of bacteria, fungi and viruses (decomposition of matter, cause diseases, foods, medicines)",
+          "Preventing the spread of bacterial, fungal and viral diseases (Sensitizing the local community on the spread of the diseases, practicing good hygiene, treatment and vaccination)"
+        ],
+        expectedStandard: "Bacteria, fungi and viruses classified correctly"
+      }
+    ]
   },
   {
-     "title": "6.4 PLANTS AND ANIMALS",
-     "subtopics": [
-       {
-         "title": "6.4.1 Photosynthesis",
-         "competencies": [
-            "Specific Competency: 6.4.1.1 Demonstrate how water and mineral salts reach the leaves",
-            "Specific Competency: 6.4.1.2 Describe the process by which plants make their own food",
-            "Specific Competency: 6.4.1.3 Test for the presence of starch in a leaf"
-         ]
-       },
-       {
-          "title": "6.4.2 Care for Domestic Animals",
-          "competencies": [
-            "Specific Competency: 6.4.2.1 Explain the basic needs of livestock",
-            "Specific Competency: 6.4.2.2 Explain the importance of cleanliness",
-            "Specific Competency: 6.4.2.2 Find out the advantages of keeping livestock together",
-            "Specific Competency: 6.4.2.3 Find out the disadvantages of crowding livestock"
-          ]
-       },
-       {
-          "title": "6.4.3 Vertebrate animals",
-          "competencies": [
-            "Specific Competency: 6.4.3.1 Identify the different types of vertebrate animals",
-            "Specific Competency: 6.4.3.2 Describe adaptations shown by vertebrate animals",
-            "Specific Competency: 6.4.3.3 Describe the life cycle of vertebrate animals",
-            "Specific Competency: 6.4.3.4 State ways of conserving vertebrates"
-          ]
-       }
-     ]
+    title: "6.3 THE ENVIRONMENT",
+    subtopics: [
+      {
+        title: "6.3.1 Environmental Management",
+        competencies: [
+          "6.3.1.1 Develop sustainable practices and approaches in environmental management"
+        ],
+        learningActivities: [
+          "Exploring different ways of managing the environment (practicing planting trees, and avoid cutting them, avoiding air, land and water pollution, managing waste (solid, liquid commercial, hazardous and e-waste)",
+          "Devising alternative methods of managing waste",
+          "Designing and creating a mini green zone on an identified baren land in the school/community (community gardens/park, pollution free...)"
+        ],
+        expectedStandard: "Sustainable practices and approaches in environmental management developed satisfactorily"
+      },
+      {
+        title: "6.3.2 Water Supply Systems",
+        competencies: [
+          "6.3.2.1 Examine different water supply systems",
+          "6.3.2.2 Explore water conservation methods in homes and communities"
+        ],
+        learningActivities: [
+          "Analysing different water supply systems in the community (centrally supply system, water reservoirs/river and boreholes, decentralized supply system (wells, boreholes, streams ...)",
+          "Investigating different ways of treating water in the community",
+          "Designing prototypes of water supply systems.",
+          "Describing water conservation and its importance",
+          "Investigating ways in which water is wasted in our homes and communities",
+          "Practicing ways of conserving water in homes and communities (turning off a running tap, repairing leaking taps, washing clothes at once, use water efficient appliances, use drought-tolerant landscaping methods...)"
+        ],
+        expectedStandard: [
+          "Different water supply systems examined appropriately",
+          "Water conservation methods in homes and communities explored accordingly"
+        ]
+      }
+    ]
   },
   {
-     "title": "6.5 MATERIALS AND ENERGY",
-     "subtopics": [
-       {
-          "title": "6.5.1 Nature of Air",
-          "competencies": [
-             "Specific Competency: 6.5.1.1 Describe the composition of air",
-             "Specific Competency: 6.5.1.2 State the physical properties of air"
-          ]
-       },
-       {
-          "title": "6.5.2 Sound",
-          "competencies": [
-            "Specific Competency: 6.5.2.1 Demonstrate that air has weight and occupies space",
-            "Specific Competency: 6.5.2.2 Explain what sound is",
-            "Specific Competency: 6.5.2.3 Demonstrate how sound is produced",
-            "Specific Competency: 6.5.2.4 Describe how sound travels"
-          ]
-       },
-       {
-          "title": "6.5.3 Pressure",
-          "competencies": [
-            "Specific Competency: 6.5.3.1 Show the effect of pressure on objects",
-            "Specific Competency: 6.5.3.2 Explain why tools and implements should be sharpened",
-            "Specific Competency: 6.5.3.3 Explain why water tanks are placed on a higher level",
-            "Specific Competency: 6.5.3.4 Explain why the foot exerts pressure",
-            "Specific Competency: 6.5.3.5 Explain why pumping a tube makes it stand more difficult"
-          ]
-       },
-       {
-          "title": "6.5.4 Communication",
-          "competencies": [
-             "Specific Competency: 6.5.4.1 State methods of communication",
-             "Specific Competency: 6.5.4.2 Explain the importance of communication",
-             "Specific Competency: 6.5.4.3 Describe how sound waves are used in communication"
-          ]
-       }
-     ]
+    title: "6.4 PLANTS AND ANIMALS",
+    subtopics: [
+      {
+        title: "6.4.1 Reproduction in Flowering Plants",
+        competencies: [
+          "6.4.1.1 Investigate the reproductive parts in flowering plants",
+          "6.4.1.2 Determine methods of dispersal based on the structure of the seed",
+          "6.4.1.3 Explore different methods of propagating plants found in the environment"
+        ],
+        learningActivities: [
+          "Describing reproduction in flowering plants",
+          "Analysing the male and female parts of the flower from samples collected from the environment",
+          "Illustrating the parts of the flower",
+          "Relating the parts of the flower to its function",
+          "Describing the formation of the seed in the flowering plant (basic description)",
+          "Describing seed dispersal",
+          "Exploring the environment to collect different seeds and fruits",
+          "Examining the structure of seeds",
+          "Deducing the methods of seed dispersal based on the structure of the seed",
+          "Exploring ways of propagating different plants found in the local environment (Stems, runners, roots, leaves and bulbs)",
+          "Propagating different types of plants"
+        ],
+        expectedStandard: [
+          "The reproductive parts in flowering plants investigated correctly",
+          "Methods of seed dispersal based on the structure determined correctly",
+          "Different methods of propagating plants explored"
+        ]
+      },
+      {
+        title: "6.4.2 Soil Erosion and Conservation",
+        competencies: [
+          "6.4.2.1 Practice soil conservation"
+        ],
+        learningActivities: [
+          "Describing soil conservation",
+          "Practicing soil conservation to reduce erosion (crop rotation, reduced tillage, mulching, cover cropping, cross slope farming, avoiding overgrazing and cutting down trees)",
+          "Analysing the importance of conserving the soil",
+          "Maintaining a lawn as a project for the class"
+        ],
+        expectedStandard: "Soil conservation practiced accordingly"
+      },
+      {
+        title: "6.4.3 Crops",
+        competencies: [
+          "6.4.3.1 Grow different field crops to maturity"
+        ],
+        learningActivities: [
+          "Exploring different field crops grown in the local environment (maize, beans, cassava, sunflower, sorghum...)",
+          "Selecting site and Land preparation",
+          "Planting of seeds",
+          "Managing the crop (weeding, application of plant nutrients, prevention and control of pests and parasites)",
+          "Harvesting the crop",
+          "Storing and marketing of the crop",
+          "Exploring other ways of improving the yields"
+        ],
+        expectedStandard: "Different field crops grown successfully"
+      },
+      {
+        title: "6.4.4 Crop Diversification",
+        competencies: [
+          "6.4.4.1 Grow drought-resistant crops"
+        ],
+        learningActivities: [
+          "Investigating drought-resistant crops (Some varieties of- millet, cassava, orange, maize, sunflower, soya beans...)",
+          "Selecting site and land preparation",
+          "Selecting right seed for the drought-resistance crops",
+          "Planting drought-resistance crops",
+          "Managing drought-resistance crops",
+          "Harvesting and storage",
+          "Marketing the drought-resistance crops"
+        ],
+        expectedStandard: "Drought-resistant crops grown to maturity satisfactorily"
+      },
+      {
+        title: "6.4.5 Agro-processing and Entrepreneurship",
+        competencies: [
+          "6.4.5.1 Develop innovations in Agro-processing and entrepreneurship"
+        ],
+        learningActivities: [
+          "Describing Agro-processing",
+          "Packaging farm produce into finished products",
+          "Branding of finished products",
+          "Innovations in Agro-processing and entrepreneurship developed accordingly"
+        ],
+        expectedStandard: "Innovations in Agro-processing and entrepreneurship developed accordingly"
+      },
+      {
+        title: "6.4.6 Small-Stock Production",
+        competencies: [
+          "6.4.6.1 Rear small-stock"
+        ],
+        learningActivities: [
+          "Describing small-stock production",
+          "Rearing small-stock (Rabbits, guinea pigs, sheep, goat...)",
+          "Selecting the right breed",
+          "Managing small-stocks (nutrition, health, shelter...)",
+          "Processing products from carcasses for value addition",
+          "Marketing the products"
+        ],
+        expectedStandard: "Small-stock reared to maturity accordingly"
+      }
+    ]
+  },
+  {
+    title: "6.5 MATERIALS AND ENERGY",
+    subtopics: [
+      {
+        title: "6.5.1 Sustainable Energy Conservation",
+        competencies: [
+          "6.5.1.1 Practise efficient energy conserving methods"
+        ],
+        learningActivities: [
+          "Describing conservation of energy",
+          "Analysing the challenges faced in sustainable conservation of energy in communities (inadequate infrastructure, poor policies in place, lack of resources, poor data management, lack of awareness...)",
+          "Devising effective and efficient methods of conserving energy (switching off lights and appliances when not in use, re-using materials as alternative source for wood to avoid cutting down trees, reducing activities around water recharge areas such as swamps...)"
+        ],
+        expectedStandard: "Efficient energy conserving methods practised accordingly"
+      },
+      {
+        title: "6.5.2 Simple Machines",
+        competencies: [
+          "6.5.2.1 Use simple machines to do work"
+        ],
+        learningActivities: [
+          "Identifying the load, effort and pivot in simple machines",
+          "Classifying levers as first, second, and third levers",
+          "Experimenting with levers by altering the positions of the pivot, load, and effort",
+          "Designing of levers using local materials"
+        ],
+        expectedStandard: "Simple machines used to do work accordingly"
+      },
+      {
+        title: "6.5.3 Basic Astronomy",
+        competencies: [
+          "6.5.3.1 Demonstrate understanding of the relationship between the earth, moon and the sun in the galaxy"
+        ],
+        learningActivities: [
+          "Describing the galaxy",
+          "Observing patterns of stars in the sky; our solar system; comets; and the moon",
+          "Identifying the source of light in the solar system",
+          "Comparing the movement of the earth and the moon in the solar system",
+          "Demonstrating the formation of solar and lunar eclipses",
+          "Making models of the galaxy"
+        ],
+        expectedStandard: "Understanding of the relationship between the earth, moon and the sun demonstrated accordingly"
+      },
+      {
+        title: "6.5.4 Technological Advancement",
+        competencies: [
+          "6.5.4.1 Design prototypes of robots"
+        ],
+        learningActivities: [
+          "Describing Robotics",
+          "Identifying the different types of robots",
+          "Designing a simple circuit of a robot",
+          "Describing the function of components of the simple electronic circuit",
+          "Designing prototypes of robots to stimulate interest in Robotics"
+        ],
+        expectedStandard: "Prototypes of robots designed successfully"
+      },
+      {
+        title: "6.5.5 Sound",
+        competencies: [
+          "6.5.5.1 Evaluate the sources and properties of sound"
+        ],
+        learningActivities: [
+          "Describing sound energy (refer to vibrations)",
+          "Identifying various sources of sound (animals, musical instruments...)",
+          "Analysing different properties of sound (pitch, loudness, echo...)",
+          "Analysing the uses of sound energy in everyday life (communication, warning systems, music...)"
+        ],
+        expectedStandard: "Sources and properties of sound evaluated accordingly"
+      },
+      {
+        title: "6.5.6 Magnetism",
+        competencies: [
+          "6.5.6.1 Apply the principles of magnetism"
+        ],
+        learningActivities: [
+          "Describing types of magnets",
+          "Exploring the laws of magnetism (repulsion and attraction)",
+          "Identifying the poles of a magnet",
+          "Exploring the uses of magnets in everyday life (compass, speakers, electric motors, electric trains...)"
+        ],
+        expectedStandard: "The principle of magnetism applied accordingly"
+      }
+    ]
   }
 ];
 

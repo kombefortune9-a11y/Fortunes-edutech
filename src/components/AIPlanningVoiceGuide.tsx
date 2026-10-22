@@ -111,10 +111,10 @@ export const PLANNING_TOOL_GUIDES: Record<string, ToolGuideInfo> = {
     title: "Lesson Plans",
     subtitle: "5-Stage Competence-Based Lesson Development",
     badge: "5-Stage CBC Plan",
-    color: "from-emerald-600 to-teal-600",
-    accentBg: "bg-emerald-50",
-    borderColor: "border-emerald-200",
-    textColor: "text-emerald-800",
+    color: "from-blue-600 to-indigo-600",
+    accentBg: "bg-blue-50",
+    borderColor: "border-blue-200",
+    textColor: "text-blue-800",
     audioScript: 
       "Welcome to the Lesson Plan Planning Tool. This module generates thorough, competency-based lesson plans featuring the official five-stage lesson development framework: Introduction, Lesson Development, Practice and Application, Exercise, and Conclusion. " +
       "Select your grade, subject, and topic. The tool will formulate clear lesson goals, rationales, prior knowledge, skills, values, teaching aids, and learning environment settings. " +
@@ -165,10 +165,10 @@ export const PLANNING_TOOL_GUIDES: Record<string, ToolGuideInfo> = {
     title: "Continuous Assessment Tracker & Markbook",
     subtitle: "Standards-Based Class Marksheet & Pupil Performance Chart",
     badge: "Zambian Continuous Assessment",
-    color: "from-teal-600 to-emerald-700",
-    accentBg: "bg-teal-50",
-    borderColor: "border-teal-200",
-    textColor: "text-teal-800",
+    color: "from-blue-600 to-indigo-700",
+    accentBg: "bg-blue-50",
+    borderColor: "border-blue-200",
+    textColor: "text-blue-800",
     audioScript: 
       "Welcome to the Continuous Assessment Tracker and Learner Progress Chart. This tool enables teachers to record, calculate, analyze, and track learner performance across all continuous assessments, monthly tests, end-of-term examinations, and CBC competency ratings. " +
       "To use this tracker, first select your active class grade, subject, and term. You can register learners individually or auto-generate a full class roster. Enter raw assessment scores for Weekly Classwork, Homework, Mid-Term Tests, and Final Exams. " +
@@ -269,10 +269,10 @@ export const PLANNING_TOOL_GUIDES: Record<string, ToolGuideInfo> = {
     title: "Lesson Notes Generator",
     subtitle: "Detailed Subject Content & Pupil Study Handouts",
     badge: "Comprehensive Subject Notes",
-    color: "from-emerald-600 to-teal-700",
-    accentBg: "bg-emerald-50",
-    borderColor: "border-emerald-200",
-    textColor: "text-emerald-800",
+    color: "from-blue-600 to-indigo-700",
+    accentBg: "bg-blue-50",
+    borderColor: "border-blue-200",
+    textColor: "text-blue-800",
     audioScript: 
       "Welcome to the Lesson Notes Generator. This tool produces detailed, syllabus-aligned subject content and classroom notes for pupils across ECE, Primary, Junior, and Senior Secondary levels. " +
       "Enter your grade, subject, topic, and subtopic. The AI generates thorough content including key definitions, step-by-step explanations, worked examples, diagrams, summary points, and quick revision questions.",
@@ -319,10 +319,10 @@ export const PLANNING_TOOL_GUIDES: Record<string, ToolGuideInfo> = {
     title: "FORTUNES EDUTECH App Intro & Platform Guide",
     subtitle: "Official CBC & OBC Teaching Suite Orientation",
     badge: "Official App Intro",
-    color: "from-emerald-600 to-teal-700",
-    accentBg: "bg-emerald-50",
-    borderColor: "border-emerald-200",
-    textColor: "text-emerald-800",
+    color: "from-blue-600 to-indigo-700",
+    accentBg: "bg-blue-50",
+    borderColor: "border-blue-200",
+    textColor: "text-blue-800",
     audioScript: 
       "Welcome to FORTUNES EDUTECH - Plan Competently! Fortunes Edutech is your all-in-one professional teaching resource suite and curriculum planning assistant for Early Childhood Education through Form 6 (A Level). " +
       "Generate syllabus-aligned Schemes of Work, Weekly Forecasts, Competency-Based Lesson Plans, Continuous Assessment Marksheets, Lesson Notes, Catch-Up Remedial Plans, and Records of Work in seconds. " +
@@ -502,7 +502,7 @@ export default function AIPlanningVoiceGuide({
     utteranceRef.current = utterance;
 
     utterance.rate = speechRate;
-    utterance.pitch = voiceMode === 'female' ? 1.15 : voiceMode === 'male' ? 0.9 : 1.05;
+    utterance.pitch = voiceMode === 'female' ? 1.15 : voiceMode === 'male' ? 0.74 : 1.05;
 
     const voices = window.speechSynthesis.getVoices();
     const naturalVoice = voices.find(v => 
@@ -716,7 +716,7 @@ export default function AIPlanningVoiceGuide({
       <div className={cn(
         "bg-white border rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm transition-all relative overflow-hidden",
         guideInfo.borderColor,
-        isPlaying ? "ring-2 ring-[#00A86B]/30 shadow-md" : ""
+        isPlaying ? "ring-2 ring-blue-500/30 shadow-md" : ""
       )}>
         {/* Subtle Background Accent Gradient */}
         <div className={cn(
@@ -760,7 +760,7 @@ export default function AIPlanningVoiceGuide({
                     </>
                   ) : (
                     <>
-                      <Users size={10} className="text-emerald-600" />
+                      <Users size={10} className="text-blue-600" />
                       Mixed Voice (Woman & Man)
                     </>
                   )}
@@ -809,7 +809,7 @@ export default function AIPlanningVoiceGuide({
                 className={cn(
                   "px-2.5 py-1 rounded-lg flex items-center gap-1 transition-all cursor-pointer",
                   voiceMode === 'mixed' 
-                    ? "bg-emerald-600 text-white font-black shadow-xs" 
+                    ? "bg-blue-600 text-white font-black shadow-xs" 
                     : "hover:text-slate-900 opacity-80"
                 )}
                 title="Narrate with alternating Woman & Man voices"
@@ -878,7 +878,7 @@ export default function AIPlanningVoiceGuide({
                 "px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer text-white",
                 isPlaying 
                   ? "bg-amber-500 hover:bg-amber-600 shadow-amber-200" 
-                  : "bg-[#00A86B] hover:bg-emerald-600 shadow-emerald-200"
+                  : "bg-blue-600 hover:bg-blue-750 shadow-blue-200"
               )}
             >
               {isGeneratingAudio ? (
@@ -966,17 +966,17 @@ export default function AIPlanningVoiceGuide({
         {/* Live Narration Read-Along Bar when Playing */}
         {isPlaying && (
           <div className="mt-3 pt-3 border-t border-slate-100 animate-in fade-in duration-300">
-            <div className="flex items-start gap-2.5 bg-emerald-50/70 border border-emerald-100/80 rounded-xl p-2.5 text-xs text-slate-700 font-medium">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B] animate-ping shrink-0 mt-1" />
+            <div className="flex items-start gap-2.5 bg-blue-50/70 border border-blue-100/80 rounded-xl p-2.5 text-xs text-slate-700 font-medium">
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-ping shrink-0 mt-1" />
               <div className="w-full min-w-0">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="font-bold text-emerald-900 uppercase text-[10px] tracking-wider flex items-center gap-1">
-                    <Radio size={11} className="text-[#00A86B] animate-pulse" />
+                  <span className="font-bold text-blue-900 uppercase text-[10px] tracking-wider flex items-center gap-1">
+                    <Radio size={11} className="text-blue-600 animate-pulse" />
                     AI Dual-Voice Playback ({voiceMode === 'mixed' ? 'Woman & Man Duet' : voiceMode === 'female' ? 'Female Voice' : 'Male Voice'}):
                   </span>
                   <button
                     onClick={handleDownloadAudio}
-                    className="text-[10px] font-black text-[#00A86B] hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-[10px] font-black text-blue-600 hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <Download size={10} /> Download Audio
                   </button>
@@ -1028,7 +1028,7 @@ export default function AIPlanningVoiceGuide({
               <button
                 type="button"
                 onClick={() => setShowGuideModal(true)}
-                className="text-[#00A86B] font-black uppercase hover:underline"
+                className="text-blue-600 font-black uppercase hover:underline"
               >
                 Open Full Voice Studio & Guide →
               </button>
@@ -1073,7 +1073,7 @@ export default function AIPlanningVoiceGuide({
               <div className="bg-slate-900 text-white border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-2xl bg-emerald-500/20 text-[#00A86B] border border-emerald-500/30 flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-2xl bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
                       <Volume2 size={22} className={isPlaying ? "animate-pulse" : ""} />
                     </div>
                     <div>
@@ -1093,7 +1093,7 @@ export default function AIPlanningVoiceGuide({
                       disabled={isGeneratingAudio}
                       className={cn(
                         "px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider text-white flex items-center gap-1.5 transition-all shadow-md cursor-pointer",
-                        isPlaying ? "bg-amber-500 hover:bg-amber-600" : "bg-[#00A86B] hover:bg-emerald-600"
+                        isPlaying ? "bg-amber-500 hover:bg-amber-600" : "bg-blue-600 hover:bg-blue-700"
                       )}
                     >
                       {isGeneratingAudio ? (
@@ -1150,7 +1150,7 @@ export default function AIPlanningVoiceGuide({
                         onClick={() => setVoiceMode('mixed')}
                         className={cn(
                           "py-1.5 px-2 rounded-xl text-[10px] font-black transition-all text-center cursor-pointer",
-                          voiceMode === 'mixed' ? "bg-emerald-500 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                          voiceMode === 'mixed' ? "bg-blue-500 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                         )}
                       >
                         👫 Mixed
@@ -1191,7 +1191,7 @@ export default function AIPlanningVoiceGuide({
               {/* Step by Step Operations */}
               <div>
                 <h4 className="font-black text-slate-900 text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-[#00A86B]" />
+                  <CheckCircle2 size={16} className="text-blue-600" />
                   Step-by-Step Operational Instructions
                 </h4>
                 <div className="space-y-2.5">
@@ -1226,8 +1226,8 @@ export default function AIPlanningVoiceGuide({
               </div>
 
               {/* National Standard & Citation */}
-              <div className="bg-emerald-50/60 border border-emerald-200/70 rounded-2xl p-4 text-[11px] text-emerald-900 font-medium">
-                <strong className="block font-black uppercase text-[10px] tracking-wider text-[#00A86B] mb-1">
+              <div className="bg-blue-50/60 border border-blue-200/70 rounded-2xl p-4 text-[11px] text-blue-900 font-medium">
+                <strong className="block font-black uppercase text-[10px] tracking-wider text-blue-600 mb-1">
                   National Curriculum Framework Alignment:
                 </strong>
                 {guideInfo.zambianStandard}

@@ -1,11 +1,13 @@
 import { safeLocalStorage } from "../lib/storage";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import buildMeta from '../build-metadata.json';
 import { useAuth } from './FirebaseProvider';
 import { db } from '../lib/firebase';
 import { SubscriptionPanel } from './SubscriptionPanel';
 import { AccessModal } from './AccessModal';
 import { CreditCard } from 'lucide-react';
+import { DailyDigest } from './DailyDigest';
+import { TermsAndConditionsView } from './TermsContent';
 import { 
   collection, 
   doc, 
@@ -53,10 +55,16 @@ import {
   Server,
   Sparkles,
   UserCheck,
-  ArrowLeft
+  ArrowLeft, Mail,
+  Calendar,
+  GraduationCap,
+  Users,
+  Info,
+  FileText,
+  X
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import { cn } from '../lib/utils';
+import { cn, extractUserFirstName } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { GRADES, ADMIN_EMAIL, DOC_TEMPLATES, SUBSCRIPTION_PLANS, isDeveloperEmail } from '../constants';
 
@@ -83,7 +91,7 @@ interface SettingsProps {
 
 export default function Settings({ onBack }: SettingsProps = {}) {
   const { user, userType, globalConfig, informantData, updateInformantData, isWhitelisted, subscriptionDetails } = useAuth();
-  const [activeTab, setActiveTab] = useState<'profile' | 'system' | 'subscription' | 'developer' | 'faq'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'system' | 'subscription' | 'developer' | 'faq' | 'digest' | 'terms'>('profile');
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false);
   
   // System integrity and version check state
@@ -115,19 +123,24 @@ export default function Settings({ onBack }: SettingsProps = {}) {
       console.error("Failed to fetch system integrity data:", err);
       // Fallback local structure
       setIntegrityData({
-        latestVersion: "2.4.0",
-        releaseDate: "August 2026",
-        buildTimestamp: "2026-08-08T21:50:00.000Z",
-        buildId: "seeded-initial",
+        latestVersion: "2.4.2",
+        releaseDate: "September 2026",
+        buildTimestamp: "2026-09-10T10:25:00.000Z",
+        buildId: "242-full-gear",
         appName: "FORTUNES EDUTECH",
         fileExists: true,
         apkSize: "1.61 MB",
         apkChecksum: "ea32f14cfdca56d1bf494a87a228c89b25fcfcb1d154ee8c79ab15df7dce72e6",
         changelog: [
-          "Purged all legacy v1.x protocols to ensure maximum stability.",
-          "Redesigned high-density Assessment Tracker analytics suite.",
-          "Optimized document sync engine with Firestore persistent store.",
-          "Added native high-integrity streaming for secure direct APK downloads."
+          "v2.4.3: Top Header Background Music Player: Seamlessly anchored the background music player pill into the top header navbar between school branding and utilities, leaving planning inputs and date fields completely unobstructed while maintaining uninterrupted audio playback.",
+          "v2.4.2: Continuous Background Mood Music Engine: Root-level audio persistence playing across all tabs and preparation hubs without interruption.",
+          "v2.4.2: Top Dashboard Utility Bar: Dedicated RECEIPT button in green, REVIEW in emerald heartbeat, PLAYBACK in solid black AI Voice Studio, and direct PAYSLIP GRZ portal link.",
+          "v2.4.2: Dual AI Voice Studio & Phone Audio Storage: Mixed female & male teacher voices with one-tap downloadable high-definition .wav audio files saved directly to device storage.",
+          "v2.4.2: Informant Ticker Redesign: Re-anchored to far-left edge in solid black badge with smooth full-sentence scrolling marquee at standard reading speed.",
+          "v2.4.2: 4-Minute Synchronized News & Live Feedback Ticker: Synchronized 240s alternating cycles between official education bulletins and teacher community reviews.",
+          "v2.4.2: Consolidated Academic Planning Hub: Seamless unified access uniting Schemes of Work, Weekly Forecasts, 6-Step Lesson Plans, and Detailed Lesson Notes.",
+          "v2.4.1: High-density Assessment Tracker & Learner Progress Chart analytics suite with batch scoring and PDF export.",
+          "v2.4.0: 1-Click System Synchronization (Schemes of Work -> Weekly Forecast -> Lesson Plans) & persistent Firestore storage."
         ]
       });
     } finally {
@@ -221,8 +234,31 @@ export default function Settings({ onBack }: SettingsProps = {}) {
   // Global settings state (local state for editing before saving)
   const [enforceGradeLock, setEnforceGradeLock] = useState(true);
   const [informantText, setInformantText] = useState('');
+  const [informantActive, setInformantActive] = useState(true);
   const [isInformantDirty, setIsInformantDirty] = useState(false);
   const [savingSettings, setSavingSettings] = useState(false);
+
+  // Email Template State
+  const [emailTemplateLogo, setEmailTemplateLogo] = useState("");
+  
+  const [welcomeSubject, setWelcomeSubject] = useState("Welcome to Fortunes Edutech");
+  const [welcomeBody, setWelcomeBody] = useState(`Hello {{NAME}},\n\nYou have successfully authenticated your session in the Fortunes Edutech portal.\n\nYour current access level: **{{ACCESS_LEVEL}}**\n\nBest regards,\nThe Fortunes Edutech Team`);
+
+  const [activeSubject, setActiveSubject] = useState("Your Fortunes Edutech Subscription is Active!");
+  const [activeBody, setActiveBody] = useState(`Hello {{NAME}},\n\nGreat news! Your Fortunes Edutech account has been officially activated.\n\nYou have been enrolled into the **{{CIRCLE}}** circle.\n\nLog in now to access your new premium features and start generating documents.\n\nBest regards,\nThe Fortunes Edutech Team`);
+
+  const [expirySubject, setExpirySubject] = useState("Action Required: Subscription Expiring in 5 Days");
+  const [expiryBody, setExpiryBody] = useState(`Hello {{NAME}},\n\nThis is a friendly reminder that your Fortunes Edutech **{{CIRCLE}}** subscription will expire in exactly 5 days.\n\nPlease renew your circle soon to maintain uninterrupted access to all your premium tools.\n\nBest regards,\nThe Fortunes Edutech Team`);
+  
+  const [broadcastSubject, setBroadcastSubject] = useState("");
+  const [broadcastBody, setBroadcastBody] = useState("");
+  const [broadcastAudience, setBroadcastAudience] = useState<'all' | 'trial_only' | 'whitelisted_only'>('all');
+  const [sendingBroadcast, setSendingBroadcast] = useState(false);
+  const [showRecipientModal, setShowRecipientModal] = useState(false);
+  const [recipientFilterTab, setRecipientFilterTab] = useState<'all' | 'trial' | 'whitelisted'>('all');
+  const [recipientSearch, setRecipientSearch] = useState("");
+  const [excludedEmails, setExcludedEmails] = useState<Set<string>>(new Set());
+  const [showConfirmSendModal, setShowConfirmSendModal] = useState(false);
 
   const [pendingSettingsDeleteGuest, setPendingSettingsDeleteGuest] = useState<{ email: string } | null>(null);
 
@@ -321,12 +357,13 @@ export default function Settings({ onBack }: SettingsProps = {}) {
     }
   }, [globalConfig, activeTab]);
 
-  // Sync informant text from global context when not dirty or when switching to developer tab
+  // Sync informant text & active status from global context when not dirty or when switching to developer tab
   useEffect(() => {
     if (activeTab === 'developer' && !isInformantDirty) {
       setInformantText(informantData.text || '');
+      setInformantActive(informantData.isActive !== false);
     }
-  }, [informantData.text, activeTab]);
+  }, [informantData.text, informantData.isActive, activeTab]);
 
   // Fetch Whitelist & User Session Records (For Developer Only)
   useEffect(() => {
@@ -364,9 +401,10 @@ export default function Settings({ onBack }: SettingsProps = {}) {
       setLoadingWhitelist(false);
     });
 
-    // Snapshot of online profiles (Users & Guest Experiments)
+    // Snapshot of online profiles (Users & Guest Experiments & Trial Applicants)
     let usersList: UserProfile[] = [];
     let guestExpList: any[] = [];
+    let subRequestsList: any[] = [];
 
     const mergeAndSortUsers = () => {
       const emailMap = new Map<string, UserProfile>();
@@ -395,6 +433,50 @@ export default function Settings({ onBack }: SettingsProps = {}) {
           });
         }
       });
+
+      // Incorporate teachers who requested subscription circles from trial mode
+      subRequestsList.forEach((sr) => {
+        if (sr.email) {
+          const norm = sr.email.toLowerCase().trim().replace(/\s+/g, '');
+          if (!emailMap.has(norm)) {
+            emailMap.set(norm, {
+              uid: sr.userId || `subreq_${norm.replace(/[^a-zA-Z0-9]/g, '_')}`,
+              email: norm,
+              displayName: sr.userName || 'Trial Teacher (Applicant)',
+              photoURL: '',
+              lastLogin: sr.timestamp || sr.requestedAt || null,
+              lastHeartbeat: sr.timestamp || null,
+            } as UserProfile);
+          }
+        }
+      });
+
+      // Incorporate any cached local trial session records
+      try {
+        ['eduplan_all_seen_users_permanent', 'eduplan_monitor_raw_users', 'eduplan_trial_login_history'].forEach(key => {
+          const raw = safeLocalStorage.getItem(key);
+          if (raw) {
+            const arr = JSON.parse(raw);
+            if (Array.isArray(arr)) {
+              arr.forEach((item: any) => {
+                if (item && item.email && item.email.includes('@')) {
+                  const norm = item.email.toLowerCase().trim().replace(/\s+/g, '');
+                  if (!emailMap.has(norm)) {
+                    emailMap.set(norm, {
+                      uid: item.uid || `trial_${norm.replace(/[^a-zA-Z0-9]/g, '_')}`,
+                      email: norm,
+                      displayName: item.displayName || 'Trial Teacher (Guest)',
+                      photoURL: item.photoURL || '',
+                      lastLogin: item.lastLogin || null,
+                      lastHeartbeat: item.lastHeartbeat || item.lastLogin || null,
+                    } as UserProfile);
+                  }
+                }
+              });
+            }
+          }
+        });
+      } catch (e) {}
 
       // Also ensure all whitelisted guests appear in the sessions list
       whitelist.forEach((w) => {
@@ -461,10 +543,39 @@ export default function Settings({ onBack }: SettingsProps = {}) {
       console.warn("Error fetching guest experiments in Settings:", err);
     });
 
+    const unsubSubRequests = onSnapshot(collection(db, 'subscription_requests'), (snapshot) => {
+      const list: any[] = [];
+      snapshot.forEach((doc) => {
+        list.push({ id: doc.id, ...doc.data() });
+      });
+      subRequestsList = list;
+      mergeAndSortUsers();
+    }, (err: any) => {
+      console.warn("Error fetching subscription requests in Settings:", err);
+    });
+
+    // Fetch Email Template
+    getDoc(doc(db, 'global_settings', 'email_template')).then((docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.logo) setEmailTemplateLogo(data.logo);
+        if (data.welcomeSubject) setWelcomeSubject(data.welcomeSubject);
+        if (data.welcomeBody) setWelcomeBody(data.welcomeBody);
+        if (data.activeSubject) setActiveSubject(data.activeSubject);
+        if (data.activeBody) setActiveBody(data.activeBody);
+        if (data.expirySubject) setExpirySubject(data.expirySubject);
+        if (data.expiryBody) setExpiryBody(data.expiryBody);
+        // Backwards compatibility
+        if (data.subject && !data.welcomeSubject) setWelcomeSubject(data.subject);
+        if (data.body && !data.welcomeBody) setWelcomeBody(data.body);
+      }
+    }).catch(err => console.warn("Failed to fetch email template:", err));
+
     return () => {
       unsubWhitelist();
       unsubUsers();
       unsubGuestExp();
+      unsubSubRequests();
     };
   }, [user, isDeveloper, activeTab]);
 
@@ -479,12 +590,25 @@ export default function Settings({ onBack }: SettingsProps = {}) {
 
     try {
       const finalGrade = selectedGradesForNew.includes('all') ? 'all' : selectedGradesForNew.join(', ');
-      const payload = {
+      
+      // Check if user already exists to preserve original activation date
+      let existingStart: any = null;
+      let existingAddedAt: any = null;
+      try {
+        const existingDoc = await getDoc(doc(db, 'authorized_guests', guestEmail));
+        if (existingDoc.exists()) {
+          const d = existingDoc.data();
+          existingStart = d.subscriptionStart || null;
+          existingAddedAt = d.addedAt || null;
+        }
+      } catch {}
+
+      const payload: any = {
         email: guestEmail,
         grade: finalGrade,
         subscriptionType: newSub,
-        subscriptionStart: serverTimestamp(),
-        addedAt: serverTimestamp(),
+        subscriptionStart: existingStart || serverTimestamp(),
+        addedAt: existingAddedAt || serverTimestamp(),
         addedBy: user?.email || 'Admin',
         amountPaid: Number(amountPaid) || 0,
         paymentMethod: paymentMethod,
@@ -506,7 +630,7 @@ export default function Settings({ onBack }: SettingsProps = {}) {
             is_whitelisted: true,
             user_type: 'registered',
             subscriptionType: newSub,
-            subscriptionStart: serverTimestamp(),
+            ...(existingStart ? {} : { subscriptionStart: serverTimestamp() }),
             amountPaid: Number(amountPaid) || 0,
             paymentMethod: paymentMethod,
             status: 'active'
@@ -519,6 +643,32 @@ export default function Settings({ onBack }: SettingsProps = {}) {
         console.warn("Could not sync profile immediately (non-critical):", profileErr);
       }
       
+      // Trigger Background Activation Email
+      try {
+        const recipientFirstName = extractUserFirstName(null, guestEmail);
+        const formattedBody = activeBody
+          .replace(/\n\n/g, '</p><p>')
+          .replace(/\n/g, '<br/>')
+          .replace(/{{CIRCLE}}/gi, newSub.toUpperCase())
+          .replace(/{{NAME}}/gi, recipientFirstName)
+          .replace(/{{FIRST_NAME}}/gi, recipientFirstName)
+          .replace(/Hello Educator\b/gi, `Hello ${recipientFirstName}`);
+
+        fetch('/api/system/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: guestEmail,
+            recipientName: recipientFirstName,
+            subject: activeSubject.replace(/{{CIRCLE}}/gi, newSub.toUpperCase()).replace(/{{NAME}}/gi, recipientFirstName),
+            html: `<p>${formattedBody}</p>`,
+            logoUrl: emailTemplateLogo || undefined
+          })
+        }).catch(err => console.warn("Failed to trigger activation email", err));
+      } catch (e) {
+        console.warn("Error calling email API", e);
+      }
+
       toast.success(`Successfully registered ${guestEmail} for ${newSub} subscription!`);
       setNewEmail('');
       setNewSub('monthly');
@@ -567,6 +717,59 @@ export default function Settings({ onBack }: SettingsProps = {}) {
     }
   };
 
+  // Dedicated handler to publish Informant broadcast live to all user screens
+  const handlePublishInformant = async () => {
+    const cleanText = informantText.trim();
+    try {
+      if (typeof updateInformantData === 'function') {
+        updateInformantData(cleanText, true);
+      }
+      setInformantActive(true);
+      if (cleanText) {
+        safeLocalStorage.setItem('eduplan_informant_text', cleanText);
+      } else {
+        safeLocalStorage.removeItem('eduplan_informant_text');
+      }
+      safeLocalStorage.setItem('eduplan_informant_active', 'true');
+
+      await setDoc(doc(db, 'global_settings', 'informant'), {
+        text: cleanText,
+        isActive: true,
+        updatedAt: serverTimestamp(),
+      });
+
+      setIsInformantDirty(false);
+      toast.success("Informant broadcast ACTIVATED & published live to all user screens!");
+    } catch (err: any) {
+      console.error("Broadcast save error:", err);
+      toast.error("Failed to publish broadcast: " + err.message);
+    }
+  };
+
+  // Dedicated handler to deactivate broadcast
+  const handleDeactivateInformant = async () => {
+    try {
+      const cleanText = informantText.trim();
+      if (typeof updateInformantData === 'function') {
+        updateInformantData(cleanText, false);
+      }
+      setInformantActive(false);
+      safeLocalStorage.setItem('eduplan_informant_active', 'false');
+
+      await setDoc(doc(db, 'global_settings', 'informant'), {
+        text: cleanText,
+        isActive: false,
+        updatedAt: serverTimestamp(),
+      });
+
+      setIsInformantDirty(false);
+      toast.success("Informant broadcast DEACTIVATED. System reverted to default status.");
+    } catch (err: any) {
+      console.error("Deactivation error:", err);
+      toast.error("Failed to deactivate broadcast: " + err.message);
+    }
+  };
+
   // Save Config Settings
   const handleSaveDeveloperSettings = async () => {
     setSavingSettings(true);
@@ -575,35 +778,206 @@ export default function Settings({ onBack }: SettingsProps = {}) {
 
       // 1. Instantly activate informant text in local context & storage with zero delay
       if (typeof updateInformantData === 'function') {
-        updateInformantData(cleanText);
+        updateInformantData(cleanText, informantActive);
       }
       if (cleanText) {
         safeLocalStorage.setItem('eduplan_informant_text', cleanText);
       } else {
         safeLocalStorage.removeItem('eduplan_informant_text');
       }
+      safeLocalStorage.setItem('eduplan_informant_active', String(informantActive));
 
       setInformantText(cleanText);
       setIsInformantDirty(false);
 
-      // 2. Persist to Firestore concurrently
-      await Promise.all([
-        setDoc(doc(db, 'global_settings', 'config'), {
+      // 2. Persist to Firestore independently
+      try {
+        await setDoc(doc(db, 'global_settings', 'informant'), {
+          text: cleanText,
+          isActive: informantActive,
+          updatedAt: serverTimestamp(),
+        });
+      } catch (e: any) {
+        console.warn("Informant save notice:", e?.message || e);
+      }
+
+      try {
+        await setDoc(doc(db, 'global_settings', 'config'), {
           enforceGradeLock,
           updatedAt: serverTimestamp(),
-        }),
-        setDoc(doc(db, 'global_settings', 'informant'), {
-          text: cleanText,
-          updatedAt: serverTimestamp(),
-        })
-      ]);
+        });
+      } catch (e: any) {
+        console.warn("Config save notice:", e?.message || e);
+      }
 
-      toast.success("Informant information updated successfully & broadcasted live instantly!");
+      try {
+        await setDoc(doc(db, 'global_settings', 'email_template'), {
+          welcomeSubject,
+          welcomeBody,
+          activeSubject,
+          activeBody,
+          expirySubject,
+          expiryBody,
+          logo: emailTemplateLogo,
+          updatedAt: serverTimestamp(),
+        });
+      } catch (e: any) {
+        console.warn("Email template save notice:", e?.message || e);
+      }
+
+      toast.success("Settings & Informant Broadcast published successfully!");
     } catch (error: any) {
       console.error(error);
       toast.error("Failed to save configuration settings: " + error.message);
     } finally {
       setSavingSettings(false);
+    }
+  };
+
+  // Deduplicated recipients categorized by Whitelisted vs Free Trial Access Mode
+  const { allRecipients, whitelistedRecipients, trialRecipients } = useMemo(() => {
+    const emailMap = new Map<string, { email: string; name: string; isTrial: boolean; source: string }>();
+
+    // 1. Scan all users from sessions, guest experiments, trial logs, and user profiles
+    users.forEach((u) => {
+      if (u.email && u.email.includes('@')) {
+        const norm = u.email.toLowerCase().trim().replace(/\s+/g, '');
+        const isWhitelistedUser = whitelist.some(
+          w => (w.email || (w as any).id || '').toLowerCase().trim().replace(/\s+/g, '') === norm
+        );
+        if (!emailMap.has(norm)) {
+          emailMap.set(norm, {
+            email: norm,
+            name: extractUserFirstName(u.displayName || null, norm),
+            isTrial: !isWhitelistedUser,
+            source: isWhitelistedUser ? 'Whitelist Circle' : (u.displayName?.includes('Trial') ? 'Guest Trial Mode' : 'Trial Access Session')
+          });
+        }
+      }
+    });
+
+    // 2. Scan all whitelisted entries to ensure full coverage and correct non-trial status
+    whitelist.forEach((w) => {
+      const wEmail = (w.email || (w as any).id || '');
+      if (wEmail && wEmail.includes('@')) {
+        const norm = wEmail.toLowerCase().trim().replace(/\s+/g, '');
+        if (!emailMap.has(norm)) {
+          emailMap.set(norm, {
+            email: norm,
+            name: extractUserFirstName((w as any).displayName || null, norm),
+            isTrial: false,
+            source: 'Whitelist Circle'
+          });
+        } else {
+          const item = emailMap.get(norm)!;
+          item.isTrial = false;
+          item.source = 'Whitelist Circle';
+        }
+      }
+    });
+
+    const all = Array.from(emailMap.values()).sort((a, b) => a.email.localeCompare(b.email));
+    const whitelistedOnly = all.filter(r => !r.isTrial);
+    const trialOnly = all.filter(r => r.isTrial);
+
+    return {
+      allRecipients: all,
+      whitelistedRecipients: whitelistedOnly,
+      trialRecipients: trialOnly,
+    };
+  }, [users, whitelist]);
+
+  const targetRecipients = useMemo(() => {
+    let pool = allRecipients;
+    if (broadcastAudience === 'trial_only') pool = trialRecipients;
+    else if (broadcastAudience === 'whitelisted_only') pool = whitelistedRecipients;
+
+    return pool.filter(r => !excludedEmails.has(r.email));
+  }, [broadcastAudience, allRecipients, trialRecipients, whitelistedRecipients, excludedEmails]);
+
+  const toggleExcludeRecipient = (email: string) => {
+    setExcludedEmails(prev => {
+      const next = new Set(prev);
+      if (next.has(email)) {
+        next.delete(email);
+      } else {
+        next.add(email);
+      }
+      return next;
+    });
+  };
+
+  const handleRequestSendBroadcast = () => {
+    if (!broadcastSubject.trim()) {
+      toast.error("Subject is required to send a broadcast.");
+      return;
+    }
+    if (!broadcastBody.trim() && !emailTemplateLogo) {
+      toast.error("Message body is required to send a broadcast.");
+      return;
+    }
+    if (targetRecipients.length === 0) {
+      toast.error("No active recipients selected. Please review your audience or exclusions.");
+      return;
+    }
+    setShowConfirmSendModal(true);
+  };
+
+  const handleSendBroadcast = async () => {
+    if (!broadcastSubject || (!broadcastBody && !emailTemplateLogo)) {
+      toast.error("Subject and body are required to send a broadcast.");
+      return;
+    }
+
+    if (targetRecipients.length === 0) {
+      toast.error("No recipients found for the selected broadcast audience.");
+      return;
+    }
+
+    setSendingBroadcast(true);
+    setShowConfirmSendModal(false);
+    try {
+      const response = await fetch('/api/system/email/broadcast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipients: targetRecipients.map(r => ({ email: r.email, name: r.name })),
+          subject: broadcastSubject,
+          html: `<p>${broadcastBody.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br/>')}</p>`,
+          logoUrl: emailTemplateLogo || undefined
+        })
+      });
+
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        throw new Error(errJson.error || errJson.details || 'Failed to send broadcast API call');
+      }
+
+      const resData = await response.json().catch(() => ({}));
+      const sentCount = typeof resData.sent === 'number' ? resData.sent : targetRecipients.length;
+      const failedCount = typeof resData.failed === 'number' ? resData.failed : 0;
+
+      const activeTrialCount = targetRecipients.filter(r => r.isTrial).length;
+      const activeWhitelistedCount = targetRecipients.filter(r => !r.isTrial).length;
+
+      const audienceDesc = broadcastAudience === 'trial_only'
+        ? `${sentCount} free trial access mode users`
+        : broadcastAudience === 'whitelisted_only'
+        ? `${sentCount} whitelisted users`
+        : `${sentCount} users (${activeTrialCount} free trial + ${activeWhitelistedCount} whitelisted)`;
+
+      if (failedCount > 0) {
+        toast.success(`Broadcast delivered to ${sentCount} users (${failedCount} encountered delivery issues).`);
+      } else {
+        toast.success(`Broadcast successfully sent to ${audienceDesc}!`);
+      }
+      setBroadcastSubject("");
+      setBroadcastBody("");
+    } catch (error: any) {
+      console.error("Error sending broadcast:", error);
+      toast.error("Failed to send broadcast: " + error.message);
+    } finally {
+      setSendingBroadcast(false);
     }
   };
 
@@ -648,24 +1022,36 @@ export default function Settings({ onBack }: SettingsProps = {}) {
 
   const faqs = [
     {
+      q: "What are the latest v2.4.3 updates in FORTUNES EDUTECH?",
+      a: "The v2.4.3 release introduces key operational enhancements: (1) Relocated Background Music Player to the Top Header Navbar directly between the school brand and menu controls, keeping planning forms, calendar dates, and input rows 100% unobstructed; (2) Persistent Continuous Audio that plays uninterrupted across all planning hubs and tabs; (3) Top Utility Action Bar with PAYSLIP, REVIEW, PLAYBACK, and RECEIPT; (4) Dual AI Planning Voice Studio with direct .wav storage downloads; (5) Far-left black Informant Ticker with smooth full-sentence speed; and (6) 4-minute synchronized news/feedback cycles."
+    },
+    {
+      q: "How does the background preparation music work when navigating other tabs?",
+      a: "The music player is powered by a root-level persistent audio provider. When you start playing music on the dashboard, the audio continues seamlessly without stopping or resetting as you open the Academic Planning Hub, Schemes of Work, Lesson Plans, Weekly Forecast, Settings, or User Manual. When working outside the dashboard, the companion mini-player pill appears directly in the top header navbar on the upper edge of your screen (with quick play/pause, next track, and an expandable dropdown panel), leaving all form fields and date pickers completely clear and unobstructed."
+    },
+    {
+      q: "What do the four buttons on the top bar do (Payslip, Review, Playback, Receipt)?",
+      a: "The top action bar provides instant access to essential tools: (1) PAYSLIP (Blue) links directly to the official Ministry of Finance E-Payslip platform (epdmis.grz.gov.zm) to request your monthly civil service payslip; (2) REVIEW (Green) opens a live recommendation form to submit suggestions and teacher feedback; (3) PLAYBACK (Blue) opens the AI Voice Studio with dual mixed female/male narration and rate controls; (4) RECEIPT (Green) opens the Receipt Manager to verify your transaction history and download or print official proof-of-payment receipts."
+    },
+    {
+      q: "How do I download the AI Voice audio guide directly into my phone storage?",
+      a: "Open the PLAYBACK tool from the top action bar or inside your lesson planning workspace. Select your desired topic or step, choose between female, male, or mixed dialog narration, and click the 'Save to Phone' (.wav) button. The audio file will immediately compile and save directly to your mobile downloads or device storage for offline playback in the classroom or during your commute."
+    },
+    {
+      q: "What is the Informant Ticker and how often does the news/feedback update?",
+      a: "The Informant Ticker is anchored to the far-left edge of the screen in a solid black badge. It streams administrative alerts and real-time daily headlines with smooth full-sentence marquee text. Below it, the synchronized News & Feedback Ticker runs on a 4-minute (240-second) alternating cycle between verified daily national educational/economic news bulletins (MoE, ECZ, CDC, Bank of Zambia) and live feedback from teachers across Zambia. Stale or prior-day headlines are automatically flashed away every midnight and upon fetching fresh news so only current headlines are displayed."
+    },
+    {
+      q: "How do I download and print payment receipts for my subscription?",
+      a: "You can click the green RECEIPT button directly on the top action bar, or navigate to 'My License' in Settings or the Subscription modal. Click 'Download Receipt' to instantly generate a branded official PDF receipt containing your transaction reference, amount paid (ZMW), payment date, active plan duration, and registered grade access."
+    },
+    {
       q: "What is the redefined Terms of Use?",
-      a: "By accessing FORTUNES EDUTECH (v2.4), you agree to our current high-performance professional educational standards. All legacy v1.x protocols have been purged. Your whitelisted account access is strictly for your personal use; unauthorized distribution or multi-user sharing of a single whitelisted portal is monitored and strictly prohibited. Any breach of these terms will lead to immediate account suspension to maintain platform integrity."
-    },
-    {
-      q: "What are the latest August 2026 updates?",
-      a: "The August 2026 update (v2.4) introduces a fully optimized document sync engine, the redesigned high-density Assessment Tracker, and refined 1-click syllabus mapping. All previous legacy data structures have been removed to ensure maximum performance and current compliance."
-    },
-    {
-      q: "How does the subscription cycle work currently?",
-      a: "Subscriptions are now unified across all generator portals. Activating your account whitelists your specific grade profile, granting unrestricted access to Schemes of Work, Weekly Forecasts, and the new Assessment Tracker analytics suite."
-    },
-    {
-      q: "Security and Whitelist Status?",
-      a: "We have updated our security protocols. Only developer-authorized emails (kombefortune9@gmail.com) can access premium features. This ensures a secure, high-integrity environment for professional Zambian educators."
+      a: "By accessing FORTUNES EDUTECH (v2.4.2), you agree to our high-performance professional educational standards. All legacy v1.x protocols have been purged. Your whitelisted account access is strictly for your personal professional use; unauthorized distribution or multi-user sharing of a single whitelisted portal is monitored and strictly prohibited to maintain system integrity."
     },
     {
       q: "Magic Fill & Syllabus Compliance?",
-      a: "Our updated engine now perfectly aligns with the latest CDC National Frameworks. 'Magic Fill' auto-populates instructional goals, learner activities, and assessment stages with 99% accuracy against current Zambian standards."
+      a: "Our updated engine perfectly aligns with the latest CDC National Frameworks. 'Magic Fill' auto-populates instructional goals, learner activities, competencies, and assessment stages with 99% accuracy against current Zambian standards."
     }
   ];
 
@@ -704,6 +1090,13 @@ export default function Settings({ onBack }: SettingsProps = {}) {
               My Profile
             </button>
             <button 
+              onClick={() => setActiveTab('digest')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold uppercase text-[10px] tracking-wider transition-all ${activeTab === 'digest' ? 'bg-white text-slate-800 shadow-md' : 'text-white hover:bg-white/10'}`}
+            >
+              <Calendar size={14} />
+              Daily Digest
+            </button>
+            <button 
               onClick={() => setActiveTab('subscription')}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold uppercase text-[10px] tracking-wider transition-all ${activeTab === 'subscription' ? 'bg-white text-slate-800 shadow-md' : 'text-white hover:bg-white/10'}`}
             >
@@ -723,6 +1116,13 @@ export default function Settings({ onBack }: SettingsProps = {}) {
             >
               <HelpCircle size={14} />
               FAQ Help
+            </button>
+            <button 
+              onClick={() => setActiveTab('terms')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold uppercase text-[10px] tracking-wider transition-all ${activeTab === 'terms' ? 'bg-white text-slate-800 shadow-md' : 'text-white hover:bg-white/10'}`}
+            >
+              <FileText size={14} />
+              Terms & Conditions
             </button>
             {isDeveloper && (
               <button 
@@ -801,6 +1201,19 @@ export default function Settings({ onBack }: SettingsProps = {}) {
         <div className="md:col-span-2 space-y-6">
           <AnimatePresence mode="wait">
             
+            {/* DAILY DIGEST TAB */}
+            {activeTab === 'digest' && (
+              <motion.div
+                key="digest"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-6"
+              >
+                <DailyDigest />
+              </motion.div>
+            )}
+
             {/* SUBSCRIPTION TAB */}
             {activeTab === 'subscription' && (
               <motion.div
@@ -1144,20 +1557,30 @@ export default function Settings({ onBack }: SettingsProps = {}) {
 
                 {/* 4. Release History / Changelog timeline */}
                 <div className="bg-white rounded-3xl border border-slate-200/50 p-6 shadow-sm space-y-4">
-                  <h3 className="text-sm font-black uppercase text-slate-800 tracking-wider flex items-center gap-2">
-                    <FileCode className="text-[#00A86B]" size={16} />
-                    v2.4.0 Release Changelog Notes
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-black uppercase text-slate-800 tracking-wider flex items-center gap-2">
+                      <FileCode className="text-[#00A86B]" size={16} />
+                      v{integrityData?.latestVersion || "2.4.2"} Release Changelog & System Updates
+                    </h3>
+                    <span className="text-[10px] font-black uppercase px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
+                      Live Build Verified
+                    </span>
+                  </div>
                   <div className="space-y-3.5 pl-2 border-l-2 border-slate-100">
                     {(integrityData?.changelog || [
-                      "Purged all legacy v1.x protocols to ensure maximum stability.",
-                      "Redesigned high-density Assessment Tracker analytics suite.",
-                      "Optimized document sync engine with Firestore persistent store.",
-                      "Added native high-integrity streaming for secure direct APK downloads."
+                      "v2.4.3: Top Header Background Music Player: Seamlessly anchored the background music player pill into the top header navbar between school branding and utilities, leaving planning inputs and date fields completely unobstructed while maintaining uninterrupted audio playback.",
+                      "v2.4.2: Continuous Background Mood Music Engine: Root-level audio persistence playing across all tabs and preparation hubs without interruption.",
+                      "v2.4.2: Top Dashboard Utility Bar: Dedicated RECEIPT button in green, REVIEW in emerald heartbeat, PLAYBACK in solid black AI Voice Studio, and direct PAYSLIP GRZ portal link.",
+                      "v2.4.2: Dual AI Voice Studio & Phone Audio Storage: Mixed female & male teacher voices with one-tap downloadable high-definition .wav audio files saved directly to device storage.",
+                      "v2.4.2: Informant Ticker Redesign: Re-anchored to far-left edge in solid black badge with smooth full-sentence marquee scrolling at standard reading speed.",
+                      "v2.4.2: 4-Minute Synchronized News & Live Feedback Ticker: Synchronized 240s alternating cycles between official education bulletins and teacher community reviews.",
+                      "v2.4.2: Consolidated Academic Planning Hub: Seamless unified access uniting Schemes of Work, Weekly Forecasts, 6-Step Lesson Plans, and Detailed Lesson Notes.",
+                      "v2.4.1: High-density Assessment Tracker & Learner Progress Chart analytics suite with batch scoring and PDF export.",
+                      "v2.4.0: 1-Click System Synchronization (Schemes of Work -> Weekly Forecast -> Lesson Plans) & persistent Firestore storage."
                     ]).map((change, idx) => (
                       <div key={idx} className="relative pl-6">
                         <div className="absolute left-0 top-1.5 -translate-x-1/2 w-2 h-2 rounded-full bg-[#00A86B]" />
-                        <p className="text-xs font-semibold text-slate-600 leading-relaxed">{change}</p>
+                        <p className="text-xs font-semibold text-slate-700 leading-relaxed">{change}</p>
                       </div>
                     ))}
                   </div>
@@ -1222,6 +1645,19 @@ export default function Settings({ onBack }: SettingsProps = {}) {
               </motion.div>
             )}
 
+            {/* TERMS & CONDITIONS TAB */}
+            {activeTab === 'terms' && (
+              <motion.div
+                key="terms"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="bg-white rounded-3xl border border-slate-200/50 p-6 md:p-8 shadow-sm space-y-6 text-left"
+              >
+                <TermsAndConditionsView />
+              </motion.div>
+            )}
+
             {/* DEVELOPER TAB */}
             {isDeveloper && activeTab === 'developer' && (
               <motion.div
@@ -1274,13 +1710,91 @@ export default function Settings({ onBack }: SettingsProps = {}) {
                     </div>
 
                     {/* Developer Informant Billboards Announcement */}
-                    <div className="space-y-3 pt-2">
-                      <div className="flex items-center justify-between">
-                        <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
-                          <Bell size={13} className="text-[#00A86B]" />
-                          Developer Informant (Sliding horizontal message box ticker - active until changed)
-                        </label>
+                    <div className="space-y-4 pt-2 border-t border-slate-100/80">
+                      <div className="flex items-center justify-between flex-wrap gap-2 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+                        <div className="flex items-center gap-2">
+                          <Bell size={16} className={informantActive ? "text-[#00A86B] animate-bounce" : "text-slate-400"} />
+                          <div>
+                            <span className="text-xs font-black uppercase text-slate-800 tracking-tight block">
+                              Developer Informant Ticker
+                            </span>
+                            <span className="text-[10px] text-slate-500 font-semibold">
+                              Broadcast continuous sliding announcements to all active users.
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          {informantActive ? (
+                            <span className="text-[9.5px] font-black text-emerald-800 bg-emerald-100 border border-emerald-300 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                              STATUS: LIVE BROADCAST ACTIVE
+                            </span>
+                          ) : (
+                            <span className="text-[9.5px] font-black text-slate-600 bg-slate-200/80 border border-slate-300 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                              <span className="w-2 h-2 rounded-full bg-slate-400" />
+                              STATUS: INACTIVE / STANDBY
+                            </span>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const nextState = !informantActive;
+                              setInformantActive(nextState);
+                              setIsInformantDirty(true);
+                            }}
+                            className="shrink-0 text-slate-600 focus:outline-none"
+                            title={informantActive ? "Deactivate Broadcast" : "Activate Broadcast"}
+                          >
+                            {informantActive ? (
+                              <ToggleRight className="text-[#00A86B] cursor-pointer" size={40} />
+                            ) : (
+                              <ToggleLeft className="text-slate-300 cursor-pointer" size={40} />
+                            )}
+                          </button>
+                        </div>
                       </div>
+
+                      {/* Quick Presets */}
+                      <div className="space-y-1.5">
+                        <span className="text-[9.5px] font-black uppercase text-slate-400 tracking-wider block">
+                          ⚡ Quick Announcement Presets (1-Tap To Load)
+                        </span>
+                        <div className="flex items-center gap-2 flex-wrap text-[10px]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setInformantText("You are strongly advised to refer to CDC and ECZ aligned subject syllabi for all term 3 lesson planning and forecasts.");
+                              setIsInformantDirty(true);
+                            }}
+                            className="px-2.5 py-1 bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 font-bold rounded-lg border border-slate-200 transition-colors shadow-2xs"
+                          >
+                            📜 Syllabus Advice
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setInformantText("Grade 7, 9, and 12 mock examination guidelines and updated schemes of work are now active in your dashboard.");
+                              setIsInformantDirty(true);
+                            }}
+                            className="px-2.5 py-1 bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 font-bold rounded-lg border border-slate-200 transition-colors shadow-2xs"
+                          >
+                            🏆 Exam Guidelines
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setInformantText("Continuous background audio player and top bar utility tools are now live for all registered educator accounts!");
+                              setIsInformantDirty(true);
+                            }}
+                            className="px-2.5 py-1 bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 font-bold rounded-lg border border-slate-200 transition-colors shadow-2xs"
+                          >
+                            🎧 New Features Alert
+                          </button>
+                        </div>
+                      </div>
+
                       <textarea
                         value={informantText}
                         onChange={(e) => {
@@ -1290,9 +1804,159 @@ export default function Settings({ onBack }: SettingsProps = {}) {
                         placeholder="Type short exciting announcement or update reminder for users... e.g. You are advised to refer content from the syllabus based on the subject..."
                         className="w-full text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded-2xl p-4 h-28 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white resize-none shadow-inner"
                       />
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-emerald-50/50 p-3 rounded-2xl border border-emerald-100">
+
+                      {/* Live Preview Box */}
+                      {informantText.trim() && (
+                        <div className="bg-blue-900 text-white p-2.5 rounded-2xl border border-blue-800 shadow-sm space-y-1">
+                          <span className="text-[8.5px] font-black uppercase text-blue-200 tracking-wider block">
+                            👁️ Live Ticker Preview (How Users Will See It):
+                          </span>
+                          <div className="text-[10px] font-bold text-white bg-blue-950/80 px-3 py-1.5 rounded-xl border border-blue-800/80 truncate">
+                            <span className="text-emerald-300 font-black">Dear [User's Name]:</span> {informantText.trim()}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between pt-1 gap-2 flex-wrap">
+                        <p className="text-[10px] text-slate-500 font-medium flex items-center gap-1">
+                          <span>⚡ Continuous horizontal scroll with steady reading speed and personalized greetings for every user.</span>
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={handleDeactivateInformant}
+                            className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold rounded-xl transition-all active:scale-95 border border-slate-200"
+                          >
+                            Turn Off Broadcast
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handlePublishInformant}
+                            className="px-4 py-1.5 bg-[#00A86B] hover:bg-[#008f5a] text-white text-[11px] font-black rounded-xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95"
+                          >
+                            <Bell size={12} />
+                            Publish Broadcast Live
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Email Template Engine */}
+                    <div className="space-y-6 pt-4 border-t border-slate-100">
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
+                            <Mail size={13} className="text-[#00A86B]" />
+                            Automated Email Templates
+                          </label>
+                        </div>
+                        <p className="text-[10px] text-slate-500 font-medium mb-3">Define the system emails sent to users automatically. Use <code className="bg-slate-200 px-1 py-0.5 rounded text-slate-700">{"{{NAME}}"}</code>, <code className="bg-slate-200 px-1 py-0.5 rounded text-slate-700">{"{{ACCESS_LEVEL}}"}</code>, and <code className="bg-slate-200 px-1 py-0.5 rounded text-slate-700">{"{{CIRCLE}}"}</code> as dynamic variables.</p>
+                        
+                        {/* Brand Signature & No-Reply Identity Preview Card */}
+                        <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-4 mb-4 space-y-3">
+                          <div className="flex items-center justify-between flex-wrap gap-2">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-xl bg-[#00A86B] flex items-center justify-center text-white shadow-sm shrink-0">
+                                <GraduationCap size={22} />
+                              </div>
+                              <div>
+                                <div className="text-xs font-black text-slate-900 uppercase tracking-tight">FORTUNES EDUTECH</div>
+                                <div className="text-[10px] text-[#00A86B] font-bold tracking-wider lowercase">your CBC partner</div>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-emerald-300">
+                                Built-In Pictorial Signature
+                              </span>
+                              <span className="bg-slate-100 text-slate-700 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-slate-200">
+                                No-Reply Active
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
+                            Every outgoing email is stamped with the official <strong>FORTUNES EDUTECH (No-Reply)</strong> sender tag and the official pictorial signature above. You do <strong>not</strong> need to paste any image link.
+                          </p>
+
+                          <div className="bg-emerald-50 border border-emerald-200/80 rounded-xl p-3 text-[11px] text-slate-700">
+                            <span className="font-bold text-[#00A86B] block mb-1">💡 Smart Name & Profile Personalization:</span>
+                            Emails automatically recognize the user's English first name (e.g. <em>"Hello Fortune"</em>, <em>"Hello Joseph"</em>) extracted from their Google profile or email address. You can use <strong>{`{{NAME}}`}</strong> or <strong>{`{{CIRCLE}}`}</strong> in any template below!
+                          </div>
+
+                          <div className="pt-1">
+                            <label className="text-[9px] font-black uppercase text-slate-400 tracking-wider block mb-1">
+                              Optional: Override with Custom Image Link (Leave blank to use default pictorial signature)
+                            </label>
+                            <input
+                              type="url"
+                              value={emailTemplateLogo}
+                              onChange={(e) => setEmailTemplateLogo(e.target.value)}
+                              placeholder="Leave blank to use the official Fortunes Edutech signature, or paste custom image link"
+                              className="w-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        {/* 1. Welcome Template */}
+                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+                          <h4 className="text-xs font-bold text-slate-700">1. Welcome Message (First Login & Trial)</h4>
+                          <input
+                            type="text"
+                            value={welcomeSubject}
+                            onChange={(e) => setWelcomeSubject(e.target.value)}
+                            placeholder="Welcome Email Subject"
+                            className="w-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                          />
+                          <textarea
+                            value={welcomeBody}
+                            onChange={(e) => setWelcomeBody(e.target.value)}
+                            placeholder="Welcome Email Body (Markdown supported)"
+                            className="w-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl p-3 h-32 focus:outline-none focus:ring-2 focus:ring-[#00A86B] resize-none"
+                          />
+                        </div>
+
+                        {/* 2. Activation Template */}
+                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+                          <h4 className="text-xs font-bold text-slate-700">2. Subscription Activated (Whitelist Added)</h4>
+                          <input
+                            type="text"
+                            value={activeSubject}
+                            onChange={(e) => setActiveSubject(e.target.value)}
+                            placeholder="Activation Email Subject"
+                            className="w-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                          />
+                          <textarea
+                            value={activeBody}
+                            onChange={(e) => setActiveBody(e.target.value)}
+                            placeholder="Activation Email Body (Markdown supported)"
+                            className="w-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl p-3 h-32 focus:outline-none focus:ring-2 focus:ring-[#00A86B] resize-none"
+                          />
+                        </div>
+
+                        {/* 3. Expiry Warning Template */}
+                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+                          <h4 className="text-xs font-bold text-slate-700">3. Expiry Warning (5 Days Left)</h4>
+                          <input
+                            type="text"
+                            value={expirySubject}
+                            onChange={(e) => setExpirySubject(e.target.value)}
+                            placeholder="Expiry Warning Subject"
+                            className="w-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                          />
+                          <textarea
+                            value={expiryBody}
+                            onChange={(e) => setExpiryBody(e.target.value)}
+                            placeholder="Expiry Warning Body (Markdown supported)"
+                            className="w-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl p-3 h-32 focus:outline-none focus:ring-2 focus:ring-[#00A86B] resize-none"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-emerald-50/50 p-3 rounded-2xl border border-emerald-100 mt-4">
                         <p className="text-[10px] text-[#00A86B] font-bold leading-relaxed">
-                          This message will slide horizontally on dashboards for all users and remain active indefinitely until you update or change it.
+                          These changes take effect immediately on next save.
                         </p>
                         <button
                           type="button"
@@ -1301,7 +1965,203 @@ export default function Settings({ onBack }: SettingsProps = {}) {
                           className="shrink-0 bg-[#00A86B] hover:bg-[#008f5b] active:scale-95 text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider shadow-sm flex items-center justify-center gap-1.5 transition-all disabled:opacity-50"
                         >
                           {savingSettings ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
-                          Save Informant Message
+                          Save Config
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Broadcast Engine */}
+                    <div id="email-broadcast-engine" className="space-y-4 pt-4 border-t border-slate-100">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
+                          <Activity size={13} className="text-[#00A86B]" />
+                          Email Broadcast Engine (Mass Mailer)
+                        </label>
+                        <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-bold">
+                          <button
+                            id="view-all-recipients-badge"
+                            type="button"
+                            onClick={() => { setRecipientFilterTab('all'); setShowRecipientModal(true); }}
+                            className="px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center gap-1 cursor-pointer transition-all active:scale-95"
+                            title="Click to view all recipients"
+                          >
+                            <Eye size={11} /> {allRecipients.length} Total Recipients
+                          </button>
+                          <button
+                            id="view-trial-recipients-badge"
+                            type="button"
+                            onClick={() => { setRecipientFilterTab('trial'); setShowRecipientModal(true); }}
+                            className="px-2.5 py-1 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 flex items-center gap-1 cursor-pointer transition-all active:scale-95"
+                            title="Click to view free trial users"
+                          >
+                            <Eye size={11} /> {trialRecipients.length} Free Trial
+                          </button>
+                          <button
+                            id="view-whitelisted-recipients-badge"
+                            type="button"
+                            onClick={() => { setRecipientFilterTab('whitelisted'); setShowRecipientModal(true); }}
+                            className="px-2.5 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 flex items-center gap-1 cursor-pointer transition-all active:scale-95"
+                            title="Click to view whitelisted users"
+                          >
+                            <Eye size={11} /> {whitelistedRecipients.length} Whitelisted
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Audience Selection Pills */}
+                      <div className="bg-slate-50 border border-slate-200/80 p-3 rounded-2xl space-y-2.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider flex items-center gap-1">
+                            <Users size={12} className="text-slate-600" /> Broadcast Target Audience
+                          </span>
+                          <span className="text-[9px] font-bold text-slate-400">
+                            Free trial users are {broadcastAudience === 'whitelisted_only' ? 'exempted (whitelisted only)' : 'included in delivery'}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                          <button
+                            id="audience-all-btn"
+                            type="button"
+                            onClick={() => setBroadcastAudience('all')}
+                            className={cn(
+                              "px-3 py-2 rounded-xl text-xs font-bold text-left transition-all border flex items-center justify-between cursor-pointer",
+                              broadcastAudience === 'all'
+                                ? "bg-white border-[#00A86B] text-slate-900 shadow-sm ring-1 ring-[#00A86B]/20"
+                                : "bg-white/60 border-slate-200 text-slate-600 hover:bg-white"
+                            )}
+                          >
+                            <span className="flex items-center gap-1.5">
+                              <span className={cn(
+                                "w-2 h-2 rounded-full",
+                                broadcastAudience === 'all' ? "bg-[#00A86B]" : "bg-slate-300"
+                              )} />
+                              <span>All Users (Incl. Free Trial)</span>
+                            </span>
+                            <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700">
+                              {allRecipients.length}
+                            </span>
+                          </button>
+
+                          <button
+                            id="audience-trial-btn"
+                            type="button"
+                            onClick={() => setBroadcastAudience('trial_only')}
+                            className={cn(
+                              "px-3 py-2 rounded-xl text-xs font-bold text-left transition-all border flex items-center justify-between cursor-pointer",
+                              broadcastAudience === 'trial_only'
+                                ? "bg-white border-blue-500 text-slate-900 shadow-sm ring-1 ring-blue-500/20"
+                                : "bg-white/60 border-slate-200 text-slate-600 hover:bg-white"
+                            )}
+                          >
+                            <span className="flex items-center gap-1.5">
+                              <span className={cn(
+                                "w-2 h-2 rounded-full",
+                                broadcastAudience === 'trial_only' ? "bg-blue-500" : "bg-slate-300"
+                              )} />
+                              <span>Free Trial Users Only</span>
+                            </span>
+                            <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">
+                              {trialRecipients.length}
+                            </span>
+                          </button>
+
+                          <button
+                            id="audience-whitelisted-btn"
+                            type="button"
+                            onClick={() => setBroadcastAudience('whitelisted_only')}
+                            className={cn(
+                              "px-3 py-2 rounded-xl text-xs font-bold text-left transition-all border flex items-center justify-between cursor-pointer",
+                              broadcastAudience === 'whitelisted_only'
+                                ? "bg-white border-purple-500 text-slate-900 shadow-sm ring-1 ring-purple-500/20"
+                                : "bg-white/60 border-slate-200 text-slate-600 hover:bg-white"
+                            )}
+                          >
+                            <span className="flex items-center gap-1.5">
+                              <span className={cn(
+                                "w-2 h-2 rounded-full",
+                                broadcastAudience === 'whitelisted_only' ? "bg-purple-500" : "bg-slate-300"
+                              )} />
+                              <span>Whitelisted Only</span>
+                            </span>
+                            <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-purple-50 text-purple-700">
+                              {whitelistedRecipients.length}
+                            </span>
+                          </button>
+                        </div>
+
+                        {/* Quick Roster Inspection Trigger */}
+                        <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 text-xs">
+                          <button
+                            id="inspect-roster-btn"
+                            type="button"
+                            onClick={() => { setRecipientFilterTab('all'); setShowRecipientModal(true); }}
+                            className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200/80 px-2.5 py-1 rounded-xl transition-all cursor-pointer"
+                          >
+                            <Eye size={12} />
+                            <span>Inspect & Verify Recipient Roster ({allRecipients.length} Educators)</span>
+                          </button>
+                          {excludedEmails.size > 0 && (
+                            <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">
+                              {excludedEmails.size} excluded
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <p className="text-[10px] text-slate-500 font-medium">
+                        {broadcastAudience === 'all' && (
+                          <>Instantly blast an email to all <strong className="text-slate-800">{allRecipients.length} registered and free trial access mode teachers</strong> (18 trial + 10 whitelisted). Perfect for system-wide announcements or major updates.</>
+                        )}
+                        {broadcastAudience === 'trial_only' && (
+                          <>Instantly blast an email specifically to the <strong className="text-slate-800">{trialRecipients.length} free trial access mode teachers</strong>. Whitelisted members will not receive this email.</>
+                        )}
+                        {broadcastAudience === 'whitelisted_only' && (
+                          <>Instantly blast an email specifically to the <strong className="text-slate-800">{whitelistedRecipients.length} verified whitelisted circle teachers</strong>. Free trial users will not receive this email.</>
+                        )}
+                      </p>
+                      
+                      <div className="space-y-3">
+                        <input
+                          id="broadcast-subject-input"
+                          type="text"
+                          value={broadcastSubject}
+                          onChange={(e) => setBroadcastSubject(e.target.value)}
+                          placeholder="Broadcast Subject (e.g. System Update or Subscription Circle Announcement)"
+                          className="w-full text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white"
+                        />
+                        <textarea
+                          id="broadcast-body-textarea"
+                          value={broadcastBody}
+                          onChange={(e) => setBroadcastBody(e.target.value)}
+                          placeholder="Broadcast Message (e.g. Hello Educator, We are pleased to announce that your lesson plans...)"
+                          className="w-full text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded-2xl p-4 h-32 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white resize-none shadow-inner"
+                        />
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-blue-50/50 p-3.5 rounded-2xl border border-blue-100 mt-4">
+                        <div className="space-y-0.5">
+                          <p className="text-[10px] text-blue-800 font-bold leading-relaxed flex items-center gap-1.5">
+                            <Info size={12} className="text-blue-600 shrink-0" />
+                            <span>
+                              Delivering to <strong className="font-extrabold">{targetRecipients.length} recipient{targetRecipients.length === 1 ? '' : 's'}</strong>
+                              {broadcastAudience === 'all' && ` (${targetRecipients.filter(r => r.isTrial).length} trial + ${targetRecipients.filter(r => !r.isTrial).length} whitelisted)`}
+                              {broadcastAudience === 'trial_only' && ' (free trial users only)'}
+                              {broadcastAudience === 'whitelisted_only' && ' (whitelisted users only)'}.
+                            </span>
+                          </p>
+                          <p className="text-[9.5px] text-blue-600/80 font-medium">
+                            Paced sequential delivery enabled with automatic connection pooling and retry to protect against SMTP 421 errors.
+                          </p>
+                        </div>
+                        <button
+                          id="send-broadcast-btn"
+                          type="button"
+                          onClick={handleRequestSendBroadcast}
+                          disabled={sendingBroadcast || targetRecipients.length === 0}
+                          className="shrink-0 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider shadow-sm flex items-center justify-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer"
+                        >
+                          {sendingBroadcast ? <Loader2 size={13} className="animate-spin" /> : <Mail size={13} />}
+                          Send Broadcast ({targetRecipients.length})
                         </button>
                       </div>
                     </div>
@@ -1697,93 +2557,11 @@ export default function Settings({ onBack }: SettingsProps = {}) {
                   </div>
                 </div>
 
-                {/* Android Native Compilation (Developer Info) */}
-                <div className="bg-white rounded-3xl border border-slate-200/50 p-6 shadow-sm space-y-6">
-                  <div>
-                    <h2 className="text-lg font-black text-slate-800 uppercase tracking-tight flex items-center gap-2">
-                      <FileCode className="text-[#00A86B]" size={20} />
-                      Native APK Compilation Specification
-                    </h2>
-                    <p className="text-slate-400 text-xs mt-1 font-semibold">Technical details for building the signed Native Android APK.</p>
-                  </div>
-
-                  <div className="bg-amber-50/50 border border-amber-200/50 rounded-3xl p-6 space-y-3">
-                    <div className="flex items-start gap-3.5">
-                      <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
-                        <AlertTriangle size={18} />
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="text-sm font-black text-amber-800 uppercase tracking-wide">Why did my APK download show "API Demos"?</h4>
-                        <p className="text-xs font-bold text-amber-700/90 leading-relaxed">
-                          The downloaded <code className="bg-amber-100/50 px-1 py-0.5 rounded text-[10px] font-mono">FORTUNES_EDUTECH.apk</code> file was generated as an Android SDK testing template package. It behaves as a dummy sample app because standard cloud hosting containers do not have local Android SDK and Gradle compiler suites to bundle, sign, and build physical APK binary code directly.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold text-slate-600 leading-relaxed">
-                        To build a highly secure native `.apk` file that launches the real-time school system on phone storage, compile a simple Native WebView Wrapper project in Android Studio with package name <code className="font-mono bg-slate-200 px-1 py-0.2 rounded font-black text-[10px]">com.fortunes.edutech</code>.
-                      </p>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="space-y-1.5">
-                        <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-1">AndroidManifest.xml</span>
-                        <pre className="p-3.5 bg-slate-900 text-slate-300 font-mono text-[10px] rounded-xl overflow-x-auto select-all leading-normal">
-{`<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fortunes.edutech">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="FORTUNES EDUTECH"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:usesCleartextTraffic="true">
-        
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-</manifest>`}
-                        </pre>
-                      </div>
-
-                      <div className="space-y-1.5 pt-2">
-                        <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-1">MainActivity.kt</span>
-                        <pre className="p-3.5 bg-slate-900 text-slate-300 font-mono text-[10px] rounded-xl overflow-x-auto select-all leading-normal">
-{`package com.fortunes.edutech
-import android.os.Bundle
-import android.webkit.WebView
-import androidx.appcompat.app.AppCompatActivity
-
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val myWebView = WebView(this)
-        setContentView(myWebView)
-        myWebView.settings.javaScriptEnabled = true
-        myWebView.settings.domStorageEnabled = true
-        myWebView.loadUrl("${window.location.origin}")
-    }
-}`}
-                        </pre>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {/* Android Native Compilation (Developer Info - Hidden until ready) */}
+                {/* 
+                  Native APK Compilation Specification section is hidden for now as requested.
+                  Will be re-enabled when ready.
+                */}
 
               </motion.div>
             )}
@@ -1840,6 +2618,283 @@ class MainActivity : AppCompatActivity() {
                       className="w-full text-center px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-2xl text-[10px] font-black uppercase tracking-wider transition-all active:scale-95"
                     >
                       Keep Registered & Cancel Deletion
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Recipient Roster Modal */}
+          <AnimatePresence>
+            {showRecipientModal && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[9999] flex items-center justify-center p-3 sm:p-6"
+              >
+                <motion.div
+                  initial={{ scale: 0.95, y: 15 }}
+                  animate={{ scale: 1, y: 0 }}
+                  exit={{ scale: 0.95, y: 15 }}
+                  className="bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+                >
+                  {/* Modal Header */}
+                  <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Users className="text-[#00A86B]" size={20} />
+                        <h3 className="text-base font-black text-slate-800">Broadcast Recipient Roster</h3>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-0.5 font-medium">
+                        View, search, and verify all educators reachable by the broadcast engine.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowRecipientModal(false)}
+                      className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+
+                  {/* Filter Tabs & Search */}
+                  <div className="p-4 bg-slate-50/80 border-b border-slate-100 space-y-3">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <button
+                        type="button"
+                        onClick={() => setRecipientFilterTab('all')}
+                        className={cn(
+                          "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer",
+                          recipientFilterTab === 'all'
+                            ? "bg-[#00A86B] text-white shadow-sm"
+                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                        )}
+                      >
+                        All Recipients ({allRecipients.length})
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setRecipientFilterTab('trial')}
+                        className={cn(
+                          "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer",
+                          recipientFilterTab === 'trial'
+                            ? "bg-blue-600 text-white shadow-sm"
+                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                        )}
+                      >
+                        Free Trial Users ({trialRecipients.length})
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setRecipientFilterTab('whitelisted')}
+                        className={cn(
+                          "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer",
+                          recipientFilterTab === 'whitelisted'
+                            ? "bg-purple-600 text-white shadow-sm"
+                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                        )}
+                      >
+                        Whitelisted Circle ({whitelistedRecipients.length})
+                      </button>
+                    </div>
+
+                    <div className="relative">
+                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        value={recipientSearch}
+                        onChange={(e) => setRecipientSearch(e.target.value)}
+                        placeholder="Search educator by name or email address..."
+                        className="w-full pl-9 pr-8 py-2 bg-white text-xs font-medium text-slate-800 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00A86B]"
+                      />
+                      {recipientSearch && (
+                        <button
+                          type="button"
+                          onClick={() => setRecipientSearch('')}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                        >
+                          <X size={12} />
+                        </button>
+                      )}
+                    </div>
+
+                    {excludedEmails.size > 0 && (
+                      <div className="flex items-center justify-between text-[11px] bg-amber-50 border border-amber-200 rounded-xl px-3 py-1.5 text-amber-800 font-medium">
+                        <span>{excludedEmails.size} user{excludedEmails.size === 1 ? '' : 's'} excluded from delivery.</span>
+                        <button
+                          type="button"
+                          onClick={() => setExcludedEmails(new Set())}
+                          className="text-amber-900 underline font-bold hover:text-amber-950 cursor-pointer"
+                        >
+                          Reset / Include All
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Recipient List Body */}
+                  <div className="flex-1 overflow-y-auto divide-y divide-slate-100 p-2 sm:p-4">
+                    {(() => {
+                      let list = allRecipients;
+                      if (recipientFilterTab === 'trial') list = trialRecipients;
+                      if (recipientFilterTab === 'whitelisted') list = whitelistedRecipients;
+
+                      if (recipientSearch.trim()) {
+                        const q = recipientSearch.toLowerCase().trim();
+                        list = list.filter(r => r.email.toLowerCase().includes(q) || r.name.toLowerCase().includes(q));
+                      }
+
+                      if (list.length === 0) {
+                        return (
+                          <div className="p-8 text-center text-slate-400 text-xs font-medium">
+                            No educators match your search filter.
+                          </div>
+                        );
+                      }
+
+                      return list.map((item) => {
+                        const isExcluded = excludedEmails.has(item.email);
+                        return (
+                          <div
+                            key={item.email}
+                            className={cn(
+                              "flex items-center justify-between p-3 rounded-2xl transition-colors gap-3",
+                              isExcluded ? "bg-slate-50 opacity-50" : "hover:bg-slate-50"
+                            )}
+                          >
+                            <div className="flex items-center gap-3 min-w-0">
+                              <input
+                                type="checkbox"
+                                checked={!isExcluded}
+                                onChange={() => toggleExcludeRecipient(item.email)}
+                                title={isExcluded ? "Click to include in broadcast" : "Click to exclude from broadcast"}
+                                className="w-4 h-4 rounded text-[#00A86B] border-slate-300 focus:ring-[#00A86B] cursor-pointer"
+                              />
+                              <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-black text-xs flex items-center justify-center shrink-0">
+                                {item.name.charAt(0).toUpperCase()}
+                              </div>
+                              <div className="min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <p className="text-xs font-bold text-slate-800 truncate">{item.name}</p>
+                                  {item.isTrial ? (
+                                    <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-blue-50 text-blue-700 border border-blue-200 shrink-0">
+                                      Free Trial Access
+                                    </span>
+                                  ) : (
+                                    <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-purple-50 text-purple-700 border border-purple-200 shrink-0">
+                                      Whitelisted Member
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-[11px] font-semibold text-slate-500 truncate">{item.email}</p>
+                              </div>
+                            </div>
+                            <span className="text-[10px] text-slate-400 font-medium shrink-0 hidden sm:inline">
+                              {item.source}
+                            </span>
+                          </div>
+                        );
+                      });
+                    })()}
+                  </div>
+
+                  {/* Modal Footer */}
+                  <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
+                    <p className="text-xs text-slate-600 font-bold">
+                      Active Target: <span className="text-[#00A86B] font-extrabold">{targetRecipients.length}</span> educators selected
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowRecipientModal(false)}
+                      className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold transition-all cursor-pointer"
+                    >
+                      Done & Close
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Confirm Broadcast Pre-Flight Modal */}
+          <AnimatePresence>
+            {showConfirmSendModal && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[9999] flex items-center justify-center p-4 sm:p-6"
+              >
+                <motion.div
+                  initial={{ scale: 0.95, y: 15 }}
+                  animate={{ scale: 1, y: 0 }}
+                  exit={{ scale: 0.95, y: 15 }}
+                  className="bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 max-w-md w-full space-y-4"
+                >
+                  <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto ring-4 ring-blue-50/50">
+                    <Mail size={24} />
+                  </div>
+
+                  <div className="text-center space-y-1">
+                    <h3 className="text-base font-black text-slate-800">Confirm Email Broadcast</h3>
+                    <p className="text-xs text-slate-500 font-medium">
+                      Review your audience and message details before launching.
+                    </p>
+                  </div>
+
+                  <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 space-y-2 text-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 font-semibold">Selected Target:</span>
+                      <span className="font-extrabold text-slate-800">
+                        {broadcastAudience === 'all' && 'All Users (Incl. Free Trial)'}
+                        {broadcastAudience === 'trial_only' && 'Free Trial Users Only'}
+                        {broadcastAudience === 'whitelisted_only' && 'Whitelisted Users Only'}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 font-semibold">Total Delivered:</span>
+                      <span className="font-black text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">
+                        {targetRecipients.length} Recipient{targetRecipients.length === 1 ? '' : 's'}
+                      </span>
+                    </div>
+
+                    <div className="text-[11px] text-slate-500 border-t border-slate-200/60 pt-2 flex items-center justify-between">
+                      <span>• Free Trial: <strong className="text-blue-700">{targetRecipients.filter(r => r.isTrial).length}</strong></span>
+                      <span>• Whitelisted: <strong className="text-purple-700">{targetRecipients.filter(r => !r.isTrial).length}</strong></span>
+                    </div>
+
+                    <div className="border-t border-slate-200/60 pt-2 space-y-1">
+                      <span className="text-[10px] font-black uppercase text-slate-400">Subject:</span>
+                      <p className="font-bold text-slate-800 text-xs truncate">
+                        {broadcastSubject}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="text-[10.5px] text-slate-500 leading-relaxed text-center">
+                    ⚡ Connection pooling, 350ms message pacing, and automatic SMTP retry backoff are active to guarantee compliant delivery without rate limit errors.
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmSendModal(false)}
+                      className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleSendBroadcast}
+                      disabled={sendingBroadcast}
+                      className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      {sendingBroadcast ? <Loader2 size={13} className="animate-spin" /> : <Mail size={13} />}
+                      Send Now ({targetRecipients.length})
                     </button>
                   </div>
                 </motion.div>

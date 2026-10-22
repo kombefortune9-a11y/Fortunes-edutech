@@ -32,6 +32,7 @@ import { useAuth } from './FirebaseProvider';
 import { AccessModal } from './AccessModal';
 import { SUBSCRIPTION_PLANS, ADMIN_EMAIL } from '../constants';
 import AIPlanningVoiceGuide from './AIPlanningVoiceGuide';
+import InformationCenter from './InformationCenter';
 
 interface AssignmentHubProps {
   onBack: () => void;
@@ -174,16 +175,16 @@ export function AssignmentHub({ onBack }: AssignmentHubProps) {
     const currentPlanLabel = SUBSCRIPTION_PLANS[subType]?.label || (isWhitelisted ? subType : 'Trial / Guest Access');
 
     return (
-      <div className="w-full max-w-5xl mx-auto p-4 md:p-8 space-y-6 animate-in fade-in zoom-in duration-500">
+      <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-3 sm:py-6 space-y-4 sm:space-y-6 animate-in fade-in zoom-in duration-500">
         <AccessModal 
           isOpen={showAccessModal} 
           onClose={() => setShowAccessModal(false)} 
         />
 
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-150/80 shadow-xs">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-150/80 shadow-xs">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center shrink-0">
               <GraduationCap size={24} />
             </div>
             <div>
@@ -207,7 +208,7 @@ export function AssignmentHub({ onBack }: AssignmentHubProps) {
         </div>
 
         {/* Locked Feature Gate Card */}
-        <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-10 border border-indigo-900/50 shadow-2xl relative overflow-hidden space-y-8">
+        <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 border border-indigo-900/50 shadow-2xl relative overflow-hidden space-y-6 sm:space-y-8">
           {/* Ambient glow */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -216,13 +217,13 @@ export function AssignmentHub({ onBack }: AssignmentHubProps) {
             <div className="space-y-2 max-w-2xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-400/15 border border-amber-400/30 rounded-full text-amber-300 text-xs font-black uppercase tracking-wider">
                 <Crown size={14} className="text-amber-400" />
-                <span>Termly & Unlimited Circle Exclusive Portal</span>
+                <span>Termly Circle Exclusive Portal</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
                 Unlock Scholarly Research & Model Assignments
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
-                The Assignment & Research Writing Hub conducts in-depth academic inquiry, multi-chapter research proposals, thesis methodologies, and comprehensive APA/Harvard literature synthesis. Due to the high compute and long-form analysis involved, this advanced tool is strictly reserved for <strong className="text-white">Termly Circle (90 Days)</strong> and <strong className="text-white">Unlimited Access</strong> subscribers.
+                The Assignment & Research Writing Hub conducts in-depth academic inquiry, multi-chapter research proposals, thesis methodologies, and comprehensive APA/Harvard literature synthesis. Due to the high compute and long-form analysis involved, this advanced tool is strictly reserved for <strong className="text-white">Termly Circle (90 Days)</strong> subscribers.
               </p>
             </div>
 
@@ -291,7 +292,7 @@ export function AssignmentHub({ onBack }: AssignmentHubProps) {
                 </div>
                 <h4 className="text-xs font-black uppercase tracking-wide text-white">High Quota Allocation</h4>
                 <p className="text-[11px] text-slate-300 leading-normal">
-                  Enjoy generous download limits: 500 documents for Termly Circle (90 Days) and Unlimited downloads for Unlimited Access.
+                  Enjoy generous download limits: 300 documents for Termly Circle (90 Days).
                 </p>
               </div>
 
@@ -308,52 +309,26 @@ export function AssignmentHub({ onBack }: AssignmentHubProps) {
           </div>
 
           {/* Pricing Options Cards */}
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="bg-indigo-900/40 border-2 border-indigo-400/50 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+          <div className="relative z-10 max-w-lg mx-auto pt-2">
+            <div className="bg-indigo-900/50 border-2 border-indigo-400/60 rounded-2xl p-6 flex flex-col justify-between space-y-4 shadow-xl">
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black uppercase tracking-wider text-indigo-300">Termly Circle</span>
-                  <span className="px-2 py-0.5 bg-indigo-500/30 text-indigo-200 text-[10px] font-black uppercase rounded-md border border-indigo-400/30">90 Days</span>
+                  <span className="text-sm font-black uppercase tracking-wider text-indigo-300">Termly Circle</span>
+                  <span className="px-2.5 py-1 bg-indigo-500/30 text-indigo-200 text-xs font-black uppercase rounded-md border border-indigo-400/30">90 Days • 300 Documents</span>
                 </div>
-                <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-3xl font-black text-white">K250</span>
-                  <span className="text-xs text-slate-400 font-semibold">/ term</span>
+                <div className="mt-3 flex items-baseline gap-1.5">
+                  <span className="text-4xl font-black text-white">K180</span>
+                  <span className="text-xs text-slate-300 font-semibold">/ term</span>
                 </div>
-                <p className="text-xs text-slate-300 font-medium mt-2">
-                  Complete access to all Lesson Plans, SOW, Forecasts, Catch-Up cards + <strong>Assignment & Research Writing Hub</strong> with 500 document limit.
+                <p className="text-xs text-slate-200 font-medium mt-3 leading-relaxed">
+                  Complete access to all Lesson Plans, SOW, Forecasts, Catch-Up cards + <strong>Assignment & Research Writing Hub</strong> with 300 document allowance for the entire school term.
                 </p>
               </div>
               <button
                 onClick={() => setShowAccessModal(true)}
-                className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
+                className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer"
               >
-                <span>Subscribe to Termly Circle</span>
-                <ArrowRight size={14} />
-              </button>
-            </div>
-
-            <div className="bg-blue-900/40 border-2 border-emerald-400/60 rounded-2xl p-5 flex flex-col justify-between space-y-4 relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-gradient-to-l from-emerald-500 to-emerald-600 text-slate-950 text-[8px] font-black uppercase px-3 py-0.5 rounded-bl-lg tracking-wider">
-                Best Value
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-black uppercase tracking-wider text-emerald-300">Unlimited Access</span>
-                  <span className="px-2 py-0.5 bg-emerald-500/30 text-emerald-200 text-[10px] font-black uppercase rounded-md border border-emerald-400/30">Lifetime</span>
-                </div>
-                <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-3xl font-black text-white">K1500</span>
-                  <span className="text-xs text-slate-400 font-semibold">/ school</span>
-                </div>
-                <p className="text-xs text-slate-300 font-medium mt-2">
-                  Ultimate lifetime access across all grades and school terms + full <strong>Assignment & Research Writing Hub</strong> with zero download limits.
-                </p>
-              </div>
-              <button
-                onClick={() => setShowAccessModal(true)}
-                className="w-full py-2.5 px-4 bg-[#00A86B] hover:bg-emerald-500 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
-              >
-                <span>Subscribe to Unlimited Access</span>
+                <span>Subscribe to Termly Circle (K180)</span>
                 <ArrowRight size={14} />
               </button>
             </div>
@@ -382,38 +357,37 @@ export function AssignmentHub({ onBack }: AssignmentHubProps) {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 md:p-8 space-y-6 animate-in fade-in zoom-in duration-500">
+    <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-3 sm:py-6 space-y-4 sm:space-y-6 animate-in fade-in zoom-in duration-500">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-150/80 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center">
-            <GraduationCap size={24} />
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 bg-white p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-150/80 shadow-xs">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center shrink-0">
+            <GraduationCap size={20} className="sm:w-6 sm:h-6" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-black text-slate-900 leading-tight">Assignment & Research Writing Hub</h1>
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+              <h1 className="text-base sm:text-xl font-black text-slate-900 leading-tight">Assignment & Research Writing Hub</h1>
+              <span className="bg-emerald-100 text-emerald-800 text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
                 <ShieldCheck size={10} />
                 Unlocked ({SUBSCRIPTION_PLANS[subType]?.label || 'Active Circle'})
               </span>
             </div>
-            <p className="text-xs font-bold text-slate-500">AI-powered senior scholar companion for students and academic researchers</p>
+            <p className="text-[11px] sm:text-xs font-bold text-slate-500">AI-powered senior scholar companion for students and academic researchers</p>
           </div>
         </div>
         <button
           onClick={onBack}
-          className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-black text-xs uppercase tracking-wider rounded-xl transition-all border border-slate-200"
+          className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-black text-[10px] sm:text-xs uppercase tracking-wider rounded-xl transition-all border border-slate-200 self-end sm:self-auto cursor-pointer"
         >
-          <ArrowLeft size={14} />
-          Go to Dashboard
+          <ArrowLeft size={13} />
+          <span>Dashboard</span>
         </button>
       </div>
 
-      {/* AI Voice Playback & Planning Guide */}
-      <AIPlanningVoiceGuide 
+      {/* Information Center Fixed on top of General Information Block */}
+      <InformationCenter 
         toolType="research" 
         toolTitle="Assignment & Research Writing Hub"
-        className="animate-in fade-in duration-300"
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

@@ -4,7 +4,7 @@ service cloud.firestore {
     // Reviews Collection - moved to top for priority
     match /reviews/{reviewId} {
       allow read, list, get: if true; 
-      allow create: if isSignedIn() && isValidReview(request.resource.data) && (request.resource.data.email.lower() == request.auth.token.email.lower() || isAdmin());
+      allow create: if isValidReview(request.resource.data);
       allow update, delete: if isAdmin();
     }
 
@@ -123,6 +123,10 @@ service cloud.firestore {
     match /users/{userId} {
       allow read, write: if true;
 
+      // Tasks subcollection
+      match /tasks/{taskId} {
+        allow read, write: if true;
+      }
       // Downloads subcollection (Record of Work history)
       match /downloads/{downloadId} {
         allow read, write: if true;
@@ -176,43 +180,50 @@ service cloud.firestore {
 
     // Guest Experiments Tracking Collection
     match /guest_experiments/{email} {
-      allow get, write: if true; // Allow guests to track their own access
-      allow list: if isAdmin();
+      allow read, write: if true;
     }
 
     // System Activity Tracking Collection
     match /system_activity/{activityId} {
-      allow create: if isValidSystemActivity(request.resource.data);
-      allow read, list: if isAdmin();
-      allow update, delete: if isAdmin();
+      allow read, write: if true;
     }
 
     // Central Download Tracking Collection
     match /download_tracking/{trackingId} {
-      allow create: if isSignedIn() && isValidDownloadTracking(request.resource.data); 
-      allow read, list: if isSignedIn() && (resource == null || resource.data.user_email.lower() == request.auth.token.email.lower() || isAdmin());
-      allow update, delete: if isAdmin();
+      allow read, write: if true;
     }
 
     // Global Receipts Collection
     match /receipts/{receiptId} {
-      allow create: if isSignedIn();
-      allow read, list: if isSignedIn() && (resource == null || (request.auth.token.email != null && resource.data.payerEmail.lower() == request.auth.token.email.lower()) || isAdmin());
-      allow update, delete: if isAdmin();
+      allow read, write: if true;
     }
 
     // Document Feedback Collection
     match /document_feedback/{feedbackId} {
-      allow create: if isSignedIn();
-      allow read, list: if isAdmin();
-      allow update, delete: if isAdmin();
+      allow read, write: if true;
     }
 
     // Subscription Requests Collection
     match /subscription_requests/{requestId} {
-      allow create: if isSignedIn();
-      allow read, list: if isSignedIn() && (resource == null || resource.data.uid == request.auth.uid || isAdmin());
-      allow update, delete: if isAdmin();
+      allow read, write: if true;
+    }
+
+    // Shared Music Collection (Developer background music for all users)
+    match /shared_music/{path=**} {
+      allow read, write: if true;
+    }
+
+    // Whole School Circles Collection & Shared School Records
+    match /schools/{schoolId} {
+      allow read, write: if true;
+
+      match /assessment_records/{recordId} {
+        allow read, write: if true;
+      }
+
+      match /{document=**} {
+        allow read, write: if true;
+      }
     }
 
     // Default deny catch-all at the end

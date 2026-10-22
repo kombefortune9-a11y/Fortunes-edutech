@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from './FirebaseProvider';
-import { X, CheckCircle2, AlertTriangle, MessageSquare, Copy, Sparkles, ShieldAlert, Share2, ExternalLink, Clock, ShieldCheck, RefreshCw } from 'lucide-react';
+import { X, CheckCircle2, AlertTriangle, MessageSquare, Copy, Sparkles, ShieldAlert, Share2, ExternalLink, Clock, ShieldCheck, RefreshCw, Smartphone, Zap, Loader2, Check, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'react-hot-toast';
 import { SUBSCRIPTION_PLANS } from '../constants';
 import { db } from '../lib/firebase';
-import { collection, query, where, onSnapshot, setDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, setDoc, doc, serverTimestamp, addDoc, Timestamp } from 'firebase/firestore';
 import { safeLocalStorage } from '../lib/storage';
+import { MtnMoMoLogo, AirtelLogo, ZamtelLogo, PaymentLogosIndicator } from './NetworkLogos';
+import { SchoolRegistrationModal } from './SchoolRegistrationModal';
+import { calculateSchoolPricing, BASE_SCHOOL_TEACHERS, EXTRA_TEACHER_PRICE } from '../lib/schoolTypes';
 
 interface AccessModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialNetwork?: 'MTN Mobile Money' | 'Airtel Money' | 'Zamtel Kwacha';
 }
 
-export function AccessModal({ isOpen, onClose }: AccessModalProps) {
+export function AccessModal({ isOpen, onClose, initialNetwork }: AccessModalProps) {
   const { user, isWhitelisted, subscriptionDetails, refreshSubscription, isQuotaExceeded } = useAuth();
-  const [selectedCircle, setSelectedCircle] = useState<string>('monthly');
+  const [selectedCircle, setSelectedCircle] = useState<string>('termly');
+  const [schoolTeachersCount, setSchoolTeachersCount] = useState<number>(BASE_SCHOOL_TEACHERS);
+  const [registeredTeacherEmails, setRegisteredTeacherEmails] = useState<string[]>(['']);
+  const [isSchoolRegModalOpen, setIsSchoolRegModalOpen] = useState(false);
+  const [schoolRegPaymentData, setSchoolRegPaymentData] = useState<any>(null);
   const [requestHistory, setRequestHistory] = useState<any[]>(() => {
     try {
       const cached = safeLocalStorage.getItem(`eduplan_req_history_${user?.uid}`);
@@ -32,6 +40,28 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
       return [];
     }
   });
+
+  // Payment mode: instant automated USSD push vs manual deposit
+  const [paymentMode, setPaymentMode] = useState<'instant_momo' | 'manual'>('instant_momo');
+  const [momoNetwork, setMomoNetwork] = useState<'MTN Mobile Money' | 'Airtel Money' | 'Zamtel Kwacha'>('MTN Mobile Money');
+
+  useEffect(() => {
+    if (initialNetwork) {
+      setMomoNetwork(initialNetwork);
+    }
+  }, [initialNetwork, isOpen]);
+  const [momoPhone, setMomoPhone] = useState('');
+  const [isInitiatingMomo, setIsInitiatingMomo] = useState(false);
+  const [momoActiveTx, setMomoActiveTx] = useState<{
+    referenceId: string;
+    identifier?: string;
+    amount: number;
+    phone: string;
+    network: string;
+  } | null>(null);
+  const [momoSecondsLeft, setMomoSecondsLeft] = useState(120);
+  const [isCheckingMomo, setIsCheckingMomo] = useState(false);
+
   // Subscription registration states
   const [registerName, setRegisterName] = useState('');
   const [registerPhone, setRegisterPhone] = useState('');
@@ -40,6 +70,226 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
   const [registerComments, setRegisterComments] = useState('');
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const [activeModalTab, setActiveModalTab] = useState<'form' | 'status'>('form');
+
+  const pollIntervalRef = useRef<any>(null);
+
+  // Activates subscription in Firestore and creates receipt on successful payment
+  const completeActivation = async (refId: string, paidAmount: number, networkName: string, phoneUsed: string) => {
+    if (!user || !user.email) return;
+    const cleanEmail = user.email.toLowerCase().trim().replace(/\s+/g, '');
+    const planInfo = SUBSCRIPTION_PLANS[selectedCircle] || SUBSCRIPTION_PLANS.monthly;
+
+    // For Whole School Termly Circle, pop up school registration immediately after payment
+    if (selectedCircle === 'termly') {
+      setMomoActiveTx(null);
+      if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+      setSchoolRegPaymentData({
+        amount: paidAmount,
+        referenceId: refId,
+        network: networkName,
+        phone: phoneUsed,
+        purchasedTeachersLimit: schoolTeachersCount,
+      });
+      setIsSchoolRegModalOpen(true);
+      toast.success("🎉 Payment Verified! Please fill out the Whole School Registration form to activate all teachers.", { duration: 9000 });
+      return;
+    }
+
+    const days = planInfo.durationDays || 30;
+    const now = new Date();
+    const expiryDate = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+
+    const payload = {
+      email: cleanEmail,
+      displayName: user.displayName || cleanEmail.split('@')[0],
+      isWhitelisted: true,
+      status: 'active',
+      subscriptionType: selectedCircle,
+      assignedGrades: ['all'],
+      grade: 'all',
+      circle: selectedCircle,
+      amountPaid: paidAmount,
+      subscriptionStartDate: now.toISOString(),
+      subscriptionEndDate: expiryDate.toISOString(),
+      expiresAt: Timestamp.fromDate(expiryDate),
+      circleDownloadsCount: 0,
+      circleDownloadsLimit: planInfo.limit,
+      paymentMethod: `Lipila (${networkName})`,
+      paymentReference: refId,
+      lastPaymentDate: now.toISOString(),
+      updatedAt: serverTimestamp()
+    };
+
+    try {
+      await setDoc(doc(db, 'authorized_guests', cleanEmail), payload, { merge: true });
+      await setDoc(doc(db, 'users', user.uid), payload, { merge: true });
+
+      const receiptData = {
+        payerName: user.displayName || cleanEmail.split('@')[0],
+        payerEmail: cleanEmail,
+        payerPhone: phoneUsed,
+        amount: paidAmount,
+        currency: 'ZMW',
+        packageName: `${planInfo.label} (${days} Days)`,
+        packageType: selectedCircle,
+        paymentMethod: `Mobile Money - ${networkName} (Lipila)`,
+        referenceNumber: refId,
+        receiptNumber: `REC-${Date.now().toString().slice(-6)}`,
+        notes: `Automated instant payment via Lipila Gateway`,
+        issuedBy: 'Fortunes Edutech Automated Billing',
+        status: 'completed',
+        createdAt: serverTimestamp(),
+        date: new Date().toLocaleDateString('en-GB')
+      };
+
+      await addDoc(collection(db, 'receipts'), receiptData).catch(() => {});
+      await addDoc(collection(db, 'users', user.uid, 'receipts'), receiptData).catch(() => {});
+
+      await refreshSubscription();
+      toast.success(`🎉 Payment Verified! You are now subscribed to ${planInfo.label}!`, { duration: 8000 });
+      setMomoActiveTx(null);
+      if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+    } catch (err: any) {
+      console.error("Error activating subscription:", err);
+      toast.error("Payment received, but error activating. Please tap Sync & Verify.");
+    }
+  };
+
+  // Poll transaction status while USSD prompt is pending on phone
+  useEffect(() => {
+    if (!momoActiveTx) {
+      if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+      return;
+    }
+
+    setMomoSecondsLeft(120);
+
+    const timer = setInterval(() => {
+      setMomoSecondsLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    pollIntervalRef.current = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/payments/lipila/status/${momoActiveTx.referenceId}`);
+        if (!res.ok) return;
+        const ct = res.headers.get("content-type");
+        if (!ct || !ct.includes("application/json")) return;
+        const data = await res.json();
+        if (data.status === 'completed') {
+          clearInterval(pollIntervalRef.current);
+          clearInterval(timer);
+          await completeActivation(momoActiveTx.referenceId, momoActiveTx.amount, momoActiveTx.network, momoActiveTx.phone);
+        } else if (data.status === 'failed') {
+          clearInterval(pollIntervalRef.current);
+          clearInterval(timer);
+          toast.error("Payment prompt was cancelled or declined on your phone. Please try again.");
+          setMomoActiveTx(null);
+        }
+      } catch (err) {
+        // network polling retry
+      }
+    }, 3500);
+
+    return () => {
+      clearInterval(timer);
+      if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+    };
+  }, [momoActiveTx]);
+
+  const handleSendMomoPrompt = async () => {
+    if (!user || !user.email) {
+      toast.error("Please log in to initiate mobile payments.");
+      return;
+    }
+    const cleanPhone = momoPhone.trim().replace(/[^0-9]/g, '');
+    if (!cleanPhone || cleanPhone.length < 9) {
+      toast.error("Please enter a valid Zambian mobile number (e.g. 0961622222 or 097...)");
+      return;
+    }
+
+    const planInfo = SUBSCRIPTION_PLANS[selectedCircle] || SUBSCRIPTION_PLANS.monthly;
+    const schoolPricing = calculateSchoolPricing(schoolTeachersCount);
+    const effectiveAmount = selectedCircle === 'termly' ? schoolPricing.totalPrice : planInfo.price;
+    setIsInitiatingMomo(true);
+
+    try {
+      const res = await fetch("/api/payments/lipila/initiate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: effectiveAmount,
+          phoneNumber: cleanPhone,
+          operator: momoNetwork,
+          email: user.email,
+          planId: selectedCircle,
+          planTitle: selectedCircle === 'termly' ? `${planInfo.label} (${schoolTeachersCount} Teachers)` : planInfo.label,
+          userName: user.displayName || user.email.split('@')[0]
+        })
+      });
+
+      const ct = res.headers.get("content-type");
+      if (!ct || !ct.includes("application/json")) {
+        throw new Error("Payment service is temporarily busy or reconnecting. Please try again in a few moments.");
+      }
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to trigger payment prompt");
+      }
+
+      toast.success("📱 USSD Pop-up sent! Check your phone screen now and enter your PIN.", { duration: 6000 });
+      setMomoActiveTx({
+        referenceId: data.referenceId,
+        identifier: data.identifier,
+        amount: effectiveAmount,
+        phone: cleanPhone,
+        network: momoNetwork
+      });
+    } catch (err: any) {
+      toast.error(err.message || "Failed to contact payment network. Please try again.");
+    } finally {
+      setIsInitiatingMomo(false);
+    }
+  };
+
+  const handleManualVerifyMomo = async () => {
+    if (!momoActiveTx) return;
+    setIsCheckingMomo(true);
+    try {
+      const res = await fetch(`/api/payments/lipila/status/${momoActiveTx.referenceId}`);
+      const ct = res.headers.get("content-type");
+      if (!ct || !ct.includes("application/json")) {
+        throw new Error("Payment service is synchronizing. Please try again in a few moments.");
+      }
+      const data = await res.json();
+      if (data.status === 'completed') {
+        await completeActivation(momoActiveTx.referenceId, momoActiveTx.amount, momoActiveTx.network, momoActiveTx.phone);
+      } else {
+        const confirmRes = await fetch("/api/payments/lipila/confirm", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ referenceId: momoActiveTx.referenceId })
+        });
+        const confirmCt = confirmRes.headers.get("content-type");
+        const confirmData = (confirmCt && confirmCt.includes("application/json")) ? await confirmRes.json() : {};
+        if (confirmData.success && confirmData.status === 'completed') {
+          await completeActivation(momoActiveTx.referenceId, momoActiveTx.amount, momoActiveTx.network, momoActiveTx.phone);
+        } else {
+          toast("Still waiting for mobile PIN confirmation. Please ensure you approved the prompt on your phone.", { icon: "⏳" });
+        }
+      }
+    } catch (err: any) {
+      toast.error("Could not verify status. Please tap Sync & Verify.");
+    } finally {
+      setIsCheckingMomo(false);
+    }
+  };
 
   const [isSyncingSub, setIsSyncingSub] = useState(false);
   const handleSyncSubscription = async () => {
@@ -125,6 +375,7 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
   };
 
   const selectedPlanInfo = SUBSCRIPTION_PLANS[selectedCircle] || SUBSCRIPTION_PLANS.monthly;
+  const effectivePrice = selectedPlanInfo.price;
 
   return (
     <AnimatePresence>
@@ -240,7 +491,7 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
                       <div>
                         <p className="font-black uppercase tracking-tight text-[11px] text-red-700">Downloads Depleted for Active Circle</p>
                         <p className="mt-1 leading-relaxed text-red-800">
-                          You have depleted your allocated downloads for this subscription circle ({subscriptionDetails?.circleDownloadsCount || 0}/{subscriptionDetails?.circleDownloadsLimit || 90} docs used). Even though your subscription date has not yet reached, no downloads can be granted until you renew your subscription circle.
+                          You have depleted your allocated downloads for this subscription circle ({subscriptionDetails?.circleDownloadsCount || 0}/{subscriptionDetails?.circleDownloadsLimit || 180} docs used). Even though your subscription date has not yet reached, no downloads can be granted until you renew your subscription circle.
                         </p>
                       </div>
                     </div>
@@ -384,7 +635,7 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
                       </div>
                       <button
                         onClick={() => {
-                          const msg = encodeURIComponent(`Hello Fortunes Edutech Developer! I am using the app on Free Trial mode (Email: ${user?.email || 'N/A'}) and would like activation for ${selectedPlanInfo?.label || 'Monthly Circle'} (ZMK ${selectedPlanInfo?.price || 90}).`);
+                          const msg = encodeURIComponent(`Hello Fortunes Edutech Developer! I am using the app on Free Trial mode (Email: ${user?.email || 'N/A'}) and would like activation for ${selectedPlanInfo?.label || 'Monthly Circle'} (ZMK ${selectedPlanInfo?.price || 70}).`);
                           window.open(`https://wa.me/260961622222?text=${msg}`, '_blank');
                         }}
                         className="text-[#00A86B] hover:text-emerald-700 font-black uppercase tracking-tight flex items-center gap-1 shrink-0 cursor-pointer"
@@ -417,14 +668,14 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
                 </div>
               ) : (
                 <div className="space-y-3 max-h-[260px] overflow-y-auto pr-1 custom-scrollbar">
-                  {requestHistory.map((req: any) => {
+                  {requestHistory.map((req: any, idx: number) => {
                     const plan = SUBSCRIPTION_PLANS[req.subscriptionType] || { label: req.subscriptionType, price: req.amount || 0 };
                     const isPending = req.status === 'pending';
                     const isApproved = req.status === 'approved';
                     
                     return (
                       <div 
-                        key={req.id} 
+                        key={`${req.id || 'req'}-${idx}`} 
                         className={`border p-3.5 rounded-xl text-xs space-y-2 relative transition-all ${
                           isPending 
                             ? 'bg-amber-50/40 border-amber-200/70 shadow-2xs' 
@@ -502,61 +753,91 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 {Object.entries(SUBSCRIPTION_PLANS)
                   .filter(([key]) => key !== 'guest_trial' && key !== 'unlimited')
+                  .sort(([aKey], [bKey]) => {
+                    const order = ['14days', 'monthly', 'termly'];
+                    return order.indexOf(aKey) - order.indexOf(bKey);
+                  })
                   .map(([key, plan]) => {
                     const isTermly = key === 'termly';
+                    const isMonthly = key === 'monthly';
+                    const is14Days = key === '14days';
                     const isSelected = selectedCircle === key;
                     const isActive = isWhitelisted && !isExpired && subType === key;
+
+                    // Color schemes specified:
+                    // 14 days: in white with black lined tab
+                    // Monthly: in lighter blue with some few white in it
+                    // Termly: in green tab with some white, light blue lines and some lighter black
+                    const cardStyle = is14Days
+                      ? (isSelected ? 'bg-white border-2 border-black ring-2 ring-black/20 shadow-xs' : 'bg-white border-2 border-black/80 hover:border-black')
+                      : isMonthly
+                        ? (isSelected ? 'bg-sky-50/90 border-2 border-sky-500 ring-2 ring-sky-400/30 shadow-xs' : 'bg-sky-50/60 border-2 border-sky-400 hover:border-sky-500')
+                        : (isSelected ? 'bg-emerald-50 border-2 border-emerald-600 ring-2 ring-emerald-500/30 shadow-xs' : 'bg-emerald-50/70 border-2 border-emerald-500 hover:border-emerald-600');
+
+                    const headerColor = is14Days
+                      ? 'text-slate-900'
+                      : isMonthly
+                        ? 'text-sky-900'
+                        : 'text-emerald-950';
+
+                    const priceColor = is14Days
+                      ? 'text-black'
+                      : isMonthly
+                        ? 'text-sky-950'
+                        : 'text-emerald-900';
 
                     return (
                       <div
                         key={key}
                         onClick={() => setSelectedCircle(key)}
-                        className={`border rounded-2xl p-4 text-center transition-all bg-white relative overflow-hidden flex flex-col justify-between cursor-pointer active:scale-98 ${
-                          isSelected
-                            ? 'border-emerald-500 ring-2 ring-emerald-500/40 bg-emerald-50/20 shadow-md'
-                            : isTermly 
-                              ? 'border-indigo-200 bg-indigo-50/10 hover:border-indigo-400 shadow-2xs' 
-                              : 'border-slate-200 hover:border-emerald-300'
-                        }`}
+                        className={`rounded-xl p-2 sm:p-2.5 text-center transition-all relative overflow-hidden flex flex-col justify-between cursor-pointer active:scale-98 ${cardStyle}`}
                       >
                         {isActive && (
-                          <div className="absolute top-0 left-0 right-0 bg-emerald-600 text-white text-[7.5px] font-black uppercase py-0.5 tracking-wider">
-                            Your Active Circle
+                          <div className="absolute top-0 left-0 right-0 bg-emerald-600 text-white text-[7px] font-black uppercase py-0.5 tracking-wider">
+                            Active
                           </div>
                         )}
 
-                        <div className={isActive ? 'mt-2' : ''}>
-                          <div className={`text-[9px] font-black uppercase ${isSelected ? 'text-emerald-700' : isTermly ? 'text-indigo-600' : 'text-slate-500'}`}>
+                        <div className={isActive ? 'mt-1.5' : ''}>
+                          <div className={`text-[8px] sm:text-[9px] font-black uppercase tracking-tight truncate ${headerColor}`}>
                             {plan.label}
                           </div>
-                          <div className={`text-2xl font-black mt-1 ${isSelected ? 'text-emerald-800' : isTermly ? 'text-indigo-950' : 'text-slate-800'}`}>
+                          <div className={`text-sm sm:text-base font-black mt-0.5 ${priceColor}`}>
                             ZMK {plan.price}
                           </div>
-                          <div className={`text-[9px] font-bold mt-2 py-1 rounded-md uppercase ${isSelected ? 'text-white bg-emerald-600' : isTermly ? 'text-indigo-700 bg-indigo-50 border border-indigo-200' : 'text-slate-600 bg-slate-100'}`}>
+                          <div className={`text-[7.5px] sm:text-[8px] font-bold mt-1 py-0.5 px-1 rounded uppercase ${
+                            is14Days
+                              ? 'bg-slate-100 text-slate-800 border border-black/20'
+                              : isMonthly
+                                ? 'bg-white text-sky-800 border border-sky-200'
+                                : 'bg-white text-emerald-800 border border-emerald-200'
+                          }`}>
                             {plan.limit} Downloads
                           </div>
-                          <div className="text-[8px] text-slate-400 font-semibold mt-1">
-                            {plan.durationDays} Days Duration
+                          <div className="text-[7px] sm:text-[7.5px] text-slate-500 font-semibold mt-0.5">
+                            {plan.durationDays} Days
                           </div>
                         </div>
 
                         {isTermly && (
-                          <div className="mt-2 pt-1 border-t border-indigo-100 text-[7.5px] font-black uppercase text-indigo-700 tracking-tight flex items-center justify-center gap-0.5">
-                            <span>✨ Incl. Assignment & Research Hub</span>
+                          <div className="mt-1.5 pt-1 border-t border-emerald-200/60 text-[7px] font-black uppercase text-emerald-800 tracking-tighter bg-white/70 py-0.5 rounded">
+                            <span>✨ Research Hub</span>
                           </div>
                         )}
 
-                        <div className="mt-3 pt-2 border-t border-slate-100">
+                        <div className="mt-2 pt-1.5 border-t border-slate-200/60">
                           {isSelected ? (
-                            <button className="w-full py-1.5 bg-emerald-600 text-white text-[9px] font-black uppercase rounded-xl tracking-wider shadow-xs">
+                            <button className={`w-full py-1 text-[7.5px] sm:text-[8.5px] font-black uppercase rounded-lg tracking-wider shadow-2xs ${
+                              is14Days ? 'bg-black text-white' : isMonthly ? 'bg-sky-600 text-white' : 'bg-emerald-600 text-white'
+                            }`}>
                               Selected
                             </button>
                           ) : (
-                            <button className="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-[9px] font-bold uppercase rounded-xl tracking-wider transition-colors">
-                              Select Circle
+                            <button className="w-full py-1 bg-white/80 hover:bg-white text-slate-700 text-[7.5px] sm:text-[8.5px] font-bold uppercase rounded-lg tracking-wider transition-colors border border-slate-200">
+                              Select
                             </button>
                           )}
                         </div>
@@ -565,99 +846,289 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
                   })}
               </div>
 
-              {/* Direct Transfer Payment Details */}
-              <div className="bg-slate-900 text-white rounded-2xl p-5 space-y-4 shadow-lg">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
-                  <div>
-                    <h5 className="text-[10px] font-black uppercase text-emerald-400 tracking-widest">
-                      Payment Details for {selectedPlanInfo?.label} (ZMK {selectedPlanInfo?.price})
-                    </h5>
-                    <p className="text-xs font-semibold text-slate-300 mt-0.5">
-                      Transfer ZMK {selectedPlanInfo?.price} directly via Mobile Money to any line below:
-                    </p>
-                  </div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/10 border border-amber-400/20 rounded-lg text-[10.5px] font-black text-amber-300 uppercase tracking-wider shrink-0">
-                    <span className="text-sm">👤</span> Name: KOMBE FORTUNE
-                  </div>
+              {/* Instant Automated Activation Indicator */}
+              <div className="bg-gradient-to-r from-emerald-50 via-slate-50 to-emerald-50 border border-emerald-200/80 rounded-2xl py-2.5 px-4 flex flex-col sm:flex-row items-center justify-between gap-2 shadow-xs">
+                <div className="flex items-center gap-2 text-center sm:text-left">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
+                  <span className="text-[11px] font-black uppercase text-emerald-900 tracking-wider">
+                    Instant Automated Mobile Money Pop-up Payment
+                  </span>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <button 
-                    onClick={() => handleCopyNumber("0961622222", "MTN")}
-                    className="flex items-center justify-between p-3 bg-slate-800 hover:bg-slate-750 border border-slate-700/50 hover:border-amber-400 rounded-xl transition-all group cursor-pointer"
-                  >
-                    <div className="text-left">
-                      <p className="text-[8px] font-black uppercase text-amber-400 tracking-wider">MTN Mobile Money</p>
-                      <p className="text-xs font-extrabold text-white mt-0.5">0961622222</p>
-                    </div>
-                    <Copy size={13} className="text-slate-400 group-hover:text-amber-400 transition-colors" />
-                  </button>
-
-                  <button 
-                    onClick={() => handleCopyNumber("0957622025", "Zamtel")}
-                    className="flex items-center justify-between p-3 bg-slate-800 hover:bg-slate-750 border border-slate-700/50 hover:border-green-400 rounded-xl transition-all group cursor-pointer"
-                  >
-                    <div className="text-left">
-                      <p className="text-[8px] font-black uppercase text-green-400 tracking-wider">Zamtel Kwacha</p>
-                      <p className="text-xs font-extrabold text-white mt-0.5">0957622025</p>
-                    </div>
-                    <Copy size={13} className="text-slate-400 group-hover:text-green-400 transition-colors" />
-                  </button>
-
-                  <button 
-                    onClick={() => handleCopyNumber("0779385933", "Airtel")}
-                    className="flex items-center justify-between p-3 bg-slate-800 hover:bg-slate-750 border border-slate-700/50 hover:border-red-400 rounded-xl transition-all group cursor-pointer"
-                  >
-                    <div className="text-left">
-                      <p className="text-[8px] font-black uppercase text-red-400 tracking-wider">Airtel Money</p>
-                      <p className="text-xs font-extrabold text-white mt-0.5">0779385933</p>
-                    </div>
-                    <Copy size={13} className="text-slate-400 group-hover:text-red-400 transition-colors" />
-                  </button>
-                </div>
+                <PaymentLogosIndicator theme="light" compact={false} />
               </div>
 
-              {/* Subscription Registration & Activation Initiation Form */}
-              <div className="bg-[#f4faf7] border border-emerald-100/80 rounded-2xl p-5 space-y-4 shadow-2xs">
-                <div className="border-b border-emerald-100/50 pb-2">
-                  <h5 className="text-[11px] font-black uppercase text-emerald-800 tracking-wider flex items-center gap-1.5">
+              {/* AUTOMATED LIPILA INSTANT USSD POP-UP */}
+              <div className="bg-gradient-to-br from-slate-900 via-slate-850 to-slate-900 text-white rounded-3xl p-6 space-y-5 shadow-xl border border-slate-700/60 relative overflow-hidden">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                        <Smartphone size={18} />
+                      </div>
+                      <div>
+                        <h5 className="text-xs font-black uppercase text-emerald-400 tracking-wider">
+                          Instant USSD PIN Checkout
+                        </h5>
+                        <p className="text-[10px] text-slate-300 font-semibold mt-0.5">
+                          Powered by Lipila Payment Gateway (Airtel, MTN, Zamtel)
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[9px] uppercase font-bold text-slate-400">Total Due</span>
+                      <p className="text-lg font-black text-emerald-400 leading-none">ZMK {effectivePrice}</p>
+                    </div>
+                  </div>
+
+                  {momoActiveTx ? (
+                    /* Waiting for PIN entry state */
+                    <div className="bg-slate-800/90 border border-emerald-500/40 rounded-2xl p-6 text-center space-y-4 animate-in fade-in zoom-in-95 duration-300">
+                      <div className="relative w-16 h-16 mx-auto flex items-center justify-center">
+                        <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping"></div>
+                        <div className="relative w-14 h-14 rounded-2xl overflow-hidden shadow-lg border-2 border-emerald-400 p-0.5 bg-slate-900 flex items-center justify-center">
+                          {momoActiveTx.network === 'MTN Mobile Money' ? (
+                            <MtnMoMoLogo className="w-full h-full rounded-xl" />
+                          ) : momoActiveTx.network === 'Airtel Money' ? (
+                            <AirtelLogo className="w-full h-full rounded-xl" />
+                          ) : (
+                            <ZamtelLogo className="w-full h-full rounded-xl" />
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <h4 className="text-base font-black uppercase tracking-tight text-white">
+                          Check Your Phone Screen Now!
+                        </h4>
+                        <p className="text-xs text-slate-300 font-medium max-w-md mx-auto leading-relaxed">
+                          A mobile money prompt for <strong className="text-emerald-400">ZMK {momoActiveTx.amount}</strong> has been sent to <strong className="text-white">{momoActiveTx.phone}</strong> via {momoActiveTx.network}.
+                        </p>
+                        <p className="text-[11px] text-amber-300 font-bold mt-2">
+                          👉 Please enter your Mobile Money PIN on your phone (or check under *115# pending approvals) to complete authorization.
+                        </p>
+                      </div>
+
+                      <div className="inline-flex items-center gap-2 bg-slate-900/80 px-4 py-1.5 rounded-full border border-slate-700 text-xs font-mono text-slate-300">
+                        <Clock size={14} className="text-amber-400 animate-spin" />
+                        <span>Prompt expires in: {Math.floor(momoSecondsLeft / 60)}:{(momoSecondsLeft % 60).toString().padStart(2, '0')}</span>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                        <button
+                          type="button"
+                          onClick={handleManualVerifyMomo}
+                          disabled={isCheckingMomo}
+                          className="w-full sm:w-auto px-6 py-3 bg-[#00A86B] hover:bg-emerald-600 disabled:opacity-50 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+                        >
+                          {isCheckingMomo ? (
+                            <>
+                              <Loader2 size={15} className="animate-spin" />
+                              <span>Verifying Status...</span>
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle2 size={16} />
+                              <span>I Have Entered My PIN / Verify Now</span>
+                            </>
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setMomoActiveTx(null)}
+                          className="w-full sm:w-auto px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                        >
+                          Cancel / Re-enter Number
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Initial Phone & Network Input Form */
+                    <div className="space-y-4">
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-wider text-slate-300">
+                          1. Select Your Mobile Money Network
+                        </label>
+                        <div className="grid grid-cols-3 gap-2.5">
+                          {/* MTN */}
+                          <button
+                            type="button"
+                            onClick={() => setMomoNetwork('MTN Mobile Money')}
+                            className={`relative p-2.5 sm:p-3 rounded-2xl border flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
+                              momoNetwork === 'MTN Mobile Money'
+                                ? 'bg-gradient-to-b from-amber-400/25 to-amber-950/40 border-amber-400 text-amber-200 ring-2 ring-amber-400/50 shadow-lg shadow-amber-500/10'
+                                : 'bg-slate-800/90 border-slate-700/80 text-slate-400 hover:border-slate-600 hover:bg-slate-800'
+                            }`}
+                          >
+                            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shadow-md flex items-center justify-center p-0.5 bg-[#FFC700] shrink-0">
+                              <MtnMoMoLogo className="w-full h-full rounded-[10px]" />
+                            </div>
+                            <div className="text-center">
+                              <p className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-slate-100 leading-tight">
+                                MTN MoMo
+                              </p>
+                              <span className="text-[7.5px] sm:text-[8px] font-bold text-amber-400 uppercase tracking-tight block mt-0.5">
+                                *115# Pop-up
+                              </span>
+                            </div>
+                            {momoNetwork === 'MTN Mobile Money' && (
+                              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-amber-400 text-slate-950 rounded-full flex items-center justify-center text-[9px] font-black shadow">
+                                ✓
+                              </span>
+                            )}
+                          </button>
+
+                          {/* Airtel */}
+                          <button
+                            type="button"
+                            onClick={() => setMomoNetwork('Airtel Money')}
+                            className={`relative p-2.5 sm:p-3 rounded-2xl border flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
+                              momoNetwork === 'Airtel Money'
+                                ? 'bg-gradient-to-b from-rose-500/25 to-rose-950/40 border-rose-500 text-rose-200 ring-2 ring-rose-500/50 shadow-lg shadow-rose-500/10'
+                                : 'bg-slate-800/90 border-slate-700/80 text-slate-400 hover:border-slate-600 hover:bg-slate-800'
+                            }`}
+                          >
+                            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shadow-md flex items-center justify-center p-0.5 bg-[#ED1B24] shrink-0">
+                              <AirtelLogo className="w-full h-full rounded-[10px]" />
+                            </div>
+                            <div className="text-center">
+                              <p className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-slate-100 leading-tight">
+                                Airtel
+                              </p>
+                              <span className="text-[7.5px] sm:text-[8px] font-bold text-rose-400 uppercase tracking-tight block mt-0.5">
+                                *115# Pop-up
+                              </span>
+                            </div>
+                            {momoNetwork === 'Airtel Money' && (
+                              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-rose-500 text-white rounded-full flex items-center justify-center text-[9px] font-black shadow">
+                                ✓
+                              </span>
+                            )}
+                          </button>
+
+                          {/* Zamtel */}
+                          <button
+                            type="button"
+                            onClick={() => setMomoNetwork('Zamtel Kwacha')}
+                            className={`relative p-2.5 sm:p-3 rounded-2xl border flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
+                              momoNetwork === 'Zamtel Kwacha'
+                                ? 'bg-gradient-to-b from-emerald-500/25 to-emerald-950/40 border-emerald-400 text-emerald-200 ring-2 ring-emerald-400/50 shadow-lg shadow-emerald-500/10'
+                                : 'bg-slate-800/90 border-slate-700/80 text-slate-400 hover:border-slate-600 hover:bg-slate-800'
+                            }`}
+                          >
+                            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shadow-md flex items-center justify-center p-0.5 bg-[#00A84D] shrink-0">
+                              <ZamtelLogo className="w-full h-full rounded-[10px]" />
+                            </div>
+                            <div className="text-center">
+                              <p className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-slate-100 leading-tight">
+                                Zamtel
+                              </p>
+                              <span className="text-[7.5px] sm:text-[8px] font-bold text-emerald-400 uppercase tracking-tight block mt-0.5">
+                                *115# Pop-up
+                              </span>
+                            </div>
+                            {momoNetwork === 'Zamtel Kwacha' && (
+                              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-emerald-400 text-slate-950 rounded-full flex items-center justify-center text-[9px] font-black shadow">
+                                ✓
+                              </span>
+                            )}
+                          </button>
+                        </div>
+
+                        {/* Indicated below network buttons with dimming animation */}
+                        <div className="pt-2.5 pb-1 flex justify-center">
+                          <PaymentLogosIndicator theme="dark" compact={false} />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black uppercase tracking-wider text-slate-300">
+                          2. Enter Mobile Money Phone Number (Recipient of USSD Pop-up)
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="tel"
+                            value={momoPhone}
+                            onChange={(e) => setMomoPhone(e.target.value)}
+                            placeholder="e.g. 0961622222 or 097... / 095..."
+                            className="w-full bg-slate-800 border border-slate-700 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm font-extrabold text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
+                          />
+                          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">
+                            Zambia (+260)
+                          </span>
+                        </div>
+                        <p className="text-[9.5px] text-slate-400 leading-normal">
+                          Tip: Enter standard Zambian number (096..., 097..., 077..., 095..., 076...).
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={handleSendMomoPrompt}
+                        disabled={isInitiatingMomo}
+                        className="w-full py-3.5 bg-gradient-to-r from-[#00A86B] to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-lg shadow-emerald-900/40 flex items-center justify-center gap-2 transition-all active:scale-98 cursor-pointer disabled:opacity-50"
+                      >
+                        {isInitiatingMomo ? (
+                          <>
+                            <Loader2 size={16} className="animate-spin text-white" />
+                            <span>Contacting Mobile Network...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Zap size={16} className="text-amber-300" />
+                            <span>Send USSD Pop-up Prompt (ZMK {selectedPlanInfo?.price})</span>
+                            <ArrowRight size={14} className="text-white/80" />
+                          </>
+                        )}
+                      </button>
+
+                      <div className="flex items-center gap-2 text-[9.5px] text-slate-400 justify-center">
+                        <ShieldCheck size={13} className="text-emerald-400" />
+                        <span>Instant automated activation. No manual review delay. Official receipt issued instantly.</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+              {/* Subscription Registration & Activation Claim Form */}
+              <div className="bg-[#f4faf7] border border-emerald-200/80 rounded-2xl p-5 space-y-4 shadow-xs">
+                <div className="border-b border-emerald-200/60 pb-2.5">
+                  <h5 className="text-[11px] font-black uppercase text-emerald-900 tracking-wider flex items-center gap-1.5">
                     <span className="text-sm">📝</span>
-                    Subscription Registration Form
+                    Subscription Registration & Activation Claim Form
                   </h5>
-                  <p className="text-[9px] text-emerald-600/90 font-bold uppercase mt-0.5">
-                    Select your circle plan above, pay Kombe Fortune, and log your transfer details below
+                  <p className="text-[9.5px] text-emerald-700/90 font-bold uppercase mt-0.5 leading-relaxed">
+                    If you made payment via USSD pop-up or Mobile Money and the system did not automatically activate your circle, log your payment details below. Fortunes Developer will instantly verify and activate your circle upon receiving your notification.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1 text-left">
-                    <label className="text-[9px] font-black uppercase tracking-widest text-slate-400">Subscriber Full Name</label>
+                    <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">Subscriber Full Name</label>
                     <input
                       type="text"
                       value={registerName}
                       onChange={(e) => setRegisterName(e.target.value)}
-                      placeholder="Enter your name"
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-500 transition-all"
+                      placeholder="Enter subscriber name"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 transition-all shadow-2xs"
                     />
                   </div>
 
                   <div className="space-y-1 text-left">
-                    <label className="text-[9px] font-black uppercase tracking-widest text-slate-400">Sender Mobile Money Number</label>
+                    <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">Sender Mobile Money Number</label>
                     <input
                       type="text"
                       value={registerPhone}
                       onChange={(e) => setRegisterPhone(e.target.value)}
                       placeholder="e.g. 0961622222"
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-500 transition-all"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 transition-all shadow-2xs"
                     />
                   </div>
 
                   <div className="space-y-1 text-left">
-                    <label className="text-[9px] font-black uppercase tracking-widest text-slate-400">Payment Channel Network</label>
+                    <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">Payment Channel Network</label>
                     <select
                       value={registerPaymentMethod}
                       onChange={(e) => setRegisterPaymentMethod(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-500 transition-all"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 transition-all shadow-2xs"
                     >
                       <option value="MTN Mobile Money">MTN Mobile Money</option>
                       <option value="Airtel Money">Airtel Money</option>
@@ -666,24 +1137,24 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
                   </div>
 
                   <div className="space-y-1 text-left">
-                    <label className="text-[9px] font-black uppercase tracking-widest text-slate-400">Transaction Reference Code / ID</label>
+                    <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">Transaction Reference Code / ID (Optional)</label>
                     <input
                       type="text"
                       value={registerReferenceId}
                       onChange={(e) => setRegisterReferenceId(e.target.value)}
-                      placeholder="e.g. 29384729103"
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-500 transition-all"
+                      placeholder="e.g. 29384729103 or Mobile Money Ref"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 transition-all shadow-2xs"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1 text-left">
-                  <label className="text-[9px] font-black uppercase tracking-widest text-slate-400">Additional Comments (Optional)</label>
+                  <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">Complaint / Activation Note (Optional)</label>
                   <textarea
                     value={registerComments}
                     onChange={(e) => setRegisterComments(e.target.value)}
-                    placeholder="Enter any additional payment reference or notes here..."
-                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-100 focus:border-emerald-500 transition-all min-h-[45px] resize-none"
+                    placeholder="Describe your payment or complaint e.g., 'Paid ZMK 70 via MTN MoMo pop-up but subscription circle isn't activated yet...'"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 transition-all min-h-[50px] resize-none shadow-2xs"
                   />
                 </div>
               </div>
@@ -724,23 +1195,110 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
                     const requestId = `${user.uid}_${selectedCircle}`;
                     
                     try {
-                      await setDoc(doc(db, 'subscription_requests', requestId), {
-                        id: requestId,
-                        uid: user.uid,
-                        email: cleanEmail,
-                        displayName: registerName || user.displayName || cleanEmail.split('@')[0],
-                        subscriptionType: selectedCircle,
-                        amount: selectedPlanInfo?.price || 90,
-                        phone: registerPhone.trim(),
-                        paymentMethod: registerPaymentMethod,
-                        referenceId: registerReferenceId.trim(),
-                        comments: registerComments.trim(),
-                        grade: 'all',
-                        timestamp: serverTimestamp(),
-                        status: 'pending'
-                      }, { merge: true });
+                      const refId = registerReferenceId.trim();
+                      const isRenewalPayment = !!refId;
                       
-                      toast.success("Logged pending request in developer terminal!");
+                      if (isRenewalPayment) {
+                        // User has completed renewal payment (second payment): automatically activate subscription circle immediately!
+                        const now = new Date();
+                        const newLimit = selectedPlanInfo?.limit || 160;
+                        const durationDays = selectedPlanInfo?.durationDays || 30;
+
+                        const guestData = {
+                          email: cleanEmail,
+                          subscriptionType: selectedCircle,
+                          status: 'active',
+                          isWhitelisted: true,
+                          circleDownloadsLimit: newLimit,
+                          circleDownloadsCount: 0,
+                          isQuotaExhausted: false,
+                          isSubscriptionExpired: false,
+                          amountPaid: selectedPlanInfo?.price || 70,
+                          paymentMethod: registerPaymentMethod,
+                          referenceId: refId,
+                          subscriptionStart: now.toISOString(),
+                          addedAt: now.toISOString(),
+                          teaching_grade: 'all',
+                          phone: registerPhone.trim(),
+                          displayName: registerName || user.displayName || cleanEmail.split('@')[0]
+                        };
+
+                        await setDoc(doc(db, 'authorized_guests', cleanEmail), guestData, { merge: true });
+                        await setDoc(doc(db, 'users', user.uid), {
+                          isWhitelisted: true,
+                          is_whitelisted: true,
+                          status: 'active',
+                          subscriptionType: selectedCircle,
+                          subscriptionStart: serverTimestamp(),
+                          lastRenewedAt: serverTimestamp()
+                        }, { merge: true });
+
+                        await setDoc(doc(db, 'subscription_requests', requestId), {
+                          id: requestId,
+                          uid: user.uid,
+                          email: cleanEmail,
+                          displayName: registerName || user.displayName || cleanEmail.split('@')[0],
+                          subscriptionType: selectedCircle,
+                          amount: selectedPlanInfo?.price || 70,
+                          phone: registerPhone.trim(),
+                          paymentMethod: registerPaymentMethod,
+                          referenceId: refId,
+                          comments: registerComments.trim(),
+                          grade: 'all',
+                          timestamp: serverTimestamp(),
+                          status: 'approved',
+                          approvedAt: serverTimestamp(),
+                          autoActivated: true
+                        }, { merge: true });
+
+                        const renewedDetails = {
+                          subscriptionType: selectedCircle,
+                          label: selectedPlanInfo?.label || 'Monthly',
+                          subscriptionStart: now,
+                          durationDays: durationDays,
+                          circleDownloadsLimit: newLimit,
+                          circleDownloadsCount: 0,
+                          isQuotaExhausted: false,
+                          isSubscriptionExpired: false,
+                          isTrialMode: false,
+                          isWhitelisted: true,
+                          daysRemaining: durationDays,
+                          downloadsRemaining: newLimit
+                        };
+
+                        try {
+                          safeLocalStorage.setItem(`eduplan_sub_cache_${cleanEmail}`, JSON.stringify({
+                            details: renewedDetails,
+                            grades: ['all']
+                          }));
+                          safeLocalStorage.setItem(`eduplan_subscription_cache_${user.uid}`, JSON.stringify({
+                            details: renewedDetails,
+                            grades: ['all']
+                          }));
+                        } catch (e) {}
+
+                        toast.success(`Subscription circle renewed and automatically activated! You have ${newLimit} downloads.`);
+                        window.dispatchEvent(new Event('subscription-updated'));
+                      } else {
+                        await setDoc(doc(db, 'subscription_requests', requestId), {
+                          id: requestId,
+                          uid: user.uid,
+                          email: cleanEmail,
+                          displayName: registerName || user.displayName || cleanEmail.split('@')[0],
+                          subscriptionType: selectedCircle,
+                          amount: selectedPlanInfo?.price || 70,
+                          phone: registerPhone.trim(),
+                          paymentMethod: registerPaymentMethod,
+                          referenceId: refId,
+                          comments: registerComments.trim(),
+                          grade: 'all',
+                          timestamp: serverTimestamp(),
+                          status: 'pending'
+                        }, { merge: true });
+                        
+                        toast.success("Activation claim submitted to developer terminal! Fortunes Developer will verify and activate your circle.");
+                      }
+                      
                       setRegisterReferenceId('');
                       setRegisterComments('');
                       setActiveModalTab('status');
@@ -750,28 +1308,41 @@ export function AccessModal({ isOpen, onClose }: AccessModalProps) {
                       setIsSubmittingForm(false);
                     }
 
-                    const msg = encodeURIComponent(`Hello Fortunes Edutech Developer! I have submitted my subscription registration:\n` +
+                    const msg = encodeURIComponent(`Hello Fortunes Edutech Developer! I have submitted my subscription activation claim:\n` +
                       `- Name: ${registerName || 'N/A'}\n` +
                       `- Email: ${user?.email || 'N/A'}\n` +
                       `- Circle: ${selectedPlanInfo?.label || 'Monthly'}\n` +
-                      `- Amount: ZMK ${selectedPlanInfo?.price || 90}\n` +
+                      `- Amount: ZMK ${selectedPlanInfo?.price || 70}\n` +
                       `- Payment Channel: ${registerPaymentMethod}\n` +
-                      `- Phone: ${registerPhone}\n` +
+                      `- Sender Phone: ${registerPhone}\n` +
                       `- Reference ID: ${registerReferenceId.trim() || 'Not Provided'}\n` +
-                      `Please verify and activate my account.`);
+                      `- Note/Complaint: ${registerComments.trim() || 'Payment completed, awaiting activation'}\n` +
+                      `Please verify and activate my subscription circle.`);
                     window.open(`https://wa.me/260961622222?text=${msg}`, '_blank');
                   }}
                   disabled={isSubmittingForm}
                   className="px-6 py-2.5 bg-[#00A86B] text-white hover:bg-emerald-600 disabled:opacity-50 rounded-xl text-xs font-black uppercase tracking-tight flex items-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
                 >
                   <MessageSquare size={14} />
-                  {isSubmittingForm ? "Submitting..." : `Submit Registration (ZMK ${selectedPlanInfo?.price})`}
+                  {isSubmittingForm ? "Submitting..." : `Submit Activation Claim (ZMK ${selectedPlanInfo?.price})`}
                 </button>
               )}
             </div>
           </div>
         </motion.div>
       </div>
+
+      {/* WHOLE SCHOOL REGISTRATION POP-UP MODAL */}
+      <SchoolRegistrationModal
+        isOpen={isSchoolRegModalOpen}
+        onClose={() => setIsSchoolRegModalOpen(false)}
+        paymentData={schoolRegPaymentData}
+        onCompleted={async (school) => {
+          await refreshSubscription();
+          setIsSchoolRegModalOpen(false);
+          onClose();
+        }}
+      />
     </AnimatePresence>
   );
 }

@@ -508,43 +508,6 @@ export function ModuleManager({ onBack, initialTab = 'standards' }: ModuleManage
           )}
         </div>
 
-        {/* Tab Navigation Switcher */}
-        <div className="flex items-center gap-2 p-1.5 bg-slate-200/70 rounded-2xl mb-10 max-w-xl">
-          <button
-            type="button"
-            onClick={() => setActiveTab('standards')}
-            className={cn(
-              "flex-1 flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition-all",
-              activeTab === 'standards'
-                ? "bg-white text-slate-900 shadow-md shadow-slate-200"
-                : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
-            )}
-          >
-            <Layers size={16} className={activeTab === 'standards' ? "text-blue-600" : "text-slate-500"} />
-            <span>Curriculum Standards</span>
-            <span className="px-2 py-0.5 rounded-full text-[9px] bg-blue-100 text-blue-800 font-black">
-              Zambia CDC
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('modules')}
-            className={cn(
-              "flex-1 flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition-all",
-              activeTab === 'modules'
-                ? "bg-white text-slate-900 shadow-md shadow-slate-200"
-                : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
-            )}
-          >
-            <BookMarked size={16} className={activeTab === 'modules' ? "text-slate-900" : "text-slate-500"} />
-            <span>Custom Modules</span>
-            <span className="px-2 py-0.5 rounded-full text-[9px] bg-slate-100 text-slate-700 font-bold">
-              {modules.length}
-            </span>
-          </button>
-        </div>
-
         {/* Tab 1: Subject Curriculum Standards */}
         {activeTab === 'standards' && (
           <CurriculumStandardsViewer />
@@ -553,6 +516,24 @@ export function ModuleManager({ onBack, initialTab = 'standards' }: ModuleManage
         {/* Tab 2: Custom Modules */}
         {activeTab === 'modules' && (
           <>
+            {/* Private Cloud Storage Info Banner */}
+            <div className="bg-blue-50 border border-blue-200/80 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-blue-600 text-white rounded-xl shadow-xs shrink-0">
+                  <FileText size={18} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-black text-blue-950 uppercase tracking-wide">Private Cloud Storage</h4>
+                  <p className="text-xs text-blue-800 font-medium leading-relaxed">
+                    Up to 50 personal modules and uploaded documents are backed up securely in your account for continuous referencing.
+                  </p>
+                </div>
+              </div>
+              <span className="text-[11px] font-black uppercase tracking-wider text-blue-700 bg-white border border-blue-200 px-3 py-1 rounded-full shrink-0 self-start sm:self-auto">
+                {modules.length} / 50 Uploaded
+              </span>
+            </div>
+
             {/* Search Bar & Level Filters */}
             <div className="flex flex-col gap-6 mb-12">
               <div className="relative group max-w-2xl">

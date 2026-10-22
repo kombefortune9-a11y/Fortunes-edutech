@@ -185,23 +185,117 @@ export function DocumentCameraScanner({
     triggerScan(dataUrl);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawFiles = e.target.files;
+    if (!rawFiles || rawFiles.length === 0) return;
+    const files = Array.from(rawFiles);
 
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please select a valid image file (JPG, PNG, WebP).');
+    if (files.length === 1) {
+      const file = files[0];
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select a valid image file (JPG, PNG, WebP).');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        setCapturedImage(dataUrl);
+        stopCamera();
+        triggerScan(dataUrl);
+      };
+      reader.readAsDataURL(file);
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result as string;
-      setCapturedImage(dataUrl);
-      stopCamera();
-      triggerScan(dataUrl);
-    };
-    reader.readAsDataURL(file);
+    // Multiple files selection
+    setIsScanning(true);
+    setScanError(null);
+    setScanReport(null);
+    setScanStep(`Processing ${files.length} selected document photos...`);
+    stopCamera();
+
+    try {
+      let combinedLearners: ScannedLearner[] = [];
+      let totalBoys = 0;
+      let totalGirls = 0;
+      let detectedSubjects: string[] = [];
+      let warnings: string[] = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (!file.type.startsWith('image/')) continue;
+
+        setScanStep(`Reading document photo ${i + 1} of ${files.length}: ${file.name}...`);
+
+        const dataUrl = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+
+        const response = await fetch('/api/gemini/scan-marks-document', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            imageBase64: dataUrl,
+            mimeType: file.type || 'image/jpeg',
+            subjects: subjects.map(s => ({ id: s.id, name: s.name })),
+            grade,
+            term,
+            fallbackGender: defaultFallbackGender
+          })
+        });
+
+        const data: ScanResult = await response.json();
+        if (response.ok && data.success && Array.isArray(data.learners) && data.learners.length > 0) {
+          combinedLearners = [...combinedLearners, ...data.learners];
+          totalBoys += data.boysCount || 0;
+          totalGirls += data.girlsCount || 0;
+          if (data.detectedSubjects) {
+            detectedSubjects = Array.from(new Set([...detectedSubjects, ...data.detectedSubjects]));
+          }
+          if (data.warnings) {
+            warnings = [...warnings, ...data.warnings];
+          }
+        }
+      }
+
+      if (combinedLearners.length > 0) {
+        const formattedLines = combinedLearners.map(l => {
+          const marksStr = Array.isArray(l.marks) && l.marks.length > 0 ? `, ${l.marks.join(', ')}` : '';
+          return `${l.name}, ${l.gender}${marksStr}`;
+        });
+        const rawTextFormatted = formattedLines.join('\n');
+
+        const combinedResult: ScanResult = {
+          success: true,
+          totalLearners: combinedLearners.length,
+          boysCount: totalBoys,
+          girlsCount: totalGirls,
+          detectedSubjects,
+          learners: combinedLearners,
+          warnings,
+          reportSummary: `Successfully extracted ${combinedLearners.length} pupil(s) across ${files.length} document photos.`
+        };
+
+        setScanReport(combinedResult);
+        onScanComplete(combinedResult, rawTextFormatted);
+        toast.success(`Scanned ${combinedLearners.length} pupil(s) from ${files.length} document photos!`);
+      } else {
+        const msg = "No readable learner records detected across selected documents.";
+        setScanError(msg);
+        toast.error(msg);
+      }
+    } catch (err: any) {
+      console.error('Multi-file scan error:', err);
+      const msg = err.message || 'Error scanning uploaded documents.';
+      setScanError(msg);
+      toast.error(msg);
+    } finally {
+      setIsScanning(false);
+      if (e.target) e.target.value = '';
+    }
   };
 
   const triggerScan = async (imageDataUrl: string) => {
@@ -567,7 +661,7 @@ export function DocumentCameraScanner({
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
-                capture="environment"
+                multiple
                 onChange={handleFileUpload}
                 className="hidden"
               />

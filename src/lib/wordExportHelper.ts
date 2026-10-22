@@ -114,6 +114,32 @@ export function buildWordDocumentHtml(
       mso-table-lspace: 0pt;
       mso-table-rspace: 0pt;
     }
+    .general-info-table,
+    table.general-info-table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      border-top: 1.5pt solid #000000 !important;
+      border-bottom: 1.5pt solid #000000 !important;
+      border-left: none !important;
+      border-right: none !important;
+      margin: 3pt 0 5pt 0 !important;
+    }
+    .general-info-table tr,
+    table.general-info-table tr {
+      border: none !important;
+    }
+    .general-info-table td,
+    .general-info-table th,
+    table.general-info-table td,
+    table.general-info-table th {
+      border: none !important;
+      padding: 1.5pt 2pt !important;
+      font-size: 8pt !important;
+      line-height: 1.25 !important;
+      vertical-align: middle !important;
+      color: #000000 !important;
+      white-space: nowrap !important;
+    }
     th, td {
       border: 1pt solid #000000;
       padding: 4pt 5pt;
@@ -142,28 +168,137 @@ export function buildWordDocumentHtml(
       display: none !important;
     }
 
-    /* Schemes of work column ratios for standard Word table rendering */
+    /* Schemes of work column ratios for standard 9-column CBC table rendering */
+    .doc-type-schemes_of_work table { font-size: 12pt !important; }
+    .doc-type-schemes_of_work table td { font-size: 12pt !important; padding: 4pt 5pt !important; line-height: 1.3 !important; }
+    .doc-type-schemes_of_work table th { font-size: 9pt !important; font-weight: bold !important; padding: 3pt 2pt !important; }
     .doc-type-schemes_of_work table th:nth-child(1), .doc-type-schemes_of_work table td:nth-child(1) { width: 5.5%; text-align: center; }
     .doc-type-schemes_of_work table th:nth-child(2), .doc-type-schemes_of_work table td:nth-child(2) { width: 8.5%; }
     .doc-type-schemes_of_work table th:nth-child(3), .doc-type-schemes_of_work table td:nth-child(3) { width: 8.5%; }
-    .doc-type-schemes_of_work table th:nth-child(4), .doc-type-schemes_of_work table td:nth-child(4) { width: 18%; }
-    .doc-type-schemes_of_work table th:nth-child(5), .doc-type-schemes_of_work table td:nth-child(5) { width: 9%; }
-    .doc-type-schemes_of_work table th:nth-child(6), .doc-type-schemes_of_work table td:nth-child(6) { width: 27%; }
+    .doc-type-schemes_of_work table th:nth-child(4), .doc-type-schemes_of_work table td:nth-child(4) { width: 17.5%; }
+    .doc-type-schemes_of_work table th:nth-child(5), .doc-type-schemes_of_work table td:nth-child(5) { width: 9.5%; }
+    .doc-type-schemes_of_work table th:nth-child(6), .doc-type-schemes_of_work table td:nth-child(6) { width: 27.5%; }
     .doc-type-schemes_of_work table th:nth-child(7), .doc-type-schemes_of_work table td:nth-child(7) { width: 7.5%; }
     .doc-type-schemes_of_work table th:nth-child(8), .doc-type-schemes_of_work table td:nth-child(8) { width: 8%; }
     .doc-type-schemes_of_work table th:nth-child(9), .doc-type-schemes_of_work table td:nth-child(9) { width: 8%; }
 
+    /* Schemes of work 10-column CBC table (CBC with COMPONENT) */
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(1), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(1) { width: 4.5%; text-align: center; }
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(2), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(2) { width: 7.5%; }
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(3), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(3) { width: 8%; }
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(4), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(4) { width: 8%; }
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(5), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(5) { width: 14.5%; }
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(6), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(6) { width: 9%; }
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(7), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(7) { width: 26.5%; }
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(8), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(8) { width: 7%; }
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(9), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(9) { width: 7%; }
+    .curriculum-CBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(10), .curriculum-CBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(10) { width: 8%; }
+
+    /* Schemes of work 10-column OBC table (WEEK, TOPIC, SUBTOPIC, SPECIFIC OUTCOMES, KNOWLEDGE, SKILLS, VALUES, TEACHING METHODS, T/L AIDS, REFERENCE) */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(1), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(1),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(1), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(1) { width: 4.5%; text-align: center; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(2), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(2),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(2), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(2) { width: 8%; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(3), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(3),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(3), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(3) { width: 8%; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(4), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(4),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(4), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(4) { width: 19%; } /* SPECIFIC OUTCOMES expanded */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(5), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(5),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(5), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(5) { width: 13%; } /* KNOWLEDGE expanded */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(6), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(6),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(6), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(6) { width: 10%; } /* SKILLS expanded */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(7), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(7),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(7), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(7) { width: 5%; } /* VALUES reduced */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(8), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(8),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(8), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(8) { width: 7.5%; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(9), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(9),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(9), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(9) { width: 7%; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(10), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(10),
+    .doc-type-schemes_of_work table:has(th:nth-child(10):not(:nth-child(11))) th:nth-child(10), .doc-type-schemes_of_work table:has(td:nth-child(10):not(:nth-child(11))) td:nth-child(10) { width: 8%; }
+
+    /* Schemes of work 11-column table (OBC Language schemes: WEEK, COMPONENT, TOPIC, SUBTOPIC, SPECIFIC OUTCOMES, KNOWLEDGE, SKILLS, VALUES, TEACHING METHODS, T/L AIDS, REFERENCE) */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(1), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(1),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(1), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(1) { width: 4%; text-align: center; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(2), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(2),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(2), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(2) { width: 7.5%; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(3), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(3),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(3), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(3) { width: 7.5%; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(4), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(4),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(4), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(4) { width: 7.5%; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(5), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(5),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(5), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(5) { width: 18%; } /* SPECIFIC OUTCOMES expanded */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(6), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(6),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(6), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(6) { width: 13%; } /* KNOWLEDGE expanded */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(7), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(7),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(7), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(7) { width: 9.5%; } /* SKILLS expanded */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(8), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(8),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(8), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(8) { width: 4.5%; } /* VALUES reduced */
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(9), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(9),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(9), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(9) { width: 6.5%; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(10), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(10),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(10), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(10) { width: 6.5%; }
+    .curriculum-OBC.doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(11), .curriculum-OBC.doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(11),
+    .doc-type-schemes_of_work table:has(th:nth-child(11)) th:nth-child(11), .doc-type-schemes_of_work table:has(td:nth-child(11)) td:nth-child(11) { width: 8%; }
+
+    /* Weekly forecast column ratios & font sizing for standard Word table rendering */
+    .doc-type-weekly_forecast table { font-size: 11.5pt !important; }
+    .doc-type-weekly_forecast table td { font-size: 11.5pt !important; padding: 1.5pt 3pt !important; line-height: 1.08 !important; }
+    .doc-type-weekly_forecast table th { font-size: 9.5pt !important; font-weight: bold !important; padding: 1.5pt 2pt !important; }
+
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(1), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(1) { width: 4.5%; text-align: center; }
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(2), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(2) { width: 8%; }
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(3), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(3) { width: 8%; }
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(4), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(4) { width: 15%; }
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(5), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(5) { width: 10.5%; }
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(6), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(6) { width: 25.5%; }
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(7), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(7) { width: 6.5%; }
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(8), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(8) { width: 7%; }
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(9), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(9) { width: 8%; }
+    .curriculum-CBC.doc-type-weekly_forecast table th:nth-child(10), .curriculum-CBC.doc-type-weekly_forecast table td:nth-child(10) { width: 7%; }
+
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(1), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(1),
+    .doc-type-weekly_forecast table th:nth-child(1), .doc-type-weekly_forecast table td:nth-child(1) { width: 3.5%; text-align: center; }
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(2), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(2),
+    .doc-type-weekly_forecast table th:nth-child(2), .doc-type-weekly_forecast table td:nth-child(2) { width: 7%; }
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(3), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(3),
+    .doc-type-weekly_forecast table th:nth-child(3), .doc-type-weekly_forecast table td:nth-child(3) { width: 7%; }
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(4), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(4),
+    .doc-type-weekly_forecast table th:nth-child(4), .doc-type-weekly_forecast table td:nth-child(4) { width: 16%; } /* SPECIFIC OUTCOMES expanded */
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(5), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(5),
+    .doc-type-weekly_forecast table th:nth-child(5), .doc-type-weekly_forecast table td:nth-child(5) { width: 13%; } /* KNOWLEDGE expanded */
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(6), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(6),
+    .doc-type-weekly_forecast table th:nth-child(6), .doc-type-weekly_forecast table td:nth-child(6) { width: 10%; } /* SKILLS expanded */
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(7), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(7),
+    .doc-type-weekly_forecast table th:nth-child(7), .doc-type-weekly_forecast table td:nth-child(7) { width: 4.5%; } /* VALUES reduced */
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(8), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(8),
+    .doc-type-weekly_forecast table th:nth-child(8), .doc-type-weekly_forecast table td:nth-child(8) { width: 6.5%; }
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(9), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(9),
+    .doc-type-weekly_forecast table th:nth-child(9), .doc-type-weekly_forecast table td:nth-child(9) { width: 6.5%; }
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(10), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(10),
+    .doc-type-weekly_forecast table th:nth-child(10), .doc-type-weekly_forecast table td:nth-child(10) { width: 8%; }
+    .curriculum-OBC.doc-type-weekly_forecast table th:nth-child(11), .curriculum-OBC.doc-type-weekly_forecast table td:nth-child(11),
+    .doc-type-weekly_forecast table th:nth-child(11), .doc-type-weekly_forecast table td:nth-child(11) { width: 14.5%; }
+
     /* Lesson plan column ratios & typography */
-    .doc-type-lesson_plan h1, .doc-type-lesson_plan h2, .doc-type-lesson_plan h3 { font-size: 12pt !important; font-weight: bold !important; margin: 2pt 0; }
-    .doc-type-lesson_plan table th { font-size: 11.5pt !important; font-weight: bold !important; padding: 4pt 5pt !important; }
-    .doc-type-lesson_plan table td { font-size: 11.8pt !important; padding: 4pt 5pt !important; line-height: 1.35 !important; }
-    .doc-type-lesson_plan table th:nth-child(1), .doc-type-lesson_plan table td:nth-child(1) { width: 10%; text-align: center; }
-    .doc-type-lesson_plan table th:nth-child(2), .doc-type-lesson_plan table td:nth-child(2) { width: 42%; }
-    .doc-type-lesson_plan table th:nth-child(3), .doc-type-lesson_plan table td:nth-child(3) { width: 33%; }
-    .doc-type-lesson_plan table th:nth-child(4), .doc-type-lesson_plan table td:nth-child(4) { width: 15%; }
+    .doc-type-lesson_plan h1, .doc-type-lesson_plan h2, .doc-type-lesson_plan h3 { font-size: 11pt !important; font-weight: bold !important; margin: 2pt 0; }
+    .doc-type-lesson_plan b, .doc-type-lesson_plan strong { font-size: 11pt !important; font-weight: bold !important; }
+    .doc-type-lesson_plan table th { font-size: 11pt !important; font-weight: bold !important; padding: 4pt 4pt !important; }
+    .doc-type-lesson_plan table td { font-size: 11.8pt !important; padding: 4pt 4pt !important; line-height: 1.35 !important; }
+    .doc-type-lesson_plan table td:nth-child(1), .doc-type-lesson_plan .stage-cell { font-size: 11pt !important; font-weight: bold !important; }
+    /* 5-Column Lesson Plan Table (STAGE, TEACHER'S ACTIVITIES, LEARNERS' ACTIVITIES, CONTENT, ASSESSMENT CRITERIA) */
+    .doc-type-lesson_plan table th:nth-child(1), .doc-type-lesson_plan table td:nth-child(1) { width: 11%; text-align: left; }
+    .doc-type-lesson_plan table th:nth-child(2), .doc-type-lesson_plan table td:nth-child(2) { width: 25%; }
+    .doc-type-lesson_plan table th:nth-child(3), .doc-type-lesson_plan table td:nth-child(3) { width: 25%; }
+    .doc-type-lesson_plan table th:nth-child(4), .doc-type-lesson_plan table td:nth-child(4) { width: 24%; }
+    .doc-type-lesson_plan table th:nth-child(5), .doc-type-lesson_plan table td:nth-child(5) { width: 15%; }
+    /* 4-Column Lesson Plan Table */
+    .doc-type-lesson_plan table:not(:has(th:nth-child(5))) th:nth-child(1), .doc-type-lesson_plan table:not(:has(th:nth-child(5))) td:nth-child(1) { width: 12%; }
+    .doc-type-lesson_plan table:not(:has(th:nth-child(5))) th:nth-child(2), .doc-type-lesson_plan table:not(:has(th:nth-child(5))) td:nth-child(2) { width: 38%; }
+    .doc-type-lesson_plan table:not(:has(th:nth-child(5))) th:nth-child(3), .doc-type-lesson_plan table:not(:has(th:nth-child(5))) td:nth-child(3) { width: 34%; }
+    .doc-type-lesson_plan table:not(:has(th:nth-child(5))) th:nth-child(4), .doc-type-lesson_plan table:not(:has(th:nth-child(5))) td:nth-child(4) { width: 16%; }
   </style>
 </head>
-<body>
+<body class="doc-type-${docType} curriculum-${options.metadata?.curriculumType || 'CBC'}">
   ${cleanHtml}
 </body>
 </html>
@@ -180,12 +315,13 @@ export function downloadWordBlob(
 ): { blob: Blob; success: boolean } {
   const fullHtml = buildWordDocumentHtml(htmlContent, options);
 
-  // Use UTF-8 BOM blob with standard Word MIME type
+  // Use UTF-8 BOM blob with standard Word docx MIME type
   const blob = new Blob(["\ufeff", fullHtml], {
-    type: "application/msword;charset=utf-8",
+    type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
   });
 
-  const downloadName = fileName.endsWith(".doc") ? fileName : `${fileName}.doc`;
+  const baseName = fileName.replace(/\.(doc|docx)$/i, "");
+  const downloadName = `${baseName}.docx`;
   let success = false;
 
   try {

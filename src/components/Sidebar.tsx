@@ -12,6 +12,7 @@ import {
   History as HistoryIcon,
   BookMarked,
   Smartphone,
+  Download,
   Video,
   Lock,
   ClipboardList,
@@ -21,12 +22,15 @@ import {
   ExternalLink,
   Calendar,
   Database,
-  ShieldCheck
+  ShieldCheck,
+  Compass
 } from 'lucide-react';
 import { useAuth } from './FirebaseProvider';
-import { isDeveloperEmail } from '../constants';
+import { isDeveloperEmail, APP_VERSION } from '../constants';
+import { FortunesInsignia } from './FortunesLogo';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'react-hot-toast';
+import { TopMusicPlayer } from './TopMusicPlayer';
 
 interface SidebarProps {
   activeSection: string;
@@ -75,8 +79,8 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
       title: 'Main Navigation',
       items: [
         { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
+        ...(isDeveloper ? [{ id: 'admin_portal', label: 'Admin & User Monitor', icon: <ShieldCheck size={18} className="text-emerald-400" /> }] : []),
         { id: 'knowledge_base', label: 'Knowledge Base', icon: <Database size={18} /> },
-        { id: 'syllabus_audit', label: 'Syllabus Integrity & Library', icon: <ShieldCheck size={18} /> },
         { id: 'assessment_tracker', label: 'Assessment Tracker', icon: <ClipboardList size={18} /> },
         ...(isDeveloper ? [{ id: 'video_tutorials', label: 'Video Demos & Tutorials', icon: <Video size={18} /> }] : []),
         { id: 'user_manual', label: 'User Manual (PDF)', icon: <BookOpen size={18} /> },
@@ -88,6 +92,7 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
         { id: 'schemes_of_work', label: '1. Schemes of work', icon: <BookMarked size={18} /> },
         { id: 'weekly_forecast', label: '2. Weekly forecast', icon: <Calendar size={18} /> },
         { id: 'lesson_plan', label: '3. Lesson planning', icon: <FileCode size={18} /> },
+        { id: 'smart_planning', label: '⚡ Smart Planning (Segmented)', icon: <Sparkles size={18} className="text-emerald-500 animate-pulse" /> },
       ]
     },
     {
@@ -102,7 +107,7 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
       title: 'System & Account',
       items: [
         { id: 'records_of_work', label: 'Recent Documents', icon: <HistoryIcon size={18} /> },
-        { id: 'downloads', label: 'App Setup & Install', icon: <Smartphone size={18} /> },
+        { id: 'downloads', label: 'Install Web App (PWA)', icon: <Download size={18} /> },
         { id: 'settings', label: 'Settings', icon: <Settings size={18} /> },
       ]
     }
@@ -134,16 +139,21 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
             className="fixed top-0 left-0 bottom-0 z-[9999] w-[85vw] sm:w-[320px] max-w-[350px] bg-white shadow-2xl border-r border-slate-200/80 flex flex-col h-full overflow-hidden"
           >
             {/* Drawer Top Header */}
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/90 shrink-0">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 bg-[#00A86B] rounded-xl flex items-center justify-center text-white shrink-0 shadow-sm">
-                  <GraduationCap size={20} />
+            <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/90 shrink-0">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 bg-[#00A86B] rounded-xl flex items-center justify-center text-white shrink-0 shadow-sm">
+                  <GraduationCap size={18} />
                 </div>
-                <div>
-                  <span className="text-sm font-black text-slate-900 uppercase tracking-tight block leading-none">FORTUNES EDUTECH</span>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-tight block leading-none truncate">FORTUNES EDUTECH</span>
+                    <span className="text-[8px] px-1 py-0.5 rounded font-black text-emerald-900 bg-emerald-100 border border-emerald-300 uppercase shrink-0">
+                      {APP_VERSION}
+                    </span>
+                  </div>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <span className="text-[10px] text-[#00A86B] font-bold tracking-wider lowercase leading-none">plan competently.</span>
-                    <span className={`text-[8px] px-1.5 py-0.5 rounded-md font-black uppercase tracking-wider transition-all select-none ${
+                    <span className="text-[9px] text-[#00A86B] font-bold tracking-wider lowercase leading-none">your CBC partner</span>
+                    <span className={`text-[7.5px] px-1.5 py-0.5 rounded-md font-black uppercase tracking-wider transition-all select-none ${
                       isOnline 
                         ? 'bg-emerald-100 text-[#00A86B]' 
                         : 'bg-amber-100 text-amber-800 animate-pulse'
@@ -153,13 +163,33 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
                   </div>
                 </div>
               </div>
-              <button 
-                onClick={() => setIsOpen(false)}
-                className="text-slate-500 hover:text-slate-800 p-2 rounded-xl hover:bg-slate-200/60 transition-colors border border-slate-200/60 cursor-pointer"
-                aria-label="Close menu"
-              >
-                <X size={18} />
-              </button>
+              <div className="flex items-center gap-1 shrink-0">
+                <button 
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({
+                        title: 'FORTUNES EDUTECH',
+                        text: 'Teacher Resource Suite',
+                        url: window.location.origin,
+                      }).catch(() => {});
+                    } else {
+                      navigator.clipboard.writeText(window.location.origin);
+                      toast.success("App link copied!");
+                    }
+                  }}
+                  className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-xl transition-colors border border-slate-200 cursor-pointer"
+                  title="Share App"
+                >
+                  <Share2 size={16} />
+                </button>
+                <button 
+                  onClick={() => setIsOpen(false)}
+                  className="text-slate-500 hover:text-slate-800 p-1.5 rounded-xl hover:bg-slate-200/60 transition-colors border border-slate-200/60 cursor-pointer"
+                  aria-label="Close menu"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
             {/* Unfolded Scrollable Navigation List */}
@@ -256,25 +286,32 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   );
 
   return (
-    <header className="relative z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/40 px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-sm">
+    <header className="relative z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/40 px-2.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between shadow-sm min-w-0 gap-1.5 xs:gap-3">
       <motion.div 
-        className="flex items-center gap-3 cursor-pointer"
+        className="flex items-center gap-2 sm:gap-3 cursor-pointer min-w-0 shrink-0"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => onSectionChange('dashboard')}
       >
         <motion.div 
-          className="w-10 h-10 bg-[#00A86B] rounded-xl flex items-center justify-center text-white shrink-0"
-          animate={{ rotate: [0, -5, 5, -5, 0] }}
+          className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl overflow-hidden shrink-0 shadow-md bg-gradient-to-br from-[#064223] via-[#042e18] to-[#011a0d] border border-emerald-500/40 p-1 relative flex items-center justify-center"
+          animate={{ rotate: [0, -2, 2, -2, 0] }}
           transition={{ repeat: Infinity, repeatDelay: 6, duration: 1 }}
         >
-          <GraduationCap size={24} />
+          <FortunesInsignia size="90%" withGlow={false} />
         </motion.div>
-        <div className="flex flex-col">
-          <h1 className="text-xl font-black text-[#0F172A] tracking-tight uppercase leading-none">FORTUNES EDUTECH</h1>
-          <div className="flex items-center gap-1.5 mt-1">
-            <span className="text-[10px] text-[#00A86B] font-bold tracking-wider lowercase leading-none">plan competently.</span>
-            <span className={`text-[8px] px-1.5 py-0.5 rounded-md font-black uppercase tracking-wider transition-all select-none ${
+        <div className="flex flex-col min-w-0">
+          <div className="flex items-baseline gap-1 leading-none">
+            <span className="text-xs xs:text-sm sm:text-base md:text-lg font-black text-slate-900 tracking-tight uppercase">
+              FORTUNES
+            </span>
+            <span className="text-xs xs:text-sm sm:text-base md:text-lg font-black text-[#65DB00] tracking-tight uppercase">
+              EDUTECH
+            </span>
+          </div>
+          <div className="flex items-center gap-1 sm:gap-1.5 mt-0.5 sm:mt-1">
+            <span className="text-[8px] xs:text-[9px] sm:text-[10px] text-[#00A86B] font-bold tracking-wider lowercase leading-none whitespace-nowrap">your CBC partner</span>
+            <span className={`text-[6.5px] xs:text-[7px] sm:text-[8px] px-1 sm:px-1.5 py-0.5 rounded font-black uppercase tracking-wider transition-all select-none whitespace-nowrap ${
               isOnline 
                 ? 'bg-emerald-100 text-[#00A86B]' 
                 : 'bg-amber-100 text-amber-800 animate-pulse'
@@ -317,38 +354,39 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
         })}
       </nav>
 
-      <div className="flex items-center gap-2">
+      {/* Right Header Group: Music Player sitting right next to the green sliding menu button */}
+      <div className="flex items-center gap-1.5 shrink-0 ml-auto z-50">
+        <TopMusicPlayer activeSection={activeSection} onNavigateToDashboard={() => onSectionChange('dashboard')} />
+
         <motion.button 
-          whileHover={{ scale: 1.1, rotate: 15 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.08, rotate: 12 }}
+          whileTap={{ scale: 0.92 }}
           onClick={() => {
             if (navigator.share) {
               navigator.share({
                 title: 'FORTUNES EDUTECH',
                 text: 'Teacher Resource Suite',
                 url: window.location.origin,
-              }).catch((err: any) => {
-                if (err && err.name !== 'AbortError' && !err.message?.toLowerCase().includes('cancel') && !err.message?.toLowerCase().includes('abort')) {
-                  console.warn("Share failed", err);
-                }
-              });
+              }).catch(() => {});
             } else {
               navigator.clipboard.writeText(window.location.origin);
-              alert("App link copied!");
+              toast.success("App link copied!");
             }
           }}
-          className="text-slate-600 p-2 hover:bg-slate-50 rounded-lg transition-colors border-2 border-slate-200/60 hover:border-slate-400"
+          className="hidden sm:flex text-slate-600 p-1.5 sm:p-2 hover:bg-slate-100 rounded-lg transition-colors border-2 border-slate-200/80 hover:border-slate-400 shrink-0"
           title="Share App"
         >
-          <Share2 size={20} />
+          <Share2 size={18} />
         </motion.button>
         <motion.button 
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-slate-600 p-2 hover:bg-slate-100 rounded-lg transition-colors border-2 border-slate-200/60 hover:border-slate-400 flex items-center justify-center cursor-pointer"
+          className="md:hidden text-white bg-[#00A86B] hover:bg-emerald-700 active:bg-emerald-800 p-2 sm:p-2.5 rounded-xl transition-all border border-emerald-600 flex items-center justify-center cursor-pointer shrink-0 z-50 shadow-md active:scale-95"
+          title="Toggle Navigation Menu"
+          aria-label="Toggle Navigation Menu"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={22} className="text-white" /> : <Menu size={22} className="text-white" />}
         </motion.button>
       </div>
 

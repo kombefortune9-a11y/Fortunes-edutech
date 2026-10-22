@@ -30,7 +30,16 @@ import {
   RefreshCw,
   Check,
   AlertCircle,
-  GraduationCap
+  GraduationCap,
+  Play,
+  Heart,
+  Receipt,
+  Music,
+  Radio,
+  Headphones,
+  Volume2,
+  ExternalLink,
+  Bell
 } from 'lucide-react';
 
 interface UserManualProps {
@@ -380,19 +389,39 @@ export function UserManual({ onBack }: UserManualProps) {
               <ChevronRight size={14} className="text-slate-400" />
             </a>
             <a href="#section-tracker" className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200/80 flex items-center justify-between transition-colors">
-              <span>10. Assessment Record Tracker & Learner Progress Chart</span>
+              <span>11. Assessment Record Tracker & Learner Progress Chart</span>
               <ChevronRight size={14} className="text-slate-400" />
             </a>
             <a href="#section-syllabi" className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200/80 flex items-center justify-between transition-colors">
-              <span>11. Syllabus & Knowledge Base Manager</span>
+              <span>12. Syllabus & Knowledge Base Manager</span>
               <ChevronRight size={14} className="text-slate-400" />
             </a>
             <a href="#section-subscription" className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200/80 flex items-center justify-between transition-colors">
-              <span>12. Subscription, Grade Allocation & Receipt Downloading</span>
+              <span>13. Subscription, Grade Allocation & Receipt Downloading</span>
               <ChevronRight size={14} className="text-slate-400" />
             </a>
             <a href="#section-dashboard" className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200/80 flex items-center justify-between transition-colors">
-              <span>13. Sliding Menu Drawer & Dashboard Administration</span>
+              <span>14. Sliding Menu Drawer & Dashboard Administration</span>
+              <ChevronRight size={14} className="text-slate-400" />
+            </a>
+            <a href="#section-action-bar" className="p-3 rounded-2xl bg-emerald-50/70 hover:bg-emerald-100 text-emerald-950 border border-emerald-200/80 flex items-center justify-between transition-colors">
+              <span className="font-bold">15. Top Utility Action Bar (Payslip, Review, AI Playback & Receipts)</span>
+              <ChevronRight size={14} className="text-emerald-700" />
+            </a>
+            <a href="#section-mood-music" className="p-3 rounded-2xl bg-emerald-50/70 hover:bg-emerald-100 text-emerald-950 border border-emerald-200/80 flex items-center justify-between transition-colors">
+              <span className="font-bold">16. Continuous Background Mood Music & Preparation Audio Engine</span>
+              <ChevronRight size={14} className="text-emerald-700" />
+            </a>
+            <a href="#section-informant-tickers" className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200/80 flex items-center justify-between transition-colors">
+              <span>17. Live Informant Ticker & Synchronized 4-Minute News/Feedback</span>
+              <ChevronRight size={14} className="text-slate-400" />
+            </a>
+            <a href="#section-academic-hubs" className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200/80 flex items-center justify-between transition-colors">
+              <span>18. Consolidated Academic Planning & Delivery Hubs</span>
+              <ChevronRight size={14} className="text-slate-400" />
+            </a>
+            <a href="#section-official-links" className="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200/80 flex items-center justify-between transition-colors md:col-span-2">
+              <span>19. Official Zambian Education Portals & Resource Links</span>
               <ChevronRight size={14} className="text-slate-400" />
             </a>
           </div>
@@ -698,11 +727,17 @@ export function UserManual({ onBack }: UserManualProps) {
               <span className="font-extrabold uppercase text-indigo-900 block">Structure of Generated 6-Step Lesson Plan:</span>
               <ul className="space-y-1.5 list-disc list-inside">
                 <li><strong>Administrative Header:</strong> School, Teacher, Date, Time, Subject, Grade, Roll (Boys/Girls), Topic, Subtopic.</li>
-                <li><strong>Rationale Statement:</strong> Concise pedagogical purpose of the lesson.</li>
-                <li><strong>Prerequisites Check:</strong> What prior knowledge learners must possess.</li>
-                <li><strong>Teaching/Learning Aids & References:</strong> Textbooks, syllabus references, and physical materials required.</li>
-                <li><strong>6 Pedagogical Stages Table:</strong>
-                  <span className="block text-[11px] text-indigo-800 pl-4">1. Introduction • 2. Lesson Development (Step 1-4) • 3. Synthesis & Practice • 4. Conclusion • 5. Learner Activities • 6. Teacher Activities</span>
+                <li><strong>Rationale Statement:</strong> Concise pedagogical purpose of the lesson, explicitly stating the teaching methods and Gradual Release model (I do, we do, you do).</li>
+                <li><strong>Prerequisites Check:</strong> What prior knowledge, skills, and values learners must possess.</li>
+                <li><strong>Teaching/Learning Aids & References:</strong> Textbooks, module citations, and physical materials required.</li>
+                <li><strong>CBC Gradual Release Stages Table (5 Columns):</strong>
+                  <span className="block text-[11px] text-indigo-800 pl-4">
+                    1. <strong>Stage 1: Introduction:</strong> Prior knowledge activation & hook.<br/>
+                    2. <strong>Stage 2: Lesson Development ("I DO"):</strong> Teacher direct modeling & step-by-step concept presentation.<br/>
+                    3. <strong>Stage 3: Practice/Application ("WE DO" - Mandatory Group Work):</strong> Collaborative peer group or pair work with assigned tasks, teacher facilitation, and group presentations.<br/>
+                    4. <strong>Stage 4: Exercise ("YOU DO"):</strong> Independent learner practice and evaluation tasks.<br/>
+                    5. <strong>Stage 5: Conclusion:</strong> Summary review questions & lesson reflection.
+                  </span>
                 </li>
                 <li><strong>Evaluations & Homework:</strong> Learner's Evaluation, Teacher's Evaluation, and Homework Assignment.</li>
                 <li><strong>Appended Teaching Notes (Page 3):</strong> Complete subject notes appended whenever "Include Teaching Notes" option is set to YES.</li>
@@ -861,9 +896,9 @@ export function UserManual({ onBack }: UserManualProps) {
         {/* SECTION 11: ASSESSMENT RECORD TRACKER & LEARNER PROGRESS CHART */}
         <div id="section-tracker" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6 pdf-section">
           <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-3 bg-blue-600 text-white rounded-2xl font-black text-sm">10</div>
+            <div className="p-3 bg-blue-600 text-white rounded-2xl font-black text-sm">11</div>
             <div>
-              <h2 className="text-xl font-black text-slate-900 uppercase">10. Assessment Record Tracker & Learner Progress Chart</h2>
+              <h2 className="text-xl font-black text-slate-900 uppercase">11. Assessment Record Tracker & Learner Progress Chart</h2>
               <p className="text-xs text-slate-500 font-semibold">Classroom grading suite, pass rate analytics, and multi-term progress charts.</p>
             </div>
           </div>
@@ -900,12 +935,12 @@ export function UserManual({ onBack }: UserManualProps) {
           </div>
         </div>
 
-        {/* SECTION 11: SYLLABUS & KNOWLEDGE BASE MANAGER */}
+        {/* SECTION 12: SYLLABUS & KNOWLEDGE BASE MANAGER */}
         <div id="section-syllabi" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6 pdf-section">
           <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-3 bg-emerald-700 text-white rounded-2xl font-black text-sm">11</div>
+            <div className="p-3 bg-emerald-700 text-white rounded-2xl font-black text-sm">12</div>
             <div>
-              <h2 className="text-xl font-black text-slate-900 uppercase">11. Syllabus & Knowledge Base Manager</h2>
+              <h2 className="text-xl font-black text-slate-900 uppercase">12. Syllabus & Knowledge Base Manager</h2>
               <p className="text-xs text-slate-500 font-semibold">Upload custom syllabus documents (PDF/DOCX/Scanned images) for AI document extraction.</p>
             </div>
           </div>
@@ -917,12 +952,12 @@ export function UserManual({ onBack }: UserManualProps) {
           </div>
         </div>
 
-        {/* SECTION 12: SUBSCRIPTION, GRADE ALLOCATION & RECEIPT DOWNLOADING */}
+        {/* SECTION 13: SUBSCRIPTION, GRADE ALLOCATION & RECEIPT DOWNLOADING */}
         <div id="section-subscription" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6 pdf-section">
           <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-3 bg-indigo-600 text-white rounded-2xl font-black text-sm">12</div>
+            <div className="p-3 bg-indigo-600 text-white rounded-2xl font-black text-sm">13</div>
             <div>
-              <h2 className="text-xl font-black text-slate-900 uppercase">12. Subscription, Grade Allocation & Receipt Downloading</h2>
+              <h2 className="text-xl font-black text-slate-900 uppercase">13. Subscription, Grade Allocation & Receipt Downloading</h2>
               <p className="text-xs text-slate-500 font-semibold">Manage active teaching grade allocations, account status, and instant payment receipt downloads.</p>
             </div>
           </div>
@@ -943,7 +978,7 @@ export function UserManual({ onBack }: UserManualProps) {
               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
                 <span className="font-extrabold text-slate-900 uppercase text-[11px] block text-indigo-700">B. Download Payment Receipts:</span>
                 <p className="text-slate-600 leading-snug">
-                  Click <strong>Download Receipt</strong> in the Subscription Modal or Settings menu to generate an official PDF receipt featuring payment transaction reference, amount paid (ZMW), date, and active grade breakdown.
+                  Click <strong>Download Receipt</strong> in the Subscription Modal, Top Action Bar, or Settings menu to generate an official PDF receipt featuring payment transaction reference, amount paid (ZMW), date, and active grade breakdown.
                 </p>
               </div>
             </div>
@@ -951,47 +986,47 @@ export function UserManual({ onBack }: UserManualProps) {
             {/* Subscription Packages Table */}
             <div className="mt-4 p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 space-y-3">
               <span className="font-extrabold text-indigo-900 uppercase text-[11px] block">C. Official Subscription Circles & Pricing Structure:</span>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 <div className="p-2.5 bg-white rounded-xl border border-slate-200 text-center space-y-1">
                   <div className="text-[9px] font-black uppercase text-amber-700">Weekly Circle</div>
                   <div className="text-sm font-black text-slate-900">K20</div>
-                  <div className="text-[8px] font-bold text-slate-500">40 Docs • 7 Days</div>
+                  <div className="text-[8px] font-bold text-slate-500">30 Docs • 7 Days</div>
                 </div>
                 <div className="p-2.5 bg-white rounded-xl border border-slate-200 text-center space-y-1">
                   <div className="text-[9px] font-black uppercase text-cyan-700">14 Days Circle</div>
                   <div className="text-sm font-black text-slate-900">K40</div>
-                  <div className="text-[8px] font-bold text-slate-500">80 Docs • 14 Days</div>
+                  <div className="text-[8px] font-bold text-slate-500">65 Docs • 14 Days</div>
                 </div>
                 <div className="p-2.5 bg-white rounded-xl border border-slate-200 text-center space-y-1">
                   <div className="text-[9px] font-black uppercase text-purple-700">Monthly Circle</div>
-                  <div className="text-sm font-black text-slate-900">K90</div>
-                  <div className="text-[8px] font-bold text-slate-500">180 Docs • 30 Days</div>
+                  <div className="text-sm font-black text-slate-900">K70</div>
+                  <div className="text-[8px] font-bold text-slate-500">160 Docs • 30 Days</div>
                 </div>
-                <div className="p-2.5 bg-white rounded-xl border border-indigo-200 bg-indigo-50/30 text-center space-y-1 relative">
-                  <div className="text-[9px] font-black uppercase text-indigo-700">Termly Circle</div>
-                  <div className="text-sm font-black text-slate-900">K250</div>
-                  <div className="text-[8px] font-bold text-indigo-600">500 Docs • 90 Days</div>
+                <div className="p-2.5 bg-white rounded-xl border border-teal-200 bg-teal-50/20 text-center space-y-1">
+                  <div className="text-[9px] font-black uppercase text-teal-700">Individual Termly</div>
+                  <div className="text-sm font-black text-slate-900">K180</div>
+                  <div className="text-[8px] font-bold text-teal-600">300 Docs • 90 Days</div>
                 </div>
-                <div className="p-2.5 bg-white rounded-xl border border-emerald-200 bg-emerald-50/30 text-center space-y-1 relative">
-                  <span className="absolute -top-2 right-1/2 translate-x-1/2 bg-amber-500 text-slate-950 text-[6px] font-black uppercase px-1.5 py-0.2 rounded-full">Best Value</span>
-                  <div className="text-[9px] font-black uppercase text-emerald-700">Unlimited</div>
-                  <div className="text-sm font-black text-slate-900">K1,500</div>
-                  <div className="text-[8px] font-bold text-emerald-600">Unlimited • Permanent</div>
+                <div className="p-2.5 bg-white rounded-xl border border-indigo-200 bg-indigo-50/30 text-center space-y-1 relative col-span-2 sm:col-span-1">
+                  <span className="absolute -top-2 right-1/2 translate-x-1/2 bg-indigo-600 text-white text-[6px] font-black uppercase px-1.5 py-0.2 rounded-full">Whole School</span>
+                  <div className="text-[9px] font-black uppercase text-indigo-700">Whole School Termly</div>
+                  <div className="text-sm font-black text-slate-900">K500</div>
+                  <div className="text-[8px] font-bold text-indigo-600">Unlimited • 90 Days</div>
                 </div>
               </div>
               <p className="text-[10px] text-slate-500 italic mt-2">
-                * Both <strong>Termly Circle (K250)</strong> and <strong>Unlimited Access (K1,500)</strong> include full access to the Assignment &amp; Research Writing Hub in addition to standard teaching tools.
+                * The <strong>Whole School Termly Circle (K500)</strong> connects up to 7 teachers with unlimited downloads per term and includes full access to the Assignment &amp; Research Writing Hub.
               </p>
             </div>
           </div>
         </div>
 
-        {/* SECTION 13: SLIDING MENU DRAWER & DASHBOARD ADMINISTRATION */}
+        {/* SECTION 14: SLIDING MENU DRAWER & DASHBOARD ADMINISTRATION */}
         <div id="section-dashboard" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6 pdf-section">
           <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-3 bg-purple-600 text-white rounded-2xl font-black text-sm">13</div>
+            <div className="p-3 bg-purple-600 text-white rounded-2xl font-black text-sm">14</div>
             <div>
-              <h2 className="text-xl font-black text-slate-900 uppercase">13. Sliding Menu Drawer & Dashboard Administration</h2>
+              <h2 className="text-xl font-black text-slate-900 uppercase">14. Sliding Menu Drawer & Dashboard Administration</h2>
               <p className="text-xs text-slate-500 font-semibold">Smooth vertical menu drawer, full unwrap visibility, and universal PDF key export.</p>
             </div>
           </div>
@@ -1018,12 +1053,204 @@ export function UserManual({ onBack }: UserManualProps) {
           </div>
         </div>
 
-        {/* SECTION 14: OFFICIAL ZAMBIAN EDUCATION PORTALS & ESSENTIAL RESOURCE LINKS */}
+        {/* SECTION 15: TOP DASHBOARD QUICK-ACTION UTILITY BAR */}
+        <div id="section-action-bar" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6 pdf-section">
+          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+            <div className="p-3 bg-emerald-600 text-white rounded-2xl font-black text-sm">15</div>
+            <div>
+              <h2 className="text-xl font-black text-slate-900 uppercase">15. Top Utility Action Bar (Payslip, Review, AI Playback & Receipts)</h2>
+              <p className="text-xs text-slate-500 font-semibold">High-priority operational bar placed on the dashboard header for fast day-to-day administrative workflow.</p>
+            </div>
+          </div>
+
+          <div className="space-y-4 text-slate-700 text-sm leading-relaxed">
+            <p>
+              The top header contains a streamlined utility action bar that provides rapid, one-click access to critical services without having to scroll or navigate through deep menus:
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div className="p-4 bg-blue-50/60 rounded-2xl border border-blue-200 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 bg-blue-600 text-white font-black text-[10px] rounded-lg uppercase tracking-wider">PAYSLIP</span>
+                  <span className="font-extrabold text-blue-950 text-[11px]">E-Payslip GRZ Portal</span>
+                </div>
+                <p className="text-slate-600 leading-snug">
+                  Direct one-click link to the official Ministry of Finance E-Payslip request platform (<code className="font-mono text-blue-700 bg-blue-100/60 px-1 py-0.5 rounded">epdmis.grz.gov.zm</code>). Allows teachers to request and securely download their monthly civil service payslip.
+                </p>
+              </div>
+
+              <div className="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-200 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 bg-[#00A86B] text-white font-black text-[10px] rounded-lg uppercase tracking-wider flex items-center gap-1">
+                    <Heart size={10} className="fill-white" />
+                    REVIEW
+                  </span>
+                  <span className="font-extrabold text-emerald-950 text-[11px]">Teacher Recommendations & Ratings</span>
+                </div>
+                <p className="text-slate-600 leading-snug">
+                  Styled in prominent emerald green. Opens an interactive review modal where teachers can submit live feedback, report observations, and share ratings directly with the developer team.
+                </p>
+              </div>
+
+              <div className="p-4 bg-slate-900 text-white rounded-2xl border border-slate-800 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 bg-black text-white border border-slate-700 font-black text-[10px] rounded-lg uppercase tracking-wider flex items-center gap-1">
+                    <Play size={10} className="fill-white" />
+                    PLAYBACK
+                  </span>
+                  <span className="font-extrabold text-emerald-400 text-[11px]">Dual Voice AI Studio & Phone Audio</span>
+                </div>
+                <p className="text-slate-300 leading-snug">
+                  Styled in solid black. Launches the AI Planning Voice Studio featuring dual mixed female and male teacher voices. Includes rate controls (0.8x - 1.4x) and a 1-tap <strong>Save to Phone</strong> button that downloads genuine <code className="text-emerald-300 font-mono">.wav</code> audio files directly to your device storage.
+                </p>
+              </div>
+
+              <div className="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-200 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 bg-[#00A86B] text-white font-black text-[10px] rounded-lg uppercase tracking-wider flex items-center gap-1">
+                    <Receipt size={10} />
+                    RECEIPT
+                  </span>
+                  <span className="font-extrabold text-emerald-950 text-[11px]">1-Click Payment Receipt Manager</span>
+                </div>
+                <p className="text-slate-600 leading-snug">
+                  Styled in official green. Opens the Receipt Manager popup instantly to view verification details, check transaction timestamps, review active subscription circles, and download or print official proof-of-payment receipts.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 16: CONTINUOUS BACKGROUND MOOD MUSIC & PREPARATION AUDIO ENGINE */}
+        <div id="section-mood-music" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6 pdf-section">
+          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+            <div className="p-3 bg-purple-700 text-white rounded-2xl font-black text-sm">16</div>
+            <div>
+              <h2 className="text-xl font-black text-slate-900 uppercase">16. Continuous Background Mood Music & Preparation Audio Engine</h2>
+              <p className="text-xs text-slate-500 font-semibold">Root-level persistent audio engine keeping study and planning music active across all tabs.</p>
+            </div>
+          </div>
+
+          <div className="space-y-4 text-slate-700 text-sm leading-relaxed">
+            <p>
+              To ensure educators can prepare documents with deep concentration, the platform includes an intelligent <strong>Continuous Background Mood Music Player</strong> that never cuts out when switching screens:
+            </p>
+
+            <div className="p-5 bg-slate-900 text-white rounded-2xl border border-slate-800 space-y-3">
+              <span className="text-xs font-black uppercase text-purple-400 tracking-wider block border-b border-slate-800 pb-2">
+                AUDIO ENGINE ARCHITECTURE & FEATURES:
+              </span>
+
+              <ul className="space-y-2.5 text-xs text-slate-300">
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-400 font-bold">•</span>
+                  <span><strong>Root-Level Persistence:</strong> When you start playing music on the dashboard, it continues playing smoothly as you navigate into the <strong>Academic Planning Hub</strong>, <strong>Schemes of Work</strong>, <strong>Lesson Plans</strong>, <strong>Weekly Forecast</strong>, <strong>Settings</strong>, or <strong>User Manual</strong>. It will not stop or restart!</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-400 font-bold">•</span>
+                  <span><strong>10 Developer-Curated Tracks:</strong> Features 8 soothing Amapiano & Slow Blues tracks plus 2 authentic Zambian Local Kalindula groove tracks (<em>"Coconut Island Kalindula Groove"</em> and <em>"Sweet Coconut Tree Kalindula"</em>).</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-400 font-bold">•</span>
+                  <span><strong>Auto-Flow Continuous Looping:</strong> As each track finishes, the engine automatically transitions to the next track in sequence, offering endless focus for long preparation hours.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-400 font-bold">•</span>
+                  <span><strong>Top Header Pinned Mini-Player:</strong> When you leave the dashboard, a sleek companion mini-player pill appears directly in the top header navbar on the upper edge of your screen (between the school brand and utility icons). This keeps bottom form fields, calendar dates, and input boxes 100% clear and unobstructed while allowing you to pause, resume, skip tracks, or expand full audio controls without losing your place in active lesson planning or schemes of work.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 17: LIVE INFORMANT TICKER & SYNCHRONIZED 4-MINUTE NEWS/FEEDBACK */}
+        <div id="section-informant-tickers" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6 pdf-section">
+          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+            <div className="p-3 bg-black text-white rounded-2xl font-black text-sm">17</div>
+            <div>
+              <h2 className="text-xl font-black text-slate-900 uppercase">17. Live Informant Ticker & Synchronized 4-Minute News/Feedback</h2>
+              <p className="text-xs text-slate-500 font-semibold">Real-time national alerts, ministry circulars, and educator feedback tickers.</p>
+            </div>
+          </div>
+
+          <div className="space-y-4 text-slate-700 text-sm leading-relaxed">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div className="p-4 bg-slate-900 text-white rounded-2xl border border-slate-800 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 bg-black border border-slate-700 font-black text-[9px] rounded uppercase tracking-wider text-white">THE INFORMANT</span>
+                  <span className="font-extrabold text-amber-400 text-[11px]">Far-Left Black Tab Ticker</span>
+                </div>
+                <p className="text-slate-300 leading-snug">
+                  Located on the far-left edge of the screen in a clean black badge with a reduced font and narrow profile. Displays developer administrative updates, urgent national curriculum circulars, and system notices. It preserves full complete sentences from start to finish at an optimal reading pace.
+                </p>
+              </div>
+
+              <div className="p-4 bg-emerald-950 text-white rounded-2xl border border-emerald-800 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 bg-emerald-600 font-black text-[9px] rounded uppercase tracking-wider text-white">4-MIN CYCLE</span>
+                  <span className="font-extrabold text-emerald-400 text-[11px]">News & Community Feedback Ticker</span>
+                </div>
+                <p className="text-slate-300 leading-snug">
+                  Synchronized to a precise 240-second (4-minute) alternating cycle. Rotates between real-time daily national educational news headlines (from MoE, ECZ, Bank of Zambia, and CDC) and verified live teacher community recommendations and testimonials from across Zambia. Outdated or prior-day headlines are automatically flashed away daily and refreshed every time new headlines arrive.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 18: CONSOLIDATED ACADEMIC PLANNING & DELIVERY HUBS */}
+        <div id="section-academic-hubs" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6 pdf-section">
+          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+            <div className="p-3 bg-blue-700 text-white rounded-2xl font-black text-sm">18</div>
+            <div>
+              <h2 className="text-xl font-black text-slate-900 uppercase">18. Consolidated Academic Planning & Delivery Hubs</h2>
+              <p className="text-xs text-slate-500 font-semibold">Organized categorical architecture grouping pedagogical planning, delivery, and research.</p>
+            </div>
+          </div>
+
+          <div className="space-y-4 text-slate-700 text-sm leading-relaxed">
+            <p>
+              The dashboard organizes all teaching responsibilities into 4 structured hubs:
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-200 space-y-1">
+                <h4 className="font-black text-blue-950 uppercase tracking-tight">1. Academic Planning Hub</h4>
+                <p className="text-slate-600 leading-relaxed">
+                  Houses core document preparation: 13-Week Schemes of Work, Weekly Forecasts, 6-Step Lesson Plans, and Detailed Lesson Notes.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200 space-y-1">
+                <h4 className="font-black text-emerald-950 uppercase tracking-tight">2. Instructional Delivery Hub</h4>
+                <p className="text-slate-600 leading-relaxed">
+                  Contains active teaching aids: Catch-Up &amp; TaRL Remedial Learning, Video Lesson Scripts, and AI Voice Lesson Guides.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-1">
+                <h4 className="font-black text-amber-950 uppercase tracking-tight">3. Research &amp; Student Tasks Hub</h4>
+                <p className="text-slate-600 leading-relaxed">
+                  Provides Test Paper &amp; Marking Key generation, Homework Question Banks, and Academic Assignment writing assistants.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-200 space-y-1">
+                <h4 className="font-black text-purple-950 uppercase tracking-tight">4. Teacher Resources Hub</h4>
+                <p className="text-slate-600 leading-relaxed">
+                  Fast access to the Syllabus Knowledge Base, Assessment Record Tracker, E-Payslip GRZ portal, and government curriculum repositories.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 19: OFFICIAL ZAMBIAN EDUCATION PORTALS & ESSENTIAL RESOURCE LINKS */}
         <div id="section-official-links" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6 pdf-section">
           <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <div className="p-3 bg-indigo-600 text-white rounded-2xl font-black text-sm">14</div>
+            <div className="p-3 bg-indigo-600 text-white rounded-2xl font-black text-sm">19</div>
             <div>
-              <h2 className="text-xl font-black text-slate-900 uppercase">14. Official Zambian Education Portals & Resource Links</h2>
+              <h2 className="text-xl font-black text-slate-900 uppercase">19. Official Zambian Education Portals & Resource Links</h2>
               <p className="text-xs text-slate-500 font-semibold">Verified government and curriculum portals for payslips, professional licensing, and examinations.</p>
             </div>
           </div>
@@ -1032,7 +1259,7 @@ export function UserManual({ onBack }: UserManualProps) {
             <a 
               href="https://epdmis.grz.gov.zm/request-payslip/" 
               target="_blank" 
-              rel="noopener noreferrer"
+              rel="noopener noreferrer" 
               className="p-4 rounded-2xl border border-slate-200 hover:border-indigo-500 hover:bg-slate-50/50 transition-all flex flex-col gap-1 text-left select-none group"
             >
               <div className="flex items-center justify-between">
@@ -1047,7 +1274,7 @@ export function UserManual({ onBack }: UserManualProps) {
             <a 
               href="https://www.edu.gov.zm/?page_id=1142" 
               target="_blank" 
-              rel="noopener noreferrer"
+              rel="noopener noreferrer" 
               className="p-4 rounded-2xl border border-slate-200 hover:border-indigo-500 hover:bg-slate-50/50 transition-all flex flex-col gap-1 text-left select-none group"
             >
               <div className="flex items-center justify-between">
@@ -1062,7 +1289,7 @@ export function UserManual({ onBack }: UserManualProps) {
             <a 
               href="https://library.cdcrepository.info/" 
               target="_blank" 
-              rel="noopener noreferrer"
+              rel="noopener noreferrer" 
               className="p-4 rounded-2xl border border-slate-200 hover:border-indigo-500 hover:bg-slate-50/50 transition-all flex flex-col gap-1 text-left select-none group"
             >
               <div className="flex items-center justify-between">
@@ -1077,7 +1304,7 @@ export function UserManual({ onBack }: UserManualProps) {
             <a 
               href="https://www.tcz.org.zm/" 
               target="_blank" 
-              rel="noopener noreferrer"
+              rel="noopener noreferrer" 
               className="p-4 rounded-2xl border border-slate-200 hover:border-indigo-500 hover:bg-slate-50/50 transition-all flex flex-col gap-1 text-left select-none group"
             >
               <div className="flex items-center justify-between">
@@ -1092,7 +1319,7 @@ export function UserManual({ onBack }: UserManualProps) {
             <a 
               href="https://www.exams-council.org.zm/" 
               target="_blank" 
-              rel="noopener noreferrer"
+              rel="noopener noreferrer" 
               className="p-4 rounded-2xl border border-indigo-500 bg-indigo-50/10 hover:bg-slate-50/50 transition-all flex flex-col gap-1 text-left select-none group md:col-span-2"
             >
               <div className="flex items-center justify-between">
