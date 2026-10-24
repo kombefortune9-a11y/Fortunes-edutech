@@ -5,6 +5,7 @@ RUN npm install --legacy-peer-deps
 RUN npm install react-is --legacy-peer-deps
 COPY . .
 RUN npm run build
+RUN npm install -g serve
 ENV PORT=8080
 EXPOSE 8080
-CMD ["sh", "-c", "npm run preview -- --host 0.0.0.0 --port ${PORT}"]
+CMD ["sh", "-c", "serve -s dist -l ${PORT}"]
